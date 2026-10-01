@@ -1,0 +1,58 @@
+import { useEffect, useState } from 'react';
+
+import { db } from '../../data/db/database';
+
+export function HomePage() {
+  const [storageStatus, setStorageStatus] = useState('Checking local storage…');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    void db.settings
+      .put({
+        key: 'pteSpecVersion',
+        value: '2026-10-01',
+      })
+      .then(() => db.settings.get('pteSpecVersion'))
+      .then((setting) => {
+        if (isMounted) {
+          setStorageStatus(
+            setting ? 'Local IndexedDB storage is ready.' : 'Storage check returned no value.',
+          );
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setStorageStatus('Local storage is unavailable. Check browser permissions.');
+        }
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  return (
+    <section className="welcome-card">
+      <p className="eyebrow">Technical foundation</p>
+      <h2>Welcome to PTE Study</h2>
+      <p>
+        The local application shell is ready. Exercises, scoring, and review workflows will be
+        added in later activities.
+      </p>
+      <p className="storage-status" role="status">
+        {storageStatus}
+      </p>
+    </section>
+  );
+}
+
+export function PlaceholderPage({ title }: { title: string }) {
+  return (
+    <section className="placeholder-card">
+      <p className="eyebrow">Coming next</p>
+      <h2>{title}</h2>
+      <p>This route is reserved for a future feature slice.</p>
+    </section>
+  );
+}
