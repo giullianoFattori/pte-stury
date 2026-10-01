@@ -13,6 +13,7 @@ export function WriteFromDictationPage() {
     error,
     isSubmitted,
     comparison,
+    score,
     updateAnswer,
     submitAnswer,
     nextQuestion,
@@ -48,7 +49,9 @@ export function WriteFromDictationPage() {
 
           {!currentQuestion.answer && <p>Comparison unavailable for this question.</p>}
 
-          {isSubmitted && comparison && <WfdComparisonResult result={comparison} />}
+          {isSubmitted && comparison && score && (
+            <WfdComparisonResult result={comparison} score={score} />
+          )}
 
           <div className="wfd-actions">
             {!isSubmitted ? (

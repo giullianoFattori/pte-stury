@@ -206,6 +206,24 @@ textarea:focus-visible {
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
+.wfd-score {
+  background: #eaf1ff;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}
+
+.wfd-score dt {
+  color: #2258a4;
+  font-weight: 600;
+}
+
+.wfd-score dd {
+  color: #172033;
+  font-size: clamp(2rem, 6vw, 3rem);
+  font-weight: 700;
+  margin: 0.25rem 0 0;
+}
+
 .wfd-result-summary dt {
   color: #52627c;
 }

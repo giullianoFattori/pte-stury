@@ -23,3 +23,16 @@ export type WfdComparisonResult = {
   expectedWordCount: number;
   actualWordCount: number;
 };
+
+export type WfdScoreResult = {
+  correctWords: number;
+  expectedWords: number;
+  actualWords: number;
+  wordAccuracy: number;
+  wordAccuracyPercent: number;
+  missingRate: number;
+  extraRate: number;
+  substitutionRate: number;
+  totalErrors: number;
+  exactMatch: boolean;
+};
