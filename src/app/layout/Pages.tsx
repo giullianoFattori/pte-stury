@@ -35,11 +35,11 @@ export function HomePage() {
 
   return (
     <section className="welcome-card">
-      <p className="eyebrow">Technical foundation</p>
+      <p className="eyebrow">Listening + Writing practice</p>
       <h2>Welcome to PTE Study</h2>
       <p>
-        The local application shell is ready. Exercises, scoring, and review workflows will be
-        added in later activities.
+        Open Study to practise Write From Dictation. Your answers, word-level feedback, and
+        scheduled reviews are saved locally on this browser.
       </p>
       <p className="storage-status" role="status">
         {storageStatus}
