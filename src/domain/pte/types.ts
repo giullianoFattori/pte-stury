@@ -36,6 +36,8 @@ export type StudyItem = {
   createdAt: string;
 };
 
+export type AttemptMetricValue = number | boolean;
+
 export type Attempt = {
   id: string;
   itemId: string;
@@ -44,7 +46,7 @@ export type Attempt = {
   responseText?: string;
   durationMs?: number;
   score?: number;
-  metrics?: Record<string, number>;
+  metrics?: Record<string, AttemptMetricValue>;
 };
 
 export type ErrorRecord = {

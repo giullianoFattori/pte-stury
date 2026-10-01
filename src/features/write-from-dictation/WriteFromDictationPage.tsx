@@ -14,6 +14,9 @@ export function WriteFromDictationPage() {
     isSubmitted,
     comparison,
     score,
+    isSaving,
+    saveError,
+    savedAttemptId,
     updateAnswer,
     submitAnswer,
     nextQuestion,
@@ -45,7 +48,9 @@ export function WriteFromDictationPage() {
             <p>Audio unavailable for this question.</p>
           )}
 
-          <WfdAnswerInput value={answer} onChange={updateAnswer} disabled={isSubmitted} />
+          <WfdAnswerInput value={answer} onChange={updateAnswer} disabled={isSubmitted || isSaving} />
+
+          {saveError && <p role="alert">{saveError}</p>}
 
           {!currentQuestion.answer && <p>Comparison unavailable for this question.</p>}
 
@@ -57,14 +62,16 @@ export function WriteFromDictationPage() {
             {!isSubmitted ? (
               <button
                 type="button"
-                onClick={submitAnswer}
-                disabled={!answer.trim() || !currentQuestion.answer}
+                onClick={() => void submitAnswer()}
+                disabled={!answer.trim() || !currentQuestion.answer || isSaving}
               >
-                Submit
+                {isSaving ? 'Saving…' : 'Submit'}
               </button>
             ) : (
               <>
-                <p role="status">Answer compared. Your word-level result is ready.</p>
+                {savedAttemptId && (
+                  <p role="status">Attempt saved. Your word-level result is ready.</p>
+                )}
                 <button type="button" onClick={nextQuestion}>
                   Next question
                 </button>
