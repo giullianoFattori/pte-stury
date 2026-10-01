@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './App';
-import { HomePage, PlaceholderPage } from './layout/Pages';
+import { HomePage, PlaceholderPage, StudyPage } from './layout/Pages';
+import { WriteFromDictationPage } from '../features/write-from-dictation/WriteFromDictationPage';
 
 export const router = createBrowserRouter([
   {
@@ -13,7 +14,11 @@ export const router = createBrowserRouter([
       },
       {
         path: '/study',
-        element: <PlaceholderPage title="Study" />,
+        element: <StudyPage />,
+      },
+      {
+        path: '/study/write-from-dictation',
+        element: <WriteFromDictationPage />,
       },
       {
         path: '/review',

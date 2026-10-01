@@ -47,7 +47,8 @@ a {
 
 .app-header h1,
 .welcome-card h2,
-.placeholder-card h2 {
+.placeholder-card h2,
+.practice-card h2 {
   color: #172033;
   letter-spacing: -0.04em;
   margin: 0;
@@ -90,7 +91,8 @@ nav a.active {
 }
 
 .welcome-card,
-.placeholder-card {
+.placeholder-card,
+.practice-card {
   background: #fff;
   border: 1px solid #d9e1ec;
   border-radius: 1rem;
@@ -101,15 +103,95 @@ nav a.active {
 }
 
 .welcome-card h2,
-.placeholder-card h2 {
+.placeholder-card h2,
+.practice-card h2 {
   font-size: clamp(2rem, 5vw, 3.25rem);
   margin-bottom: 1rem;
 }
 
 .welcome-card p:not(.eyebrow),
-.placeholder-card p:not(.eyebrow) {
+.placeholder-card p:not(.eyebrow),
+.practice-card p:not(.eyebrow) {
   color: #52627c;
   line-height: 1.7;
+}
+
+.practice-card button,
+.study-exercise-link {
+  background: #2258a4;
+  border: 1px solid #2258a4;
+  border-radius: 0.5rem;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  text-decoration: none;
+}
+
+.practice-card button:hover:not(:disabled),
+.study-exercise-link:hover {
+  background: #194581;
+}
+
+.practice-card button:disabled {
+  background: #e7edf5;
+  border-color: #d9e1ec;
+  color: #687894;
+  cursor: not-allowed;
+}
+
+a:focus-visible,
+button:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #2258a4;
+  outline-offset: 3px;
+}
+
+.wfd-progress {
+  font-size: 0.9rem;
+}
+
+.wfd-audio-player {
+  margin: 2rem 0;
+}
+
+.wfd-answer {
+  display: grid;
+  gap: 0.5rem;
+  margin: 2rem 0;
+}
+
+.wfd-answer label {
+  font-weight: 600;
+}
+
+.wfd-answer textarea {
+  border: 1px solid #a5b3c8;
+  border-radius: 0.5rem;
+  color: inherit;
+  font: inherit;
+  line-height: 1.6;
+  min-height: 120px;
+  padding: 1rem;
+  resize: vertical;
+  width: 100%;
+}
+
+.wfd-answer textarea:disabled {
+  background: #f4f7fb;
+}
+
+.wfd-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.wfd-actions p {
+  flex-basis: 100%;
+  margin: 0;
 }
 
 .storage-status {

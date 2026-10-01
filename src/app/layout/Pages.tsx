@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { db } from '../../data/db/database';
 
@@ -43,6 +44,19 @@ export function HomePage() {
       <p className="storage-status" role="status">
         {storageStatus}
       </p>
+    </section>
+  );
+}
+
+export function StudyPage() {
+  return (
+    <section className="practice-card">
+      <p className="eyebrow">Practice</p>
+      <h2>Study</h2>
+      <p>Listen to a sentence and practise typing exactly what you hear.</p>
+      <Link className="study-exercise-link" to="/study/write-from-dictation">
+        Write From Dictation
+      </Link>
     </section>
   );
 }
