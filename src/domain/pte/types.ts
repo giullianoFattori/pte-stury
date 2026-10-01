@@ -54,11 +54,13 @@ export type ErrorRecord = {
   attemptId: string;
   itemId: string;
   taskType: PteTaskType;
-  skill: Skill;
+  skills: Skill[];
   category: ErrorCategory;
   token?: string;
   expected?: string;
   actual?: string;
+  expectedIndex?: number;
+  actualIndex?: number;
   explanation?: string;
   severity: 1 | 2 | 3;
   createdAt: string;

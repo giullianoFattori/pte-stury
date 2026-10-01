@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { attemptsRepository } from '../../../data/repositories/attemptsRepository';
+import { studyOutcomeRepository } from '../../../data/repositories/studyOutcomeRepository';
 import { studyItemsRepository } from '../../../data/repositories/studyItemsRepository';
 import type { StudyItem } from '../../../domain/pte/types';
 import {
@@ -10,6 +10,7 @@ import {
   type WfdScoreResult,
 } from '../../../domain/scoring/wfd';
 import { buildWfdAttempt } from '../services/buildWfdAttempt';
+import { buildWfdErrorRecords } from '../services/buildWfdErrorRecords';
 
 export function useWriteFromDictation() {
   const [questions, setQuestions] = useState<StudyItem[]>([]);
@@ -97,7 +98,8 @@ export function useWriteFromDictation() {
         durationMs,
       });
 
-      await attemptsRepository.create(attempt);
+      const errors = buildWfdErrorRecords(attempt, comparisonResult);
+      await studyOutcomeRepository.createAttemptWithErrors({ attempt, errors });
       submissionStateRef.current = 'saved';
 
       if (isMountedRef.current) {
