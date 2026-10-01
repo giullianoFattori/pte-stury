@@ -70,6 +70,8 @@ export type ReviewItem = {
   id: string;
   sourceAttemptId: string;
   sourceErrorId?: string;
+  itemId: string;
+  taskType: PteTaskType;
   type: 'word' | 'phrase' | 'sentence' | 'grammar' | 'pronunciation';
   prompt: string;
   answer: string;
@@ -77,6 +79,7 @@ export type ReviewItem = {
   intervalDays: number;
   repetitions: number;
   correctStreak: number;
+  createdAt: string;
 };
 
 export type StudySession = {

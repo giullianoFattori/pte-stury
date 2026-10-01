@@ -11,6 +11,7 @@ import {
 } from '../../../domain/scoring/wfd';
 import { buildWfdAttempt } from '../services/buildWfdAttempt';
 import { buildWfdErrorRecords } from '../services/buildWfdErrorRecords';
+import { buildWfdReviewItems } from '../services/buildWfdReviewItems';
 
 export function useWriteFromDictation() {
   const [questions, setQuestions] = useState<StudyItem[]>([]);
@@ -99,7 +100,8 @@ export function useWriteFromDictation() {
       });
 
       const errors = buildWfdErrorRecords(attempt, comparisonResult);
-      await studyOutcomeRepository.createAttemptWithErrors({ attempt, errors });
+      const reviews = buildWfdReviewItems({ question: currentQuestion, attempt, errors });
+      await studyOutcomeRepository.createStudyOutcome({ attempt, errors, reviews });
       submissionStateRef.current = 'saved';
 
       if (isMountedRef.current) {
