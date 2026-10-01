@@ -1,5 +1,6 @@
 import { WfdAnswerInput } from './components/WfdAnswerInput';
 import { WfdAudioPlayer } from './components/WfdAudioPlayer';
+import { WfdComparisonResult } from './components/WfdComparisonResult';
 import { useWriteFromDictation } from './hooks/useWriteFromDictation';
 
 export function WriteFromDictationPage() {
@@ -11,6 +12,7 @@ export function WriteFromDictationPage() {
     isLoading,
     error,
     isSubmitted,
+    comparison,
     updateAnswer,
     submitAnswer,
     nextQuestion,
@@ -44,14 +46,22 @@ export function WriteFromDictationPage() {
 
           <WfdAnswerInput value={answer} onChange={updateAnswer} disabled={isSubmitted} />
 
+          {!currentQuestion.answer && <p>Comparison unavailable for this question.</p>}
+
+          {isSubmitted && comparison && <WfdComparisonResult result={comparison} />}
+
           <div className="wfd-actions">
             {!isSubmitted ? (
-              <button type="button" onClick={submitAnswer} disabled={!answer.trim()}>
+              <button
+                type="button"
+                onClick={submitAnswer}
+                disabled={!answer.trim() || !currentQuestion.answer}
+              >
                 Submit
               </button>
             ) : (
               <>
-                <p role="status">Answer captured. Scoring will be added in the next step.</p>
+                <p role="status">Answer compared. Your word-level result is ready.</p>
                 <button type="button" onClick={nextQuestion}>
                   Next question
                 </button>

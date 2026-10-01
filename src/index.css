@@ -194,6 +194,61 @@ textarea:focus-visible {
   margin: 0;
 }
 
+.wfd-result {
+  border-top: 1px solid #d9e1ec;
+  margin: 2rem 0;
+  padding-top: 1rem;
+}
+
+.wfd-result-summary {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.wfd-result-summary dt {
+  color: #52627c;
+}
+
+.wfd-result-summary dd {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0.25rem 0 0;
+}
+
+.wfd-token-result {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.wfd-token {
+  border: 1px solid;
+  border-radius: 0.5rem;
+  overflow-wrap: anywhere;
+  padding: 0.5rem 0.75rem;
+}
+
+.wfd-token--correct {
+  background: #e9f6ef;
+  color: #22623e;
+}
+
+.wfd-token--missing {
+  background: #fff4dc;
+  color: #795100;
+}
+
+.wfd-token--extra {
+  background: #eaf1ff;
+  color: #2258a4;
+}
+
+.wfd-token--substitution {
+  background: #fcecec;
+  color: #983434;
+}
+
 .storage-status {
   border-top: 1px solid #e7edf5;
   color: #26724c !important;

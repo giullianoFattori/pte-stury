@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { studyItemsRepository } from '../../../data/repositories/studyItemsRepository';
 import type { StudyItem } from '../../../domain/pte/types';
+import { compareWfdAnswer, type WfdComparisonResult } from '../../../domain/scoring/wfd';
 
 export function useWriteFromDictation() {
   const [questions, setQuestions] = useState<StudyItem[]>([]);
@@ -10,6 +11,8 @@ export function useWriteFromDictation() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [comparison, setComparison] = useState<WfdComparisonResult | null>(null);
+  const currentQuestion = questions[currentIndex];
 
   useEffect(() => {
     let isMounted = true;
@@ -44,12 +47,16 @@ export function useWriteFromDictation() {
   function updateAnswer(value: string) {
     setAnswer(value);
     setIsSubmitted(false);
+    setComparison(null);
   }
 
   function submitAnswer() {
-    if (answer.trim()) {
-      setIsSubmitted(true);
+    if (!answer.trim() || !currentQuestion?.answer) {
+      return;
     }
+
+    setComparison(compareWfdAnswer(currentQuestion.answer, answer));
+    setIsSubmitted(true);
   }
 
   function nextQuestion() {
@@ -60,16 +67,18 @@ export function useWriteFromDictation() {
     setCurrentIndex((current) => (current + 1) % questions.length);
     setAnswer('');
     setIsSubmitted(false);
+    setComparison(null);
   }
 
   return {
     questions,
-    currentQuestion: questions[currentIndex],
+    currentQuestion,
     currentIndex,
     answer,
     isLoading,
     error,
     isSubmitted,
+    comparison,
     updateAnswer,
     submitAnswer,
     nextQuestion,
