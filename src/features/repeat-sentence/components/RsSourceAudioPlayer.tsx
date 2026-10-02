@@ -1,8 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 
-type RsSourceAudioPlayerProps = { audioUrl: string };
+type RsSourceAudioPlayerProps = {
+  audioUrl: string;
+  disabled?: boolean;
+  onPlayingChange?: (isPlaying: boolean) => void;
+};
 
-export function RsSourceAudioPlayer({ audioUrl }: RsSourceAudioPlayerProps) {
+export function RsSourceAudioPlayer({ audioUrl, disabled = false, onPlayingChange }: RsSourceAudioPlayerProps) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [hasPlayed, setHasPlayed] = useState(false);
@@ -10,14 +14,26 @@ export function RsSourceAudioPlayer({ audioUrl }: RsSourceAudioPlayerProps) {
 
   useEffect(() => {
     const audio = audioRef.current;
-    return () => { audio?.pause(); };
-  }, []);
+    return () => {
+      audio?.pause();
+      onPlayingChange?.(false);
+    };
+  }, [onPlayingChange]);
+
+  useEffect(() => {
+    if (disabled) audioRef.current?.pause();
+  }, [disabled]);
+
+  function updatePlaying(value: boolean) {
+    setIsPlaying(value);
+    onPlayingChange?.(value);
+  }
 
   async function playAudio() {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || disabled || isPlaying) return;
     setError(null);
-    setIsPlaying(true);
+    updatePlaying(true);
     try {
       audio.currentTime = 0;
       await audio.play();
@@ -25,7 +41,7 @@ export function RsSourceAudioPlayer({ audioUrl }: RsSourceAudioPlayerProps) {
     } catch (unknownError) {
       if (!audio.isConnected) return;
       console.error('Unable to play RS source audio:', unknownError);
-      setIsPlaying(false);
+      updatePlaying(false);
       setError('Unable to play this audio. Please try again.');
     }
   }
@@ -36,16 +52,16 @@ export function RsSourceAudioPlayer({ audioUrl }: RsSourceAudioPlayerProps) {
         ref={audioRef}
         src={audioUrl}
         preload="auto"
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        onEnded={() => setIsPlaying(false)}
+        onPlay={() => updatePlaying(true)}
+        onPause={() => updatePlaying(false)}
+        onEnded={() => updatePlaying(false)}
         onError={() => {
           console.error('Unable to load RS source audio:', audioRef.current?.error);
-          setIsPlaying(false);
+          updatePlaying(false);
           setError('Unable to play this audio. Please try again.');
         }}
       />
-      <button type="button" onClick={() => void playAudio()} disabled={isPlaying}>
+      <button type="button" onClick={() => void playAudio()} disabled={isPlaying || disabled}>
         {isPlaying ? 'Playing…' : hasPlayed ? 'Replay sentence' : 'Play sentence'}
       </button>
       {error && <p role="alert">{error}</p>}

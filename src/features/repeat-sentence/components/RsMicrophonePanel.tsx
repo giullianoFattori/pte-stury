@@ -5,6 +5,7 @@ type RsMicrophonePanelProps = {
   errorMessage: string | null;
   onRequest: () => Promise<void>;
   onDisable: () => void;
+  disableBlocked?: boolean;
 };
 
 const statusMessages: Record<MicrophoneStatus, string> = {
@@ -16,7 +17,7 @@ const statusMessages: Record<MicrophoneStatus, string> = {
   error: 'Microphone access failed.',
 };
 
-export function RsMicrophonePanel({ status, errorMessage, onRequest, onDisable }: RsMicrophonePanelProps) {
+export function RsMicrophonePanel({ status, errorMessage, onRequest, onDisable, disableBlocked = false }: RsMicrophonePanelProps) {
   return (
     <section className="rs-microphone-panel" aria-labelledby="rs-microphone-title">
       <h3 id="rs-microphone-title">Microphone</h3>
@@ -27,17 +28,13 @@ export function RsMicrophonePanel({ status, errorMessage, onRequest, onDisable }
       )}
       <div className="rs-actions">
         {status === 'ready' ? (
-          <>
-            <button type="button" disabled aria-describedby="rs-record-help">Record</button>
-            <button type="button" onClick={onDisable}>Disable microphone</button>
-          </>
+          <button type="button" onClick={onDisable} disabled={disableBlocked}>Disable microphone</button>
         ) : (
           <button type="button" onClick={() => void onRequest()} disabled={status === 'requesting'}>
             {status === 'requesting' ? 'Requesting…' : status === 'idle' ? 'Enable microphone' : 'Try again'}
           </button>
         )}
       </div>
-      {status === 'ready' && <p id="rs-record-help">Recording will be enabled in the next step.</p>}
     </section>
   );
 }

@@ -286,7 +286,8 @@ textarea:focus-visible {
   margin: 2rem 0;
 }
 
-.rs-microphone-panel {
+.rs-microphone-panel,
+.rs-recorder-panel {
   background: #f4f7fb;
   border: 1px solid #d9e1ec;
   border-radius: 0.75rem;
@@ -294,12 +295,18 @@ textarea:focus-visible {
   padding: 1.25rem;
 }
 
-.rs-microphone-panel h3 {
+.rs-microphone-panel h3,
+.rs-recorder-panel h3 {
   margin-top: 0;
 }
 
 .rs-microphone-status {
   font-weight: 600;
+}
+
+.rs-recorder-panel audio {
+  display: block;
+  width: 100%;
 }
 
 @media (max-width: 720px) {

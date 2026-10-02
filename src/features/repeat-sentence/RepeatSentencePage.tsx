@@ -1,13 +1,43 @@
+import { useState } from 'react';
+
 import { RsMicrophonePanel } from './components/RsMicrophonePanel';
+import { RsRecorderPanel } from './components/RsRecorderPanel';
 import { RsSourceAudioPlayer } from './components/RsSourceAudioPlayer';
 import { useMicrophonePermission } from './hooks/useMicrophonePermission';
+import { useAudioRecorder } from './hooks/useAudioRecorder';
 import { useRepeatSentence } from './hooks/useRepeatSentence';
 
 const difficultyLabels: Record<number, string> = { 1: 'Short', 2: 'Medium', 3: 'Long' };
 
 export function RepeatSentencePage() {
   const { questions, currentQuestion, currentIndex, isLoading, error, nextQuestion } = useRepeatSentence();
-  const { status, errorMessage, requestMicrophone, stopMicrophone } = useMicrophonePermission();
+  const {
+    status: microphoneStatus, errorMessage: microphoneError, streamRef, requestMicrophone, stopMicrophone,
+  } = useMicrophonePermission();
+  const {
+    status: recordingStatus, recording, errorMessage: recordingError, isFinalizing,
+    startRecording, stopRecording, resetRecording,
+  } = useAudioRecorder();
+  const [isSourceAudioPlaying, setIsSourceAudioPlaying] = useState(false);
+  const isRecording = recordingStatus === 'recording';
+  const canStart = microphoneStatus === 'ready' && !isSourceAudioPlaying && !isRecording;
+
+  function handleStartRecording() {
+    if (canStart && streamRef.current) startRecording(streamRef.current);
+  }
+
+  function handleNextQuestion() {
+    if (isRecording) return;
+    resetRecording();
+    setIsSourceAudioPlaying(false);
+    nextQuestion();
+  }
+
+  function handleDisableMicrophone() {
+    if (isRecording) return;
+    resetRecording();
+    stopMicrophone();
+  }
 
   return (
     <section className="practice-card" aria-labelledby="rs-title" aria-busy={isLoading}>
@@ -27,10 +57,23 @@ export function RepeatSentencePage() {
           <p>Difficulty: {currentQuestion.difficulty} — {difficultyLabels[currentQuestion.difficulty] ?? 'Practice'}</p>
           <p>{currentQuestion.prompt}</p>
           {currentQuestion.audioUrl ? (
-            <RsSourceAudioPlayer key={currentQuestion.id} audioUrl={currentQuestion.audioUrl} />
+            <RsSourceAudioPlayer
+              key={currentQuestion.id}
+              audioUrl={currentQuestion.audioUrl}
+              disabled={isRecording}
+              onPlayingChange={setIsSourceAudioPlaying}
+            />
           ) : <p>Audio unavailable for this question.</p>}
-          <RsMicrophonePanel status={status} errorMessage={errorMessage} onRequest={requestMicrophone} onDisable={stopMicrophone} />
-          <button type="button" onClick={nextQuestion}>Next question</button>
+          <RsMicrophonePanel
+            status={microphoneStatus} errorMessage={microphoneError}
+            onRequest={requestMicrophone} onDisable={handleDisableMicrophone} disableBlocked={isRecording}
+          />
+          <RsRecorderPanel
+            status={recordingStatus} recording={recording} errorMessage={recordingError}
+            canStart={canStart} isFinalizing={isFinalizing}
+            onStart={handleStartRecording} onStop={stopRecording} onReset={resetRecording}
+          />
+          <button type="button" onClick={handleNextQuestion} disabled={isRecording}>Next question</button>
         </>
       )}
     </section>
