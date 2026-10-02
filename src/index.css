@@ -287,7 +287,8 @@ textarea:focus-visible {
 }
 
 .rs-microphone-panel,
-.rs-recorder-panel {
+.rs-recorder-panel,
+.rs-transcription-panel {
   background: #f4f7fb;
   border: 1px solid #d9e1ec;
   border-radius: 0.75rem;
@@ -296,7 +297,8 @@ textarea:focus-visible {
 }
 
 .rs-microphone-panel h3,
-.rs-recorder-panel h3 {
+.rs-recorder-panel h3,
+.rs-transcription-panel h3 {
   margin-top: 0;
 }
 

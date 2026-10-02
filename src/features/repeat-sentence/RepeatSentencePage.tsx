@@ -3,9 +3,11 @@ import { useState } from 'react';
 import { RsMicrophonePanel } from './components/RsMicrophonePanel';
 import { RsRecorderPanel } from './components/RsRecorderPanel';
 import { RsSourceAudioPlayer } from './components/RsSourceAudioPlayer';
+import { RsTranscriptionPanel } from './components/RsTranscriptionPanel';
 import { useMicrophonePermission } from './hooks/useMicrophonePermission';
 import { useAudioRecorder } from './hooks/useAudioRecorder';
 import { useRepeatSentence } from './hooks/useRepeatSentence';
+import { useSpeechTranscription } from './hooks/useSpeechTranscription';
 
 const difficultyLabels: Record<number, string> = { 1: 'Short', 2: 'Medium', 3: 'Long' };
 
@@ -18,24 +20,33 @@ export function RepeatSentencePage() {
     status: recordingStatus, recording, errorMessage: recordingError, isFinalizing,
     startRecording, stopRecording, resetRecording,
   } = useAudioRecorder();
+  const transcription = useSpeechTranscription();
   const [isSourceAudioPlaying, setIsSourceAudioPlaying] = useState(false);
   const isRecording = recordingStatus === 'recording';
   const canStart = microphoneStatus === 'ready' && !isSourceAudioPlaying && !isRecording;
 
   function handleStartRecording() {
-    if (canStart && streamRef.current) startRecording(streamRef.current);
+    if (canStart && streamRef.current) {
+      transcription.resetTranscription();
+      startRecording(streamRef.current);
+    }
+  }
+
+  function handleResetRecording() {
+    transcription.resetTranscription();
+    resetRecording();
   }
 
   function handleNextQuestion() {
     if (isRecording) return;
-    resetRecording();
+    handleResetRecording();
     setIsSourceAudioPlaying(false);
     nextQuestion();
   }
 
   function handleDisableMicrophone() {
     if (isRecording) return;
-    resetRecording();
+    handleResetRecording();
     stopMicrophone();
   }
 
@@ -71,7 +82,13 @@ export function RepeatSentencePage() {
           <RsRecorderPanel
             status={recordingStatus} recording={recording} errorMessage={recordingError}
             canStart={canStart} isFinalizing={isFinalizing}
-            onStart={handleStartRecording} onStop={stopRecording} onReset={resetRecording}
+            onStart={handleStartRecording} onStop={stopRecording} onReset={handleResetRecording}
+          />
+          <RsTranscriptionPanel
+            status={transcription.status} result={transcription.result} errorMessage={transcription.errorMessage}
+            hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording || isSourceAudioPlaying}
+            onCheck={transcription.checkAvailability} onInstall={transcription.installLanguage}
+            onTranscribe={async () => { if (recording && !isRecording && !isSourceAudioPlaying) await transcription.transcribe(recording.blob); }}
           />
           <button type="button" onClick={handleNextQuestion} disabled={isRecording}>Next question</button>
         </>
