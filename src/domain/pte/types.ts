@@ -33,6 +33,7 @@ export type StudyItem = {
   answer?: string;
   transcript?: string;
   audioUrl?: string;
+  chunks?: string[];
   createdAt: string;
 };
 
