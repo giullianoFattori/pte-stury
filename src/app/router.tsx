@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
 import { HomePage, PlaceholderPage, StudyPage } from './layout/Pages';
 import { WriteFromDictationPage } from '../features/write-from-dictation/WriteFromDictationPage';
+import { RepeatSentencePage } from '../features/repeat-sentence/RepeatSentencePage';
 
 export const router = createBrowserRouter([
   {
@@ -19,6 +20,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/write-from-dictation',
         element: <WriteFromDictationPage />,
+      },
+      {
+        path: '/study/repeat-sentence',
+        element: <RepeatSentencePage />,
       },
       {
         path: '/review',

@@ -53,10 +53,15 @@ export function StudyPage() {
     <section className="practice-card">
       <p className="eyebrow">Practice</p>
       <h2>Study</h2>
-      <p>Listen to a sentence and practise typing exactly what you hear.</p>
-      <Link className="study-exercise-link" to="/study/write-from-dictation">
-        Write From Dictation
-      </Link>
+      <p>Choose a listening task to practise writing or speaking.</p>
+      <div className="study-exercise-links">
+        <Link className="study-exercise-link" to="/study/write-from-dictation">
+          Write From Dictation
+        </Link>
+        <Link className="study-exercise-link" to="/study/repeat-sentence">
+          Repeat Sentence
+        </Link>
+      </div>
     </section>
   );
 }
