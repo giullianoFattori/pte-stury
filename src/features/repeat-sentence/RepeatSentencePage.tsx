@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { attemptsRepository } from '../../data/repositories/attemptsRepository';
+import { studyOutcomeRepository } from '../../data/repositories/studyOutcomeRepository';
 
 import {
   analyseRepeatSentenceChunks, calculateRepeatSentenceMetrics, compareRepeatSentence,
@@ -18,6 +18,8 @@ import { useAudioRecorder } from './hooks/useAudioRecorder';
 import { useRepeatSentence } from './hooks/useRepeatSentence';
 import { useSpeechTranscription } from './hooks/useSpeechTranscription';
 import { buildRepeatSentenceAttempt } from './services/buildRepeatSentenceAttempt';
+import { buildRepeatSentenceErrorRecords } from './services/buildRepeatSentenceErrorRecords';
+import { buildRepeatSentenceReviewItems } from './services/buildRepeatSentenceReviewItems';
 
 const difficultyLabels: Record<number, string> = { 1: 'Short', 2: 'Medium', 3: 'Long' };
 
@@ -83,7 +85,9 @@ export function RepeatSentencePage() {
         comparison: content.comparison, score: content.score,
         chunkAnalysis: content.chunkAnalysis, durationMs: recording.durationMs,
       });
-      await attemptsRepository.create(attempt);
+      const errors = buildRepeatSentenceErrorRecords(attempt, content.comparison);
+      const reviews = buildRepeatSentenceReviewItems({ question: currentQuestion, attempt, errors });
+      await studyOutcomeRepository.createStudyOutcome({ attempt, errors, reviews });
       if (isMountedRef.current) {
         savedAttemptIdRef.current = attempt.id;
         setSavedAttemptId(attempt.id);
@@ -123,6 +127,12 @@ export function RepeatSentencePage() {
     handleResetRecording();
     setIsSourceAudioPlaying(false);
     nextQuestion();
+  }
+
+  function handleRetrySentence() {
+    if (isRecording || isSavingAttemptRef.current) return;
+    handleResetRecording();
+    setIsSourceAudioPlaying(false);
   }
 
   function handleDisableMicrophone() {
@@ -180,7 +190,14 @@ export function RepeatSentencePage() {
                   disabled={isSavingAttempt || !!savedAttemptId || transcription.result?.processedLocally !== true}>
                   {isSavingAttempt ? 'Saving…' : savedAttemptId ? 'Attempt saved' : 'Save attempt'}
                 </button>
-                {savedAttemptId && <p role="status">Attempt saved locally.</p>}
+                {savedAttemptId && (
+                  <>
+                    <p role="status">Attempt saved locally.</p>
+                    <button type="button" onClick={handleRetrySentence} disabled={isRecording || isSavingAttempt}>
+                      Retry same sentence
+                    </button>
+                  </>
+                )}
                 {saveAttemptError && <p role="alert">{saveAttemptError}</p>}
               </div>
             </>
