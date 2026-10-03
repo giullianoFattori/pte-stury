@@ -71,3 +71,27 @@ Step 04's real-recognition quality gate is **not complete**. On the target brows
 | Students must arrive nine tomorrow. | Pending real-engine test | Pending |
 | Students must arrive after nine tomorrow. | Pending real-engine test | Pending |
 | Quiet / unclear speech | Pending real-engine test | Pending |
+
+## Step 05: deterministic content integration — 2026-10-03
+
+The Step 04 implementation is committed and pushed. Its real-recognition quality
+gate above remains pending; Step 05 does not alter or replace the recognizer.
+
+RS now uses the same pure normalization/tokenization/alignment implementation as
+WFD, with separate RS metrics. V1 content recall and sequence accuracy both count
+globally aligned correct expected positions. Extras remain separate and defeat
+exact content match, without subtracting expected-word recall twice.
+
+Chunk metadata must reproduce the expected normalized token sequence exactly.
+Each chunk is credited by its expected positions in the full alignment, not by
+independent substring matching. A chunk is retained only at 100% expected-word
+recall. Invalid/absent chunk metadata displays a controlled fallback while valid
+word feedback remains available. Missing expected text produces no content score.
+
+Validation: build and lint passed, and all 83 Node tests passed, including WFD
+regressions. Firefox integration used native recording/captured tracks with an
+injected recognizer supplying controlled transcripts. Exact, omission,
+substitution, insertion, reordered words, re-record, Next, empty recognition,
+invalid chunk metadata and missing expected text behaved as specified. No new
+Attempt, ErrorRecord or ReviewItem was persisted; no unexpected console errors
+were observed. This is validation of content logic/UI, not real STT quality.

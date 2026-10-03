@@ -311,6 +311,29 @@ textarea:focus-visible {
   width: 100%;
 }
 
+.rs-content-result {
+  margin: 2rem 0;
+  border-top: 1px solid #d9e1ec;
+  padding-top: 1rem;
+}
+
+.rs-content-recall {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.rs-chunk-list {
+  padding-left: 1.5rem;
+}
+
+.rs-chunk-list li {
+  margin: 0.75rem 0;
+}
+
+.rs-chunk-list span {
+  display: block;
+}
+
 @media (max-width: 720px) {
   .app-header {
     align-items: start;

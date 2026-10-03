@@ -1,9 +1,2 @@
-export function normalizeText(value: string): string {
-  return value
-    .normalize('NFKC')
-    .replace(/[’‘]/g, "'")
-    .toLowerCase()
-    .replace(/[.,!?;:"]/g, '')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
+// Preserve the existing WFD import path while sharing the implementation with RS.
+export { normalizeText } from '../shared/normalizeText.ts';

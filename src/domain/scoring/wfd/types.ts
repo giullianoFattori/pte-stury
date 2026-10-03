@@ -1,12 +1,7 @@
-export type WfdTokenStatus = 'correct' | 'missing' | 'extra' | 'substitution';
+import type { ComparedToken, TokenStatus } from '../shared/types';
 
-export type WfdComparedToken = {
-  status: WfdTokenStatus;
-  expected?: string;
-  actual?: string;
-  expectedIndex?: number;
-  actualIndex?: number;
-};
+export type WfdTokenStatus = TokenStatus;
+export type WfdComparedToken = ComparedToken;
 
 export type WfdComparisonResult = {
   expectedRaw: string;
