@@ -1,4 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+
+import { attemptsRepository } from '../../data/repositories/attemptsRepository';
 
 import {
   analyseRepeatSentenceChunks, calculateRepeatSentenceMetrics, compareRepeatSentence,
@@ -15,6 +17,7 @@ import { useMicrophonePermission } from './hooks/useMicrophonePermission';
 import { useAudioRecorder } from './hooks/useAudioRecorder';
 import { useRepeatSentence } from './hooks/useRepeatSentence';
 import { useSpeechTranscription } from './hooks/useSpeechTranscription';
+import { buildRepeatSentenceAttempt } from './services/buildRepeatSentenceAttempt';
 
 const difficultyLabels: Record<number, string> = { 1: 'Short', 2: 'Medium', 3: 'Long' };
 
@@ -28,9 +31,19 @@ export function RepeatSentencePage() {
     startRecording, stopRecording, resetRecording,
   } = useAudioRecorder();
   const transcription = useSpeechTranscription();
+  const [isSavingAttempt, setIsSavingAttempt] = useState(false);
+  const [saveAttemptError, setSaveAttemptError] = useState<string | null>(null);
+  const [savedAttemptId, setSavedAttemptId] = useState<string | null>(null);
+  const isSavingAttemptRef = useRef(false);
+  const savedAttemptIdRef = useRef<string | null>(null);
+  const isMountedRef = useRef(false);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => { isMountedRef.current = false; };
+  }, []);
   const [isSourceAudioPlaying, setIsSourceAudioPlaying] = useState(false);
   const isRecording = recordingStatus === 'recording';
-  const canStart = microphoneStatus === 'ready' && !isSourceAudioPlaying && !isRecording;
+  const canStart = microphoneStatus === 'ready' && !isSourceAudioPlaying && !isRecording && !isSavingAttempt;
   // Derive feedback from the current successful transcript: resetting STT also clears all results.
   const content = useMemo(() => {
     if (transcription.status !== 'success' || !transcription.result || !currentQuestion) return null;
@@ -50,27 +63,70 @@ export function RepeatSentencePage() {
     return { comparison, score, chunkAnalysis, chunkError };
   }, [currentQuestion, transcription.status, transcription.result]);
 
+  function resetSaveState() {
+    savedAttemptIdRef.current = null;
+    setSavedAttemptId(null);
+    setSaveAttemptError(null);
+  }
+
+  async function saveAttempt() {
+    if (!isMountedRef.current || isSavingAttemptRef.current || savedAttemptIdRef.current
+      || !currentQuestion || !recording || recordingStatus !== 'recorded'
+      || transcription.status !== 'success' || !transcription.result
+      || transcription.result.processedLocally !== true || !content || 'error' in content) return;
+    isSavingAttemptRef.current = true;
+    setIsSavingAttempt(true);
+    setSaveAttemptError(null);
+    try {
+      const attempt = buildRepeatSentenceAttempt({
+        question: currentQuestion, transcription: transcription.result,
+        comparison: content.comparison, score: content.score,
+        chunkAnalysis: content.chunkAnalysis, durationMs: recording.durationMs,
+      });
+      await attemptsRepository.create(attempt);
+      if (isMountedRef.current) {
+        savedAttemptIdRef.current = attempt.id;
+        setSavedAttemptId(attempt.id);
+      }
+    } catch (unknownError) {
+      console.error('Failed to save RS attempt:', unknownError);
+      if (isMountedRef.current) setSaveAttemptError('Your Repeat Sentence attempt could not be saved. Please try again.');
+    } finally {
+      isSavingAttemptRef.current = false;
+      if (isMountedRef.current) setIsSavingAttempt(false);
+    }
+  }
+
+  async function handleTranscribe() {
+    if (isSavingAttemptRef.current || !recording || isRecording || isSourceAudioPlaying) return;
+    resetSaveState();
+    await transcription.transcribe(recording.blob);
+  }
+
   function handleStartRecording() {
-    if (canStart && streamRef.current) {
+    if (!isSavingAttemptRef.current && canStart && streamRef.current) {
+      resetSaveState();
       transcription.resetTranscription();
       startRecording(streamRef.current);
     }
   }
 
   function handleResetRecording() {
+    if (isSavingAttemptRef.current) return;
+    resetSaveState();
     transcription.resetTranscription();
     resetRecording();
   }
 
   function handleNextQuestion() {
-    if (isRecording) return;
+    if (isRecording || isSavingAttemptRef.current) return;
     handleResetRecording();
     setIsSourceAudioPlaying(false);
     nextQuestion();
   }
 
   function handleDisableMicrophone() {
-    if (isRecording) return;
+    if (isRecording || isSavingAttemptRef.current) return;
     handleResetRecording();
     stopMicrophone();
   }
@@ -96,30 +152,40 @@ export function RepeatSentencePage() {
             <RsSourceAudioPlayer
               key={currentQuestion.id}
               audioUrl={currentQuestion.audioUrl}
-              disabled={isRecording}
+              disabled={isRecording || isSavingAttempt}
               onPlayingChange={setIsSourceAudioPlaying}
             />
           ) : <p>Audio unavailable for this question.</p>}
           <RsMicrophonePanel
             status={microphoneStatus} errorMessage={microphoneError}
-            onRequest={requestMicrophone} onDisable={handleDisableMicrophone} disableBlocked={isRecording}
+            onRequest={requestMicrophone} onDisable={handleDisableMicrophone} disableBlocked={isRecording || isSavingAttempt}
           />
           <RsRecorderPanel
             status={recordingStatus} recording={recording} errorMessage={recordingError}
-            canStart={canStart} isFinalizing={isFinalizing}
+            canStart={canStart} isFinalizing={isFinalizing} disabled={isSavingAttempt}
             onStart={handleStartRecording} onStop={stopRecording} onReset={handleResetRecording}
           />
           <RsTranscriptionPanel
             status={transcription.status} result={transcription.result} errorMessage={transcription.errorMessage}
-            hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording || isSourceAudioPlaying}
+            hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording || isSourceAudioPlaying || isSavingAttempt}
             onCheck={transcription.checkAvailability} onInstall={transcription.installLanguage}
-            onTranscribe={async () => { if (recording && !isRecording && !isSourceAudioPlaying) await transcription.transcribe(recording.blob); }}
+            onTranscribe={handleTranscribe}
           />
           {content && ('error' in content ? <p role="alert">{content.error}</p> : (
-            <RsContentResult comparison={content.comparison} score={content.score}
-              chunkAnalysis={content.chunkAnalysis} chunkError={content.chunkError} />
+            <>
+              <RsContentResult comparison={content.comparison} score={content.score}
+                chunkAnalysis={content.chunkAnalysis} chunkError={content.chunkError} />
+              <div className="rs-attempt-save" aria-busy={isSavingAttempt}>
+                <button type="button" onClick={() => void saveAttempt()}
+                  disabled={isSavingAttempt || !!savedAttemptId || transcription.result?.processedLocally !== true}>
+                  {isSavingAttempt ? 'Saving…' : savedAttemptId ? 'Attempt saved' : 'Save attempt'}
+                </button>
+                {savedAttemptId && <p role="status">Attempt saved locally.</p>}
+                {saveAttemptError && <p role="alert">{saveAttemptError}</p>}
+              </div>
+            </>
           ))}
-          <button type="button" onClick={handleNextQuestion} disabled={isRecording}>Next question</button>
+          <button type="button" onClick={handleNextQuestion} disabled={isRecording || isSavingAttempt}>Next question</button>
         </>
       )}
     </section>

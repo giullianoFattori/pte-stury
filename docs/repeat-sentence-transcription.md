@@ -95,3 +95,36 @@ substitution, insertion, reordered words, re-record, Next, empty recognition,
 invalid chunk metadata and missing expected text behaved as specified. No new
 Attempt, ErrorRecord or ReviewItem was persisted; no unexpected console errors
 were observed. This is validation of content logic/UI, not real STT quality.
+
+## Step 06: Attempt persistence — 2026-10-03
+
+Saving is explicit after successful local transcription and valid content
+comparison. `buildRepeatSentenceAttempt()` maps detected text, recording duration,
+normalized content recall, sequence metrics, error counts/rates, chunk totals and
+recognizer confidence/local-processing metadata into a detached Attempt snapshot.
+No Blob, object URL, microphone stream or recorded chunks enter the repository.
+The repository uses `add`, never upsert. RS saves no ErrorRecords or ReviewItems
+in this step. WFD's existing atomic outcome pipeline is unchanged.
+
+V1 fallback: unavailable chunk analysis has zero chunk metrics and `totalChunks = 0`,
+which must not be interpreted as failure to retain known chunks. Absent STT
+confidence uses the requested v1 zero fallback, not a pronunciation measurement.
+
+A synchronous save lock and saved-ID guard prevent duplicate saves. Re-record,
+Next, microphone disable and replacement transcription reset saved/error state;
+controls that can change the result are blocked while a save is pending. A failed
+save retains recording, transcript and feedback for retry. Navigation does not
+cancel an already-requested historical write, but late completion does not update
+an unmounted page.
+
+Validation: build, lint and all 89 Node tests passed. In the Firefox test profile,
+native recording plus a controlled recognizer saved real IndexedDB Attempts for
+perfect content, omission, insertion and unavailable chunk analysis. Recording
+duration reflected a roughly five-second recording. Rapid double-click and a
+delayed repository call produced one Attempt; an injected save failure preserved
+the result and retry succeeded. Multiple Attempts had independent IDs/timestamps.
+Re-record/Next cleared saved state, and history survived refresh. RS added no
+errors/reviews. A perfect WFD submission also persisted successfully.
+
+These database checks used controlled transcripts, not a working native speech
+recognizer. The real-recognition quality gate above remains pending.
