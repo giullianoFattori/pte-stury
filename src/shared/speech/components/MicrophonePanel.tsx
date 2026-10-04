@@ -1,15 +1,18 @@
+import { useId } from 'react';
+
 import type { MicrophoneStatus } from '../hooks/useMicrophonePermission';
 
-type RsMicrophonePanelProps = {
+type MicrophonePanelProps = {
   status: MicrophoneStatus;
   errorMessage: string | null;
   onRequest: () => Promise<void>;
   onDisable: () => void;
   disableBlocked?: boolean;
+  description?: string;
 };
 
 const statusMessages: Record<MicrophoneStatus, string> = {
-  idle: 'Microphone required. Repeat Sentence needs microphone access.',
+  idle: 'Microphone required.',
   requesting: 'Waiting for microphone permission…',
   ready: 'Microphone ready.',
   denied: 'Microphone access denied.',
@@ -17,16 +20,22 @@ const statusMessages: Record<MicrophoneStatus, string> = {
   error: 'Microphone access failed.',
 };
 
-export function RsMicrophonePanel({ status, errorMessage, onRequest, onDisable, disableBlocked = false }: RsMicrophonePanelProps) {
+export function MicrophonePanel({
+  status, errorMessage, onRequest, onDisable, disableBlocked = false,
+  description = 'Microphone access is required for this speaking exercise.',
+}: MicrophonePanelProps) {
+  const titleId = useId();
   return (
-    <section className="rs-microphone-panel" aria-labelledby="rs-microphone-title">
-      <h3 id="rs-microphone-title">Microphone</h3>
-      <p className="rs-microphone-status" role="status">{statusMessages[status]}</p>
+    <section className="speech-microphone-panel" aria-labelledby={titleId}>
+      <h3 id={titleId}>Microphone</h3>
+      <p className="speech-microphone-status" role="status">
+        {statusMessages[status]}{status === 'idle' && ` ${description}`}
+      </p>
       {errorMessage && <p role="alert">{errorMessage}</p>}
       {status === 'denied' && (
         <p>Allow microphone access in your browser site settings, then try again.</p>
       )}
-      <div className="rs-actions">
+      <div className="speech-actions">
         {status === 'ready' ? (
           <button type="button" onClick={onDisable} disabled={disableBlocked}>Disable microphone</button>
         ) : (

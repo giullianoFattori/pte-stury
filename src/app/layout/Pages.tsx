@@ -35,11 +35,11 @@ export function HomePage() {
 
   return (
     <section className="welcome-card">
-      <p className="eyebrow">Listening + Writing practice</p>
+      <p className="eyebrow">PTE practice</p>
       <h2>Welcome to PTE Study</h2>
       <p>
-        Open Study to practise Write From Dictation. Your answers, word-level feedback, and
-        scheduled reviews are saved locally on this browser.
+        Open Study to practise core PTE tasks. Your attempts, feedback, and reviews
+        are stored locally in this browser.
       </p>
       <p className="storage-status" role="status">
         {storageStatus}
@@ -53,13 +53,16 @@ export function StudyPage() {
     <section className="practice-card">
       <p className="eyebrow">Practice</p>
       <h2>Study</h2>
-      <p>Choose a listening task to practise writing or speaking.</p>
+      <p>Choose a PTE task to practise.</p>
       <div className="study-exercise-links">
         <Link className="study-exercise-link" to="/study/write-from-dictation">
           Write From Dictation
         </Link>
         <Link className="study-exercise-link" to="/study/repeat-sentence">
           Repeat Sentence
+        </Link>
+        <Link className="study-exercise-link" to="/study/read-aloud">
+          Read Aloud
         </Link>
       </div>
     </section>

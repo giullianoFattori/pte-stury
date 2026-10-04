@@ -4,6 +4,7 @@ import App from './App';
 import { HomePage, PlaceholderPage, StudyPage } from './layout/Pages';
 import { WriteFromDictationPage } from '../features/write-from-dictation/WriteFromDictationPage';
 import { RepeatSentencePage } from '../features/repeat-sentence/RepeatSentencePage';
+import { ReadAloudPage } from '../features/read-aloud/ReadAloudPage';
 
 export const router = createBrowserRouter([
   {
@@ -24,6 +25,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/repeat-sentence',
         element: <RepeatSentencePage />,
+      },
+      {
+        path: '/study/read-aloud',
+        element: <ReadAloudPage />,
       },
       {
         path: '/review',

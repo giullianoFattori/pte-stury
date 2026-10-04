@@ -1,22 +1,25 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useId, useRef } from 'react';
 
 import type { AudioRecording, RecordingStatus } from '../hooks/useAudioRecorder';
 
-type RsRecorderPanelProps = {
+type RecorderPanelProps = {
   status: RecordingStatus;
   recording: AudioRecording | null;
   errorMessage: string | null;
   canStart: boolean;
   isFinalizing: boolean;
   disabled?: boolean;
+  instruction?: string;
   onStart: () => void;
   onStop: () => void;
   onReset: () => void;
 };
 
-export function RsRecorderPanel({
+export function RecorderPanel({
   status, recording, errorMessage, canStart, isFinalizing, disabled = false, onStart, onStop, onReset,
-}: RsRecorderPanelProps) {
+  instruction = 'Enable the microphone before recording.',
+}: RecorderPanelProps) {
+  const titleId = useId();
   const playbackRef = useRef<HTMLAudioElement | null>(null);
   useEffect(() => {
     const audio = playbackRef.current;
@@ -24,8 +27,8 @@ export function RsRecorderPanel({
   }, [recording?.url]);
 
   return (
-    <section className="rs-recorder-panel" aria-labelledby="rs-recorder-title">
-      <h3 id="rs-recorder-title">Your response</h3>
+    <section className="speech-recorder-panel" aria-labelledby={titleId}>
+      <h3 id={titleId}>Your response</h3>
       {errorMessage && <p role="alert">{errorMessage}</p>}
       {status === 'recording' ? (
         <>
@@ -43,7 +46,7 @@ export function RsRecorderPanel({
         </>
       ) : (
         <>
-          <p>Enable the microphone and finish listening to the sentence before recording.</p>
+          <p>{instruction}</p>
           <button type="button" onClick={onStart} disabled={!canStart}>
             {status === 'error' ? 'Try recording again' : 'Start recording'}
           </button>

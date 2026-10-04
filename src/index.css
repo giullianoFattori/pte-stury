@@ -276,6 +276,7 @@ textarea:focus-visible {
 }
 
 .study-exercise-links,
+.speech-actions,
 .rs-actions {
   display: flex;
   flex-wrap: wrap;
@@ -286,8 +287,8 @@ textarea:focus-visible {
   margin: 2rem 0;
 }
 
-.rs-microphone-panel,
-.rs-recorder-panel,
+.speech-microphone-panel,
+.speech-recorder-panel,
 .rs-transcription-panel {
   background: #f4f7fb;
   border: 1px solid #d9e1ec;
@@ -296,19 +297,40 @@ textarea:focus-visible {
   padding: 1.25rem;
 }
 
-.rs-microphone-panel h3,
-.rs-recorder-panel h3,
+.speech-microphone-panel h3,
+.speech-recorder-panel h3,
 .rs-transcription-panel h3 {
   margin-top: 0;
 }
 
-.rs-microphone-status {
+.speech-microphone-status {
   font-weight: 600;
 }
 
-.rs-recorder-panel audio {
+.speech-recorder-panel audio {
   display: block;
   width: 100%;
+}
+
+.ra-passage,
+.ra-training-passage {
+  line-height: 1.8;
+  white-space: pre-wrap;
+}
+
+.ra-training-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.ra-stress-word {
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.ra-preview-status {
+  font-weight: 600;
 }
 
 .rs-content-result {

@@ -47,7 +47,7 @@ export function useAudioRecorder() {
         try {
           recorder.stop();
         } catch (unknownError) {
-          console.error('Unable to stop RS recorder:', unknownError);
+          console.error('Unable to stop audio recorder:', unknownError);
         }
       }
     }
@@ -66,7 +66,7 @@ export function useAudioRecorder() {
   }, []);
 
   function failRecording(message: string, unknownError?: unknown) {
-    if (unknownError) console.error('Unable to record RS response:', unknownError);
+    if (unknownError) console.error('Unable to record audio response:', unknownError);
     releaseRecorder();
     revokeRecordingUrl();
     if (isMountedRef.current) {

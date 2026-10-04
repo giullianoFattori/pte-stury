@@ -8,13 +8,13 @@ import {
 } from '../../domain/scoring/repeat-sentence';
 import { tokenizeText } from '../../domain/scoring/shared/tokenizeText';
 
-import { RsMicrophonePanel } from './components/RsMicrophonePanel';
-import { RsRecorderPanel } from './components/RsRecorderPanel';
+import { MicrophonePanel } from '../../shared/speech/components/MicrophonePanel';
+import { RecorderPanel } from '../../shared/speech/components/RecorderPanel';
 import { RsSourceAudioPlayer } from './components/RsSourceAudioPlayer';
 import { RsTranscriptionPanel } from './components/RsTranscriptionPanel';
 import { RsContentResult } from './components/RsContentResult';
-import { useMicrophonePermission } from './hooks/useMicrophonePermission';
-import { useAudioRecorder } from './hooks/useAudioRecorder';
+import { useMicrophonePermission } from '../../shared/speech/hooks/useMicrophonePermission';
+import { useAudioRecorder } from '../../shared/speech/hooks/useAudioRecorder';
 import { useRepeatSentence } from './hooks/useRepeatSentence';
 import { useSpeechTranscription } from './hooks/useSpeechTranscription';
 import { buildRepeatSentenceAttempt } from './services/buildRepeatSentenceAttempt';
@@ -165,11 +165,13 @@ export function RepeatSentencePage() {
               onPlayingChange={setIsSourceAudioPlaying}
             />
           ) : <p>Audio unavailable for this question.</p>}
-          <RsMicrophonePanel
+          <MicrophonePanel
+            description="Repeat Sentence needs microphone access."
             status={microphoneStatus} errorMessage={microphoneError}
             onRequest={requestMicrophone} onDisable={handleDisableMicrophone} disableBlocked={isRecording || isSavingAttempt}
           />
-          <RsRecorderPanel
+          <RecorderPanel
+            instruction="Enable the microphone and finish listening to the sentence before recording."
             status={recordingStatus} recording={recording} errorMessage={recordingError}
             canStart={canStart} isFinalizing={isFinalizing} disabled={isSavingAttempt}
             onStart={handleStartRecording} onStop={stopRecording} onReset={handleResetRecording}
