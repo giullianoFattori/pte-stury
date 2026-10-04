@@ -34,6 +34,8 @@ export type StudyItem = {
   transcript?: string;
   audioUrl?: string;
   chunks?: string[];
+  phraseGroups?: string[];
+  stressWords?: string[];
   createdAt: string;
 };
 

@@ -4,13 +4,14 @@ import test from 'node:test';
 
 import { repeatSentenceQuestions } from '../src/data/question-bank/repeat-sentence.ts';
 import { writeFromDictationQuestions } from '../src/data/question-bank/write-from-dictation.ts';
+import { readAloudQuestions } from '../src/data/question-bank/read-aloud.ts';
 
 const normalizeContent = value => value.toLowerCase().replace(/[.,!?;:"]/g, '').replace(/\s+/g, ' ').trim();
 
-test('starter banks have eleven unique IDs and RS has two items per difficulty', () => {
-  const all = [...writeFromDictationQuestions, ...repeatSentenceQuestions];
-  assert.equal(all.length, 11);
-  assert.equal(new Set(all.map(item => item.id)).size, 11);
+test('starter banks have seventeen unique IDs and RS has two items per difficulty', () => {
+  const all = [...writeFromDictationQuestions, ...repeatSentenceQuestions, ...readAloudQuestions];
+  assert.equal(all.length, 17);
+  assert.equal(new Set(all.map(item => item.id)).size, 17);
   assert.deepEqual(repeatSentenceQuestions.map(item => item.id), [
     'rs-001', 'rs-002', 'rs-003', 'rs-004', 'rs-005', 'rs-006',
   ]);
