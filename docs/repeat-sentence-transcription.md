@@ -22,7 +22,8 @@ results so they cannot appear under another recording or question.
 These experimental APIs have limited support. A browser must implement the
 `start(audioTrack)` overload; the adapter reports audio-track failures rather
 than retrying against another source. STT confidence is recognizer metadata, not
-pronunciation or fluency evidence. No comparison, scoring or persistence is added.
+pronunciation or fluency evidence. The adapter itself performs no comparison,
+scoring or persistence; those belong to the domain and feature layers.
 
 References: [local processing](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/processLocally),
 [availability](https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition/available_static),
@@ -61,7 +62,8 @@ Step 04's real-recognition quality gate is **not complete**. On the target brows
    substitution and quiet recording. Record spoken versus detected text below.
 3. Re-record and move to the next question during transcription. Confirm stale
    text disappears and microphone/playback resources behave normally.
-4. Assess whether recognition is good enough before implementing content scoring.
+4. Assess whether recognition is good enough for learner use. Deterministic content
+   scoring is already implemented, but depends on the quality of detected text.
    If the target remains unsupported, choose a different local adapter as a
    separate decision; do not silently relax the privacy contract.
 
@@ -128,3 +130,64 @@ errors/reviews. A perfect WFD submission also persisted successfully.
 
 These database checks used controlled transcripts, not a working native speech
 recognizer. The real-recognition quality gate above remains pending.
+
+## Step 08: final integration validation — 2026-10-04
+
+Status: deterministic flow and persistence validated; real speech quality and
+physical-microphone listening checks remain pending. Activity 03 is not yet fully
+closed. This validation does not reproduce Pearson's proprietary speaking engine.
+
+Environment: Microsoft Edge 154.0.0.0 on Linux, headless isolated development
+profile, Vite at localhost. The profile contains disposable test history only.
+Native `SpeechRecognition`, `processLocally`, `available`, `install` and audio
+`captureStream()` exist, but the unmodified adapter returned **unavailable** for
+the local `en-AU` dictation pack. No pack installation was triggered and no remote
+recognition fallback was used. Real detected-text accuracy could not be measured.
+
+Browser integration therefore injected controlled adapter transcripts and
+permission errors. An oscillator supplied a native MediaStream; recording used
+native MediaRecorder, real nonempty Blobs, native audio decoding/playback and
+real Dexie/IndexedDB transactions. These tests establish software behavior, not
+recognition accuracy, physical microphone permission or subjective audibility.
+
+| Validation | Evidence / result |
+| --- | --- |
+| Six questions | Cycled 1 → 2 → 3 → 4 → 5 → 6 → 1; matching local MP3, play/replay, no autoplay, no early transcript/chunk display |
+| Permission states | Injected NotAllowedError displayed denied; NotFoundError displayed unavailable; native synthetic stream became ready |
+| Recording | Nonempty Blob, positive duration, native playback time advanced, recorder became inactive after Stop |
+| Overlap | Source playing disables Start; recording disables source playback and Next; replay during retry remains guarded |
+| Reset/navigation | Record again revoked the previous URL; retry/Next cleared recording, transcript, feedback and save state; microphone stayed ready |
+| Content/chunks | Node coverage passes for normalization, exact content, omission, insertion, substitution, reordered words and all six chunk definitions |
+| No speech | Injected no-speech produced a controlled error with no score or Save; adapter tests cover empty final text and cleanup |
+| Outcomes | Perfect +1/0/0; omission +1/1/1; two omissions plus one substitution +1/3/1 (Attempt/Error/Review deltas) |
+| Atomic rollback | Browser-only wrapper threw inside review bulkAdd after writes; all three tables stayed empty; restored immediately, retry saved successfully |
+| Duplicate protection | Rapid double-click during a delayed save and repeated Save after success created one outcome; controls stayed blocked during save; synchronous locks remain unchanged |
+| Acceptance sequence | Perfect A, omission B, perfect retry B produced +3 Attempts/+1 Error/+1 Review; B's review remained |
+| Relationships/schedule | All RS errors/reviews linked to existing attempts/items; severity 1, listening+speaking, sentence review without sourceErrorId; initial delay exactly 24 hours |
+| History/privacy | Distinct attempt IDs, bounded content metrics, processedLocally true, only allowed Attempt fields; history survived reload; no Blob/URL/stream/chunks persisted |
+| Resource cleanup | Leaving during native recording stopped all microphone tracks and recorders; object URL revocation checked on reset; adapter tests cover captured-track/recognizer/audio release |
+| WFD regression | Perfect and omission submissions added two Attempts, one Error and one linked Review in IndexedDB |
+| Network | Observed app requests were same-origin GETs; no remote requests or audio/transcript/metric uploads |
+| Architecture | Scoring imports no React, Dexie or browser APIs; STT uses SpeechToTextAdapter; React saves through studyOutcomeRepository |
+
+One integration bug was reproduced and fixed: clicking Retry while source audio
+was playing reset the parent's playing flag even though the audio kept playing.
+Retry now preserves that flag until the actual audio pauses/ends. Start remains
+disabled during playback. Regression steps: save an outcome, replay the source,
+click Retry during playback, verify Start stays disabled, then pause/end playback
+and verify Start becomes available with the same question and microphone.
+
+`npm run build`, `npm run lint`, `npm test` and `git diff --check` passed.
+No database schema/version change, forced failure, injected adapter or browser
+test hook was added to application source. Browser validation scripts stayed
+outside the repository and were removed after use.
+
+### Remaining closure checks
+
+On a browser/device whose native local `en-AU` adapter reports available (or
+downloadable followed by an explicit Install action), complete the real-engine
+table above with a physical microphone. Listen to source and learner playback,
+test silence, confirm actual microphone permission/indicator cleanup, and verify
+recognition of exact, omitted and substituted speech. Until those checks pass,
+full Activity 03 completion and real speech quality remain unverified. The app
+continues to report unsupported/unavailable states without uploading recordings.

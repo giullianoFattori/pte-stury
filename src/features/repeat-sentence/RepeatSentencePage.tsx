@@ -132,7 +132,6 @@ export function RepeatSentencePage() {
   function handleRetrySentence() {
     if (isRecording || isSavingAttemptRef.current) return;
     handleResetRecording();
-    setIsSourceAudioPlaying(false);
   }
 
   function handleDisableMicrophone() {

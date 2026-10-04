@@ -30,6 +30,7 @@ for (const [label, text, categories] of [
   ['insertion', 'Students really must arrive before nine tomorrow.', ['insertion']],
   ['substitution', 'Teachers must arrive before nine tomorrow.', ['substitution']],
   ['mixed', 'Teachers really must arrive nine tomorrow.', ['substitution', 'insertion', 'omission']],
+  ['two omissions and one substitution', 'Students arrive after tomorrow.', ['omission', 'substitution', 'omission']],
 ]) {
   test(`${label}: observable errors and a single sentence review preserve relationships`, () => {
     const { attempt, comparison, errors, reviews } = outcome(text);
