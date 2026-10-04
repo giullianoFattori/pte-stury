@@ -1,6 +1,7 @@
 # Activity 04 — Step 01: Read Aloud Content Model and Question Bank
 
-Project: PTE Study App  
+Project: PTE Study App
+
 Date: 2026-10-04
 
 ## Content contract
