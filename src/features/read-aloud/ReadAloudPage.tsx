@@ -1,9 +1,15 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+
+import { compareReadAloud, calculateReadAloudMetrics } from '../../domain/scoring/read-aloud';
+import { tokenizeText } from '../../domain/scoring/shared/tokenizeText';
 
 import { MicrophonePanel } from '../../shared/speech/components/MicrophonePanel';
 import { RecorderPanel } from '../../shared/speech/components/RecorderPanel';
+import { TranscriptionPanel } from '../../shared/speech/components/TranscriptionPanel';
 import { useAudioRecorder } from '../../shared/speech/hooks/useAudioRecorder';
 import { useMicrophonePermission } from '../../shared/speech/hooks/useMicrophonePermission';
+import { useSpeechTranscription } from '../../shared/speech/hooks/useSpeechTranscription';
+import { RaContentResult } from './components/RaContentResult';
 import { RaPassage } from './components/RaPassage';
 import { RaTrainingView } from './components/RaTrainingView';
 import { useReadAloud } from './hooks/useReadAloud';
@@ -17,19 +23,43 @@ export function ReadAloudPage() {
     status: recordingStatus, recording, errorMessage: recordingError, isFinalizing,
     startRecording, stopRecording, resetRecording,
   } = useAudioRecorder();
+  const transcription = useSpeechTranscription({ language: 'en-AU' });
   const [isPreviewComplete, setIsPreviewComplete] = useState(false);
   const [showPhraseHelp, setShowPhraseHelp] = useState(false);
   const [showStressHelp, setShowStressHelp] = useState(false);
   const isRecording = recordingStatus === 'recording';
   const canStart = isPreviewComplete && microphoneStatus === 'ready' && !isRecording;
 
+  const content = useMemo(() => {
+    if (transcription.status !== 'success' || !transcription.result || !currentQuestion) return null;
+    const expected = currentQuestion.transcript ?? currentQuestion.answer ?? '';
+    const actual = transcription.result.text;
+    if (!tokenizeText(expected).length) return { error: 'This passage has no usable expected text.' };
+    if (!tokenizeText(actual).length) return { error: 'No usable detected speech is available.' };
+    const comparison = compareReadAloud(expected, actual);
+    return { comparison, metrics: calculateReadAloudMetrics(comparison) };
+  }, [currentQuestion, transcription.status, transcription.result]);
+
+  async function handleTranscribe() {
+    if (!recording || recordingStatus !== 'recorded') return;
+    await transcription.transcribe(recording.blob);
+  }
+
+  function handleResetRecording() {
+    transcription.resetTranscription();
+    resetRecording();
+  }
+
   function handleStartRecording() {
-    if (canStart && streamRef.current) startRecording(streamRef.current);
+    if (canStart && streamRef.current) {
+      transcription.resetTranscription();
+      startRecording(streamRef.current);
+    }
   }
 
   function handleNextQuestion() {
     if (isRecording) return;
-    resetRecording();
+    handleResetRecording();
     setIsPreviewComplete(false);
     setShowPhraseHelp(false);
     setShowStressHelp(false);
@@ -38,7 +68,7 @@ export function ReadAloudPage() {
 
   function handleDisableMicrophone() {
     if (isRecording) return;
-    resetRecording();
+    handleResetRecording();
     stopMicrophone();
   }
 
@@ -78,8 +108,16 @@ export function ReadAloudPage() {
                   status={recordingStatus} recording={recording} errorMessage={recordingError}
                   canStart={canStart} isFinalizing={isFinalizing}
                   instruction="Preview the passage, then read it aloud when you are ready."
-                  onStart={handleStartRecording} onStop={stopRecording} onReset={resetRecording}
+                  onStart={handleStartRecording} onStop={stopRecording} onReset={handleResetRecording}
                 />
+                <TranscriptionPanel
+                  status={transcription.status} result={transcription.result} errorMessage={transcription.errorMessage}
+                  hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording}
+                  onCheck={transcription.checkAvailability} onInstall={transcription.installLanguage}
+                  onTranscribe={handleTranscribe}
+                />
+                {content && ('error' in content ? <p role="alert">{content.error}</p>
+                  : <RaContentResult comparison={content.comparison} metrics={content.metrics} />)}
                 <button type="button" onClick={handleNextQuestion} disabled={isRecording}>Next passage</button>
               </>
             )}

@@ -11,12 +11,12 @@ import { tokenizeText } from '../../domain/scoring/shared/tokenizeText';
 import { MicrophonePanel } from '../../shared/speech/components/MicrophonePanel';
 import { RecorderPanel } from '../../shared/speech/components/RecorderPanel';
 import { RsSourceAudioPlayer } from './components/RsSourceAudioPlayer';
-import { RsTranscriptionPanel } from './components/RsTranscriptionPanel';
+import { TranscriptionPanel } from '../../shared/speech/components/TranscriptionPanel';
 import { RsContentResult } from './components/RsContentResult';
 import { useMicrophonePermission } from '../../shared/speech/hooks/useMicrophonePermission';
 import { useAudioRecorder } from '../../shared/speech/hooks/useAudioRecorder';
 import { useRepeatSentence } from './hooks/useRepeatSentence';
-import { useSpeechTranscription } from './hooks/useSpeechTranscription';
+import { useSpeechTranscription } from '../../shared/speech/hooks/useSpeechTranscription';
 import { buildRepeatSentenceAttempt } from './services/buildRepeatSentenceAttempt';
 import { buildRepeatSentenceErrorRecords } from './services/buildRepeatSentenceErrorRecords';
 import { buildRepeatSentenceReviewItems } from './services/buildRepeatSentenceReviewItems';
@@ -176,7 +176,7 @@ export function RepeatSentencePage() {
             canStart={canStart} isFinalizing={isFinalizing} disabled={isSavingAttempt}
             onStart={handleStartRecording} onStop={stopRecording} onReset={handleResetRecording}
           />
-          <RsTranscriptionPanel
+          <TranscriptionPanel
             status={transcription.status} result={transcription.result} errorMessage={transcription.errorMessage}
             hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording || isSourceAudioPlaying || isSavingAttempt}
             onCheck={transcription.checkAvailability} onInstall={transcription.installLanguage}

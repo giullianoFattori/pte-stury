@@ -276,8 +276,7 @@ textarea:focus-visible {
 }
 
 .study-exercise-links,
-.speech-actions,
-.rs-actions {
+.speech-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
@@ -289,7 +288,7 @@ textarea:focus-visible {
 
 .speech-microphone-panel,
 .speech-recorder-panel,
-.rs-transcription-panel {
+.speech-transcription-panel {
   background: #f4f7fb;
   border: 1px solid #d9e1ec;
   border-radius: 0.75rem;
@@ -299,7 +298,7 @@ textarea:focus-visible {
 
 .speech-microphone-panel h3,
 .speech-recorder-panel h3,
-.rs-transcription-panel h3 {
+.speech-transcription-panel h3 {
   margin-top: 0;
 }
 
@@ -333,13 +332,15 @@ textarea:focus-visible {
   font-weight: 600;
 }
 
-.rs-content-result {
+.rs-content-result,
+.ra-content-result {
   margin: 2rem 0;
   border-top: 1px solid #d9e1ec;
   padding-top: 1rem;
 }
 
-.rs-content-recall {
+.rs-content-recall,
+.ra-text-accuracy {
   font-size: 1.5rem;
   font-weight: 700;
 }

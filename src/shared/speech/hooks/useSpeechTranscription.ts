@@ -4,14 +4,21 @@ import type { SpeechToTextAdapter, SpeechToTextAvailability } from '../../../dom
 import { SpeechToTextError, type TranscriptionResult } from '../../../domain/speech/types';
 import { BrowserOnDeviceSpeechToTextAdapter } from '../../../infrastructure/speech/BrowserOnDeviceSpeechToTextAdapter';
 
-export const RS_TRANSCRIPTION_LANGUAGE = 'en-AU';
+export const DEFAULT_TRANSCRIPTION_LANGUAGE = 'en-AU';
 export type TranscriptionStatus =
   | 'idle' | 'checking' | 'needs-install' | 'installing' | 'ready'
   | 'transcribing' | 'success' | 'unavailable' | 'error';
 
 const browserAdapter: SpeechToTextAdapter = new BrowserOnDeviceSpeechToTextAdapter();
 
-export function useSpeechTranscription(adapter: SpeechToTextAdapter = browserAdapter) {
+type UseSpeechTranscriptionOptions = {
+  language?: string;
+  adapter?: SpeechToTextAdapter;
+};
+
+export function useSpeechTranscription({
+  language = DEFAULT_TRANSCRIPTION_LANGUAGE, adapter = browserAdapter,
+}: UseSpeechTranscriptionOptions = {}) {
   const [status, setStatus] = useState<TranscriptionStatus>('idle');
   const [result, setResult] = useState<TranscriptionResult | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -57,7 +64,7 @@ export function useSpeechTranscription(adapter: SpeechToTextAdapter = browserAda
       setStatus('checking');
       setErrorMessage(null);
       try {
-        const value = await adapter.checkAvailability({ language: RS_TRANSCRIPTION_LANGUAGE });
+        const value = await adapter.checkAvailability({ language });
         if (mountedRef.current && generation === generationRef.current) showAvailability(value);
       } catch (error) {
         if (mountedRef.current && generation === generationRef.current) showError(error);
@@ -72,10 +79,10 @@ export function useSpeechTranscription(adapter: SpeechToTextAdapter = browserAda
       setStatus('installing');
       setErrorMessage(null);
       try {
-        if (!adapter.installLanguage || !await adapter.installLanguage({ language: RS_TRANSCRIPTION_LANGUAGE })) {
+        if (!adapter.installLanguage || !await adapter.installLanguage({ language })) {
           throw new SpeechToTextError('recognition-failed', 'The local speech pack could not be installed. Please check availability and try again.');
         }
-        const value = await adapter.checkAvailability({ language: RS_TRANSCRIPTION_LANGUAGE });
+        const value = await adapter.checkAvailability({ language });
         if (mountedRef.current && generation === generationRef.current) showAvailability(value);
       } catch (error) {
         if (mountedRef.current && generation === generationRef.current) showError(error);
@@ -92,7 +99,7 @@ export function useSpeechTranscription(adapter: SpeechToTextAdapter = browserAda
       setResult(null);
       setErrorMessage(null);
       try {
-        const value = await adapter.transcribe(audio, { language: RS_TRANSCRIPTION_LANGUAGE, signal: controller.signal });
+        const value = await adapter.transcribe(audio, { language, signal: controller.signal });
         if (mountedRef.current && generation === generationRef.current) {
           setResult(value);
           setStatus('success');
