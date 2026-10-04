@@ -10,9 +10,11 @@ import { useAudioRecorder } from '../../shared/speech/hooks/useAudioRecorder';
 import { useMicrophonePermission } from '../../shared/speech/hooks/useMicrophonePermission';
 import { useSpeechTranscription } from '../../shared/speech/hooks/useSpeechTranscription';
 import { RaContentResult } from './components/RaContentResult';
+import { RaAudioAnalysisDebug } from './components/RaAudioAnalysisDebug';
 import { RaPassage } from './components/RaPassage';
 import { RaTrainingView } from './components/RaTrainingView';
 import { useReadAloud } from './hooks/useReadAloud';
+import { useReadAloudAudioAnalysis } from './hooks/useReadAloudAudioAnalysis';
 
 export function ReadAloudPage() {
   const { questions, currentQuestion, currentIndex, isLoading, error, nextQuestion } = useReadAloud();
@@ -24,6 +26,7 @@ export function ReadAloudPage() {
     startRecording, stopRecording, resetRecording,
   } = useAudioRecorder();
   const transcription = useSpeechTranscription({ language: 'en-AU' });
+  const audioAnalysis = useReadAloudAudioAnalysis();
   const [isPreviewComplete, setIsPreviewComplete] = useState(false);
   const [showPhraseHelp, setShowPhraseHelp] = useState(false);
   const [showStressHelp, setShowStressHelp] = useState(false);
@@ -47,12 +50,14 @@ export function ReadAloudPage() {
 
   function handleResetRecording() {
     transcription.resetTranscription();
+    audioAnalysis.resetAnalysis();
     resetRecording();
   }
 
   function handleStartRecording() {
     if (canStart && streamRef.current) {
       transcription.resetTranscription();
+      audioAnalysis.resetAnalysis();
       startRecording(streamRef.current);
     }
   }
@@ -118,6 +123,18 @@ export function ReadAloudPage() {
                 />
                 {content && ('error' in content ? <p role="alert">{content.error}</p>
                   : <RaContentResult comparison={content.comparison} metrics={content.metrics} />)}
+                <section aria-labelledby="ra-audio-title" aria-busy={audioAnalysis.status === 'analysing'}>
+                  <h3 id="ra-audio-title">Audio analysis</h3>
+                  <button type="button"
+                    disabled={recordingStatus !== 'recorded' || !recording || audioAnalysis.status === 'analysing'}
+                    onClick={() => {
+                      if (recording && recordingStatus === 'recorded') void audioAnalysis.analyse(recording.blob);
+                    }}>
+                    {audioAnalysis.status === 'analysing' ? 'Analysing…' : 'Analyse audio locally'}
+                  </button>
+                  {audioAnalysis.errorMessage && <p role="alert">{audioAnalysis.errorMessage}</p>}
+                  {audioAnalysis.result && <RaAudioAnalysisDebug result={audioAnalysis.result} />}
+                </section>
                 <button type="button" onClick={handleNextQuestion} disabled={isRecording}>Next passage</button>
               </>
             )}
