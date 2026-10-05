@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
-import { attemptsRepository } from '../../data/repositories/attemptsRepository';
+import { studyOutcomeRepository } from '../../data/repositories/studyOutcomeRepository';
 import { buildReadAloudAttempt } from './services/buildReadAloudAttempt';
+import { buildReadAloudErrorRecords } from './services/buildReadAloudErrorRecords';
+import { buildReadAloudReviewItems } from './services/buildReadAloudReviewItems';
 
 import {
   compareReadAloud, calculateReadAloudMetrics, calculateReadAloudFluency,
@@ -95,7 +97,9 @@ export function ReadAloudPage() {
         longPauseThresholdMs: DEFAULT_READ_ALOUD_FLUENCY_CONFIG.longPauseMs,
         durationMs: recording.durationMs,
       });
-      await attemptsRepository.create(attempt);
+      const errors = buildReadAloudErrorRecords(attempt, content.comparison);
+      const reviews = buildReadAloudReviewItems({ question: currentQuestion, attempt, errors });
+      await studyOutcomeRepository.createStudyOutcome({ attempt, errors, reviews });
       if (isMountedRef.current) {
         savedAttemptIdRef.current = attempt.id;
         setSavedAttemptId(attempt.id);
@@ -134,6 +138,11 @@ export function ReadAloudPage() {
       audioAnalysis.resetAnalysis();
       startRecording(streamRef.current);
     }
+  }
+
+  function handleRetryPassage() {
+    if (isRecording || isSavingAttemptRef.current) return;
+    handleResetRecording();
   }
 
   function handleNextQuestion() {
@@ -215,7 +224,14 @@ export function ReadAloudPage() {
                     {isSavingAttempt ? 'Saving…' : savedAttemptId ? 'Attempt saved' : 'Save attempt'}
                   </button>
                   <p>Save the detected transcript, content coverage and timing metrics locally.</p>
-                  {savedAttemptId && <p role="status">Attempt saved locally.</p>}
+                  {savedAttemptId && (
+                    <>
+                      <p role="status">Attempt saved locally.</p>
+                      <button type="button" onClick={handleRetryPassage} disabled={isRecording || isSavingAttempt}>
+                        Retry same passage
+                      </button>
+                    </>
+                  )}
                   {saveAttemptError && <p role="alert">{saveAttemptError}</p>}
                 </div>
                 <button type="button" onClick={handleNextQuestion} disabled={isRecording || isSavingAttempt}>Next passage</button>

@@ -59,5 +59,6 @@ Physical-microphone recording/STT quality and real-voice timing calibration rema
 pending as described in the Step 05 timing notes. Temporary failure/delay/STT hooks
 were confined to the external browser test script, never production code.
 
-Step 07 can add observable content ErrorRecords, review strategy and retry UI,
-then replace Attempt-only persistence with the atomic study outcome repository.
+Step 07 now adds observable content ErrorRecords, passage review and retry UI,
+replacing Attempt-only persistence with the atomic study outcome repository.
+See [Read Aloud remediation](read-aloud-remediation.md) for the current flow.
