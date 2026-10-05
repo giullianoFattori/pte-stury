@@ -333,7 +333,8 @@ textarea:focus-visible {
 }
 
 .rs-content-result,
-.ra-content-result {
+.ra-content-result,
+.ra-fluency-result {
   margin: 2rem 0;
   border-top: 1px solid #d9e1ec;
   padding-top: 1rem;

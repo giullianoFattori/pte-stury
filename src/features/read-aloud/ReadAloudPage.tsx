@@ -1,6 +1,9 @@
 import { useMemo, useState } from 'react';
 
-import { compareReadAloud, calculateReadAloudMetrics } from '../../domain/scoring/read-aloud';
+import {
+  compareReadAloud, calculateReadAloudMetrics, calculateReadAloudFluency,
+  buildReadAloudFluencyFeedback, DEFAULT_READ_ALOUD_FLUENCY_CONFIG,
+} from '../../domain/scoring/read-aloud';
 import { tokenizeText } from '../../domain/scoring/shared/tokenizeText';
 
 import { MicrophonePanel } from '../../shared/speech/components/MicrophonePanel';
@@ -11,6 +14,7 @@ import { useMicrophonePermission } from '../../shared/speech/hooks/useMicrophone
 import { useSpeechTranscription } from '../../shared/speech/hooks/useSpeechTranscription';
 import { RaContentResult } from './components/RaContentResult';
 import { RaAudioAnalysisDebug } from './components/RaAudioAnalysisDebug';
+import { RaFluencyResult } from './components/RaFluencyResult';
 import { RaPassage } from './components/RaPassage';
 import { RaTrainingView } from './components/RaTrainingView';
 import { useReadAloud } from './hooks/useReadAloud';
@@ -42,6 +46,14 @@ export function ReadAloudPage() {
     const comparison = compareReadAloud(expected, actual);
     return { comparison, metrics: calculateReadAloudMetrics(comparison) };
   }, [currentQuestion, transcription.status, transcription.result]);
+
+  const fluency = useMemo(() => {
+    if (!audioAnalysis.result) return null;
+    const tokens = transcription.status === 'success' && transcription.result
+      ? tokenizeText(transcription.result.text) : [];
+    const metrics = calculateReadAloudFluency(audioAnalysis.result, tokens.length ? tokens.length : undefined);
+    return { metrics, feedback: buildReadAloudFluencyFeedback(metrics) };
+  }, [audioAnalysis.result, transcription.status, transcription.result]);
 
   async function handleTranscribe() {
     if (!recording || recordingStatus !== 'recorded') return;
@@ -133,8 +145,10 @@ export function ReadAloudPage() {
                     {audioAnalysis.status === 'analysing' ? 'Analysing…' : 'Analyse audio locally'}
                   </button>
                   {audioAnalysis.errorMessage && <p role="alert">{audioAnalysis.errorMessage}</p>}
-                  {audioAnalysis.result && <RaAudioAnalysisDebug result={audioAnalysis.result} />}
                 </section>
+                {fluency && <RaFluencyResult metrics={fluency.metrics} feedback={fluency.feedback}
+                  longPauseMs={DEFAULT_READ_ALOUD_FLUENCY_CONFIG.longPauseMs} />}
+                {audioAnalysis.result && <RaAudioAnalysisDebug result={audioAnalysis.result} />}
                 <button type="button" onClick={handleNextQuestion} disabled={isRecording}>Next passage</button>
               </>
             )}
