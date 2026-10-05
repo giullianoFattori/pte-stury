@@ -1,4 +1,7 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+
+import { attemptsRepository } from '../../data/repositories/attemptsRepository';
+import { buildReadAloudAttempt } from './services/buildReadAloudAttempt';
 
 import {
   compareReadAloud, calculateReadAloudMetrics, calculateReadAloudFluency,
@@ -34,8 +37,18 @@ export function ReadAloudPage() {
   const [isPreviewComplete, setIsPreviewComplete] = useState(false);
   const [showPhraseHelp, setShowPhraseHelp] = useState(false);
   const [showStressHelp, setShowStressHelp] = useState(false);
+  const [isSavingAttempt, setIsSavingAttempt] = useState(false);
+  const [saveAttemptError, setSaveAttemptError] = useState<string | null>(null);
+  const [savedAttemptId, setSavedAttemptId] = useState<string | null>(null);
+  const isSavingAttemptRef = useRef(false);
+  const savedAttemptIdRef = useRef<string | null>(null);
+  const isMountedRef = useRef(false);
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => { isMountedRef.current = false; };
+  }, []);
   const isRecording = recordingStatus === 'recording';
-  const canStart = isPreviewComplete && microphoneStatus === 'ready' && !isRecording;
+  const canStart = isPreviewComplete && microphoneStatus === 'ready' && !isRecording && !isSavingAttempt;
 
   const content = useMemo(() => {
     if (transcription.status !== 'success' || !transcription.result || !currentQuestion) return null;
@@ -51,23 +64,72 @@ export function ReadAloudPage() {
     if (!audioAnalysis.result) return null;
     const tokens = transcription.status === 'success' && transcription.result
       ? tokenizeText(transcription.result.text) : [];
-    const metrics = calculateReadAloudFluency(audioAnalysis.result, tokens.length ? tokens.length : undefined);
+    const metrics = calculateReadAloudFluency(
+      audioAnalysis.result, tokens.length ? tokens.length : undefined, DEFAULT_READ_ALOUD_FLUENCY_CONFIG,
+    );
     return { metrics, feedback: buildReadAloudFluencyFeedback(metrics) };
   }, [audioAnalysis.result, transcription.status, transcription.result]);
 
+  const canSave = recordingStatus === 'recorded' && !!recording
+    && transcription.status === 'success' && transcription.result?.processedLocally === true
+    && !!content && !('error' in content) && audioAnalysis.status === 'success'
+    && !!audioAnalysis.result && !!fluency;
+
+  function resetSaveState() {
+    savedAttemptIdRef.current = null;
+    setSavedAttemptId(null);
+    setSaveAttemptError(null);
+  }
+
+  async function saveAttempt() {
+    if (!isMountedRef.current || isSavingAttemptRef.current || savedAttemptIdRef.current || !canSave
+      || !currentQuestion || !recording || !transcription.result || !content || 'error' in content || !fluency) return;
+    isSavingAttemptRef.current = true;
+    setIsSavingAttempt(true);
+    setSaveAttemptError(null);
+    try {
+      const attempt = buildReadAloudAttempt({
+        question: currentQuestion, transcription: transcription.result,
+        comparison: content.comparison, contentMetrics: content.metrics,
+        fluencyMetrics: fluency.metrics,
+        longPauseThresholdMs: DEFAULT_READ_ALOUD_FLUENCY_CONFIG.longPauseMs,
+        durationMs: recording.durationMs,
+      });
+      await attemptsRepository.create(attempt);
+      if (isMountedRef.current) {
+        savedAttemptIdRef.current = attempt.id;
+        setSavedAttemptId(attempt.id);
+      }
+    } catch (error) {
+      console.error('Failed to save Read Aloud attempt:', error);
+      if (isMountedRef.current) setSaveAttemptError('Your Read Aloud attempt could not be saved. Please try again.');
+    } finally {
+      isSavingAttemptRef.current = false;
+      if (isMountedRef.current) setIsSavingAttempt(false);
+    }
+  }
+
+  async function handleAnalyse() {
+    if (isSavingAttemptRef.current || !recording || recordingStatus !== 'recorded') return;
+    await audioAnalysis.analyse(recording.blob);
+  }
+
   async function handleTranscribe() {
-    if (!recording || recordingStatus !== 'recorded') return;
+    if (isSavingAttemptRef.current || !recording || recordingStatus !== 'recorded') return;
     await transcription.transcribe(recording.blob);
   }
 
   function handleResetRecording() {
+    if (isSavingAttemptRef.current) return;
+    resetSaveState();
     transcription.resetTranscription();
     audioAnalysis.resetAnalysis();
     resetRecording();
   }
 
   function handleStartRecording() {
-    if (canStart && streamRef.current) {
+    if (!isSavingAttemptRef.current && canStart && streamRef.current) {
+      resetSaveState();
       transcription.resetTranscription();
       audioAnalysis.resetAnalysis();
       startRecording(streamRef.current);
@@ -75,7 +137,7 @@ export function ReadAloudPage() {
   }
 
   function handleNextQuestion() {
-    if (isRecording) return;
+    if (isRecording || isSavingAttemptRef.current) return;
     handleResetRecording();
     setIsPreviewComplete(false);
     setShowPhraseHelp(false);
@@ -84,7 +146,7 @@ export function ReadAloudPage() {
   }
 
   function handleDisableMicrophone() {
-    if (isRecording) return;
+    if (isRecording || isSavingAttemptRef.current) return;
     handleResetRecording();
     stopMicrophone();
   }
@@ -119,17 +181,17 @@ export function ReadAloudPage() {
                 )}
                 <MicrophonePanel
                   status={microphoneStatus} errorMessage={microphoneError}
-                  onRequest={requestMicrophone} onDisable={handleDisableMicrophone} disableBlocked={isRecording}
+                  onRequest={requestMicrophone} onDisable={handleDisableMicrophone} disableBlocked={isRecording || isSavingAttempt}
                 />
                 <RecorderPanel
                   status={recordingStatus} recording={recording} errorMessage={recordingError}
-                  canStart={canStart} isFinalizing={isFinalizing}
+                  canStart={canStart} isFinalizing={isFinalizing} disabled={isSavingAttempt}
                   instruction="Preview the passage, then read it aloud when you are ready."
                   onStart={handleStartRecording} onStop={stopRecording} onReset={handleResetRecording}
                 />
                 <TranscriptionPanel
                   status={transcription.status} result={transcription.result} errorMessage={transcription.errorMessage}
-                  hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording}
+                  hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording || isSavingAttempt}
                   onCheck={transcription.checkAvailability} onInstall={transcription.installLanguage}
                   onTranscribe={handleTranscribe}
                 />
@@ -138,10 +200,8 @@ export function ReadAloudPage() {
                 <section aria-labelledby="ra-audio-title" aria-busy={audioAnalysis.status === 'analysing'}>
                   <h3 id="ra-audio-title">Audio analysis</h3>
                   <button type="button"
-                    disabled={recordingStatus !== 'recorded' || !recording || audioAnalysis.status === 'analysing'}
-                    onClick={() => {
-                      if (recording && recordingStatus === 'recorded') void audioAnalysis.analyse(recording.blob);
-                    }}>
+                    disabled={recordingStatus !== 'recorded' || !recording || audioAnalysis.status === 'analysing' || isSavingAttempt}
+                    onClick={() => void handleAnalyse()}>
                     {audioAnalysis.status === 'analysing' ? 'Analysing…' : 'Analyse audio locally'}
                   </button>
                   {audioAnalysis.errorMessage && <p role="alert">{audioAnalysis.errorMessage}</p>}
@@ -149,7 +209,16 @@ export function ReadAloudPage() {
                 {fluency && <RaFluencyResult metrics={fluency.metrics} feedback={fluency.feedback}
                   longPauseMs={DEFAULT_READ_ALOUD_FLUENCY_CONFIG.longPauseMs} />}
                 {audioAnalysis.result && <RaAudioAnalysisDebug result={audioAnalysis.result} />}
-                <button type="button" onClick={handleNextQuestion} disabled={isRecording}>Next passage</button>
+                <div className="ra-attempt-save" aria-busy={isSavingAttempt}>
+                  <button type="button" onClick={() => void saveAttempt()}
+                    disabled={!canSave || isSavingAttempt || !!savedAttemptId}>
+                    {isSavingAttempt ? 'Saving…' : savedAttemptId ? 'Attempt saved' : 'Save attempt'}
+                  </button>
+                  <p>Save the detected transcript, content coverage and timing metrics locally.</p>
+                  {savedAttemptId && <p role="status">Attempt saved locally.</p>}
+                  {saveAttemptError && <p role="alert">{saveAttemptError}</p>}
+                </div>
+                <button type="button" onClick={handleNextQuestion} disabled={isRecording || isSavingAttempt}>Next passage</button>
               </>
             )}
     </section>

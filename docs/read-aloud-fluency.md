@@ -92,7 +92,8 @@ audibility and feedback calibration across real voices remain pending.
 
 ## Next step
 
-Step 06 adds `buildReadAloudAttempt` and persists a stable measured snapshot.
+Step 06 now adds `buildReadAloudAttempt` and persists a stable measured snapshot
+(see [Attempt persistence](read-aloud-attempts.md)).
 Optional word-count/rate fields must remain absent when unavailable; raw audio
 stays transient. Segmentation and feedback heuristics retain their experimental
 status, independently of transcript content accuracy.
