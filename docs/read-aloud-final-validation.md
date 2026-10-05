@@ -6,7 +6,15 @@ STT validation.** The learner subsequently confirmed real recording works in
 both RA and RS, but local availability fails in Chrome and Edge. Actual recorded-
 audio local transcription remains unvalidated; Activity 04 is not marked COMPLETE.
 See [Local transcription support](local-transcription-support.md) for the language
-selection and capability diagnostics added after this gate.
+selection, capability diagnostics and default-model correction added after this gate.
+
+Follow-up native probes on Pop!_OS 24.04 with Chrome 154.0.8037.97 found en-AU
+and en-US downloadable with default options, while the previously forced
+`quality: 'dictation'` reported unavailable. Availability/installation now match
+the default quality already used by recognition. Both RA and RS show Install
+local speech pack in the actual Chrome UI. No real model installation or
+transcription was attempted; Edge 154 remains unavailable in the tested profile.
+The original environment table below records the earlier Edge validation.
 
 ## Actual browser environment
 

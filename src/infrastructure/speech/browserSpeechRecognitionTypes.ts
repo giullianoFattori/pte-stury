@@ -1,7 +1,6 @@
 export type LocalSpeechOptions = {
   langs: string[];
   processLocally: true;
-  quality: 'dictation';
 };
 
 export type BrowserRecognitionResult = {

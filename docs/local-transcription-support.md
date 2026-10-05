@@ -1,64 +1,61 @@
 # Local transcription: browser and language support
 
-## Learner report
+## Learner report and reproduced cause
 
-The learner confirmed real audio recording works in both Read Aloud and Repeat
-Sentence. Checking local transcription availability in Chrome and Edge instead
-shows unavailable. Their OS/browser versions have been requested and remain
-unknown; recording success alone does not establish on-device STT capability.
+The learner confirmed real recording works in Read Aloud and Repeat Sentence,
+while local transcription availability fails in Chrome and Edge on Pop!_OS.
+Recording success alone does not establish on-device STT capability.
 
-## Identified integration issue
+On 2026-10-05, native probes on Pop!_OS 24.04 LTS reproduced a mismatch in the
+adapter: availability and installation required `quality: 'dictation'`, but the
+recognition instance used the browser's default quality. The
+[Web Speech API specification](https://webaudio.github.io/web-speech-api/)
+defines the default as `command`; availability is specific to the requested
+quality. Different quality levels can require different local models.
 
-The app initially exposed only en-AU and displayed the same general message for
-unsupported API, unavailable language pack and download-in-progress conditions.
-The Web Speech API group's [on-device explainer](https://github.com/WebAudio/web-speech-api/blob/main/explainers/on-device-speech-recognition.md)
-lists en-US among Chrome's supported local languages, without en-AU. The
-[Microsoft Edge documentation](https://learn.microsoft.com/en-us/microsoft-edge/web-platform/speech-recognition-api)
-also lists en-US rather than en-AU, and currently documents the local feature in
-Edge Dev/Canary with its on-device Speech Recognition flag enabled. Browser,
-platform, policy and model-quality availability still require a runtime check.
+| Browser, native Linux/headless profile | Language | Default / command | Dictation / conversation |
+| --- | --- | --- | --- |
+| Chrome 154.0.8037.97 | en-AU | downloadable | unavailable |
+| Chrome 154.0.8037.97 | en-US | downloadable | unavailable |
+| Edge 154.0.4258.53 | en-AU | unavailable | unavailable |
+| Edge 154.0.4258.53 | en-US | unavailable | unavailable |
 
-RA and RS now expose an explicit recognition-language choice: English (Australia)
-or English (United States). The original default remains en-AU; no language is
-silently switched. The selected language goes to availability, installation and
-recognition. This chooses a speech model, not passage wording, scoring rules or an
-accent target.
+The earlier hypothesis that en-AU alone caused the failure was insufficient:
+Chrome actually reports both languages downloadable with default options.
 
-Switching language clears the previous transcript and cached pack availability
-and returns to idle; an explicit Check is required. Busy checks/installs/
-transcription and page-disabled operations block selection. Waveform analysis is
-independent and remains available; transcript-dependent WPM disappears until a
-new usable transcript. Existing saved-ID guards prevent another save of the same
-recording merely because its recognition language changed.
+## Correction
 
-The panel now distinguishes:
+Availability and installation now use `{ langs: [language], processLocally: true }`,
+matching recognition's browser-default quality. No higher-quality model is required
+by a precheck that differs from the actual recognition configuration. Local
+processing remains mandatory; no remote fallback was introduced.
 
-- Unsupported: required local recorded-audio APIs are absent.
-- Unavailable: the selected local pack/capability is unavailable.
-- Downloading: pack download is in progress; Check can be repeated.
-- Downloadable: show Install; no automatic installation.
-- Available: local transcription is ready.
+RA and RS expose an explicit choice of English (Australia) or English (United
+States), retaining en-AU as the default. This chooses recognition language, not
+passage wording, scoring rules or an accent target. Switching clears the previous
+transcript and cached availability. Busy operations block language selection;
+waveform timing remains independent. Saved-ID guards still prevent duplicate saves
+of the same recording after changing language.
 
-`processedLocally = true`, exact-recorded-Blob processing and no cloud fallback
-remain enforced. No new dependency, schema or scoring change is introduced.
+The shared panel distinguishes unsupported, unavailable, downloading, downloadable
+and available. Installation always requires the learner's explicit action.
 
-## Verification and limitations
+## Verification and remaining limitations
 
-In the actual Edge 154.0.4258.53 Linux/headless test profile, the native adapter
-reported unavailable for BOTH en-AU and en-US. No actual model download was
-attempted. Therefore the selector repairs the app's language restriction and
-clarifies diagnosis; it does not make an unsupported browser capable of STT.
+After the correction, the actual Chrome UI in BOTH RA and RS showed
+`Install local speech pack` after checking en-AU, without injected adapter results.
+No real pack was installed in this validation and no real speech was transcribed.
+Edge remained unavailable in the tested profile; this change cannot supply a
+capability the browser does not expose. The
+[Microsoft documentation](https://learn.microsoft.com/en-us/microsoft-edge/web-platform/speech-recognition-api)
+describes Edge's platform/channel/feature requirements.
 
-Controlled browser checks passed for selected-language availability/install,
-explicit installation only, unsupported/unavailable/downloading presentation,
-busy selection guard, transcript invalidation, RA save/duplicate protection and
-RS using the same shared controls. Native MediaRecorder and Web Audio remained
-functional. Existing tests, build and lint passed. Temporary instrumentation was
-outside source and removed after verification.
+A regression test covers a downloadable default model with unavailable dictation
+quality, and explicit installation options match availability options. All 160
+tests, build and lint passed. No dependency, schema or scoring change was needed.
 
-After updating the app, select English (United States) and Check. If downloadable,
-use Install explicitly. If unavailable/unsupported persists, capture OS and exact
-Chrome/Edge version and check the browser's documented local capability/feature
-configuration. Do not substitute a remote recognizer to make the check succeed.
-Full real recorded-audio local transcription remains unvalidated and Activity 04
-closure remains pending.
+For the next live test, reload the app in Chrome, Check local availability, then
+click Install local speech pack if offered. After installation, record and
+Transcribe locally. Availability alone does not establish recognition accuracy or
+complete the real recorded-audio quality gate. Activity 04 closure remains pending
+that test and the remaining live timing checks.

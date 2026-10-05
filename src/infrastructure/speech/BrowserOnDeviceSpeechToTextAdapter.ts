@@ -15,7 +15,7 @@ function getConstructor(): BrowserSpeechRecognitionConstructor | undefined {
 }
 
 function localOptions(language: string) {
-  return { langs: [language], processLocally: true as const, quality: 'dictation' as const };
+  return { langs: [language], processLocally: true as const };
 }
 
 function browserError(code: string): SpeechToTextError {

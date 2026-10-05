@@ -4,8 +4,9 @@
 
 The feature depends on `SpeechToTextAdapter`. The browser adapter requires local
 recognition, local availability/install APIs and audio-element `captureStream()`.
-Every availability/install request uses `processLocally: true`, `quality: 'dictation'`
-and `en-AU`. Recognition always uses `processLocally = true` and receives the audio
+Every availability/install request uses `processLocally: true` and browser-default quality
+and the selected language (`en-AU` by default). Recognition always uses
+`processLocally = true` and receives the audio
 track captured from the exact recorded Blob. It never retries without a track,
 switches to live-microphone recognition, or falls back to a remote engine.
 
@@ -56,7 +57,7 @@ error translation, empty speech, cancellation and resource cleanup. Run `npm tes
 Step 04's real-recognition quality gate is **not complete**. On the target browser:
 
 1. Open `/study/repeat-sentence`, check local availability and explicitly install
-   the en-AU dictation pack if downloadable. If unsupported/unavailable, stop here;
+   the selected local language pack if downloadable. If unsupported/unavailable, stop here;
    no audio is sent to a cloud service.
 2. Use a physical microphone and transcribe an exact sentence, then an omission,
    substitution and quiet recording. Record spoken versus detected text below.

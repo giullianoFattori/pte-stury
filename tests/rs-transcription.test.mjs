@@ -65,16 +65,28 @@ for (const availability of ['available', 'downloadable', 'downloading', 'unavail
   test(`availability ${availability} stays local and never auto-installs`, async t => {
     const { adapter, calls } = environment(t, { availability });
     assert.equal(await adapter.checkAvailability({ language: 'en-AU' }), availability);
-    assert.deepEqual(calls.packs[0], { langs: ['en-AU'], processLocally: true, quality: 'dictation' });
+    assert.deepEqual(calls.packs[0], { langs: ['en-AU'], processLocally: true });
     assert.equal(calls.installs + calls.starts.length, 0);
   });
 }
 
-test('explicit install requests only the local dictation language pack', async t => {
+test('default local model remains downloadable when dictation model is unavailable', async t => {
+  const { adapter, calls, Recognition } = environment(t);
+  Recognition.available = async options => {
+    calls.packs.push(options);
+    return options.quality === 'dictation' ? 'unavailable' : 'downloadable';
+  };
+  for (const language of ['en-AU', 'en-US']) {
+    assert.equal(await adapter.checkAvailability({ language }), 'downloadable');
+  }
+  assert.equal(calls.installs + calls.starts.length, 0);
+});
+
+test('explicit install requests the default local language pack', async t => {
   const { adapter, calls } = environment(t, { availability: 'downloadable' });
   assert.equal(await adapter.installLanguage({ language: 'en-AU' }), true);
   assert.equal(calls.installs, 1);
-  assert.equal(calls.packs[0].processLocally, true);
+  assert.deepEqual(calls.packs[0], { langs: ['en-AU'], processLocally: true });
 });
 
 test('transcribes the exact Blob track, returns metadata and releases all resources', async t => {
