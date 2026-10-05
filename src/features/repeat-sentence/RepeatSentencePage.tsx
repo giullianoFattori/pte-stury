@@ -177,6 +177,7 @@ export function RepeatSentencePage() {
             onStart={handleStartRecording} onStop={stopRecording} onReset={handleResetRecording}
           />
           <TranscriptionPanel
+            language={transcription.language} onLanguageChange={transcription.changeLanguage}
             status={transcription.status} result={transcription.result} errorMessage={transcription.errorMessage}
             hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording || isSourceAudioPlaying || isSavingAttempt}
             onCheck={transcription.checkAvailability} onInstall={transcription.installLanguage}

@@ -2,8 +2,11 @@
 
 Validated on 2026-10-05 against Step 07, plus a small content-result wording fix.
 **Automated integration gate: passed. Activity 04 closure: pending live voice/local
-STT validation.** The learner confirmed that this live validation has not yet been
-performed. Activity 04 is therefore not marked COMPLETE.
+STT validation.** The learner subsequently confirmed real recording works in
+both RA and RS, but local availability fails in Chrome and Edge. Actual recorded-
+audio local transcription remains unvalidated; Activity 04 is not marked COMPLETE.
+See [Local transcription support](local-transcription-support.md) for the language
+selection and capability diagnostics added after this gate.
 
 ## Actual browser environment
 

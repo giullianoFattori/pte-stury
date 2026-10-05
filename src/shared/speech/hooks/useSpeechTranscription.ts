@@ -7,7 +7,7 @@ import { BrowserOnDeviceSpeechToTextAdapter } from '../../../infrastructure/spee
 export const DEFAULT_TRANSCRIPTION_LANGUAGE = 'en-AU';
 export type TranscriptionStatus =
   | 'idle' | 'checking' | 'needs-install' | 'installing' | 'ready'
-  | 'transcribing' | 'success' | 'unavailable' | 'error';
+  | 'transcribing' | 'success' | 'unavailable' | 'unsupported' | 'downloading' | 'error';
 
 const browserAdapter: SpeechToTextAdapter = new BrowserOnDeviceSpeechToTextAdapter();
 
@@ -17,8 +17,9 @@ type UseSpeechTranscriptionOptions = {
 };
 
 export function useSpeechTranscription({
-  language = DEFAULT_TRANSCRIPTION_LANGUAGE, adapter = browserAdapter,
+  language: initialLanguage = DEFAULT_TRANSCRIPTION_LANGUAGE, adapter = browserAdapter,
 }: UseSpeechTranscriptionOptions = {}) {
+  const [language, setLanguage] = useState(initialLanguage);
   const [status, setStatus] = useState<TranscriptionStatus>('idle');
   const [result, setResult] = useState<TranscriptionResult | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -40,14 +41,15 @@ export function useSpeechTranscription({
 
   function showAvailability(value: SpeechToTextAvailability) {
     availabilityRef.current = value;
-    setStatus(value === 'available' ? 'ready' : value === 'downloadable' ? 'needs-install' : value === 'downloading' ? 'checking' : 'unavailable');
-    setErrorMessage(value === 'downloading' ? 'The local speech pack is downloading. Check again when it finishes.' : null);
+    setStatus(value === 'available' ? 'ready' : value === 'downloadable' ? 'needs-install' : value);
+    setErrorMessage(null);
   }
 
   function showError(error: unknown) {
     const typed = error instanceof SpeechToTextError ? error : null;
     setErrorMessage(typed?.message ?? 'The recording could not be transcribed locally. Please try again.');
-    setStatus(typed && ['unsupported', 'local-unavailable', 'language-unavailable', 'audio-track-unavailable'].includes(typed.code) ? 'unavailable' : 'error');
+    setStatus(typed?.code === 'unsupported' ? 'unsupported'
+      : typed && ['local-unavailable', 'language-unavailable', 'audio-track-unavailable'].includes(typed.code) ? 'unavailable' : 'error');
   }
 
   async function run(operation: () => Promise<void>) {
@@ -124,5 +126,16 @@ export function useSpeechTranscription({
     else setStatus('idle');
   }
 
-  return { status, result, errorMessage, checkAvailability, installLanguage, transcribe, resetTranscription };
+  function changeLanguage(nextLanguage: string) {
+    if (busyRef.current || nextLanguage === language) return;
+    generationRef.current += 1;
+    abortRef.current?.abort();
+    availabilityRef.current = null;
+    setLanguage(nextLanguage);
+    setResult(null);
+    setErrorMessage(null);
+    setStatus('idle');
+  }
+
+  return { language, changeLanguage, status, result, errorMessage, checkAvailability, installLanguage, transcribe, resetTranscription };
 }
