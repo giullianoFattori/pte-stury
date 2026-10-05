@@ -11,7 +11,7 @@ export function RaContentResult({ comparison, metrics }: Props) {
       <h3 id="ra-content-title">Content result</h3>
       <p className="ra-text-accuracy" role="status">Text accuracy: {metrics.textCoveragePercent}%</p>
       <p>Internal content metric, not an official PTE score. Recognizer errors can affect this feedback.</p>
-      <p>Pronunciation and fluency are not measured yet.</p>
+      <p>This result measures text reproduction only. Pronunciation is not measured.</p>
       {metrics.exactTextMatch && <p>Exact text match.</p>}
       <dl className="wfd-result-summary">
         <div><dt>Correct words</dt><dd>{metrics.correctWords} / {metrics.expectedWords}</dd></div>

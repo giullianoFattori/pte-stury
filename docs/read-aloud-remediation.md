@@ -69,4 +69,6 @@ recognizer accuracy. Real microphone/STT quality and timing calibration remain
 pending for final integration validation. The temporary script, failure hooks and
 validation processes were removed/stopped after use.
 
-Step 08 will validate the complete Read Aloud flow and close Activity 04.
+Step 08 automated integration validation has passed. Live voice/local STT
+validation is still required before closing Activity 04; see
+[Final validation](read-aloud-final-validation.md).
