@@ -19,7 +19,7 @@ function rawGet(port, headers, method = 'GET', path = '/api/v1/health') {
   });
 }
 
-test('real runtime process returns health/version matching frontend contract without outbound networking', { timeout: 10000 }, async context => {
+test('runtime process with controlled engine returns health/version matching frontend contract without outbound networking', { timeout: 10000 }, async context => {
   const config = { ...await loadConfig(), port: await freePort(), model: 'small.en' };
   const runtime = await launchRuntime(config, context);
   await runtime.ready();
@@ -29,10 +29,10 @@ test('real runtime process returns health/version matching frontend contract wit
   assert.equal(healthResponse.headers.get('content-type'), 'application/json; charset=utf-8');
   assert.equal(healthResponse.headers.get('cache-control'), 'no-store');
   const health = parseSpeechRuntimeHealth(await healthResponse.json());
-  assert.equal(health.status, 'starting');
-  assert.deepEqual(health.model, { id: 'small.en', loaded: false });
+  assert.equal(health.status, 'ready');
+  assert.deepEqual(health.model, { id: 'small.en', loaded: true });
   assert.equal(health.processedLocally, true);
-  assert.equal(getSpeechRuntimeAvailability(health), 'starting');
+  assert.equal(getSpeechRuntimeAvailability(health), 'ready');
   const versionResponse = await fetch(`${url}/api/v1/version`);
   assert.equal(versionResponse.status, 200);
   assert.equal(versionResponse.headers.get('cache-control'), 'no-store');

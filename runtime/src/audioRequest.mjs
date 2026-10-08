@@ -1,9 +1,16 @@
+import { performance } from 'node:perf_hooks';
+import { buildTranscriptionResponse } from './transcriptionResponse.mjs';
+import { PREPROCESS_TIMEOUT_MS } from './media.mjs';
 import { randomUUID } from 'node:crypto';
 import { AudioRequestError } from './errors.mjs';
 import { receiveAudio, uploadBoundary } from './multipart.mjs';
 import { preprocessAudio } from './preprocess.mjs';
 
+// Includes the existing 10 s body deadline, preprocessing, inference and 5 s overhead.
+export const requestBudgetMs = config => 10000 + PREPROCESS_TIMEOUT_MS + config.inferenceTimeoutMs + 5000;
+
 export async function processAudioRequest(request, response, config, services) {
+  const started = performance.now();
   const boundary = uploadBoundary(request, config);
   const release = services.gate.acquire();
   const controller = new AbortController();
@@ -15,25 +22,30 @@ export async function processAudioRequest(request, response, config, services) {
   if (request.destroyed || response.destroyed) cancelled();
   const timer = setTimeout(() => {
     controller.abort(new AudioRequestError(504, 'INFERENCE_TIMEOUT', 'The audio request timed out.'));
-    request.destroy();
-  }, 60000);
+    if (!request.complete) request.destroy();
+  }, requestBudgetMs(config));
   // Abort interrupts a pending streaming read; preprocessing listens to the same signal.
   const stopReading = () => { if (!request.complete) request.destroy(); };
   controller.signal.addEventListener('abort', stopReading, { once: true });
-  let files, failure;
+  let files, failure, evidence, inference;
   try {
     controller.signal.throwIfAborted();
     files = await services.temp.create();
     const upload = await receiveAudio(request, files.inputPath, boundary, config, controller.signal);
     const audio = await preprocessAudio(files, config, controller.signal, services.preprocessOptions);
     controller.signal.throwIfAborted();
-    // Step 05.04 can consume this validated evidence while files still exist.
-    await services.onNormalized?.({ requestId: randomUUID(), ...upload, ...audio }, controller.signal);
+    evidence = { requestId: randomUUID(), ...upload, ...audio };
+    await services.onNormalized?.(evidence, controller.signal);
     controller.signal.throwIfAborted();
-    throw new AudioRequestError(503, 'RUNTIME_STARTING', 'Production transcription is not connected yet.');
-  } catch (error) { failure = error; } finally {
+    inference = await services.whisper.transcribeNormalizedAudio({ normalizedPath: audio.normalizedPath, modelId: config.model, signal: controller.signal });
+    controller.signal.throwIfAborted();
+  } catch (error) {
+    failure = error;
+    if (['MODEL_UNAVAILABLE', 'RUNTIME_UNAVAILABLE'].includes(error.code)) services.engineState.markError(error.code, error.message);
+  } finally {
     try { await files?.remove(); } catch {
       services.cleanupFailed = true;
+      services.engineState.markError('INTERNAL_ERROR', 'Runtime temporary storage cleanup failed.');
       failure = new AudioRequestError(500, 'INTERNAL_ERROR', 'Runtime temporary storage cleanup failed.');
     } finally {
       clearTimeout(timer);
@@ -44,5 +56,8 @@ export async function processAudioRequest(request, response, config, services) {
       release();
     }
   }
-  throw failure;
+  if (failure) throw failure;
+  controller.signal.throwIfAborted();
+  return buildTranscriptionResponse({ text: inference.text, modelId: config.model, audioMs: evidence.durationMs,
+    inferenceMs: inference.inferenceMs, totalMs: Math.round(performance.now() - started) });
 }

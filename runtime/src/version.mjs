@@ -1,6 +1,6 @@
 import { RuntimeStartupError } from './errors.mjs';
 
-// Engine target pinned to the verified baseline. No engine is loaded by this shell.
+// Engine baseline verified against local build metadata before readiness.
 export const RUNTIME_VERSION = '0.1.0';
 export const API_VERSION = 1;
 export const ENGINE = 'whisper.cpp';

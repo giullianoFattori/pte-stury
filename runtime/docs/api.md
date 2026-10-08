@@ -1,8 +1,8 @@
 # Local speech API v1
 
-This is the durable contract. Step 05.03 implements GET health/version and
-POST transcribe through safe preprocessing, using the Node runtime. Valid audio
-returns typed 503 RUNTIME_STARTING after cleanup; production inference is not wired.
+This is the durable contract. Step 05.04 implements GET health/version and
+POST transcribe through safe preprocessing and actual local whisper.cpp inference.
+Successful transcripts return 200 after cleanup; non-ready engines return typed 503.
 The frontend requires
 `apiVersion: 1`. Production preference is a single local origin serving the app at
 `/` and API at `/api/v1/...`. Native implementation choices do not change these
@@ -30,8 +30,10 @@ readiness. This route never triggers a model download or an inference.
 Statuses are `starting | ready | degraded | error`. `ready` requires a verified,
 loaded model and an implemented usable inference path; it cannot include an error.
 Non-ready health may include `error: { code, message }` to explain the condition.
-The 05.03 runtime deliberately remains `starting` with an unloaded configured model;
-no background model loading is implied. `degraded` is not permission to transcribe.
+The 05.04 runtime starts `starting`/unloaded, verifies native resources/model integrity
+and runs a private synthetic-WAV usability check before `ready`/loaded. Missing or
+invalid artifacts become `error`/unloaded with a safe error. No model downloads occur.
+`loaded` means verified usable, not persistently resident: CLI-per-request reloads weights. `degraded` is not permission to transcribe.
 Model ID is the configured identifier,
 even before loading; `loaded` is a boolean, not an availability promise by itself.
 An unreachable endpoint becomes client-side `unavailable`, not fabricated health.
@@ -80,22 +82,23 @@ limit, including chunked transfer. Boundary/header/field buffers are capped; unk
 missing and duplicate fields fail closed. Expect: 100-continue is explicitly
 unsupported (400); ordinary FormData/curl requests work. See [security](security.md).
 
-In 05.03, valid WAV or WebM passes probe/conversion/decoded-duration validation,
-then files are removed and HTTP 503 returns:
+In 05.04, compatible ready runtimes preprocess audio, run the owned CLI and build
+one validated response. Cleanup precedes response delivery. Empty file is 422
+AUDIO_EMPTY; unusable native text is 422 NO_SPEECH; decode failure is 422
+AUDIO_DECODE_FAILED; unsupported actual media is 415 AUDIO_UNSUPPORTED; byte/duration
+overflow is 413 AUDIO_TOO_LARGE; concurrency is 429 RUNTIME_BUSY. Native nonzero exit,
+invalid UTF-8/decorated output or stream overflow is 500 INFERENCE_FAILED. Native
+stderr never reaches this response. Model/engine unavailability is typed 503 while
+/version stays readable. No paths or scoring data are exposed.
 
-```json
-{"error":{"code":"RUNTIME_STARTING","message":"Production transcription is not connected yet."}}
-```
+Whisper's own deadline is config.inferenceTimeoutMs (60 s initially). Preprocessing
+retains its separate 30 s deadline and also uses v1 INFERENCE_TIMEOUT/504. Total
+request budget includes body receipt, both stages and overhead, not the old 60 s
+placeholder. Client disconnect requires no response. Ordinary malformed uploads,
+empty speech, busy, inference crash or timeout do not change ready health; changed
+trusted artifacts or genuine cleanup failure do block readiness.
 
-No normalized paths, transcripts, score or native output are returned. Empty audio
-is 422 AUDIO_EMPTY; invalid decode is 422 AUDIO_DECODE_FAILED, unsupported actual
-media is 415 AUDIO_UNSUPPORTED, byte/duration overflow is 413 AUDIO_TOO_LARGE,
-concurrency is 429 RUNTIME_BUSY. A preprocessing deadline is 504 INFERENCE_TIMEOUT,
-reusing the v1 processing-timeout code; no Whisper inference has occurred. Client
-disconnect requires no response. Malformed uploads never make health ready/error.
-Real cleanup failure blocks ingestion and changes health to error.
-
-For future ready, compatible runtimes, successful HTTP 200:
+For ready, compatible runtimes, successful HTTP 200:
 
 ```json
 {
@@ -116,7 +119,11 @@ wall time (excluding preprocessing/model startup), and runtime request wall time
 (including validation, preprocessing, inference and normal cleanup). Round to
 nearest milliseconds; `totalMs >= inferenceMs`. Audio duration is independent of
 processing wall time. Total excludes browser upload before the runtime receives the
-request and browser playback. No confidence or word timestamps are invented.
+request and browser playback. No confidence or word timestamps are invented. CLI-per-request inference time includes
+model load and native processing; startup verification is outside request timing.
+The runtime preserves raw ASR punctuation/numeric representation and trims only
+outer whitespace; no answer-driven normalization or prompt is used. Transcripts
+are captured in bounded memory/stdout only, never written by CLI output flags.
 
 No speech/empty decoded text is a typed error, not an empty successful transcript.
 The strict parser rejects blank success text, non-local claims, unknown engines,

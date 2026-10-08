@@ -1,12 +1,14 @@
 import { createServer } from 'node:http';
 import { validateConfig } from './config.mjs';
-import { createRuntimeState, healthResponse } from './health.mjs';
+import { healthResponse } from './health.mjs';
 import { versionResponse } from './version.mjs';
 import { RuntimeStartupError, AudioRequestError, errorBody, sendJson, rejectSocket } from './errors.mjs';
 
 import { createTempStore } from './temp.mjs';
 import { createTranscriptionGate } from './transcriptionGate.mjs';
-import { processAudioRequest } from './audioRequest.mjs';
+import { processAudioRequest, requestBudgetMs } from './audioRequest.mjs';
+import { createEngineState } from './engineState.mjs';
+import { createWhisperService } from './whisper.mjs';
 
 function trustedRequest(request, config) {
   const expectedHost = `127.0.0.1:${config.port}`;
@@ -24,10 +26,10 @@ function trustedRequest(request, config) {
 
 export async function startRuntime(input, options = {}) {
   const config = validateConfig(input);
-  const state = createRuntimeState(config);
+  const engineState = createEngineState(config);
   const sockets = new Set();
   const pending = new Set();
-  const services = { gate: createTranscriptionGate(), controllers: new Set(), ...options };
+  const services = { gate: createTranscriptionGate(), controllers: new Set(), ...options, engineState };
   let stopping = false;
   let initialized;
   const initialization = new Promise(resolve => { initialized = resolve; });
@@ -50,7 +52,11 @@ export async function startRuntime(input, options = {}) {
         }
         await initialization;
         if (stopping || services.cleanupFailed || !services.temp) throw new AudioRequestError(503, 'RUNTIME_STARTING', 'Runtime audio ingestion is unavailable.');
-        await processAudioRequest(request, response, config, services);
+        const snapshot = engineState.snapshot();
+        if (snapshot.status !== 'ready') throw new AudioRequestError(503, snapshot.error?.code ?? 'RUNTIME_STARTING', snapshot.error?.message ?? 'The local runtime is starting.');
+        request.socket.setTimeout(requestBudgetMs(config) + 1000);
+        const result = await processAudioRequest(request, response, config, services);
+        if (!response.destroyed) sendJson(response, 200, result);
         return;
       }
       const route = request.url === '/api/v1/health' ? healthResponse : request.url === '/api/v1/version' ? versionResponse : null;
@@ -61,7 +67,7 @@ export async function startRuntime(input, options = {}) {
       if (request.headers['transfer-encoding'] !== undefined || (request.headers['content-length'] !== undefined && request.headers['content-length'] !== '0')) {
         sendJson(response, 400, errorBody('INVALID_REQUEST', 'Runtime metadata requests must not contain a body.')); return;
       }
-      sendJson(response, 200, route(services.cleanupFailed ? { ...state, status: 'error' } : state));
+      sendJson(response, 200, route(engineState.snapshot()));
     } catch (error) {
       request.pause();
       if (!response.destroyed && !response.headersSent) {
@@ -73,7 +79,7 @@ export async function startRuntime(input, options = {}) {
   // Node truncates parsed headers at maxHeadersCount. Preserve headers for our
   // rejection checks, with the independent 8 KiB parser limit and 32-field gate.
   server.maxHeadersCount = 0;
-  server.setTimeout(65000, socket => socket.destroy());
+  server.setTimeout(10000, socket => socket.destroy());
   server.on('connection', socket => { sockets.add(socket); socket.once('close', () => sockets.delete(socket)); });
   server.on('clientError', (_error, socket) => rejectSocket(socket));
   server.on('checkContinue', (_request, response) => sendJson(response, 400, errorBody('INVALID_REQUEST', 'Upload expectations are not supported; send the request without Expect.')));
@@ -95,10 +101,26 @@ export async function startRuntime(input, options = {}) {
     await new Promise(resolve => server.close(resolve));
     throw new RuntimeStartupError('TEMP_STORAGE_FAILED', 'Runtime temporary storage could not initialize.');
   }
+  const startupController = new AbortController();
+  services.controllers.add(startupController);
+  const startupTimer = setTimeout(() => startupController.abort(new AudioRequestError(503, 'MODEL_UNAVAILABLE', 'The local speech engine could not initialize in time.')), requestBudgetMs(config));
+  const engineInitialization = (async () => {
+    try {
+      const initialize = options.initializeEngine ?? createWhisperService;
+      services.whisper = await initialize({ modelId: config.model, temp: services.temp, signal: startupController.signal, timeoutMs: config.inferenceTimeoutMs });
+      startupController.signal.throwIfAborted();
+      if (typeof services.whisper?.transcribeNormalizedAudio !== 'function') throw new Error('Invalid engine service');
+      engineState.markReady();
+    } catch (error) {
+      const safe = error instanceof AudioRequestError ? error : new AudioRequestError(503, 'RUNTIME_UNAVAILABLE', 'The local speech engine could not initialize.');
+      if (!stopping) engineState.markError(safe.code, safe.message);
+    } finally { clearTimeout(startupTimer); services.controllers.delete(startupController); }
+  })();
   let closing;
   function close() {
     if (closing) return closing;
     stopping = true;
+    engineState.markStarting();
     for (const controller of services.controllers) controller.abort(new AudioRequestError(499, 'REQUEST_CANCELLED', 'The runtime is shutting down.'));
     const listenerClosed = new Promise((resolve, reject) => {
       const timer = setTimeout(() => { for (const socket of sockets) socket.destroy(); }, 2000);
@@ -106,8 +128,8 @@ export async function startRuntime(input, options = {}) {
       server.close(error => { clearTimeout(timer); if (error) reject(error); else resolve(); });
       server.closeIdleConnections();
     });
-    closing = Promise.all([listenerClosed, ...pending]).then(() => services.temp.close());
+    closing = Promise.all([listenerClosed, engineInitialization, ...pending]).then(() => services.temp.close());
     return closing;
   }
-  return { server, state, close };
+  return { server, get state() { return engineState.snapshot(); }, initialized: engineInitialization, close };
 }

@@ -6,5 +6,6 @@ export function createRuntimeState(config) {
 }
 
 export function healthResponse(state) {
-  return { status: state.status, ...metadata(state), model: { id: state.modelId, loaded: state.modelLoaded }, processedLocally: true };
+  return { status: state.status, ...metadata(state), model: { id: state.modelId, loaded: state.modelLoaded }, processedLocally: true,
+    ...(state.error ? { error: { ...state.error } } : {}) };
 }

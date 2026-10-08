@@ -3,7 +3,7 @@ import { loadConfig } from './config.mjs';
 import { startRuntime } from './server.mjs';
 import { RuntimeStartupError } from './errors.mjs';
 
-export async function main(args = process.argv.slice(2)) {
+export async function main(args = process.argv.slice(2), options = {}) {
   const log = (event, fields = {}) => console.log(JSON.stringify({ timestamp: new Date().toISOString(), event, ...fields }));
   try {
     if (args.length !== 0 && (args.length !== 2 || args[0] !== '--config')) {
@@ -12,9 +12,14 @@ export async function main(args = process.argv.slice(2)) {
     log('runtime starting');
     const config = await loadConfig(args[1]);
     log('config loaded');
-    const runtime = await startRuntime(config);
+    const runtime = await startRuntime(config, options);
     log('listener bound', { host: config.host, port: config.port, runtimeVersion: runtime.state.runtimeVersion,
       apiVersion: runtime.state.apiVersion, health: runtime.state.status });
+    void runtime.initialized.then(() => {
+      const state = runtime.state;
+      log('engine initialization complete', { health: state.status, model: state.modelId,
+        ...(state.error ? { code: state.error.code } : {}) });
+    });
     let stopping = false;
     const shutdown = async () => {
       if (stopping) return;

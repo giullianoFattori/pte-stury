@@ -16,6 +16,7 @@ export function validateConfig(value) {
   for (const key of ['maxUploadBytes', 'maxAudioSeconds', 'inferenceTimeoutMs']) {
     if (!Number.isSafeInteger(value[key]) || value[key] <= 0) fail('Runtime config limits must be positive safe integers.');
   }
+  if (value.inferenceTimeoutMs > 2147483647 - 46000) fail('Runtime inference timeout exceeds the supported timer budget.');
   if (value.maxConcurrentTranscriptions !== 1) fail('Runtime config requires one transcription slot.');
   return Object.freeze(Object.fromEntries(KEYS.map(key => [key, value[key]])));
 }

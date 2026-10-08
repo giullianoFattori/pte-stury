@@ -33,7 +33,8 @@ function multipart(parts = [part('audio', wav(), 'audio/wav'), part('language', 
 async function setup(context, changes = {}, options = {}) {
   const base = await mkdtemp(join(tmpdir(), 'pte-ingestion-test-'));
   const config = { ...defaults, port: await freePort(), ...changes };
-  const runtime = await startRuntime(config, { tempBase: base, ...options });
+  const runtime = await startRuntime(config, { tempBase: base, initializeEngine: async () => ({ transcribeNormalizedAudio: async () => ({ text: 'Controlled local audio.', inferenceMs: 0 }) }), ...options });
+  await runtime.initialized;
   const root = join(base, `pte-study-runtime-${process.getuid?.() ?? 'user'}`, `port-${config.port}`);
   context.after(async () => { await runtime.close(); await rm(base, { recursive: true, force: true }); });
   return { runtime, config, root, base, origin: `http://127.0.0.1:${config.port}` };
@@ -47,9 +48,10 @@ async function waitFor(check) {
   throw new Error('Timed out waiting for lifecycle condition');
 }
 async function assertClean(env) { await waitFor(async () => (await readdir(env.root)).filter(name => name.startsWith('request-')).length === 0); }
+const success = response => { assert.equal(response.status, 200); assert.equal(response.body.engine, 'whisper.cpp'); assert.equal(response.body.processedLocally, true); };
 const code = (response, status, name) => { assert.equal(response.status, status); assert.equal(response.body.error.code, name); assert.doesNotMatch(JSON.stringify(response.body), /\/tmp\/|input.bin|normalized.wav|ffmpeg|stderr|private.wav/); };
 
-test('WAV and controlled WebM/Opus normalize to verified private WAV, discard filenames, clean up, stay non-ready', async context => {
+test('WAV and controlled WebM/Opus normalize to verified private WAV, discard filenames, clean up before inference evidence', async context => {
   let observed = 0;
   const env = await setup(context, {}, { async onNormalized(audio) {
     observed++;
@@ -66,12 +68,12 @@ test('WAV and controlled WebM/Opus normalize to verified private WAV, discard fi
   await writeFile(input, wav());
   await runMedia('/usr/bin/ffmpeg', ['-nostdin', '-v', 'error', '-i', input, '-c:a', 'libopus', '-f', 'webm', webm], signal());
   for (const [data, mime] of [[wav(), 'audio/x-wav'], [await readFile(webm), 'audio/webm;codecs=opus']]) {
-    code(await post(env, multipart([part('audio', data, mime, '../../private.wav'), part('language', 'en')])), 503, 'RUNTIME_STARTING');
+    success(await post(env, multipart([part('audio', data, mime, '../../private.wav'), part('language', 'en')])));
     await assertClean(env);
   }
   assert.equal(observed, 2);
   const health = await (await fetch(`${env.origin}/api/v1/health`)).json();
-  assert.equal(health.status, 'starting'); assert.equal(health.model.loaded, false);
+  assert.equal(health.status, 'ready'); assert.equal(health.model.loaded, true);
   assert.equal(env.runtime.server.address().address, '127.0.0.1');
 });
 
@@ -92,7 +94,7 @@ test('multipart contract rejects duplicate/missing/unknown/nested/oversized head
   code(await post(env, multipart(), { 'Content-Type': `multipart/form-data; boundary=${'a'.repeat(71)}` }), 400, 'INVALID_REQUEST');
   for (const origin of ['', 'null', 'https://example.com']) code(await post(env, multipart(), { Origin: origin }), 400, 'INVALID_REQUEST');
   await assertClean(env);
-  code(await post(env), 503, 'RUNTIME_STARTING');
+  success(await post(env));
 });
 
 test('actual content rejects random bytes, remote playlists, malformed WAV and video disguised as audio', async context => {
@@ -121,7 +123,7 @@ test('Content-Length precheck and chunked streaming budget return 413 and releas
     request.end();
   });
   code(result, 413, 'AUDIO_TOO_LARGE'); await assertClean(env);
-  code(await post(env, multipart([part('audio', wav(0.01), 'audio/wav'), part('language', 'en')])), 503, 'RUNTIME_STARTING');
+  success(await post(env, multipart([part('audio', wav(0.01), 'audio/wav'), part('language', 'en')])));
 });
 
 test('180-second limit and durationless WebM reject full overlong recordings without accepting truncation', async context => {
@@ -149,7 +151,7 @@ test('busy gate rejects concurrent work; abort and shutdown clean partial upload
   await waitFor(async () => (await readdir(env.root)).some(name => name.startsWith('request-')));
   code(await post(env), 429, 'RUNTIME_BUSY');
   request.destroy(); await assertClean(env);
-  code(await post(env), 503, 'RUNTIME_STARTING');
+  success(await post(env));
   const shutdownRequest = partialUpload(env);
   await waitFor(async () => (await readdir(env.root)).some(name => name.startsWith('request-')));
   await env.runtime.close(); shutdownRequest.destroy(); await assertClean(env);
@@ -209,7 +211,7 @@ test('production subprocess preprocessing works with all outbound Node APIs disa
   const config = { ...defaults, port: await freePort() };
   const child = await launchRuntime(config, context); await child.ready();
   const env = { origin: `http://127.0.0.1:${config.port}` };
-  code(await post(env), 503, 'RUNTIME_STARTING');
+  success(await post(env));
   assert.equal(child.output().stderr, '');
   assert.doesNotMatch(child.output().stdout, /input.bin|normalized.wav|recording.wav/);
 });

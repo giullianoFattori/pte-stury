@@ -1,4 +1,4 @@
-# Local runtime security and privacy — Activity 05.03
+# Local runtime security and privacy — Activity 05.04
 
 ## HTTP trust boundary
 
@@ -100,20 +100,45 @@ A cleanup failure blocks audio requests and reports non-ready error health.
 
 Microphone → browser → localhost → local preprocessing → future local Whisper →
 browser. No answer prompting, scoring or learner identity belongs to the runtime.
-It remains starting/unloaded and returns 503 RUNTIME_STARTING after successful
-preprocessing. Bad uploads are isolated request errors. React RA/RS, scoring,
+It becomes ready/usable only after engine/model verification and a native startup
+check. Successful speech returns validated local transcript JSON after cleanup;
+non-ready engines return typed 503. Bad uploads are isolated request errors. React RA/RS, scoring,
 reviews and IndexedDB remain unchanged.
 
-## Model ownership and integrity (05.04 and later)
+## Implemented engine/model ownership and integrity
 
 Runtime exclusively owns model resolution, storage, source/checksum verification,
 loading and active model choice. Browser sees only ID/readiness; config allows only
 base.en/small.en. Verified POC baseline: whisper.cpp v1.8.3 revision
-`2eeeba56e9edd762b4b38467bab96c2517163158`. Engine version presently identifies that
-pinned target, not an engine loaded by this preprocessing runtime.
+`2eeeba56e9edd762b4b38467bab96c2517163158`. Before readiness, the fixed CLI
+path must be a regular executable, its build metadata must match this version and
+commit, and a native synthetic-WAV check must prove loading/inference usability.
 
-Pin sources/models and verify existing/downloaded artifacts before load; never
-accept arbitrary URLs or paths from the browser. If whisper-server is used
+Development engine is resolved only from the repository's local pinned build;
+there is no executable PATH fallback. Model IDs map to fixed ggml filenames under
+.local-runtime/models. base.en requires exact size plus known SHA-1/SHA-256;
+small.en requires bounded size sanity plus upstream SHA-1. Integrity hashing is
+streamed and cancellation-aware; wrong/missing models never become ready. Startup
+never downloads anything. Native path/model manifest injection exists only through
+internal build/test JavaScript dependencies, not HTTP, config or production
+runtime environment variables. Parent installation resources are trusted; final
+model/build-info opens refuse symlinks where supported. Fingerprint checks detect
+artifact replacement/modification before and after inference, and fail closed
+until restart. This is not cryptographic attestation of every dynamic library;
+packaging must pin/check the complete artifact bundle.
+
+The CLI receives only a validated WAV, fixed owned model path and fixed English /
+CPU / four-thread / quiet / no-timestamp / non-speech-suppression flags. It receives
+no answer, prompt, chunk metadata, grammar or previous transcript. Stdout is
+bounded plain text parsed with fatal UTF-8 validation; timestamp/control decoration
+is rejected. Stderr is bounded/drained, never exposed. No output-file flag exists:
+audio is temporary and transcripts remain in memory/HTTP only. Any native crash,
+stream overflow, empty speech, deadline or cancellation follows the same cleanup
+and concurrency guarantees as preprocessing. Timeouts account separately for
+upload, preprocessing and inference (105 s default total, 60 s inference).
+
+Pin sources/models and verify any intentionally downloaded artifacts before load;
+never accept arbitrary URLs or paths from the browser. If whisper-server is used
 internally later, keep its generic prompt/model/conversion endpoints private;
 the product API is this runtime contract, not the POC server API. See
 [POC provenance](../../tools/local-stt/README.md) and

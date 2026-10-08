@@ -15,13 +15,13 @@ export async function freePort() {
   return port;
 }
 
-export async function launchRuntime(config, context) {
+export async function launchRuntime(config, context, { realEngine = false, testArtifacts } = {}) {
   const directory = await mkdtemp(join(tmpdir(), 'pte-runtime-test-'));
   const configPath = join(directory, 'runtime.json');
   await writeFile(configPath, JSON.stringify(config));
   // Fail tests if the production child tries an outbound network connection.
   const child = spawn(process.execPath, ['--import', fileURLToPath(new URL('./no-outbound.mjs', import.meta.url)),
-    fileURLToPath(new URL('../src/main.mjs', import.meta.url)), '--config', configPath], { stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, TMPDIR: directory } });
+    fileURLToPath(new URL(realEngine ? '../src/main.mjs' : './run-runtime.mjs', import.meta.url)), '--config', configPath], { stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, TMPDIR: directory, ...(testArtifacts ? { PTE_TEST_ENGINE_ARTIFACTS: JSON.stringify(testArtifacts) } : {}) } });
   let stdout = '';
   let stderr = '';
   child.stdout.on('data', chunk => { stdout += chunk; });
