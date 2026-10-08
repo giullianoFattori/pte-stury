@@ -1,14 +1,15 @@
-# PTE Local Speech Runtime — Activity 05.02
+# PTE Local Speech Runtime — Activity 05.03
 
 Status: the real local HTTP runtime shell is implemented in Node.js ES modules,
 using built-in HTTP, filesystem and JSON support with no framework or added npm
 dependencies. Runtime version is `0.1.0`, API version `1`; the engine target is the
 verified whisper.cpp `1.8.3` revision. No engine/model is loaded yet.
 
-The live shell reports `status: starting`, `model.loaded: false` for both allowlisted
-model choices. It serves only health/version; `/api/v1/transcribe` returns typed
-404, never a fake transcript. React RA/RS remain unchanged. No audio upload,
-preprocessing, model download, inference, launcher or packaging is implemented.
+The runtime reports `status: starting`, `model.loaded: false` for both allowlisted
+model choices. It serves health/version and bounded multipart audio ingestion. `/api/v1/transcribe`
+validates and normalizes audio, cleans its files, then returns typed 503
+`RUNTIME_STARTING`, never a fake transcript. React RA/RS remain unchanged. Model
+download/loading, Whisper inference, launcher and packaging are not implemented.
 
 ## Start and smoke test
 
@@ -40,8 +41,9 @@ Listener must be `127.0.0.1:8765`. Stop with Ctrl+C/SIGINT or SIGTERM: the shell
 stops accepting connections, finishes metadata responses, closes idle connections,
 and closes any remaining partial/slow connection after a two-second grace period.
 It logs shutdown completion and exits cleanly, releasing the port for immediate
-restart. It creates no runtime audio/temp files. Host is exactly `127.0.0.1:<port>`;
-`localhost` and other hosts are rejected. Origin, when present, must exactly match
+restart. It cancels active audio work, awaits child-process termination and cleanup, and
+releases the temporary namespace lock after cleanup. Host is exactly `127.0.0.1:<port>`;
+`localhost` and other hosts are rejected. Metadata Origin, when present, must match
 `http://127.0.0.1:<port>`. There is no CORS allowlist or Vite integration yet; use curl
 or the process integration tests for detection until frontend integration.
 
@@ -77,8 +79,8 @@ correctness, omissions, substitutions, PTE scores, mastery or scheduling.
 
 | Path | Purpose |
 | --- | --- |
-| `runtime/src/` | Actual `main`, `config`, `server`, `health`, `version` and safe `errors` modules |
-| `runtime/tests/` | Config, process startup, signals, collision/restart and no-outbound test instrumentation |
+| `runtime/src/` | HTTP/config/state plus multipart, audio lifecycle, temp ownership, media inspection, preprocessing and concurrency modules |
+| `runtime/tests/` | Config/process/HTTP, actual media normalization, abuse limits, abort/deadline, stale/symlink cleanup and no-outbound instrumentation |
 | [config/runtime.example.json](config/runtime.example.json) | Machine-independent example; strict read-only config loader implemented |
 | [docs/api.md](docs/api.md) | Wire payloads, version gate, errors and domain mapping |
 | [docs/lifecycle.md](docs/lifecycle.md) | Readiness, concurrency, cancellation, cleanup and logging |
@@ -183,7 +185,57 @@ direct-Node SIGINT/SIGTERM checks confirmed exit code 0 and restart with partial
 connections. The npm development wrapper may report its own interrupted status
 on Ctrl+C; runtime process signal handling is tested independently.
 
-05.03 adds bounded audio upload, runtime-owned temporary files, safe preprocessing
-and crash cleanup. Whisper/model loading, inference and frontend migration remain
-later work. This shell's `starting` state never authorizes production transcription;
+05.04 connects actual Whisper inference to the validated normalized WAV.
+Model loading, inference and frontend migration remain later work. This shell's `starting` state never authorizes production transcription;
 see [lifecycle](docs/lifecycle.md). Launcher and platform packages are not provided.
+
+
+## Implemented audio ingestion (05.03)
+
+Linux preprocessing uses installed `/usr/bin/ffmpeg` and `/usr/bin/ffprobe`
+(6.1.1-3ubuntu5, GPL-enabled system build), not bundled product binaries. Runtime
+HTTP/multipart code still uses Node built-ins without added npm dependencies.
+Windows/macOS executable resolution and packaging are not validated in this step.
+
+Multipart accepts exactly one `audio` file and `language=en`, with a mandatory
+same-origin header. Default streamed total body budget is 12 MiB, decoded audio
+limit 180 seconds, concurrency one. The parser writes incrementally to private
+generated filenames. Container/stream inspection rejects unsupported, video,
+non-audio and multi-stream inputs. Safe local argument-array conversion produces
+WAV/mono/16 kHz/PCM s16le and probes its real duration/properties. The complete
+preprocessing stage has a separate fixed 30-second deadline. Disconnect/deadline
+stops owned native work and finally cleans files before releasing the slot.
+
+Private storage is under system temp in `pte-study-runtime-<uid>/port-<port>/`.
+Exclusive owner lock and startup stale recovery prevent removal of another live
+instance's files. Only generated request directories qualify for recovery; symlink
+targets and unrelated names are preserved. No retained audio by default. Exact
+limits, codec gates, cancellation and lock policy are in [security](docs/security.md)
+and [lifecycle](docs/lifecycle.md).
+
+With the runtime started, this diagnostic passes a prepared local WAV:
+
+```bash
+curl -i -H 'Origin: http://127.0.0.1:8765' \
+  -F 'audio=@/path/to/recording.wav;type=audio/wav' \
+  -F 'language=en' http://127.0.0.1:8765/api/v1/transcribe
+```
+
+Expected after valid preprocessing: 503 with `RUNTIME_STARTING`. This is not STT
+readiness or a transcript. Do not send expected passages/prompts. Expect headers
+are explicitly unsupported; ordinary curl/FormData POSTs work.
+
+05.03 evidence on Linux (2026-10-08): actual headless Chrome MediaRecorder generated
+WebM/Opus (31,542 bytes in the final smoke run), accepted at the local POST origin and normalized to
+1,980 ms of mono 16 kHz pcm_s16le WAV. A separate manual curl WAV upload passed.
+Both returned only `RUNTIME_STARTING` after cleanup; no request audio remained.
+`ss -ltnp` showed only 127.0.0.1:8765. Automated cases additionally cover controlled
+WebM/Opus, prepared WAV, durationless WebM rejection, >180 s audio, streaming budgets,
+strict multipart, malicious filenames, video/random/playlist bytes, concurrency,
+upload/preprocessing abort, child timeout/termination, signal shutdown and stale
+symlink-safe cleanup. Ogg/MP4 are planned/allowlisted, not claimed as validated
+browser recordings on Windows/macOS. No actual learner-quality benchmark is added.
+
+Final 05.03 validation: 203 tests passed (22 runtime tests), no skips; React build,
+lint and git diff checks passed. Existing POC and contract integration tests remain
+green. No model weights, compiled binaries or recording fixtures were committed.

@@ -2,6 +2,14 @@ export class RuntimeStartupError extends Error {
   constructor(code, message) { super(message); this.name = 'RuntimeStartupError'; this.code = code; }
 }
 
+export class AudioRequestError extends Error {
+  constructor(status, code, message) { super(message); this.name = 'AudioRequestError'; this.status = status; this.code = code; }
+}
+
+export function invalidAudioRequest() {
+  return new AudioRequestError(400, 'INVALID_REQUEST', 'The audio request is invalid.');
+}
+
 export function errorBody(code, message) { return { error: { code, message } }; }
 
 export function sendJson(response, status, body, headers = {}) {

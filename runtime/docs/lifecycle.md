@@ -1,141 +1,104 @@
-# Runtime lifecycle contract
+# Runtime lifecycle — Activity 05.03
 
-The Node.js ES-module shell is implemented in 05.02: strict read-only config loading,
-loopback HTTP, shared runtime state, health/version and graceful signal handling.
-Audio/temp implementation follows in 05.03. No launcher, auto-start, installer or
-model lifecycle is implemented yet.
-
-Current startup is config validation → platform detection → bind 127.0.0.1 → log
-listener bound → serve `starting`/unloaded health. Version remains available for
-both configured models without weights or an executable. Invalid config and port
-collision exit 1 with fixed safe diagnostics. No model inspection/download or
-temporary namespace exists in this shell. Start with `npm run runtime:start`;
-test with `npm run runtime:test` and the app's HTTP contract integration test.
+The Node.js ES-module runtime now implements metadata and audio ingestion through
+the normalized-WAV boundary. It does not load a model, invoke Whisper, launch the
+app or provide an installer. Start with `npm run runtime:start`; test with
+`npm run runtime:test` (system ffmpeg/ffprobe and loopback permission required).
 
 ## Startup and readiness
 
-Target product flow: launch PTE Study → start runtime → wait for compatible
-`/api/v1/health` ready → open the browser at the single local origin.
+Startup validates the bounded runtime-owned config, detects platform/architecture,
+binds exclusively to `127.0.0.1:<port>`, then initializes private temporary storage.
+The listener holds audio requests behind initialization. Invalid config, occupied
+port and unsafe/unavailable temporary storage fail startup with fixed diagnostics
+and exit 1. No alternate port or cloud fallback is selected.
 
-Runtime startup order:
+Storage is `<system temp>/pte-study-runtime-<uid>/port-<port>/`. A private
+`instance.lock/pid` identifies its owner. Acquisition is exclusive; an existing
+lock is reclaimed only when the OS confirms that its PID no longer exists. A live
+PID, permission ambiguity, PID reuse, symlinked root or invalid/incomplete lock
+fails closed, requiring local operator repair for an ambiguous lock. The port bind
+serializes competing starters; the namespace lock additionally survives listener
+closure until active native work and cleanup finish. Different ports use isolated
+namespaces and never clean each other's files.
 
-1. Validate runtime-owned configuration and reject non-loopback host, invalid
-   limits, unknown settings and non-allowlisted models. Resolve pinned native
-   artifacts and model storage internally; expose only versions/model ID.
-2. Acquire the single-instance lock for the runtime-owned temporary namespace
-   before scanning it. Reject symlinked/unowned roots; never delete another live
-   runtime's files. Remove stale owned per-request directories from previous runs.
-3. Bind only 127.0.0.1. Publish `/version` and non-ready `/health` metadata. Readiness
-   checks must not download a model, change a model or perform inference.
-4. Verify configured model integrity and initialize the pinned native engine.
-   Report `starting` while initialization is in progress; report `error` with
-   `MODEL_UNAVAILABLE` for missing, failed-integrity or unloadable weights.
-5. Report `ready` only after the model and production inference path can accept
-   transcription. Keep `processedLocally: true`; never substitute a remote engine.
+With ownership acquired, startup scans at most 256 entries in its namespace and
+removes only `request-<six alphanumeric characters>` entries. It unlinks symlinks
+without traversing their targets. Other names, system-temp entries, POC samples and
+question-bank assets remain untouched. Too many entries fail startup rather than
+performing an unlimited scan. Locks contain operational process IDs, never audio.
 
-05.02 intentionally reports `starting`, `model.loaded: false` until later steps
-wire model loading/inference. This is a shell startup state, not a claim that a
-background model download/load is happening. The frozen state has no browser
-mutation path. Later loader internals can replace this state with real readiness;
-`ready` still requires both model and usable inference. Version remains available
-while starting. `degraded` remains unsafe for inference and maps to availability
-`error`. POST `/api/v1/transcribe` currently returns typed 404 without reading audio.
+Health stays `starting`, `model.loaded: false`. This does not imply background
+model loading. A request-specific upload/decode error does not change health.
+A genuine cleanup failure marks health `error` and blocks further audio ingestion;
+no successful response is returned. Version metadata remains available. Later
+05.04 must verify/load the model and provide usable inference before `ready`.
 
-## Request lifecycle and concurrency
+## Audio request lifecycle
 
 ```text
-compatible + ready
-→ reserve transcription slot
-→ validate multipart / byte budget / language / decoded content
-→ create private per-request directory with generated filenames
-→ normalize to mono 16 kHz PCM s16le WAV
-→ bounded local inference with active verified model
-→ validate non-empty transcript + evidence
+trust / route / header validation
+→ multipart boundary and Content-Length precheck
+→ reserve the single slot
+→ private generated request directory
+→ streamed multipart to input.bin
+→ inspect actual local container and audio stream
+→ bounded decode to normalized.wav
+→ verify WAV / mono / 16000 Hz / pcm_s16le / decoded duration
+→ future inference boundary (not connected in 05.03)
 → cleanup in finally
 → release slot
-→ deliver response if still current/connected
+→ 503 RUNTIME_STARTING if still connected
 ```
 
-One active transcription by default. The slot includes upload handling,
-preprocessing, inference and cleanup; another request gets `RUNTIME_BUSY`/429
-immediately. Health/version remain responsive during inference. There is no
-unbounded queue, no browser-selected concurrency, and no implicit retry. Reject
-bytes as they stream even if Content-Length is absent or false. Reject overlong
-decoded audio, including durationless WebM, rather than truncating it into a false
-learner response. Decoding/preprocessing must have its own bounded timeout and
-resource policy when implemented; the configured 60000 ms inference timeout bounds
-native inference separately. The request also needs bounded headers/body receipt
-and a finite end-to-end timeout, including cleanup; exact shell timeout settings
-belong to 05.02/05.03 and must never allow unbounded buffering or retention.
+The slot covers upload, preprocessing and cleanup, including validation failures.
+Another valid upload gets `429 RUNTIME_BUSY` immediately, without temp/decode work
+or an unbounded queue. Metadata requests remain responsive. The internal
+preprocessing result contains a generated request ID, normalized path, duration in
+integer milliseconds and verified sample properties; paths never reach HTTP.
+Step 05.04 can consume it before cleanup, with the same cancellation signal.
 
-Return `INFERENCE_TIMEOUT`/504 on an inference deadline, stop/kill the owned native
-work where supported, clean temporary files and release the slot only when native
-work no longer owns them. A timeout must not launch a second worker while the first
-is still running. Reinitialization failure moves health to error rather than ready.
+A ten-second HTTP body deadline and a 60-second end-to-end request timer bound
+receipt. A separate 30-second deadline covers all probes and conversion together;
+it does not use or consume the configured future inference timeout. Idle sockets
+are capped at 65 seconds; headers remain bounded to five seconds. A preprocessing
+deadline returns `504 INFERENCE_TIMEOUT` with a safe preprocessing message, reusing
+the API v1 processing-timeout code. A stalled/disconnected upload may simply have
+its connection closed; it cannot produce a stale result. Native stdout/stderr are
+bounded independently to 64 KiB and never logged or returned.
 
-## Cancellation and stale results
+## Temporary files and cancellation
 
-The future client passes AbortSignal to the request. An already aborted request
-does no work. Abort/reset/question change/unmount invalidates the pending result
-and produces domain `cancelled`; a network AbortError is not runtime unavailability.
-Server disconnect detection stops reading input, cancels preprocessing and attempts
-to interrupt native inference. If inference cannot be interrupted immediately, its
-eventual text is discarded and it retains the concurrency slot until work stops.
-Cleanup occurs after the last native reader releases the files. Never score or
-persist a stale response; no HTTP cancellation response is required once the
-connection has closed. Native cancellation capabilities are a later implementation
-decision, not a capability claimed by 05.01.
+On Linux, parent, namespace, lock and request directories are private (0700), with
+input and normalized files created at 0600. A generated `request-XXXXXX` directory
+contains fixed `input.bin` and `normalized.wav`; multipart filenames are ignored.
+Storage paths are internal. Input creation is exclusive with no-follow flags where
+supported. Roots are checked with lstat for directory type, owner and permissions.
+Recursive removal only targets owned generated entries and does not follow links.
+Windows/macOS permission and executable packaging behavior is not validated yet.
 
-## Temporary audio and crash recovery
+Client abort/disconnect and shutdown propagate through one AbortController to
+stream receipt, probe, conversion and future inference. Abort interrupts pending
+reads; native children are killed with SIGKILL and awaited until close before their
+files are removed. No native stderr is exposed. Cleanup runs on validation failure,
+decode failure, timeout, disconnect and successful preprocessing. The concurrency
+slot releases only after this cleanup attempt. A cancelled result is discarded.
 
-Use one runtime-owned per-user temporary root (resolved internally, outside tracked
-source), private permissions, and one isolated directory per request. Root/request
-directories are mode 0700; audio files mode 0600 on Linux. Filenames are generated,
-not derived from multipart filenames, URLs, question IDs or learner identity.
-Delete input, normalized WAV, output/intermediate files and the request directory
-in `finally` on success, validation failure, timeout, disconnect or cancellation.
-No learner audio retention by default. Cleanup failure must prevent success and
-mark health degraded/error; do not log raw audio or filesystem paths to the UI.
+SIGKILL/power loss can bypass finally; the next confirmed-owner startup removes
+stale request directories. Audio is never retained by default. Unknown/unowned
+entries are preserved, not treated as learner audio eligible for deletion.
 
-SIGKILL/power loss can bypass normal cleanup. On next startup, after obtaining
-exclusive namespace ownership, scan only known runtime-owned stale request entries.
-Check ownership and names with no symlink traversal; never scan arbitrary system
-temporary directories or remove user files. A test corpus supplied by the developer
-is not a temporary runtime file and must not be deleted. 05.03 implements/test-drives
-normal and stale cleanup; packaging later determines the precise temp root.
+## Shutdown and logs
 
-## Shutdown
+SIGINT/SIGTERM stop new work and close the listener, abort active audio requests,
+terminate owned native children, complete cleanup and then release the namespace
+lock. Idle connections close immediately; a two-second timer destroys remaining
+connections (including partial headers). Shutdown waits for request cleanup and
+logs completion. Repeated signals are idempotent; clean shutdown exits 0 and
+permits restart. Unexpected listener failure is sanitized and exits nonzero.
 
-Target launcher exit or SIGINT/SIGTERM:
-
-1. Mark runtime non-ready and stop accepting new transcription requests.
-2. Drain or cancel the active request with a bounded grace period; discard stale
-   output and stop owned native work before removing its inputs.
-3. Complete normal temporary cleanup, release model/engine resources, close HTTP
-   listener and release instance lock. Exit without retaining audio.
-
-Forced termination may leave stale owned entries for next startup cleanup. Do not
-kill unrelated processes, existing development servers or other users' runtimes.
-The launcher is future work. The current shell handles SIGINT/SIGTERM itself,
-closes its listener immediately to new connections, completes metadata responses
-and closes idle connections. A two-second timer destroys any remaining tracked
-sockets (including incomplete headers); then shutdown completion is logged and
-the process exits 0. Repeated signals during draining are idempotent. Unexpected
-listener failure is sanitized, triggers shutdown and exits non-zero. There is no
-audio/model cleanup work in this shell. Tests cover both signals, a partial-header
-connection, immediate same-port restart and a second process failing on collision.
-
-## Logs and timing
-
-Allowed default log fields: timestamp, generated request ID, status, input bytes,
-audio duration, active model ID, inference duration and typed error code. Use
-bounded/rotated operational logs when file logging is introduced. No raw audio,
-full learner transcript, expected answer, identity, arbitrary filenames/paths or
-native stderr containing those values in default logs or learner-facing messages.
-Native subprocess output needs filtering; suppress transcript output explicitly.
-Debug logging cannot silently opt users into audio/transcript retention.
-
-Integer milliseconds describe audio duration and processing wall time only, never
-scores. Confidence remains undefined unless a separate calibrated contract is
-established. Word timestamps stay optional; neither is required to make RA/RS
-content comparison work.
+Only fixed operational startup/shutdown events are logged today. Future request
+logs may include generated request ID, status, byte count, duration and safe error
+code. Never log raw media, multipart content, filename, native stderr, transcript,
+expected answer, identity or arbitrary paths. No inference timing/confidence is
+invented, and scoring remains entirely in the app's TypeScript domain.

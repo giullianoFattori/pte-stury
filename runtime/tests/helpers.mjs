@@ -21,7 +21,7 @@ export async function launchRuntime(config, context) {
   await writeFile(configPath, JSON.stringify(config));
   // Fail tests if the production child tries an outbound network connection.
   const child = spawn(process.execPath, ['--import', fileURLToPath(new URL('./no-outbound.mjs', import.meta.url)),
-    fileURLToPath(new URL('../src/main.mjs', import.meta.url)), '--config', configPath], { stdio: ['ignore', 'pipe', 'pipe'] });
+    fileURLToPath(new URL('../src/main.mjs', import.meta.url)), '--config', configPath], { stdio: ['ignore', 'pipe', 'pipe'], env: { ...process.env, TMPDIR: directory } });
   let stdout = '';
   let stderr = '';
   child.stdout.on('data', chunk => { stdout += chunk; });

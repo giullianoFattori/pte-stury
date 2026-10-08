@@ -1,7 +1,7 @@
 # Third-party inventory — contract baseline
 
-Activity 05.02 implements a Node.js shell, not a distributable native package. This file
-records the verified POC baseline and obligations to carry into packaging; it is
+Activity 05.03 implements a Node.js runtime with local system preprocessing,
+not a distributable native package. This file records the verified POC baseline and obligations to carry into packaging; it is
 not a complete notice bundle or a claim that all components below are shipped.
 No compiled binaries, model weights or learner recordings are committed here.
 
@@ -10,10 +10,10 @@ No compiled binaries, model weights or learner recordings are committed here.
 | whisper.cpp | POC v1.8.3, revision `2eeeba56e9edd762b4b38467bab96c2517163158`, [upstream](https://github.com/ggml-org/whisper.cpp/tree/v1.8.3) | MIT; include upstream copyright/license and record downstream patches |
 | ggml | Source included in pinned whisper.cpp checkout | MIT; collect its actual license/notices from the shipped revision |
 | Whisper English weights | POC `ggml-base.en.bin`; small.en candidate, not downloaded/measured; [official model tooling](https://github.com/ggml-org/whisper.cpp/blob/v1.8.3/models/README.md) | Whisper code/weights are MIT per [upstream license section](https://github.com/openai/whisper#license); retain provenance/notices alongside model artifacts |
-| ffmpeg / ffprobe | Development Ubuntu `6.1.1-3ubuntu5`, not selected as a final bundled build | LGPL 2.1+ baseline; GPL parts change the obligations. This machine's build enables GPL; do not label it LGPL-only |
+| ffmpeg / ffprobe | Production preprocessing currently invokes installed Ubuntu `6.1.1-3ubuntu5` system ffmpeg/ffprobe; no binaries bundled or final redistribution build selected | LGPL 2.1+ baseline; GPL parts change the obligations. This machine's build enables GPL; do not label it LGPL-only |
 | cpp-httplib / nlohmann JSON | Used by the POC official server, headers in pinned whisper.cpp source | MIT; inventory exact header revisions/notices only if used in final runtime |
 | Node.js | Shell tested with installed v25.8.1; [exact source](https://github.com/nodejs/node/tree/v25.8.1), [license/notices](https://github.com/nodejs/node/blob/v25.8.1/LICENSE) | MIT plus its bundled dependency notices; preserve the exact runtime inventory if packaged |
-| HTTP / filesystem / JSON | Node v25.8.1 built-ins (`node:http`, `node:fs/promises`, native JSON); no external HTTP/JSON framework added | Covered by the Node distribution and its component notices; no new npm runtime dependency |
+| HTTP / filesystem / JSON | Node v25.8.1 built-ins (`node:http`, filesystem, streams, child_process, native JSON); internal bounded multipart parser, no external HTTP/JSON/upload library added | Covered by the Node distribution and its component notices; no new npm runtime dependency |
 | Launcher libraries | Not selected/implemented | Record exact dependencies and licenses when introduced |
 | CMake | Build-only local wheel 3.31.6 | Distribution contains BSD-3/Apache-2.0 notices; not a product runtime dependency |
 | flite, Playwright, Chrome | Controlled test tooling only | Not product runtime assets; review exact licenses if they are ever distributed |

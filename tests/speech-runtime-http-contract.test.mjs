@@ -58,7 +58,7 @@ test('HTTP routing rejects unknown routes, methods, bodies, query inputs and upl
   await runtime.ready();
   const host = `127.0.0.1:${config.port}`;
   for (const [method, path, status, headers] of [
-    ['GET', '/api/v1/does-not-exist', 404, {}], ['POST', '/api/v1/transcribe', 404, {}],
+    ['GET', '/api/v1/does-not-exist', 404, {}], ['POST', '/api/v1/transcribe', 400, {}],
     ['POST', '/api/v1/health', 405, {}], ['PUT', '/api/v1/version', 405, {}],
     ['GET', '/api/v1/health?answer=private-answer', 404, {}],
     ['GET', '/api/v1/health', 400, { 'Content-Length': '1' }],

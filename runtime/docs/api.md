@@ -1,7 +1,9 @@
 # Local speech API v1
 
-This is the durable contract. Step 05.02 implements only GET health/version, using
-the Node shell; transcribe remains unregistered (typed 404). The frontend requires
+This is the durable contract. Step 05.03 implements GET health/version and
+POST transcribe through safe preprocessing, using the Node runtime. Valid audio
+returns typed 503 RUNTIME_STARTING after cleanup; production inference is not wired.
+The frontend requires
 `apiVersion: 1`. Production preference is a single local origin serving the app at
 `/` and API at `/api/v1/...`. Native implementation choices do not change these
 payloads. JSON responses use `application/json`, `Cache-Control: no-store`, and
@@ -28,7 +30,7 @@ readiness. This route never triggers a model download or an inference.
 Statuses are `starting | ready | degraded | error`. `ready` requires a verified,
 loaded model and an implemented usable inference path; it cannot include an error.
 Non-ready health may include `error: { code, message }` to explain the condition.
-The 05.02 shell deliberately remains `starting` with an unloaded configured model;
+The 05.03 runtime deliberately remains `starting` with an unloaded configured model;
 no background model loading is implied. `degraded` is not permission to transcribe.
 Model ID is the configured identifier,
 even before loading; `loaded` is a boolean, not an availability promise by itself.
@@ -64,7 +66,7 @@ wrong language and malformed multipart are `INVALID_REQUEST`. No prompt, model,
 expected text, answer, chunks, URL, file path or decoding flag fields are allowed.
 Model choice belongs exclusively to validated runtime configuration.
 
-Planned input MIME types are `audio/webm`, `audio/ogg`, `audio/mp4`, and prepared
+Allowlisted input MIME types are `audio/webm`, `audio/ogg`, `audio/mp4`, and prepared
 `audio/wav` (`audio/x-wav` alias). Content is inspected and decoded; MIME/extension
 alone never establishes safety or compatibility. Accepted audio codecs depend on
 the pinned preprocessing build and must be exercised on browser/platform outputs.
@@ -72,7 +74,28 @@ Video streams and unsupported/non-audio containers are rejected. Size includes t
 multipart body: default 12 MiB maximum, enforced during streaming and independently
 of Content-Length. Decoded duration maximum is 180 s; never silently truncate input.
 
-For ready, compatible runtimes, successful HTTP 200:
+The POST requires the exact trusted local Origin. Missing Origin is rejected;
+metadata diagnostics remain origin-optional. All multipart bytes count toward the
+limit, including chunked transfer. Boundary/header/field buffers are capped; unknown,
+missing and duplicate fields fail closed. Expect: 100-continue is explicitly
+unsupported (400); ordinary FormData/curl requests work. See [security](security.md).
+
+In 05.03, valid WAV or WebM passes probe/conversion/decoded-duration validation,
+then files are removed and HTTP 503 returns:
+
+```json
+{"error":{"code":"RUNTIME_STARTING","message":"Production transcription is not connected yet."}}
+```
+
+No normalized paths, transcripts, score or native output are returned. Empty audio
+is 422 AUDIO_EMPTY; invalid decode is 422 AUDIO_DECODE_FAILED, unsupported actual
+media is 415 AUDIO_UNSUPPORTED, byte/duration overflow is 413 AUDIO_TOO_LARGE,
+concurrency is 429 RUNTIME_BUSY. A preprocessing deadline is 504 INFERENCE_TIMEOUT,
+reusing the v1 processing-timeout code; no Whisper inference has occurred. Client
+disconnect requires no response. Malformed uploads never make health ready/error.
+Real cleanup failure blocks ingestion and changes health to error.
+
+For future ready, compatible runtimes, successful HTTP 200:
 
 ```json
 {
@@ -143,10 +166,10 @@ distinct from audio/inference errors. The initial runtime has one active request
 no hidden unbounded queue; excess submissions fail immediately with 429. Do not
 automatically retry learner audio or fall back to any external service.
 
-The metadata shell also returns `INVALID_REQUEST`/405 with `Allow: GET` for wrong
-methods on registered routes, and 417 for unsupported HTTP expectations. It rejects
-GET bodies and query inputs, does not read uploads, and returns typed errors for
-malformed HTTP. These protocol rejections do not implement a transcription endpoint.
+The runtime also returns `INVALID_REQUEST`/405 with `Allow: GET` (metadata) or
+`Allow: POST` (transcribe) for wrong methods on registered routes, and 417 for unsupported HTTP expectations. It rejects
+GET bodies and query inputs, and returns typed errors for malformed HTTP. Sensitive
+POST trust checks happen before multipart receipt or decoder work.
 
 ## Domain mapping and future client order
 
