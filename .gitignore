@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local speech POC: never commit models, builds or learner recordings.
+.local-runtime/
+tools/local-stt/tmp/
+tools/local-stt/models/
+tools/local-stt/samples/private/

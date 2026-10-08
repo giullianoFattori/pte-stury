@@ -1,0 +1,48 @@
+{
+  "Ogg/Opus": {
+    "model": "base.en",
+    "transport": "cli",
+    "reference": "Students must arrive before nine tomorrow.",
+    "rawTranscript": "Students must arrive before night tomorrow.",
+    "words": 6,
+    "S": 1,
+    "D": 0,
+    "I": 0,
+    "wer": 0.16666666666666666,
+    "missingWords": [],
+    "insertions": [],
+    "substitutions": [
+      {
+        "expected": "nine",
+        "actual": "night"
+      }
+    ],
+    "audioSeconds": 2.86,
+    "inferenceSeconds": 2.4132682180000002,
+    "realTimeFactor": 0.8438000762237764,
+    "totalSeconds": 2.614466536
+  },
+  "MP4/AAC": {
+    "model": "base.en",
+    "transport": "cli",
+    "reference": "Students must arrive before nine tomorrow.",
+    "rawTranscript": "Students must arrive before night tomorrow.",
+    "words": 6,
+    "S": 1,
+    "D": 0,
+    "I": 0,
+    "wer": 0.16666666666666666,
+    "missingWords": [],
+    "insertions": [],
+    "substitutions": [
+      {
+        "expected": "nine",
+        "actual": "night"
+      }
+    ],
+    "audioSeconds": 2.88,
+    "inferenceSeconds": 2.166402352,
+    "realTimeFactor": 0.7522230388888889,
+    "totalSeconds": 2.3267143220000004
+  }
+}

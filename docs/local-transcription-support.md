@@ -1,5 +1,15 @@
 # Local transcription: browser and language support
 
+## Architecture update — Activity 04.9 (2026-10-08)
+
+Browser-native STT is deprecated as the primary path after unsuccessful Chrome
+speech-pack installation and non-functional Edge local recognition. Keep the
+adapter temporarily; do not spend further work making it the primary engine.
+The native local whisper.cpp POC and measured technical evidence are documented
+in [tools/local-stt](../tools/local-stt/README.md). Activity 05 will migrate the
+production RA/RS flow. Five real learner recordings remain pending; the historical
+browser diagnostic below is not the next production validation plan.
+
 ## Learner report and reproduced cause
 
 The learner confirmed real recording works in Read Aloud and Repeat Sentence,
@@ -54,8 +64,7 @@ A regression test covers a downloadable default model with unavailable dictation
 quality, and explicit installation options match availability options. All 160
 tests, build and lint passed. No dependency, schema or scoring change was needed.
 
-For the next live test, reload the app in Chrome, Check local availability, then
-click Install local speech pack if offered. After installation, record and
-Transcribe locally. Availability alone does not establish recognition accuracy or
-complete the real recorded-audio quality gate. Activity 04 closure remains pending
-that test and the remaining live timing checks.
+The next live STT quality test uses the local Whisper POC, with manually verified
+spoken references and actual accuracy/latency observations. Browser availability
+alone does not complete that gate. Activity 04 closure remains pending real learner
+audio and the remaining live timing checks.

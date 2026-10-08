@@ -1,5 +1,11 @@
 # Read Aloud — Step 08: final integration validation
 
+Activity 04.9 follow-up: the native local Whisper pipeline is technically validated
+with a known WAV and five controlled synthetic MediaRecorder recordings. See
+[measured POC results](../tools/local-stt/RESULTS.md). Browser-native STT is deprecated
+as the primary direction. Real learner recordings and the remaining live speaking
+quality checks are still pending; Activity 04 is not yet marked COMPLETE.
+
 Validated on 2026-10-05 against Step 07, plus a small content-result wording fix.
 **Automated integration gate: passed. Activity 04 closure: pending live voice/local
 STT validation.** The learner subsequently confirmed real recording works in
