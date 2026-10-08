@@ -1,7 +1,31 @@
 # Local runtime security and privacy contract
 
-These are implementation requirements for subsequent steps. 05.01 provides types,
-validation helpers and documentation, not a secured production listener.
+05.02 implements the metadata-only listener with Node.js built-ins. The audio,
+native inference and temporary-file requirements below remain for subsequent steps.
+
+Current enforced boundary: validated IPv4 loopback binding; exact
+`Host: 127.0.0.1:<configured-port>`; at most one Host/Origin header; Origin, if
+present, must equal `http://127.0.0.1:<configured-port>`; Fetch Metadata site, if
+present, must be `same-origin` or `none`. `localhost`, wildcard hosts, other ports,
+external/null origins and cross-site requests receive typed `INVALID_REQUEST`/400.
+No CORS headers are emitted. Vite/React direct access is not enabled in this step.
+
+Only exact GET `/api/v1/health` and GET `/api/v1/version` are registered. Missing
+Origin is allowed for these metadata diagnostics. Unknown routes (including
+`/api/v1/transcribe`) and query strings return JSON 404; wrong methods on known
+routes return 405 with `Allow: GET`. No unsupported method is accepted, even with
+an absent Origin. Nonzero Content-Length or Transfer-Encoding on metadata GET is
+rejected without consuming its body. Upload expectations, HTTP upgrades and CONNECT
+are rejected; no body parser, audio buffer, filesystem write or native invocation
+exists. Any bytes a caller sends are not accepted as learner input.
+
+Headers are bounded to 8 KiB and 32 fields, with five-second header and ten-second
+request/socket deadlines checked every second. Node's header-count truncation is
+disabled so the explicit 32-field gate cannot overlook a late Origin header; the
+independent byte limit remains active. Responses disable caching and keepalive;
+malformed HTTP returns a fixed typed JSON error. No raw packet/header/URL/body or
+native exception logging. Test children block outbound fetch/HTTP/HTTPS/TCP APIs
+and still pass health/version and process lifecycle tests.
 
 ## Listener and origins
 

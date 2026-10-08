@@ -1,9 +1,49 @@
-# PTE Local Speech Runtime — Activity 05.01
+# PTE Local Speech Runtime — Activity 05.02
 
-Status: production contract and repository boundary defined; no production server,
-model loader, transcription endpoint or launcher is implemented in this step.
-The planned initial runtime version is `0.1.0`, API version is `1`. Example responses
-describe the target contract; they are not live health checks.
+Status: the real local HTTP runtime shell is implemented in Node.js ES modules,
+using built-in HTTP, filesystem and JSON support with no framework or added npm
+dependencies. Runtime version is `0.1.0`, API version `1`; the engine target is the
+verified whisper.cpp `1.8.3` revision. No engine/model is loaded yet.
+
+The live shell reports `status: starting`, `model.loaded: false` for both allowlisted
+model choices. It serves only health/version; `/api/v1/transcribe` returns typed
+404, never a fake transcript. React RA/RS remain unchanged. No audio upload,
+preprocessing, model download, inference, launcher or packaging is implemented.
+
+## Start and smoke test
+
+Tested with installed Node.js 25.8.1 on Linux x64. From the repository root:
+
+```bash
+npm run runtime:start
+# Or supply a runtime-owned local file, with exactly the documented config keys:
+node runtime/src/main.mjs --config /path/to/runtime.json
+```
+
+Default config is `runtime/config/runtime.example.json`, resolved relative to the
+runtime source (independent of working directory). The file is read-only to the
+shell; it is not a browser API. Configuration input is bounded to 16 KiB and must
+be a regular valid JSON file. Unknown/missing keys, coercion, non-loopback hosts,
+non-allowlisted models, invalid ports/limits and concurrency other than one fail
+startup with exit code 1. An occupied port also exits 1 with `PORT_IN_USE`; no
+alternate port is chosen and the existing process is not stopped.
+
+In another terminal:
+
+```bash
+curl http://127.0.0.1:8765/api/v1/health
+curl http://127.0.0.1:8765/api/v1/version
+ss -ltnp 'sport = :8765'
+```
+
+Listener must be `127.0.0.1:8765`. Stop with Ctrl+C/SIGINT or SIGTERM: the shell
+stops accepting connections, finishes metadata responses, closes idle connections,
+and closes any remaining partial/slow connection after a two-second grace period.
+It logs shutdown completion and exits cleanly, releasing the port for immediate
+restart. It creates no runtime audio/temp files. Host is exactly `127.0.0.1:<port>`;
+`localhost` and other hosts are rejected. Origin, when present, must exactly match
+`http://127.0.0.1:<port>`. There is no CORS allowlist or Vite integration yet; use curl
+or the process integration tests for detection until frontend integration.
 
 The [Activity 04.9 POC](../tools/local-stt/README.md) and its
 [measured results](../tools/local-stt/RESULTS.md) remain intact. They proved local
@@ -37,9 +77,9 @@ correctness, omissions, substitutions, PTE scores, mastery or scheduling.
 
 | Path | Purpose |
 | --- | --- |
-| `runtime/src/` | Future native process implementation (reserved, currently empty) |
-| `runtime/tests/` | Future native process and security tests (reserved, currently empty) |
-| [config/runtime.example.json](config/runtime.example.json) | Machine-independent example; configuration loader belongs to 05.02 |
+| `runtime/src/` | Actual `main`, `config`, `server`, `health`, `version` and safe `errors` modules |
+| `runtime/tests/` | Config, process startup, signals, collision/restart and no-outbound test instrumentation |
+| [config/runtime.example.json](config/runtime.example.json) | Machine-independent example; strict read-only config loader implemented |
 | [docs/api.md](docs/api.md) | Wire payloads, version gate, errors and domain mapping |
 | [docs/lifecycle.md](docs/lifecycle.md) | Readiness, concurrency, cancellation, cleanup and logging |
 | [docs/security.md](docs/security.md) | Binding, origins, bounded input and model provenance |
@@ -85,8 +125,9 @@ whisper-server and the future production listener on the same port.
 Application version comes from the app build, runtime version from the native
 artifact, API version from the protocol, engine version from the pinned native
 build, and model ID from the loaded runtime model. They are independent; the app's
-current package version is `0.0.0`, not the illustrative `0.8.0`. The planned native
-`0.1.0` does not claim a released executable exists. Runtime/engine patch changes do
+current package version is `0.0.0`, not the illustrative `0.8.0`. Runtime `0.1.0`
+identifies this Node shell, not a bundled installer; engine `1.8.3` identifies its
+pinned target, not a loaded model. Runtime/engine patch changes do
 not change the API major when the wire contract remains compatible. Frontend API 1
 must refuse inference on any other API version; it does not require an exact
 runtime or engine patch version. Native sources/models stay pinned per artifact.
@@ -112,6 +153,7 @@ production Whisper integration, without fabricating a confidence in the adapter.
 ## Verification and next step
 
 ```bash
+npm run runtime:test
 npm test
 npm run build
 npm run lint
@@ -123,13 +165,25 @@ local-only responses, invalid/finite/integer timing and the example config. POC 
 remain in the suite. No downloads or native builds are needed for the new contract
 tests; existing POC loopback tests require permission to bind local ports.
 
-Validated on 2026-10-08: all 177 tests passed (12 new contract tests), no skips;
-production build, lint and diff whitespace checks passed. POC artifacts and all
-scoring, attempt builders, review logic and database files were unchanged.
+05.01 validation remains recorded by its commit: 177 tests passed. Step 05.02 adds
+runtime tests and [real HTTP contract integration tests](../tests/speech-runtime-http-contract.test.mjs),
+included in `npm test`. Test children forbid outbound HTTP/HTTPS/fetch/TCP connections
+and still serve valid health/version responses. Process tests cover strict config,
+both Linux shutdown signals with partial connections, collision and immediate
+restart. HTTP tests cover parsers, incompatible API/engine response fixtures, safe
+routing, method/body rejection, malformed HTTP and Host/Origin/header-count checks.
+POC evidence, browser adapters, scoring, attempt builders and database remain intact.
 
-05.02 implements only the local HTTP shell, configuration loading, health/version,
-graceful startup/shutdown and compatibility metadata. It does not implement
-production transcription. A shell without a usable model/inference path must
-report non-ready health; see [lifecycle](docs/lifecycle.md). Preprocessing and stale
-temporary-file cleanup follow in 05.03. Launcher, packaging and platform binaries
-remain later work.
+Validated on 2026-10-08: 190 tests passed with no skips (nine runtime tests and four
+real HTTP integration tests added); app build, lint and diff checks passed. Default
+port curl smoke tests returned valid non-cached starting health and Linux/x64
+version metadata. `ss -ltnp` showed only `127.0.0.1:8765`. Manual Ctrl+C logged
+shutdown completion and the next start bound the same port successfully; automated
+direct-Node SIGINT/SIGTERM checks confirmed exit code 0 and restart with partial
+connections. The npm development wrapper may report its own interrupted status
+on Ctrl+C; runtime process signal handling is tested independently.
+
+05.03 adds bounded audio upload, runtime-owned temporary files, safe preprocessing
+and crash cleanup. Whisper/model loading, inference and frontend migration remain
+later work. This shell's `starting` state never authorizes production transcription;
+see [lifecycle](docs/lifecycle.md). Launcher and platform packages are not provided.

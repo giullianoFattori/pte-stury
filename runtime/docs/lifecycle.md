@@ -1,8 +1,16 @@
 # Runtime lifecycle contract
 
-This policy is defined in 05.01; the production shell starts in 05.02 and audio/temp
-implementation in 05.03. No launcher, auto-start, installer or model lifecycle is
-implemented by these documents.
+The Node.js ES-module shell is implemented in 05.02: strict read-only config loading,
+loopback HTTP, shared runtime state, health/version and graceful signal handling.
+Audio/temp implementation follows in 05.03. No launcher, auto-start, installer or
+model lifecycle is implemented yet.
+
+Current startup is config validation → platform detection → bind 127.0.0.1 → log
+listener bound → serve `starting`/unloaded health. Version remains available for
+both configured models without weights or an executable. Invalid config and port
+collision exit 1 with fixed safe diagnostics. No model inspection/download or
+temporary namespace exists in this shell. Start with `npm run runtime:start`;
+test with `npm run runtime:test` and the app's HTTP contract integration test.
 
 ## Startup and readiness
 
@@ -25,13 +33,13 @@ Runtime startup order:
 5. Report `ready` only after the model and production inference path can accept
    transcription. Keep `processedLocally: true`; never substitute a remote engine.
 
-05.02 has health/version but no production transcription or model loader. It must
-not report `ready` simply because the listener is running. Report non-ready health
-(for example, `error`, `model.loaded: false`, `MODEL_UNAVAILABLE`) until a later step
-provides the actual prerequisites. `starting` represents work in progress, not an
-indefinite promise that an unimplemented loader will finish. Version remains
-available while the model is unavailable. `degraded` means unsafe/unusable for
-inference and maps to native availability `error`.
+05.02 intentionally reports `starting`, `model.loaded: false` until later steps
+wire model loading/inference. This is a shell startup state, not a claim that a
+background model download/load is happening. The frozen state has no browser
+mutation path. Later loader internals can replace this state with real readiness;
+`ready` still requires both model and usable inference. Version remains available
+while starting. `degraded` remains unsafe for inference and maps to availability
+`error`. POST `/api/v1/transcribe` currently returns typed 404 without reading audio.
 
 ## Request lifecycle and concurrency
 
@@ -108,8 +116,14 @@ Target launcher exit or SIGINT/SIGTERM:
 
 Forced termination may leave stale owned entries for next startup cleanup. Do not
 kill unrelated processes, existing development servers or other users' runtimes.
-The launcher is future work; the runtime shell must still implement graceful
-startup/shutdown on its own in 05.02.
+The launcher is future work. The current shell handles SIGINT/SIGTERM itself,
+closes its listener immediately to new connections, completes metadata responses
+and closes idle connections. A two-second timer destroys any remaining tracked
+sockets (including incomplete headers); then shutdown completion is logged and
+the process exits 0. Repeated signals during draining are idempotent. Unexpected
+listener failure is sanitized, triggers shutdown and exits non-zero. There is no
+audio/model cleanup work in this shell. Tests cover both signals, a partial-header
+connection, immediate same-port restart and a second process failing on collision.
 
 ## Logs and timing
 

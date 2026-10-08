@@ -1,6 +1,7 @@
 # Local speech API v1
 
-This is the durable contract, not an implemented server. The frontend requires
+This is the durable contract. Step 05.02 implements only GET health/version, using
+the Node shell; transcribe remains unregistered (typed 404). The frontend requires
 `apiVersion: 1`. Production preference is a single local origin serving the app at
 `/` and API at `/api/v1/...`. Native implementation choices do not change these
 payloads. JSON responses use `application/json`, `Cache-Control: no-store`, and
@@ -27,7 +28,9 @@ readiness. This route never triggers a model download or an inference.
 Statuses are `starting | ready | degraded | error`. `ready` requires a verified,
 loaded model and an implemented usable inference path; it cannot include an error.
 Non-ready health may include `error: { code, message }` to explain the condition.
-`degraded` is not permission to transcribe. Model ID is the configured identifier,
+The 05.02 shell deliberately remains `starting` with an unloaded configured model;
+no background model loading is implied. `degraded` is not permission to transcribe.
+Model ID is the configured identifier,
 even before loading; `loaded` is a boolean, not an availability promise by itself.
 An unreachable endpoint becomes client-side `unavailable`, not fabricated health.
 
@@ -139,6 +142,11 @@ must be rejected. Health's optional error uses the same `{code,message}` type.
 distinct from audio/inference errors. The initial runtime has one active request,
 no hidden unbounded queue; excess submissions fail immediately with 429. Do not
 automatically retry learner audio or fall back to any external service.
+
+The metadata shell also returns `INVALID_REQUEST`/405 with `Allow: GET` for wrong
+methods on registered routes, and 417 for unsupported HTTP expectations. It rejects
+GET bodies and query inputs, does not read uploads, and returns typed errors for
+malformed HTTP. These protocol rejections do not implement a transcription endpoint.
 
 ## Domain mapping and future client order
 
