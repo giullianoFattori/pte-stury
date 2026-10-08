@@ -5,13 +5,20 @@ export type TranscriptionWord = {
   endMs?: number;
 };
 
+export type SpeechToTextEngine = 'browser-on-device' | 'whisper.cpp';
+
 export type TranscriptionResult = {
   text: string;
   confidence?: number;
   words?: TranscriptionWord[];
-  engine: 'browser-on-device';
+  engine: SpeechToTextEngine;
+  model?: string;
   language: string;
   processedLocally: true;
+  // Runtime evidence only; integer milliseconds, never a learner score.
+  audioMs?: number;
+  inferenceMs?: number;
+  totalMs?: number;
 };
 
 export type SpeechToTextErrorCode =
