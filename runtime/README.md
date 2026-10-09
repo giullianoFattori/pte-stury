@@ -1,4 +1,4 @@
-# PTE Local Speech Runtime — Activity 05.05
+# PTE Local Speech Runtime — Activity 05.06
 
 The production Node.js ES-module runtime now transcribes locally with the pinned
 whisper.cpp v1.8.3 CLI and verified base.en weights. HTTP/runtime version remains
@@ -233,8 +233,9 @@ engine, CLI failure/overflow/deadline, disconnect/shutdown, recovery, busy gatin
 wire parser compatibility, privacy and no-outbound instrumentation. Real engine
 smokes above validate the actual local artifacts separately.
 
-Next: 05.06 — Read Aloud + Repeat Sentence Migration Validation. Full task-level
-persistence/error/review validation and POC cleanup remain there. No installer,
+Functional migration validation and persistence/error/review results are now
+recorded in [05.06 validation](docs/validation-05.06.md). Next is 05.07 model
+benchmarking, with the real learner corpus gate still pending. No installer,
 launcher or auto-download is implemented.
 
 Validated 05.04: 213 tests passed, including 32 runtime tests, with no skips.
@@ -299,3 +300,29 @@ No final model selection is made here.
 Validated 05.05: 223 automated tests passed (including the 32 runtime tests), with
 no skips, plus the real-Chrome integration suite above. Build, lint and
 `git diff --check` passed. No scoring formulas or database schema changed.
+
+
+## 05.06 migration validation
+
+The normal learner path requires no SpeechRecognition or browser language pack.
+The full task-level suites exercise native-shaped HTTP results through the actual
+pages and real IndexedDB; a separate run uses six controlled recordings with the
+actual pinned base.en engine. Details, measured transcripts/scores/timing and
+pending real-learner validation: [validation-05.06.md](docs/validation-05.06.md).
+
+The obsolete POC entry/page/adapter are archived under tools/local-stt/ui. Its
+8766 proxy is available only with `npm run dev:stt-poc`, not normal Vite.
+The pure evaluation utility/evidence remain for 05.07. Browser adapter stays
+legacy diagnostic only. Scoring formulas and IndexedDB schema are unchanged.
+
+A migration regression was fixed: RA now clears its previous save identity when
+explicitly retranscribing a saved recording, matching RS. The old Attempt is
+preserved; the new successful result needs an explicit save.
+
+
+Validated 05.06: 227 automated tests (33 runtime) passed without skips, plus
+mock-HTTP full speaking/IndexedDB migration, six controlled native cases, real
+digital-silence rejection, runtime recovery/native abort and archived UI smoke.
+Human 3 RA + 3 RS validation remains pending; see the detailed validation record.
+The exact-digital-silence check corrects observed empty-input ASR hallucination
+without introducing VAD thresholds or changing task scoring.

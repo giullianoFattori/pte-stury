@@ -215,3 +215,7 @@ The shared hook uses native Whisper by default, while explicit browser injection
 retains diagnostic language/install controls. Missing confidence stays absent in
 attempt metrics; engine/model strings require no schema migration and are not
 inserted into the numeric/boolean metric map.
+
+05.06 also returns 422 NO_SPEECH before inference when every normalized PCM sample
+is zero. This is an unusable-input request error; health stays ready and the
+recording remains available in the browser. Normal task scoring is unchanged.

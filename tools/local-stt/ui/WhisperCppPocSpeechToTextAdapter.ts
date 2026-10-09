@@ -1,6 +1,6 @@
-import { SpeechToTextError } from '../../domain/speech/types.ts';
+import { SpeechToTextError } from '../../../src/domain/speech/types.ts';
 
-// Deliberately not a production SpeechToTextAdapter: Activity 05 will expand its engine union.
+// Archived Activity 04.9 evidence; not the production adapter or result contract.
 export type WhisperCppPocResult = {
   text: string;
   language: 'en';

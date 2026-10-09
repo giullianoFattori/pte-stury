@@ -165,3 +165,8 @@ The shared hook aborts health/transcription operations on reset/unmount and guar
 state updates by mounted state and operation generation. Reset during native
 inference was tested through the Vite proxy: the native call aborts and cleans up,
 and stale success cannot update the new recording.
+
+05.06 validates full RA/RS save/reset/navigation through real IndexedDB. A request
+with exact digital silence exits after preprocessing as NO_SPEECH, with the same
+finally cleanup and concurrency release; no Whisper child is started. General VAD
+and learner accuracy remain later validation work.

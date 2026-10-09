@@ -120,6 +120,7 @@ export function ReadAloudPage() {
 
   async function handleTranscribe() {
     if (isSavingAttemptRef.current || !recording || recordingStatus !== 'recorded') return;
+    resetSaveState();
     await transcription.transcribe(recording.blob);
   }
 

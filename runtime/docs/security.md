@@ -164,3 +164,11 @@ The production client disallows redirects, sends only original Blob + language=e
 and maps errors to static safe domain messages. It has no cloud/browser fallback
 and no automatic retry. Browser abort propagates through the proxy's disconnected
 response to runtime cancellation. Reset/unmount also reject late results locally.
+
+## Exact digital silence (05.06)
+
+After normalization/decoded-duration validation, a bounded scan of the
+runtime-owned PCM data rejects all-zero digital silence as NO_SPEECH before
+Whisper runs. This prevents the observed silent-input hallucination without
+inventing confidence or implementing a speech/volume threshold. It is not general
+VAD: ambient-noise/quiet-silence hallucinations remain a benchmark gate.

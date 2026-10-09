@@ -94,10 +94,10 @@ Run each service in its own terminal:
 ```bash
 bash tools/local-stt/scripts/start-server.sh base.en
 node tools/local-stt/scripts/bridge.mjs
-npm run dev
+npm run dev:stt-poc
 ```
 
-Open [the dev POC](http://127.0.0.1:5173/tools/local-stt/index.html).
+Open [the dev POC](http://127.0.0.1:5178/tools/local-stt/index.html).
 Choose one of two RA or three RS cases; record with the microphone or select an
 existing app audio file, then transcribe locally. RS source audio can be played
 before the response; the source transcript is revealed only after transcription.
@@ -178,3 +178,17 @@ Primary sources: [whisper.cpp license](https://github.com/ggml-org/whisper.cpp/b
 [FFmpeg licensing](https://ffmpeg.org/legal.html). No runtime or weights are committed
 or commercially distributed by this step. Activity 05 must inventory actual bundled
 versions, options, transitive notices and redistribution obligations.
+
+
+## Archive status after Activity 05.06
+
+This evidence is preserved for reproducibility and later benchmark work. The
+entry/page/POC adapter now live in `tools/local-stt/ui/`, outside production speech
+infrastructure. TypeScript still checks them. The old proxy exists only in
+`tools/local-stt/vite.config.ts` and the dedicated `dev:stt-poc` command (5178).
+Normal Vite config has no /__local-stt proxy and normal RA/RS use /api/v1.
+
+`src/infrastructure/speech/whisperPocEvaluation.ts` remains as a pure evaluation
+utility for existing evidence/tests and possible 05.07 reuse. Production study
+routes do not import it. The fixture generator now also creates RA-M and RA-3
+for migration validation; the original five POC cases/evidence remain unchanged.

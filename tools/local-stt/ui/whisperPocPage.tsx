@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { readAloudQuestions } from '../../data/question-bank/read-aloud.ts';
-import { repeatSentenceQuestions } from '../../data/question-bank/repeat-sentence.ts';
+import { readAloudQuestions } from '../../../src/data/question-bank/read-aloud.ts';
+import { repeatSentenceQuestions } from '../../../src/data/question-bank/repeat-sentence.ts';
 import { WhisperCppPocSpeechToTextAdapter, type WhisperCppPocResult } from './WhisperCppPocSpeechToTextAdapter.ts';
-import { comparePocResponse, measureWordErrors } from './whisperPocEvaluation.ts';
+import { comparePocResponse, measureWordErrors } from '../../../src/infrastructure/speech/whisperPocEvaluation.ts';
 
 const cases = [
   { label: 'RA-1 — easy', task: 'ra', item: readAloudQuestions[0] },
@@ -82,6 +82,7 @@ export function PocPage() {
   const comparison = result ? comparePocResponse(current.task, current.item.transcript ?? '', result.text, current.item.chunks) : undefined;
   return <main style={{ maxWidth: 900, margin: '2rem auto', fontFamily: 'system-ui', padding: 24 }}>
     <h1>Local Whisper POC — Activity 04.9</h1>
+    <p>Archived developer evidence. Normal Read Aloud and Repeat Sentence use the production local runtime.</p>
     <p>Development test. Audio is sent to this machine only. Start whisper-server and the local audio bridge first.</p>
     <label>Recording case <select value={selected} disabled={recording || busy} onChange={event => { setSelected(Number(event.target.value)); reset(); }}>
       {cases.map((entry, index) => <option key={entry.label} value={index}>{entry.label}</option>)}

@@ -10,7 +10,7 @@ try {
  const errors = [];
  page.on('pageerror', error=>errors.push(error.message));
  page.on('request', request=>{const url=new URL(request.url()); if(['http:','https:'].includes(url.protocol)) assert.equal(url.hostname,'127.0.0.1');});
- await page.goto('http://127.0.0.1:5173/tools/local-stt/index.html');
+ await page.goto('http://127.0.0.1:5178/tools/local-stt/index.html');
  await page.getByRole('heading',{name:'Local Whisper POC — Activity 04.9'}).waitFor();
  const rows = [];
  for(const [index,id] of ['RA-1','RA-2','RS-1','RS-2','RS-3'].entries()) {

@@ -281,3 +281,25 @@ test('native process output is capped for stdout and stderr and protocol restric
     error => error.code === 'AUDIO_DECODE_FAILED');
   assert.equal(requests, 0);
 });
+
+
+test('exact digital silence never reaches inference, releases the gate, cleans temp and leaves health ready', async context => {
+  let inferenceCalls = 0;
+  const env = await setup(context, {}, { initializeEngine: async () => ({
+    transcribeNormalizedAudio: async () => { inferenceCalls++; return { text: 'Valid local input.', inferenceMs: 0 }; },
+  }) });
+  const silent = wav(3); silent.fill(0, 44);
+  code(await post(env, multipart([part('audio', silent, 'audio/wav'), part('language', 'en')])), 422, 'NO_SPEECH');
+  const input = join(env.base, 'silence.wav'), encoded = join(env.base, 'silence.webm');
+  await writeFile(input, silent);
+  await runMedia('/usr/bin/ffmpeg', ['-nostdin', '-v', 'error', '-i', input, '-c:a', 'libopus', '-f', 'webm', encoded], signal());
+  code(await post(env, multipart([part('audio', await readFile(encoded), 'audio/webm'), part('language', 'en')])), 422, 'NO_SPEECH');
+  assert.equal(inferenceCalls, 0);
+  await assertClean(env);
+  assert.equal((await (await fetch(env.origin + '/api/v1/health')).json()).status, 'ready');
+  // A sample below any plausible speech threshold still passes this narrow check.
+  const quiet = wav(0.2); quiet.fill(0, 44); quiet.writeInt16LE(1, 44);
+  success(await post(env, multipart([part('audio', quiet, 'audio/wav'), part('language', 'en')])));
+  assert.equal(inferenceCalls, 1);
+  await assertClean(env);
+});

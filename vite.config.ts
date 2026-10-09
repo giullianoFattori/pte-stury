@@ -11,11 +11,7 @@ export default defineConfig({
     strictPort: true,
     proxy: {
       '^/api/v1(?:/|$)': speechRuntimeProxy(),
-      '/__local-stt/transcribe': {
-        target: 'http://127.0.0.1:8766',
-        changeOrigin: true,
-        rewrite: () => '/transcribe',
-      },
+
     },
   },
 })

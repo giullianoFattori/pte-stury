@@ -1,0 +1,128 @@
+{
+  "kind": "controlled TTS + real native inference",
+  "learnerBenchmark": false,
+  "observations": [
+    {
+      "kind": "controlled real engine",
+      "itemId": "ra-001",
+      "expected": "Many students use public transport to travel to university each day because it is convenient and affordable.",
+      "transcript": "Many students use public transport to travel to university each day because it is convenient and affordable.",
+      "score": 1,
+      "errors": 0,
+      "reviews": 0,
+      "timing": {
+        "audioMs": 6660,
+        "inferenceMs": 2504,
+        "totalMs": 2748
+      },
+      "saved": true
+    },
+    {
+      "kind": "controlled real engine",
+      "itemId": "ra-003",
+      "expected": "Researchers often collect data from several sources so they can compare results and identify patterns more accurately.",
+      "transcript": "Researchers often collect data from several sources so they can compare results and identify patterns more accurately.",
+      "score": 1,
+      "errors": 0,
+      "reviews": 0,
+      "timing": {
+        "audioMs": 7320,
+        "inferenceMs": 2385,
+        "totalMs": 2594
+      },
+      "saved": true
+    },
+    {
+      "kind": "controlled real engine",
+      "itemId": "ra-006",
+      "expected": "Economic decisions are influenced by a combination of individual behaviour, government policy, market conditions, and expectations about future growth.",
+      "transcript": "Economic decisions are influenced by a combination of individual behavior, government policy, market conditions and expectations about future growth.",
+      "score": 0.9473684210526315,
+      "errors": 1,
+      "reviews": 1,
+      "timing": {
+        "audioMs": 9900,
+        "inferenceMs": 2359,
+        "totalMs": 2632
+      },
+      "saved": true
+    },
+    {
+      "kind": "controlled real engine",
+      "itemId": "rs-001",
+      "expected": "Students must arrive before nine tomorrow.",
+      "transcript": "Students must arrive before 9 tomorrow.",
+      "score": 0.8333333333333334,
+      "errors": 1,
+      "reviews": 1,
+      "timing": {
+        "audioMs": 2820,
+        "inferenceMs": 2120,
+        "totalMs": 2326
+      },
+      "saved": true
+    },
+    {
+      "kind": "controlled real engine",
+      "itemId": "rs-003",
+      "expected": "The research team will publish its findings next month.",
+      "transcript": "The research team will publish its findings next month.",
+      "score": 1,
+      "errors": 0,
+      "reviews": 0,
+      "timing": {
+        "audioMs": 3480,
+        "inferenceMs": 2357,
+        "totalMs": 2586
+      },
+      "saved": true
+    },
+    {
+      "kind": "controlled real engine",
+      "itemId": "rs-005",
+      "expected": "The university library will remain open during the examination period for all registered students.",
+      "transcript": "The University library will remain open during the examination period for all registered students.",
+      "score": 1,
+      "errors": 0,
+      "reviews": 0,
+      "timing": {
+        "audioMs": 5940,
+        "inferenceMs": 2279,
+        "totalMs": 2510
+      },
+      "saved": true
+    }
+  ],
+  "submittedFields": [
+    [
+      "audio",
+      "language"
+    ],
+    [
+      "audio",
+      "language"
+    ],
+    [
+      "audio",
+      "language"
+    ],
+    [
+      "audio",
+      "language"
+    ],
+    [
+      "audio",
+      "language"
+    ],
+    [
+      "audio",
+      "language"
+    ],
+    [
+      "audio",
+      "language"
+    ]
+  ],
+  "outboundRequests": 0,
+  "browserSttCalls": 0
+}

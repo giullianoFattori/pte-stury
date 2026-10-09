@@ -11,7 +11,9 @@
     "runtime:start": "node runtime/src/main.mjs",
     "runtime:test": "node --test runtime/tests/*.test.mjs",
     "preview": "vite preview",
-    "test:speech-browser": "node tests/speech-react-browser.mjs"
+    "test:speech-browser": "node tests/speech-react-browser.mjs",
+    "dev:stt-poc": "vite --config tools/local-stt/vite.config.ts",
+    "test:speech-migration": "node tests/speech-migration-browser.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",
