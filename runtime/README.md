@@ -1,4 +1,6 @@
-# PTE Local Speech Runtime — Activity 05.06
+# PTE Local Speech Runtime — Activity 05.08
+
+Security/resilience review: [threat model](docs/threat-model.md), [review and validation](docs/security-review-05.08.md), [logging/privacy](docs/logging-privacy.md), and [Step 05.09 packaging requirements](docs/packaging-security-requirements.md). Long controlled stress tools are separate from `npm test`; see [instructions](../tools/runtime-hardening/README.md). The 05.07 human comparison and model winner remain pending; base.en is the preserved baseline.
 
 The production Node.js ES-module runtime now transcribes locally with the pinned
 whisper.cpp v1.8.3 CLI and verified base.en weights. HTTP/runtime version remains

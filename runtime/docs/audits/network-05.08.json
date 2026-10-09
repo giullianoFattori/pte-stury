@@ -1,0 +1,56 @@
+{
+  "platform": "linux",
+  "instrumentation": "strace -f connect/sendto/sendmsg on real native ffprobe/ffmpeg; fixed production protocol/demuxer arguments",
+  "limitation": "Protocol restrictions, not an OS sandbox or proof against malicious/exploited decoder code.",
+  "findings": [
+    {
+      "tool": "ffprobe",
+      "protocol": "http",
+      "denied": true,
+      "inetOutboundSyscalls": 0
+    },
+    {
+      "tool": "ffprobe",
+      "protocol": "https",
+      "denied": true,
+      "inetOutboundSyscalls": 0
+    },
+    {
+      "tool": "ffprobe",
+      "protocol": "tcp",
+      "denied": true,
+      "inetOutboundSyscalls": 0
+    },
+    {
+      "tool": "ffprobe",
+      "protocol": "udp",
+      "denied": true,
+      "inetOutboundSyscalls": 0
+    },
+    {
+      "tool": "ffmpeg",
+      "protocol": "http",
+      "denied": true,
+      "inetOutboundSyscalls": 0
+    },
+    {
+      "tool": "ffmpeg",
+      "protocol": "https",
+      "denied": true,
+      "inetOutboundSyscalls": 0
+    },
+    {
+      "tool": "ffmpeg",
+      "protocol": "tcp",
+      "denied": true,
+      "inetOutboundSyscalls": 0
+    },
+    {
+      "tool": "ffmpeg",
+      "protocol": "udp",
+      "denied": true,
+      "inetOutboundSyscalls": 0
+    }
+  ],
+  "passed": true
+}

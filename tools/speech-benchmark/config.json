@@ -8,6 +8,7 @@
   "language": "en",
   "threads": 4,
   "backend": "CPU",
+  "nativeEnvironmentPolicy": "minimal-v1 (shared production runNative, Activity 05.08)",
   "prompt": null,
   "decoding": "production whisperArguments; other CLI defaults pinned by engine revision"
 }

@@ -1,33 +1,45 @@
-import { spawn } from 'node:child_process';
-import { open } from 'node:fs/promises';
+import { runNative } from './nativeProcess.mjs';
+import { open, lstat, access } from 'node:fs/promises';
+import { constants } from 'node:fs';
 import { AudioRequestError } from './errors.mjs';
 
 export const SYSTEM_MEDIA_TOOLS = Object.freeze({ ffmpeg: '/usr/bin/ffmpeg', ffprobe: '/usr/bin/ffprobe' });
 export const PREPROCESS_TIMEOUT_MS = 30000;
 const decodeError = () => new AudioRequestError(422, 'AUDIO_DECODE_FAILED', 'The recording could not be decoded.');
 
+const mediaUnavailable = () => new AudioRequestError(503, 'RUNTIME_UNAVAILABLE', 'The local audio tools are unavailable or changed.');
+const identity = stat => [stat.dev, stat.ino, stat.size, stat.mtimeMs, stat.ctimeMs].join(':');
+async function mediaIdentity(path) {
+  const before = await lstat(path);
+  if (!before.isFile() || before.isSymbolicLink()) throw mediaUnavailable();
+  await access(path, constants.X_OK);
+  const file = await open(path, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0) | (constants.O_NONBLOCK ?? 0));
+  try {
+    const opened = await file.stat();
+    if (!opened.isFile() || identity(opened) !== identity(before)) throw mediaUnavailable();
+    return identity(opened);
+  } finally { await file.close(); }
+}
+
+// Development trusts the system install at startup. Packaging must authenticate
+// hashes in the shipped manifest first; fingerprints only detect later mutation.
+export async function createMediaIntegrity(tools = SYSTEM_MEDIA_TOOLS) {
+  let identities;
+  try { identities = await Promise.all([mediaIdentity(tools.ffprobe), mediaIdentity(tools.ffmpeg)]); }
+  catch { throw mediaUnavailable(); }
+  return Object.freeze({ async verify() {
+    try {
+      const now = await Promise.all([mediaIdentity(tools.ffprobe), mediaIdentity(tools.ffmpeg)]);
+      if (now.some((value, index) => value !== identities[index])) throw mediaUnavailable();
+    } catch { throw mediaUnavailable(); }
+  } });
+}
+
 export async function runMedia(executable, args, signal) {
-  signal.throwIfAborted();
-  return new Promise((resolve, reject) => {
-    const child = spawn(executable, args, { shell: false, stdio: ['ignore', 'pipe', 'pipe'] });
-    const chunks = [];
-    let size = 0, failure;
-    const stop = error => { failure ??= error; child.kill('SIGKILL'); };
-    const abort = () => stop(signal.reason);
-    signal.addEventListener('abort', abort, { once: true });
-    if (signal.aborted) abort();
-    child.stdout.on('data', chunk => {
-      size += chunk.length;
-      if (size > 65536) stop(decodeError()); else chunks.push(chunk);
-    });
-    let stderrBytes = 0;
-    child.stderr.on('data', chunk => { stderrBytes += chunk.length; if (stderrBytes > 65536) stop(decodeError()); });
-    child.on('error', () => { failure ??= decodeError(); });
-    child.once('close', code => {
-      signal.removeEventListener('abort', abort);
-      if (failure || code !== 0) reject(failure ?? decodeError()); else resolve(Buffer.concat(chunks).toString('utf8'));
-    });
-  });
+  const output = await runNative(executable, args, { signal, timeoutMs: PREPROCESS_TIMEOUT_MS,
+    unavailable: decodeError, failed: decodeError,
+    timeout: () => new AudioRequestError(504, 'INFERENCE_TIMEOUT', 'Local audio preprocessing timed out.') });
+  return output.toString('utf8');
 }
 
 export async function detectContainer(path) {

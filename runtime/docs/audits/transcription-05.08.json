@@ -1,0 +1,132 @@
+{
+  "controlled": true,
+  "realPreprocessing": true,
+  "realWhisperModel": false,
+  "sequentialRequests": 100,
+  "warmupRequests": 20,
+  "gc": "Explicit GC in test-only parent at checkpoints; RSS may retain allocator high water.",
+  "baseline": {
+    "rssBytes": 66002944,
+    "fdCount": 22,
+    "sockets": 3,
+    "pipes": 8,
+    "childCount": 0,
+    "heapUsed": 8519696,
+    "external": 4086338,
+    "arrayBuffers": 48243
+  },
+  "checkpoints": [
+    {
+      "request": 10,
+      "rssBytes": 67743744,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8515496,
+      "external": 4300849,
+      "arrayBuffers": 48243
+    },
+    {
+      "request": 20,
+      "rssBytes": 69308416,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8515432,
+      "external": 4292657,
+      "arrayBuffers": 48243
+    },
+    {
+      "request": 30,
+      "rssBytes": 69386240,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8534232,
+      "external": 4300849,
+      "arrayBuffers": 48243
+    },
+    {
+      "request": 40,
+      "rssBytes": 69410816,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8556856,
+      "external": 4300849,
+      "arrayBuffers": 154846
+    },
+    {
+      "request": 50,
+      "rssBytes": 75169792,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8604728,
+      "external": 4292657,
+      "arrayBuffers": 48243
+    },
+    {
+      "request": 60,
+      "rssBytes": 75276288,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8621928,
+      "external": 4300849,
+      "arrayBuffers": 48243
+    },
+    {
+      "request": 70,
+      "rssBytes": 75325440,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8641360,
+      "external": 4300849,
+      "arrayBuffers": 48243
+    },
+    {
+      "request": 80,
+      "rssBytes": 75382784,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8654520,
+      "external": 4292657,
+      "arrayBuffers": 48243
+    },
+    {
+      "request": 90,
+      "rssBytes": 75526144,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8708088,
+      "external": 4300849,
+      "arrayBuffers": 48243
+    },
+    {
+      "request": 100,
+      "rssBytes": 75563008,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "heapUsed": 8711968,
+      "external": 4300849,
+      "arrayBuffers": 336708
+    }
+  ],
+  "passed": true,
+  "memoryConclusion": "Review measured RSS plateau/trend; no arbitrary model-RAM threshold is asserted."
+}

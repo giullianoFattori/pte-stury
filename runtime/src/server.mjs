@@ -9,16 +9,17 @@ import { createTranscriptionGate } from './transcriptionGate.mjs';
 import { processAudioRequest, requestBudgetMs } from './audioRequest.mjs';
 import { createEngineState } from './engineState.mjs';
 import { createWhisperService } from './whisper.mjs';
+import { createMediaIntegrity } from './media.mjs';
 
-function trustedRequest(request, config) {
+export function trustedRequest(request, config) {
   const expectedHost = `127.0.0.1:${config.port}`;
   if (request.rawHeaders.length > 64) return false;
-  const counts = { host: 0, origin: 0 };
+  const counts = { host: 0, origin: 0, 'content-type': 0, 'sec-fetch-site': 0, 'content-length': 0, 'transfer-encoding': 0 };
   for (let i = 0; i < request.rawHeaders.length; i += 2) {
     const name = request.rawHeaders[i].toLowerCase();
     if (Object.hasOwn(counts, name)) counts[name]++;
   }
-  return request.socket.remoteAddress === '127.0.0.1' && counts.host === 1 && counts.origin <= 1
+  return request.socket.remoteAddress === '127.0.0.1' && counts.host === 1 && Object.values(counts).every(count => count <= 1)
     && request.headers.host === expectedHost
     && (request.headers.origin === undefined || request.headers.origin === `http://${expectedHost}`)
     && (request.headers['sec-fetch-site'] === undefined || ['same-origin', 'none'].includes(request.headers['sec-fetch-site']));
@@ -36,7 +37,11 @@ export async function startRuntime(input, options = {}) {
   const server = createServer({ maxHeaderSize: 8192, headersTimeout: 5000, requestTimeout: 10000, keepAliveTimeout: 1000, connectionsCheckingInterval: 1000 }, (request, response) => {
     const task = handle(request, response);
     pending.add(task);
-    void task.finally(() => pending.delete(task));
+    void task.then(() => pending.delete(task), () => {
+      pending.delete(task);
+      engineState.markError('INTERNAL_ERROR', 'The runtime request could not be handled.');
+      request.destroy();
+    });
   });
   async function handle(request, response) {
     try {
@@ -95,7 +100,7 @@ export async function startRuntime(input, options = {}) {
     throw new RuntimeStartupError(error.code === 'EADDRINUSE' ? 'PORT_IN_USE' : 'LISTEN_FAILED',
       error.code === 'EADDRINUSE' ? 'Runtime port is already in use.' : 'Runtime loopback listener could not start.');
   }
-  try { services.temp = await createTempStore(config.port, options.tempBase); initialized(); } catch {
+  try { services.temp = await (options.createTempStore ?? createTempStore)(config.port, options.tempBase); initialized(); } catch {
     stopping = true; initialized();
     for (const socket of sockets) socket.destroy();
     await new Promise(resolve => server.close(resolve));
@@ -106,6 +111,7 @@ export async function startRuntime(input, options = {}) {
   const startupTimer = setTimeout(() => startupController.abort(new AudioRequestError(503, 'MODEL_UNAVAILABLE', 'The local speech engine could not initialize in time.')), requestBudgetMs(config));
   const engineInitialization = (async () => {
     try {
+      services.mediaIntegrity = await createMediaIntegrity(options.preprocessOptions?.tools);
       const initialize = options.initializeEngine ?? createWhisperService;
       services.whisper = await initialize({ modelId: config.model, temp: services.temp, signal: startupController.signal, timeoutMs: config.inferenceTimeoutMs });
       startupController.signal.throwIfAborted();

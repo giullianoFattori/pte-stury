@@ -20,19 +20,34 @@ export async function main(args = process.argv.slice(2), options = {}) {
       log('engine initialization complete', { health: state.status, model: state.modelId,
         ...(state.error ? { code: state.error.code } : {}) });
     });
-    let stopping = false;
-    const shutdown = async () => {
-      if (stopping) return;
-      stopping = true;
-      log('shutdown started');
-      try { await runtime.close(); log('shutdown complete'); }
-      catch { console.error('Runtime shutdown failed.'); process.exitCode = 1; }
-      finally { process.removeListener('SIGINT', shutdown); process.removeListener('SIGTERM', shutdown); }
+    let shutdownTask;
+    let fatalTimer;
+    const fatal = () => {
+      // Never render the exception, stack, request or native diagnostic.
+      process.exitCode = 1;
+      log('runtime fatal', { code: 'INTERNAL_ERROR' });
+      fatalTimer ??= setTimeout(() => process.exit(1), 4000);
+      void shutdown().finally(() => { clearTimeout(fatalTimer); process.exit(1); });
+    };
+    const shutdown = () => {
+      if (shutdownTask) return shutdownTask;
+      shutdownTask = (async () => {
+        log('shutdown started');
+        try { await runtime.close(); log('shutdown complete'); }
+        catch { log('shutdown failed', { code: 'INTERNAL_ERROR' }); process.exitCode = 1; }
+        finally {
+          process.removeListener('SIGINT', shutdown); process.removeListener('SIGTERM', shutdown);
+          process.removeListener('uncaughtException', fatal); process.removeListener('unhandledRejection', fatal);
+        }
+      })();
+      return shutdownTask;
     };
     process.on('SIGINT', shutdown);
     process.on('SIGTERM', shutdown);
+    process.on('uncaughtException', fatal);
+    process.on('unhandledRejection', fatal);
     runtime.server.on('error', () => {
-      console.error('Runtime listener failed.');
+      log('listener failed', { code: 'INTERNAL_ERROR' });
       process.exitCode = 1;
       void shutdown();
     });

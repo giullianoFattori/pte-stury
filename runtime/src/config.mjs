@@ -1,8 +1,12 @@
-import { open } from 'node:fs/promises';
+import { open, lstat } from 'node:fs/promises';
+import { constants } from 'node:fs';
 import { RuntimeStartupError } from './errors.mjs';
 
 export const DEFAULT_CONFIG = new URL('../config/runtime.example.json', import.meta.url);
 const KEYS = ['apiVersion', 'host', 'port', 'model', 'maxUploadBytes', 'maxAudioSeconds', 'inferenceTimeoutMs', 'maxConcurrentTranscriptions'];
+// Operational ceilings, not measured model latency or RAM acceptance targets.
+export const RESOURCE_CEILINGS = Object.freeze({ maxUploadBytes: 12 * 1024 * 1024,
+  maxAudioSeconds: 180, inferenceTimeoutMs: 300000 });
 
 export function validateConfig(value) {
   const fail = message => { throw new RuntimeStartupError('INVALID_CONFIG', message); };
@@ -14,7 +18,7 @@ export function validateConfig(value) {
   if (!Number.isSafeInteger(value.port) || value.port < 1 || value.port > 65535) fail('Runtime config port must be an integer from 1 to 65535.');
   if (value.model !== 'base.en' && value.model !== 'small.en') fail('Runtime config model is not allowlisted.');
   for (const key of ['maxUploadBytes', 'maxAudioSeconds', 'inferenceTimeoutMs']) {
-    if (!Number.isSafeInteger(value[key]) || value[key] <= 0) fail('Runtime config limits must be positive safe integers.');
+    if (!Number.isSafeInteger(value[key]) || value[key] <= 0 || value[key] > RESOURCE_CEILINGS[key]) fail('Runtime config limits must be positive integers within the documented operational ceilings.');
   }
   if (value.inferenceTimeoutMs > 2147483647 - 46000) fail('Runtime inference timeout exceeds the supported timer budget.');
   if (value.maxConcurrentTranscriptions !== 1) fail('Runtime config requires one transcription slot.');
@@ -24,8 +28,11 @@ export function validateConfig(value) {
 export async function loadConfig(path = DEFAULT_CONFIG) {
   let file;
   try {
-    file = await open(path, 'r');
+    const before = await lstat(path);
+    if (!before.isFile() || before.isSymbolicLink()) throw new RuntimeStartupError('INVALID_CONFIG', 'Runtime config must be a regular non-symlink JSON file.');
+    file = await open(path, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0) | (constants.O_NONBLOCK ?? 0));
     const stat = await file.stat();
+    if (stat.dev !== before.dev || stat.ino !== before.ino) throw new RuntimeStartupError('INVALID_CONFIG', 'Runtime config changed while being opened.');
     if (!stat.isFile() || stat.size > 16384) throw new RuntimeStartupError('INVALID_CONFIG', 'Runtime config must be a small regular JSON file.');
     const bytes = Buffer.alloc(16385);
     let bytesRead = 0;
@@ -36,7 +43,9 @@ export async function loadConfig(path = DEFAULT_CONFIG) {
     }
     if (bytesRead > 16384) throw new RuntimeStartupError('INVALID_CONFIG', 'Runtime config exceeds its size limit.');
     let value;
-    try { value = JSON.parse(bytes.subarray(0, bytesRead).toString('utf8')); }
+    const after = await file.stat();
+    if (stat.size !== after.size || stat.mtimeMs !== after.mtimeMs || stat.ctimeMs !== after.ctimeMs) throw new RuntimeStartupError('INVALID_CONFIG', 'Runtime config changed while being read.');
+    try { value = JSON.parse(new TextDecoder('utf-8', { fatal: true, ignoreBOM: true }).decode(bytes.subarray(0, bytesRead))); }
     catch { throw new RuntimeStartupError('INVALID_CONFIG', 'Runtime config contains invalid JSON.'); }
     return validateConfig(value);
   } catch (error) {

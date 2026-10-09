@@ -4,6 +4,10 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "runtime:stress:restart": "node tools/runtime-hardening/restart-stress.mjs",
+    "runtime:stress:transcribe": "node tools/runtime-hardening/transcription-stress.mjs",
+    "runtime:stress:slow": "node tools/runtime-hardening/slow-client.mjs",
+    "runtime:audit:network": "node tools/runtime-hardening/network-audit.mjs",
     "benchmark:speech": "node tools/speech-benchmark/benchmark.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",

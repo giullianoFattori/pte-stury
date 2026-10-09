@@ -1,5 +1,7 @@
 # Runtime lifecycle — Activity 05.04
 
+05.08 preserves the lifecycle and adds operational config ceilings, decoder fingerprint checks, shared bounded native execution with POSIX process groups/minimal environment, and conservative fatal/storage failure handling. Normal abort/timeout attempts SIGTERM, gives 100ms grace, then SIGKILL if needed; child close is awaited and remaining owned group members are killed. A fatal exception/rejection emits only a fixed code, attempts shutdown and exits nonzero (4s final deadline). No automatic engine/model/download/fallback/retry recovery is added. See [review evidence](security-review-05.08.md) and [residual risks](threat-model.md), especially actual cleanup failures, OS crash dumps, PID reuse and Windows child trees.
+
 The Node.js ES-module runtime now implements metadata, audio ingestion and local
 Whisper CLI transcription. It verifies models at startup and reloads the configured
 model per CLI request. It does not launch the app or provide an installer. Start

@@ -23,5 +23,5 @@ export function sendJson(response, status, body, headers = {}) {
 export function rejectSocket(socket, status = 400, message = 'The runtime request is invalid.') {
   if (!socket.writable || socket.destroyed) return;
   const body = JSON.stringify(errorBody('INVALID_REQUEST', message));
-  socket.end(`HTTP/1.1 ${status} ${status === 404 ? 'Not Found' : 'Bad Request'}\r\nContent-Type: application/json; charset=utf-8\r\nCache-Control: no-store\r\nConnection: close\r\nContent-Length: ${Buffer.byteLength(body)}\r\n\r\n${body}`);
+  socket.end(`HTTP/1.1 ${status} ${status === 404 ? 'Not Found' : 'Bad Request'}\r\nContent-Type: application/json; charset=utf-8\r\nCache-Control: no-store\r\nX-Content-Type-Options: nosniff\r\nConnection: close\r\nContent-Length: ${Buffer.byteLength(body)}\r\n\r\n${body}`);
 }

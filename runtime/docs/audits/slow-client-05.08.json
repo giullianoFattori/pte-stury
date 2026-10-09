@@ -1,0 +1,31 @@
+{
+  "controlled": true,
+  "productionDeadlines": true,
+  "results": [
+    {
+      "mode": "slow-headers",
+      "elapsedMs": 5917,
+      "recovered": true,
+      "requestTempEntries": 0
+    },
+    {
+      "mode": "slow-body",
+      "elapsedMs": 10701,
+      "recovered": true,
+      "requestTempEntries": 0
+    },
+    {
+      "mode": "stalled-chunked",
+      "elapsedMs": 10761,
+      "recovered": true,
+      "requestTempEntries": 0
+    },
+    {
+      "mode": "half-open",
+      "elapsedMs": 5607,
+      "recovered": true,
+      "requestTempEntries": 0
+    }
+  ],
+  "passed": true
+}

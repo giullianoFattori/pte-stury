@@ -1,0 +1,25 @@
+{
+  "controlled": true,
+  "tools": [
+    "ss -ltn",
+    "ps pid/ppid/pgid/stat"
+  ],
+  "listenerIpv4LoopbackOnly": true,
+  "results": [
+    {
+      "mode": "abort",
+      "observedOwnedProcessGroup": true,
+      "nativeProcessAliveAfter": false,
+      "requestTempEntriesAfter": 0,
+      "recovered": true
+    },
+    {
+      "mode": "timeout",
+      "observedOwnedProcessGroup": true,
+      "nativeProcessAliveAfter": false,
+      "requestTempEntriesAfter": 0,
+      "recovered": true
+    }
+  ],
+  "passed": true
+}

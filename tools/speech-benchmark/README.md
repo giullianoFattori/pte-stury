@@ -1,5 +1,7 @@
 # Human speech model benchmark
 
+05.08 replaces benchmark-only spawning with production `runNative`, sharing minimal environment, bounded streams and abort/termination policy. Reports explicitly record `nativeEnvironmentPolicy: minimal-v1` in configuration and Git identity; decoding/preprocessing/WER normalization remain unchanged. Earlier results must retain their original settings/revision when compared. The human corpus and model choice remain pending.
+
 The production default stays `base.en` until verified human recordings support a decision. Controlled/TTS audio cannot satisfy this gate. This tool uses no application storage or learner scoring and adds no model dropdown. Run on Node 22.18+ with native TypeScript support, the same ffmpeg/ffprobe and pinned whisper.cpp build as production.
 
 ```bash

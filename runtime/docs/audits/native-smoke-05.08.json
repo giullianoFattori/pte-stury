@@ -1,0 +1,32 @@
+{
+  "controlledTts": true,
+  "humanBenchmark": false,
+  "model": "base.en",
+  "modelSha256": "a03779c86df3323075f5e796cb2ce5029f00ec8869eee3fdfb897afe36c6d002",
+  "memoryMethod": "Child /proc VmHWM sampled every 10ms; lower bound, separate from Node parent RSS.",
+  "policy": "Observed baseline smoke only. No final timeout/RAM/model recommendation derived.",
+  "runs": [
+    {
+      "repetition": 1,
+      "inferenceMs": 4149,
+      "peakWhisperChildRssBytes": 298070016,
+      "audioMs": 6705,
+      "rtf": 0.6187919463087248
+    },
+    {
+      "repetition": 2,
+      "inferenceMs": 4105,
+      "peakWhisperChildRssBytes": 297857024,
+      "audioMs": 6705,
+      "rtf": 0.6122296793437733
+    },
+    {
+      "repetition": 3,
+      "inferenceMs": 2769,
+      "peakWhisperChildRssBytes": 298102784,
+      "audioMs": 6705,
+      "rtf": 0.4129753914988814
+    }
+  ],
+  "passed": true
+}

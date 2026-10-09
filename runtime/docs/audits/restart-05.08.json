@@ -1,0 +1,208 @@
+{
+  "controlled": true,
+  "realPreprocessing": true,
+  "realWhisperModel": false,
+  "cycles": [
+    {
+      "cycle": 1,
+      "rssBytes": 63131648,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 2,
+      "rssBytes": 63029248,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 3,
+      "rssBytes": 63164416,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 4,
+      "rssBytes": 63053824,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 5,
+      "rssBytes": 63115264,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 6,
+      "rssBytes": 62844928,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 7,
+      "rssBytes": 63037440,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 8,
+      "rssBytes": 63111168,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 9,
+      "rssBytes": 63143936,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 10,
+      "rssBytes": 63066112,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 11,
+      "rssBytes": 63021056,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 12,
+      "rssBytes": 63164416,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 13,
+      "rssBytes": 63062016,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 14,
+      "rssBytes": 63156224,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 15,
+      "rssBytes": 63111168,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 16,
+      "rssBytes": 63045632,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 17,
+      "rssBytes": 63037440,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 18,
+      "rssBytes": 63000576,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 19,
+      "rssBytes": 63172608,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    },
+    {
+      "cycle": 20,
+      "rssBytes": 63160320,
+      "fdCount": 22,
+      "sockets": 3,
+      "pipes": 8,
+      "childCount": 0,
+      "tempEntriesAfterStop": 0,
+      "nativeChildAlive": false
+    }
+  ],
+  "passed": true
+}

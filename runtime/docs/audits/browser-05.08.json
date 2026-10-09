@@ -1,0 +1,87 @@
+{
+  "controlledTts": true,
+  "humanBenchmark": false,
+  "engine": "whisper.cpp",
+  "model": "base.en",
+  "realMediaRecorder": true,
+  "realIndexedDb": true,
+  "observations": [
+    {
+      "itemId": "ra-001",
+      "task": "ra",
+      "savedScore": 1,
+      "errorCount": 0,
+      "reviewCount": 0,
+      "timing": {
+        "audioMs": 6660,
+        "inferenceMs": 3545,
+        "totalMs": 3853
+      }
+    },
+    {
+      "itemId": "ra-003",
+      "task": "ra",
+      "savedScore": 1,
+      "errorCount": 0,
+      "reviewCount": 0,
+      "timing": {
+        "audioMs": 7320,
+        "inferenceMs": 3614,
+        "totalMs": 3921
+      }
+    },
+    {
+      "itemId": "ra-006",
+      "task": "ra",
+      "savedScore": 0.9473684210526315,
+      "errorCount": 1,
+      "reviewCount": 1,
+      "timing": {
+        "audioMs": 9900,
+        "inferenceMs": 3718,
+        "totalMs": 4038
+      }
+    },
+    {
+      "itemId": "rs-001",
+      "task": "rs",
+      "savedScore": 0.8333333333333334,
+      "errorCount": 1,
+      "reviewCount": 1,
+      "timing": {
+        "audioMs": 2820,
+        "inferenceMs": 3395,
+        "totalMs": 3695
+      }
+    },
+    {
+      "itemId": "rs-003",
+      "task": "rs",
+      "savedScore": 1,
+      "errorCount": 0,
+      "reviewCount": 0,
+      "timing": {
+        "audioMs": 3480,
+        "inferenceMs": 3465,
+        "totalMs": 3752
+      }
+    },
+    {
+      "itemId": "rs-005",
+      "task": "rs",
+      "savedScore": 1,
+      "errorCount": 0,
+      "reviewCount": 0,
+      "timing": {
+        "audioMs": 5940,
+        "inferenceMs": 3557,
+        "totalMs": 3877
+      }
+    }
+  ],
+  "outboundRequests": 0,
+  "browserSttCalls": 0,
+  "digitalSilenceRejected": true,
+  "wfdPlaybackComparisonPersistencePassed": true,
+  "passed": true
+}

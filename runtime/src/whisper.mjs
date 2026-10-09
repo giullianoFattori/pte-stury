@@ -1,7 +1,7 @@
 import { open, lstat, access, writeFile } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { createHash } from 'node:crypto';
-import { spawn } from 'node:child_process';
+import { runNative, NATIVE_OUTPUT_LIMIT } from './nativeProcess.mjs';
 import { performance } from 'node:perf_hooks';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
@@ -22,7 +22,7 @@ export const DEVELOPMENT_ARTIFACTS = Object.freeze({
   modelRoot: fileURLToPath(new URL('../../.local-runtime/models/', import.meta.url)),
   models: MODEL_MANIFEST,
 });
-export const WHISPER_OUTPUT_LIMIT = 65536;
+export const WHISPER_OUTPUT_LIMIT = NATIVE_OUTPUT_LIMIT;
 const unavailableEngine = () => new AudioRequestError(503, 'RUNTIME_UNAVAILABLE', 'The local Whisper engine is unavailable.');
 const unavailableModel = () => new AudioRequestError(503, 'MODEL_UNAVAILABLE', 'The local speech model is unavailable or invalid.');
 const inferenceFailed = () => new AudioRequestError(500, 'INFERENCE_FAILED', 'Local speech recognition failed.');
@@ -33,36 +33,17 @@ export function whisperArguments(modelPath, normalizedPath) {
 }
 
 export async function runWhisper(executable, args, signal, timeoutMs) {
-  signal.throwIfAborted();
-  return new Promise((resolve, reject) => {
-    const child = spawn(executable, args, { shell: false, stdio: ['ignore', 'pipe', 'pipe'] });
-    let stdoutBytes = 0, stderrBytes = 0, failure;
-    const chunks = [];
-    const stop = error => { failure ??= error; child.kill('SIGKILL'); };
-    const abort = () => stop(signal.reason);
-    signal.addEventListener('abort', abort, { once: true });
-    if (signal.aborted) abort();
-    const timer = setTimeout(() => stop(new AudioRequestError(504, 'INFERENCE_TIMEOUT', 'Local speech recognition timed out.')), timeoutMs);
-    child.stdout.on('data', chunk => {
-      stdoutBytes += chunk.length;
-      if (stdoutBytes > WHISPER_OUTPUT_LIMIT) stop(inferenceFailed()); else chunks.push(chunk);
-    });
-    // Drain without retaining native diagnostics (which may contain paths).
-    child.stderr.on('data', chunk => { stderrBytes += chunk.length; if (stderrBytes > WHISPER_OUTPUT_LIMIT) stop(inferenceFailed()); });
-    child.on('error', error => { failure ??= ['ENOENT', 'EACCES', 'ENOEXEC'].includes(error.code) ? unavailableEngine() : inferenceFailed(); });
-    child.once('close', code => {
-      clearTimeout(timer); signal.removeEventListener('abort', abort);
-      if (failure || code !== 0) { reject(failure ?? inferenceFailed()); return; }
-      try { resolve(new TextDecoder('utf-8', { fatal: true }).decode(Buffer.concat(chunks))); }
-      catch { reject(inferenceFailed()); }
-    });
-  });
+  const output = await runNative(executable, args, { signal, timeoutMs,
+    unavailable: unavailableEngine, failed: inferenceFailed,
+    timeout: () => new AudioRequestError(504, 'INFERENCE_TIMEOUT', 'Local speech recognition timed out.') });
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(output); }
+  catch { throw inferenceFailed(); }
 }
 
 export function extractTranscript(output) {
-  if (typeof output !== 'string' || [...output].some(char => {
+  if (typeof output !== 'string' || Buffer.byteLength(output, 'utf8') > WHISPER_OUTPUT_LIMIT || [...output].some(char => {
     const code = char.codePointAt(0);
-    return code < 9 || code === 11 || code === 12 || (code > 13 && code < 32) || code === 127;
+    return code < 9 || code === 11 || code === 12 || (code > 13 && code < 32) || (code >= 127 && code <= 159);
   })
     || /\[\d{2}:\d{2}:\d{2}\.\d{3}\s*-->/.test(output)
     || /^\s*(?:whisper_[a-z0-9_]+|ggml_[a-z0-9_]+|main|system_info):/m.test(output)) throw inferenceFailed();
@@ -82,7 +63,7 @@ async function requireUnchanged(path, expected, unavailable) {
   catch { throw unavailable(); }
 }
 async function verifyBuild(path) {
-  const file = await open(path, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0));
+  const file = await open(path, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0) | (constants.O_NONBLOCK ?? 0));
   try {
     const info = await file.stat();
     if (!info.isFile() || info.size > 4096) throw unavailableEngine();
@@ -94,7 +75,7 @@ async function verifyBuild(path) {
   } finally { await file.close(); }
 }
 async function verifyModel(path, manifest, signal) {
-  const file = await open(path, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0));
+  const file = await open(path, constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0) | (constants.O_NONBLOCK ?? 0));
   try {
     const before = await file.stat();
     if (!before.isFile() || before.size < manifest.minBytes || before.size > manifest.maxBytes) throw unavailableModel();

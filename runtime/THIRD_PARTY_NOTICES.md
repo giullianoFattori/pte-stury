@@ -51,6 +51,8 @@ Primary license sources: [whisper.cpp MIT](https://github.com/ggml-org/whisper.c
 The final packaged Node version, launcher and preprocessing choices remain open until later
 Activity 05 steps; this document does not choose them or the final STT model.
 
+05.08 adds no runtime npm dependency. See [development build/dependency audit](docs/audits/build-dependencies-05.08.json) and [packaging security requirements](docs/packaging-security-requirements.md). SHA-256 identity and exact size are mandatory for every shipped model, decoder, engine and owned native dependency; the current development small.en SHA-1 check is not the final packaged identity policy. Unresolved distribution gates include the exact ffmpeg build (this system build enables GPL), complete corresponding source/build/patch distribution, transitive codec/library licenses, Node dependency notices, frontend dependency notices and launcher/update architecture. No final redistribution-compliance claim is made in 05.08.
+
 
 05.05 adds browser-native fetch/FormData and the existing React/Vite integration;
 it adds no runtime HTTP/JSON library or application dependency. The optional browser

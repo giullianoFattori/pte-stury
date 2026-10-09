@@ -1,5 +1,9 @@
 # Local runtime security and privacy — Activity 05.04
 
+05.08 review adds [the threat model](threat-model.md), [validation evidence](security-review-05.08.md), [logging policy](logging-privacy.md) and [packaging gates](packaging-security-requirements.md). Config limits now have operational ceilings (12 MiB, 180s audio, 300s configurable inference); defaults remain 12 MiB/180s/60s/one slot. Config refuses symlinks/nonregular files, invalid UTF-8/BOM/trailing data and detectable mutation during reading. Multipart refuses header/filename controls and zero-progress writes. Critical duplicate headers fail closed, including Content-Type and Fetch Metadata; raw parser-error responses include nosniff.
+
+Native execution is now shared with the benchmark: minimal environment, fixed absolute executable/arguments, no shell/stdin, bounded streams, deadline/abort, POSIX process-group SIGTERM followed by SIGKILL after 100ms and awaited close. Windows direct-child behavior requires packaging-specific tree ownership. Decoder identity is captured before readiness and checked before/after preprocessing; development still trusts system installation, while packaging must verify SHA-256 inventory. Runtime fatal exceptions/rejections log a static structured code, attempt shutdown and exit nonzero. Storage/cleanup failures mark non-ready; ordinary disconnects/malformed media/native inference failure remain isolated request failures.
+
 ## HTTP trust boundary
 
 Bind strictly to IPv4 `127.0.0.1`. Validate peer address, exact

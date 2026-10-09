@@ -15,6 +15,8 @@ export function uploadBoundary(request, config) {
 }
 
 function parsePart(bytes, seen) {
+  // Filenames are ignored, but header controls must still fail syntax validation.
+  if ([...bytes].some(byte => byte < 32 && ![9, 10, 13].includes(byte) || byte === 127)) throw invalidAudioRequest();
   const lines = bytes.toString('latin1').split('\r\n');
   if (lines.length > 4) throw invalidAudioRequest();
   const headers = {};
@@ -24,8 +26,8 @@ function parsePart(bytes, seen) {
     headers[match[1].toLowerCase()] = match[2];
   }
   // Filename is syntax-checked only; it is never used for storage or logging.
-  const disposition = /^form-data;\s*name="(audio|language)"(?:;\s*filename="[^"\r\n]{0,255}")?$/i.exec(headers['content-disposition'] ?? '');
-  if (!disposition) throw invalidAudioRequest();
+  const disposition = /^form-data;\s*name="(audio|language)"(?:;\s*filename="([^"\r\n]{0,255})")?$/i.exec(headers['content-disposition'] ?? '');
+  if (!disposition || [...(disposition[2] ?? '')].some(char => char.charCodeAt(0) < 32 || char.charCodeAt(0) === 127)) throw invalidAudioRequest();
   const name = disposition[1];
   const file = /;\s*filename=/.test(headers['content-disposition']);
   if (seen.has(name) || (name === 'audio') !== file) throw invalidAudioRequest();
@@ -52,7 +54,12 @@ export async function receiveAudio(request, path, boundary, config, signal) {
       audioBytes += data.length;
       if (audioBytes > config.maxUploadBytes) throw new AudioRequestError(413, 'AUDIO_TOO_LARGE', 'The recording is too large.');
       let offset = 0;
-      while (offset < data.length) { signal.throwIfAborted(); offset += (await file.write(data, offset, data.length - offset)).bytesWritten; }
+      while (offset < data.length) {
+        signal.throwIfAborted();
+        const { bytesWritten } = await file.write(data, offset, data.length - offset);
+        if (!bytesWritten) throw new Error('Temporary storage write failed.');
+        offset += bytesWritten;
+      }
     }
   };
   try {

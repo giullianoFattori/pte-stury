@@ -32,7 +32,9 @@ export async function processAudioRequest(request, response, config, services) {
     controller.signal.throwIfAborted();
     files = await services.temp.create();
     const upload = await receiveAudio(request, files.inputPath, boundary, config, controller.signal);
+    await services.mediaIntegrity.verify();
     const audio = await preprocessAudio(files, config, controller.signal, services.preprocessOptions);
+    await services.mediaIntegrity.verify();
     controller.signal.throwIfAborted();
     evidence = { requestId: randomUUID(), ...upload, ...audio };
     await services.onNormalized?.(evidence, controller.signal);
@@ -42,6 +44,10 @@ export async function processAudioRequest(request, response, config, services) {
   } catch (error) {
     failure = error;
     if (['MODEL_UNAVAILABLE', 'RUNTIME_UNAVAILABLE'].includes(error.code)) services.engineState.markError(error.code, error.message);
+    if (!(error instanceof AudioRequestError) && !controller.signal.aborted
+      && !['ECONNRESET', 'ERR_STREAM_PREMATURE_CLOSE', 'ABORT_ERR'].includes(error.code)) {
+      services.engineState.markError('INTERNAL_ERROR', 'Runtime audio processing is unavailable.');
+    }
   } finally {
     try { await files?.remove(); } catch {
       services.cleanupFailed = true;
