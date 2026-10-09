@@ -151,3 +151,17 @@ block subsequent readiness. Successful text/timings are passed through one respo
 builder with fixed engine/language/local claim and allowlisted model; all timings
 must be non-negative safe integer ms and total must be at least inference. HTTP
 serialization follows cleanup and cancellation checks. No stale success is sent.
+
+
+## Browser integration implemented in 05.05
+
+Open the UI independently of runtime startup. An explicit health check reports
+ready/non-ready/incompatible/unreachable without installing browser language packs.
+If runtime starts later, checking again recovers without reload. If it stops after
+a ready check, transcription reports unavailable and keeps the recording. The
+learner restarts/checks/retries explicitly; no automatic replay or fallback occurs.
+
+The shared hook aborts health/transcription operations on reset/unmount and guards
+state updates by mounted state and operation generation. Reset during native
+inference was tested through the Vite proxy: the native call aborts and cleans up,
+and stale success cannot update the new recording.

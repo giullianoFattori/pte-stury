@@ -197,3 +197,21 @@ optional model and timings; existing browser results remain valid without native
 metadata. Optional domain timings, when supplied, obey the same integer/finite/
 non-negative rules and total/inference relationship. These helpers are not an HTTP
 client, server, adapter integration or persistence migration.
+
+
+## Production browser client (05.05)
+
+`speechRuntimeClient.ts` uses relative /api/v1 routes, parses health and
+transcription with the domain contract and converts to TranscriptionResult using
+the single wire-to-domain mapper. Non-success responses are parsed as typed
+runtime errors and mapped to static SpeechToTextError messages. Malformed responses
+fail closed; connection failures map to local-unavailable; incompatibility maps to
+unsupported. Requests forward AbortSignal, disable redirects and never retry.
+
+FormData contains exactly audio (original recorded Blob, MIME unchanged) and
+language=en. Browser-generated multipart Content-Type/boundary is left intact.
+The native adapter maps only ready to available and exposes no installLanguage.
+The shared hook uses native Whisper by default, while explicit browser injection
+retains diagnostic language/install controls. Missing confidence stays absent in
+attempt metrics; engine/model strings require no schema migration and are not
+inserted into the numeric/boolean metric map.

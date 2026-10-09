@@ -98,7 +98,7 @@ traverses symlink targets. See [lifecycle](lifecycle.md) for the exact stale-ent
 policy and ambiguous-lock behavior. No learner recordings are retained by default.
 A cleanup failure blocks audio requests and reports non-ready error health.
 
-Microphone → browser → localhost → local preprocessing → future local Whisper →
+Microphone → browser → localhost → local preprocessing → local Whisper →
 browser. No answer prompting, scoring or learner identity belongs to the runtime.
 It becomes ready/usable only after engine/model verification and a native startup
 check. Successful speech returns validated local transcript JSON after cleanup;
@@ -149,3 +149,18 @@ The frontend must still validate API compatibility, local-only claims, timings a
 safe typed errors; unknown errors never surface raw native messages. Incompatible,
 cancelled or stale results must never be scored or persisted. Real learner quality
 remains a pending benchmark gate; synthetic technical success is not learner WER.
+
+
+## React transport implemented in 05.05
+
+Browser requests use relative endpoints. The Vite development proxy has a fixed
+loopback destination and validates the incoming Host against its bound
+127.0.0.1 port, exact local Origin (mandatory for POST) and Fetch Metadata before
+rewriting trusted headers to the runtime origin. Remote/null Origin, foreign Host,
+cross-site Fetch Metadata and upgrades fail before forwarding. There is no
+learner-editable URL or CORS wildcard. Runtime security checks remain unchanged.
+
+The production client disallows redirects, sends only original Blob + language=en
+and maps errors to static safe domain messages. It has no cloud/browser fallback
+and no automatic retry. Browser abort propagates through the proxy's disconnected
+response to runtime cancellation. Reset/unmount also reject late results locally.

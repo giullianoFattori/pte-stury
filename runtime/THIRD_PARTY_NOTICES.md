@@ -50,3 +50,9 @@ Primary license sources: [whisper.cpp MIT](https://github.com/ggml-org/whisper.c
 [Node.js license/dependency notices](https://github.com/nodejs/node/blob/v25.8.1/LICENSE).
 The final packaged Node version, launcher and preprocessing choices remain open until later
 Activity 05 steps; this document does not choose them or the final STT model.
+
+
+05.05 adds browser-native fetch/FormData and the existing React/Vite integration;
+it adds no runtime HTTP/JSON library or application dependency. The optional browser
+test uses an independently installed Playwright/Chrome and does not bundle either
+with the app. Final distribution inventory and license obligations remain unchanged.

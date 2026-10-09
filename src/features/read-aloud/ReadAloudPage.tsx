@@ -34,7 +34,7 @@ export function ReadAloudPage() {
     status: recordingStatus, recording, errorMessage: recordingError, isFinalizing,
     startRecording, stopRecording, resetRecording,
   } = useAudioRecorder();
-  const transcription = useSpeechTranscription({ language: 'en-AU' });
+  const transcription = useSpeechTranscription();
   const audioAnalysis = useReadAloudAudioAnalysis();
   const [isPreviewComplete, setIsPreviewComplete] = useState(false);
   const [showPhraseHelp, setShowPhraseHelp] = useState(false);
@@ -199,6 +199,7 @@ export function ReadAloudPage() {
                   onStart={handleStartRecording} onStop={stopRecording} onReset={handleResetRecording}
                 />
                 <TranscriptionPanel
+                  provider={transcription.provider}
                   language={transcription.language} onLanguageChange={transcription.changeLanguage}
                   status={transcription.status} result={transcription.result} errorMessage={transcription.errorMessage}
                   hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording || isSavingAttempt}

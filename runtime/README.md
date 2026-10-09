@@ -1,4 +1,4 @@
-# PTE Local Speech Runtime — Activity 05.04
+# PTE Local Speech Runtime — Activity 05.05
 
 The production Node.js ES-module runtime now transcribes locally with the pinned
 whisper.cpp v1.8.3 CLI and verified base.en weights. HTTP/runtime version remains
@@ -11,16 +11,43 @@ MediaRecorder Blob → trusted loopback multipart → inspected audio
 → cleanup → validated JSON response
 ```
 
-React adapters, RA/RS pages, scoring, attempts, reviews and IndexedDB are unchanged.
-CLI-per-request reloads the model; persistent workers, final model selection,
-quantization, packaging and launchers remain later work.
+The shared React speech hook now defaults to the production
+`WhisperCppSpeechToTextAdapter`. RA/RS use that hook and the runtime-aware panel.
+Scoring, browser RA waveform analysis, reviews and IndexedDB schema remain unchanged.
+Missing STT confidence is omitted from attempt metrics rather than stored as zero.
 
-Native availability remains ready / starting / unavailable / incompatible / error.
-The existing browser hook still uses browser language-pack states; 05.05 must
-generalize that boundary without inventing a native installLanguage workflow.
-Before migrating attempt persistence, review its historical missing-confidence
-metric fallback: it is not calibrated Whisper confidence. This runtime leaves
-confidence absent and makes no scoring or database migration.
+The client uses relative `/api/v1/health` and `/api/v1/transcribe` routes and the
+domain's strict parsers/error mapping. Multipart contains only the original audio
+Blob and `language=en`. No prompts, answers, question IDs or model choices are sent.
+Reset/unmount abort health/transcription fetches and invalidate stale results.
+There is no automatic retry or browser/cloud fallback. Runtime failures preserve
+the recording for an explicit check and retry.
+
+The browser adapter remains available for explicit developer injection, including
+its regional language/install controls. The POC adapter remains development-only;
+normal study routes do not import it. CLI-per-request still reloads the model.
+Final model selection, packaging and launchers remain later work.
+
+## React development workflow
+
+Run from the repository root in two terminals:
+
+```bash
+# Terminal 1
+npm run runtime:start
+
+# Terminal 2
+npm run dev
+```
+
+Open `http://127.0.0.1:5173`. The Vite `/api/v1` proxy validates the incoming
+Host, exact Origin and Fetch Metadata before rewriting Host/Origin for
+`http://127.0.0.1:8765`. POST requires the exact Vite origin. Remote and null
+origins are rejected before forwarding; there is no wildcard CORS. The trusted
+development origin uses the actual bound Vite port, permitting explicit local
+port overrides. A stopped runtime returns a safe `RUNTIME_UNAVAILABLE` response.
+The application has no learner-editable runtime URL. Production remains intended
+to serve UI and API from one local origin; Vite preview is not a runtime launcher.
 
 ## Start and smoke test
 
@@ -90,8 +117,8 @@ temp lock and close cleanly. The port is reusable after shutdown completes.
 Runtime returns transcription evidence only. It never decides correctness,
 substitutions, PTE scores, mastery or scheduling. Browser SpeechRecognition remains
 available temporarily but is deprecated as the primary direction. The POC adapter
-remains development-only. Activity 05.05 introduces the production frontend adapter;
-05.04 does not switch any study UI.
+remains development-only. The production frontend adapter is now the shared default;
+there is no automatic browser fallback.
 
 | Artifact | Responsibility |
 | --- | --- |
@@ -206,10 +233,69 @@ engine, CLI failure/overflow/deadline, disconnect/shutdown, recovery, busy gatin
 wire parser compatibility, privacy and no-outbound instrumentation. Real engine
 smokes above validate the actual local artifacts separately.
 
-Next: 05.05 — WhisperCppSpeechToTextAdapter + Shared React Integration. Native
-runtime now transcribes, but browser adapters/hooks, scoring, persistence and DB
-schema remain unchanged. No installer, launcher or auto-download is implemented.
+Next: 05.06 — Read Aloud + Repeat Sentence Migration Validation. Full task-level
+persistence/error/review validation and POC cleanup remain there. No installer,
+launcher or auto-download is implemented.
 
 Validated 05.04: 213 tests passed, including 32 runtime tests, with no skips.
 React build, lint and git diff checks passed. Existing POC/scoring/HTTP contract
 tests remain green; real local CLI smoke observations are recorded above.
+
+
+## 05.05 React integration validation
+
+Automated adapter/client tests cover ready/non-ready/incompatible/unreachable
+health, exact multipart fields and original MIME/bytes, safe error mapping, malformed
+payloads, abort, busy, timeout, no speech and unsupported audio. Component tests
+cover native controls/copy/retry and explicit browser language/install presentation.
+Proxy integration tests use real local HTTP and hostile Host/Origin/Fetch Metadata.
+RA/RS attempt tests accept Whisper results without invented confidence.
+
+An optional real-Chrome suite exercises the actual React app, hook and production
+runtime. It requires an independently installed Playwright module, Chrome, the
+verified local native artifacts and controlled synthetic fixtures. It adds no
+application dependency or downloaded model:
+
+```bash
+node tools/local-stt/scripts/create-controlled-samples.mjs
+# If Playwright is installed as a package resolvable here:
+npm run test:speech-browser
+# Or point to an existing installation:
+PLAYWRIGHT_MODULE=/absolute/path/to/playwright/index.mjs npm run test:speech-browser
+```
+
+`CHROME_PATH` can identify the trusted test browser executable. The suite owns
+Vite on 127.0.0.1:5177 and runtime on 127.0.0.1:8765; those ports must be free.
+Its microphone source is controlled Web Audio feeding a real MediaRecorder.
+The harness for injected adapters is test-only HTML, absent from normal app routes.
+
+Verified in Chrome on this Linux machine:
+- RA recording/playback and browser audio analysis work with runtime stopped.
+- Start/check without reload becomes ready; stop after check yields a safe
+  unavailable message and preserves recording; restart/check/retry succeeds.
+- RA returns the full 17-word passage and existing content comparison reports 100%.
+- RS plays the source without revealing the answer, records and returns
+  `Students must arrive before 9 tomorrow.`; existing content/chunk feedback renders.
+  The `nine → 9` representation mismatch is preserved, not patched.
+- Reset during real native inference aborts the signal, settles the engine call
+  and suppresses stale text. A subsequent RS request succeeds.
+- Actual hook tests cover checking/ready/transcribing/success/error, explicit retry,
+  reset/check/unmount cancellation, late-result rejection and injected browser
+  language/install behavior.
+- Browser request audit contains only local requests; multipart has audio/language only.
+
+Controlled observations from the recorded run (not a learner benchmark):
+
+| Case | Model | audioMs | inferenceMs | totalMs | Raw text observation |
+| --- | --- | ---: | ---: | ---: | --- |
+| RA-1 | base.en | 6660 | 2267 | 2510 | Exact passage |
+| RS-1 | base.en | 2820 | 2448 | 2660 | nine represented as 9 |
+
+Real learner recordings and manually verified spoken references remain pending.
+Carry that gate into 05.07/05.10; synthetic accuracy does not predict learner accuracy.
+No final model selection is made here.
+
+
+Validated 05.05: 223 automated tests passed (including the 32 runtime tests), with
+no skips, plus the real-Chrome integration suite above. Build, lint and
+`git diff --check` passed. No scoring formulas or database schema changed.

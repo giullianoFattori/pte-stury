@@ -72,7 +72,7 @@ test('unavailable rate/count are omitted and actual threshold is retained', () =
   assert.equal('detectedWordCount' in attempt.metrics, false);
   assert.equal('speechRateWpm' in attempt.metrics, false);
   assert.equal(attempt.metrics.longPauseThresholdMs, 750);
-  assert.equal(attempt.metrics.sttConfidence, 0);
+  assert.equal('sttConfidence' in attempt.metrics, false);
 });
 
 test('nonlocal, non-RA, empty transcription, invalid duration and score are rejected', () => {
@@ -108,4 +108,14 @@ test('every persisted numeric field rejects nonfinite values including optional 
   }
   const values = input(); values.longPauseThresholdMs = Infinity;
   assert.throws(() => buildReadAloudAttempt(values));
+});
+
+test('Whisper local result persists without invented confidence or schema metadata', () => {
+  const values = input();
+  values.transcription = { text: values.transcription.text, engine: 'whisper.cpp', model: 'base.en',
+    language: 'en', processedLocally: true, audioMs: 2000, inferenceMs: 1000, totalMs: 1300 };
+  const attempt = buildReadAloudAttempt(values);
+  assert.equal(attempt.metrics.processedLocally, true);
+  assert.equal('sttConfidence' in attempt.metrics, false);
+  assert.equal(Object.values(attempt.metrics).some(value => typeof value === 'string'), false);
 });

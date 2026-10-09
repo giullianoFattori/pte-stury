@@ -65,12 +65,13 @@ test('extra words preserve full recall but exact content match stays false', () 
   assert.equal(attempt.metrics.exactContentMatch, false);
 });
 
-test('unavailable chunk analysis and confidence use v1 fallback metrics', () => {
+test('unavailable confidence is omitted while chunk fallback metrics remain', () => {
   const values = input();
   values.chunkAnalysis = null;
   delete values.transcription.confidence;
   const attempt = buildRepeatSentenceAttempt(values);
-  for (const key of ['chunkRetention', 'chunkRetentionPercent', 'retainedChunks', 'totalChunks', 'sttConfidence']) assert.equal(attempt.metrics[key], 0);
+  for (const key of ['chunkRetention', 'chunkRetentionPercent', 'retainedChunks', 'totalChunks']) assert.equal(attempt.metrics[key], 0);
+  assert.equal('sttConfidence' in attempt.metrics, false);
   assert.equal(attempt.score, 1);
 });
 
@@ -97,4 +98,14 @@ test('remote results and non-RS questions are rejected under the local-only rule
   values.transcription.processedLocally = true;
   values.question = { ...question, taskType: 'write-from-dictation' };
   assert.throws(() => buildRepeatSentenceAttempt(values), /Only locally transcribed/);
+});
+
+test('Whisper local result persists without invented confidence or schema metadata', () => {
+  const values = input();
+  values.transcription = { text: values.transcription.text, engine: 'whisper.cpp', model: 'base.en',
+    language: 'en', processedLocally: true, audioMs: 2000, inferenceMs: 1000, totalMs: 1300 };
+  const attempt = buildRepeatSentenceAttempt(values);
+  assert.equal(attempt.metrics.processedLocally, true);
+  assert.equal('sttConfidence' in attempt.metrics, false);
+  assert.equal(Object.values(attempt.metrics).some(value => typeof value === 'string'), false);
 });

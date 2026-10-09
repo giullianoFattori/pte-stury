@@ -1,3 +1,4 @@
+import { BROWSER_SPEECH_PROVIDER } from '../../domain/speech/SpeechToTextAdapter.ts';
 import type { SpeechToTextAdapter, SpeechToTextAvailability, SpeechToTextOptions } from '../../domain/speech/SpeechToTextAdapter';
 import { SpeechToTextError, type TranscriptionResult } from '../../domain/speech/types.ts';
 import type { BrowserSpeechRecognitionConstructor, CapturableAudio, SpeechWindow } from './browserSpeechRecognitionTypes';
@@ -30,6 +31,7 @@ function browserError(code: string): SpeechToTextError {
 }
 
 export class BrowserOnDeviceSpeechToTextAdapter implements SpeechToTextAdapter {
+  readonly provider = BROWSER_SPEECH_PROVIDER;
   async checkAvailability({ language }: SpeechToTextOptions): Promise<SpeechToTextAvailability> {
     const Constructor = getConstructor();
     if (!Constructor) return 'unsupported';

@@ -1,15 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 
+import { BROWSER_SPEECH_PROVIDER } from '../../../domain/speech/SpeechToTextAdapter';
 import type { SpeechToTextAdapter, SpeechToTextAvailability } from '../../../domain/speech/SpeechToTextAdapter';
 import { SpeechToTextError, type TranscriptionResult } from '../../../domain/speech/types';
-import { BrowserOnDeviceSpeechToTextAdapter } from '../../../infrastructure/speech/BrowserOnDeviceSpeechToTextAdapter';
+import { WhisperCppSpeechToTextAdapter } from '../../../infrastructure/speech/WhisperCppSpeechToTextAdapter';
 
-export const DEFAULT_TRANSCRIPTION_LANGUAGE = 'en-AU';
+export const DEFAULT_TRANSCRIPTION_LANGUAGE = 'en';
 export type TranscriptionStatus =
   | 'idle' | 'checking' | 'needs-install' | 'installing' | 'ready'
   | 'transcribing' | 'success' | 'unavailable' | 'unsupported' | 'downloading' | 'error';
 
-const browserAdapter: SpeechToTextAdapter = new BrowserOnDeviceSpeechToTextAdapter();
+const runtimeAdapter: SpeechToTextAdapter = new WhisperCppSpeechToTextAdapter();
 
 type UseSpeechTranscriptionOptions = {
   language?: string;
@@ -17,9 +18,10 @@ type UseSpeechTranscriptionOptions = {
 };
 
 export function useSpeechTranscription({
-  language: initialLanguage = DEFAULT_TRANSCRIPTION_LANGUAGE, adapter = browserAdapter,
+  language: initialLanguage, adapter = runtimeAdapter,
 }: UseSpeechTranscriptionOptions = {}) {
-  const [language, setLanguage] = useState(initialLanguage);
+  const provider = adapter.provider ?? BROWSER_SPEECH_PROVIDER;
+  const [language, setLanguage] = useState(provider.kind === 'local-runtime' ? DEFAULT_TRANSCRIPTION_LANGUAGE : initialLanguage ?? 'en-AU');
   const [status, setStatus] = useState<TranscriptionStatus>('idle');
   const [result, setResult] = useState<TranscriptionResult | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -49,24 +51,28 @@ export function useSpeechTranscription({
     const typed = error instanceof SpeechToTextError ? error : null;
     setErrorMessage(typed?.message ?? 'The recording could not be transcribed locally. Please try again.');
     setStatus(typed?.code === 'unsupported' ? 'unsupported'
-      : typed && ['local-unavailable', 'language-unavailable', 'audio-track-unavailable'].includes(typed.code) ? 'unavailable' : 'error');
+      : typed && (['local-unavailable', 'language-unavailable'].includes(typed.code)
+        || (provider.kind === 'browser-on-device' && typed.code === 'audio-track-unavailable')) ? 'unavailable' : 'error');
   }
 
-  async function run(operation: () => Promise<void>) {
+  async function run(operation: (signal: AbortSignal) => Promise<void>) {
     if (!mountedRef.current || busyRef.current) return;
     const generation = generationRef.current;
     busyRef.current = true;
-    try { await operation(); }
-    finally { if (generation === generationRef.current) busyRef.current = false; }
+    const controller = new AbortController();
+    abortRef.current = controller;
+    try { await operation(controller.signal); }
+    finally { if (generation === generationRef.current) { busyRef.current = false; abortRef.current = null; } }
   }
 
   async function checkAvailability() {
-    await run(async () => {
+    await run(async signal => {
       const generation = generationRef.current;
       setStatus('checking');
       setErrorMessage(null);
       try {
-        const value = await adapter.checkAvailability({ language });
+        if (signal.aborted) return;
+        const value = await adapter.checkAvailability({ language, signal });
         if (mountedRef.current && generation === generationRef.current) showAvailability(value);
       } catch (error) {
         if (mountedRef.current && generation === generationRef.current) showError(error);
@@ -75,16 +81,17 @@ export function useSpeechTranscription({
   }
 
   async function installLanguage() {
-    if (availabilityRef.current !== 'downloadable') return;
-    await run(async () => {
+    if (!provider.supportsLanguageInstall || availabilityRef.current !== 'downloadable') return;
+    await run(async signal => {
       const generation = generationRef.current;
       setStatus('installing');
       setErrorMessage(null);
       try {
-        if (!adapter.installLanguage || !await adapter.installLanguage({ language })) {
+        if (!adapter.installLanguage || !await adapter.installLanguage({ language, signal })) {
           throw new SpeechToTextError('recognition-failed', 'The local speech pack could not be installed. Please check availability and try again.');
         }
-        const value = await adapter.checkAvailability({ language });
+        if (signal.aborted) return;
+        const value = await adapter.checkAvailability({ language, signal });
         if (mountedRef.current && generation === generationRef.current) showAvailability(value);
       } catch (error) {
         if (mountedRef.current && generation === generationRef.current) showError(error);
@@ -93,23 +100,19 @@ export function useSpeechTranscription({
   }
 
   async function transcribe(audio: Blob) {
-    await run(async () => {
+    await run(async signal => {
       const generation = generationRef.current;
-      const controller = new AbortController();
-      abortRef.current = controller;
       setStatus('transcribing');
       setResult(null);
       setErrorMessage(null);
       try {
-        const value = await adapter.transcribe(audio, { language, signal: controller.signal });
+        const value = await adapter.transcribe(audio, { language, signal });
         if (mountedRef.current && generation === generationRef.current) {
           setResult(value);
           setStatus('success');
         }
       } catch (error) {
         if (mountedRef.current && generation === generationRef.current) showError(error);
-      } finally {
-        if (abortRef.current === controller) abortRef.current = null;
       }
     });
   }
@@ -127,7 +130,7 @@ export function useSpeechTranscription({
   }
 
   function changeLanguage(nextLanguage: string) {
-    if (busyRef.current || nextLanguage === language) return;
+    if (provider.kind === 'local-runtime' || busyRef.current || nextLanguage === language) return;
     generationRef.current += 1;
     abortRef.current?.abort();
     availabilityRef.current = null;
@@ -137,5 +140,5 @@ export function useSpeechTranscription({
     setStatus('idle');
   }
 
-  return { language, changeLanguage, status, result, errorMessage, checkAvailability, installLanguage, transcribe, resetTranscription };
+  return { provider, language, changeLanguage, status, result, errorMessage, checkAvailability, installLanguage, transcribe, resetTranscription };
 }

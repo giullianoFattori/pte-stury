@@ -55,7 +55,7 @@ export function buildReadAloudAttempt({
     hasSpeech: fluencyMetrics.hasSpeech,
     ...(fluencyMetrics.detectedWordCount === undefined ? {} : { detectedWordCount: fluencyMetrics.detectedWordCount }),
     ...(fluencyMetrics.speechRateWpm === undefined ? {} : { speechRateWpm: fluencyMetrics.speechRateWpm }),
-    sttConfidence: transcription.confidence ?? 0,
+    ...(transcription.confidence === undefined ? {} : { sttConfidence: transcription.confidence }),
     processedLocally: transcription.processedLocally,
   };
   if (Object.values(metrics).some(value => typeof value !== 'boolean'

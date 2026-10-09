@@ -48,7 +48,7 @@ export function buildRepeatSentenceAttempt({
       chunkRetentionPercent: chunkAnalysis?.chunkRetentionPercent ?? 0,
       retainedChunks: chunkAnalysis?.retainedChunks ?? 0,
       totalChunks: chunkAnalysis?.totalChunks ?? 0,
-      sttConfidence: transcription.confidence ?? 0,
+      ...(transcription.confidence === undefined ? {} : { sttConfidence: transcription.confidence }),
       processedLocally: transcription.processedLocally,
     },
   };
