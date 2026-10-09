@@ -25,6 +25,7 @@ dist-ssr
 
 # Local speech POC: never commit models, builds or learner recordings.
 .local-runtime/
+.local-benchmark/
 tools/local-stt/tmp/
 tools/local-stt/models/
 tools/local-stt/samples/private/

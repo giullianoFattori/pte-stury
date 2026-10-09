@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Private speech benchmark results v1",
+  "type": "object",
+  "required": ["benchmarkVersion", "normalizationVersion", "createdAt", "hardware", "engine", "git", "config", "models", "corpus", "samples"],
+  "properties": {
+    "benchmarkVersion": { "const": 1 },
+    "normalizationVersion": { "const": 1 },
+    "createdAt": { "type": "string", "format": "date-time" },
+    "hardware": { "type": "object" },
+    "engine": { "type": "object" },
+    "git": { "type": "object" },
+    "config": { "type": "object" },
+    "models": { "type": "object" },
+    "corpus": { "type": "object" },
+    "samples": { "type": "array", "items": {
+      "type": "object", "required": ["id", "task", "model", "status", "runs"],
+      "properties": {
+        "id": { "type": "string" }, "task": { "enum": ["ra", "rs", "noise"] },
+        "model": { "enum": ["base.en", "small.en"] }, "status": { "enum": ["ok", "failed", "excluded"] },
+        "referenceWords": { "type": "integer", "minimum": 1 },
+        "S": { "type": "integer", "minimum": 0 }, "D": { "type": "integer", "minimum": 0 }, "I": { "type": "integer", "minimum": 0 },
+        "wer": { "type": "number", "minimum": 0 }, "audioMs": { "type": "number", "exclusiveMinimum": 0 },
+        "inferenceMs": { "type": "number", "minimum": 0 }, "rtf": { "type": "number", "minimum": 0 },
+        "peakRssBytes": { "type": ["number", "null"], "minimum": 0 }, "runs": { "type": "array" }
+      },
+      "allOf": [{ "if": { "properties": { "status": { "const": "ok" } } },
+        "then": { "required": ["audioMs", "inferenceMs", "rtf", "peakRssBytes"], "properties": { "runs": { "minItems": 3, "maxItems": 3 } } } }]
+    } }
+  },
+  "$comment": "report.mjs validates WER arithmetic and successful repetition counts before generating output."
+}

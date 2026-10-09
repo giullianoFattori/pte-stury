@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Private human speech corpus v1",
+  "type": "object",
+  "required": ["manifestVersion", "samples"],
+  "properties": {
+    "manifestVersion": { "const": 1 },
+    "samples": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "task", "audioFile", "expectedText", "spokenReference"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^(ra|rs|noise)-[a-z0-9-]+$" },
+          "task": { "enum": ["ra", "rs", "noise"] },
+          "itemId": { "type": "string" },
+          "audioFile": { "type": "string", "minLength": 1 },
+          "expectedText": { "type": "string" },
+          "spokenReference": { "type": "string" },
+          "source": { "enum": ["human", "noise", "synthetic"] },
+          "referenceVerified": { "type": "boolean" },
+          "usable": { "type": "boolean" },
+          "exclusionReason": { "type": "string", "minLength": 1 },
+          "noiseType": { "enum": ["digital-silence", "room-noise", "hiss", "breathing"] },
+          "notes": {
+            "type": "object",
+            "required": ["speaker", "l1", "environment", "pace"],
+            "properties": {
+              "speaker": { "type": "string", "pattern": "^speaker-[0-9]+$" },
+              "l1": { "enum": ["pt-BR", "other"] },
+              "environment": { "enum": ["quiet-room", "normal-room", "noisy-room"] },
+              "pace": { "enum": ["slow", "normal", "fast", "varying"] }
+            }
+          }
+        },
+        "allOf": [
+          { "if": { "properties": { "usable": { "const": false } }, "required": ["usable"] },
+            "then": { "required": ["exclusionReason"] },
+            "else": { "if": { "properties": { "task": { "enum": ["ra", "rs"] } } },
+              "then": { "required": ["source", "referenceVerified", "notes"],
+                "properties": { "source": { "const": "human" }, "referenceVerified": { "const": true },
+                  "expectedText": { "minLength": 1 }, "spokenReference": { "minLength": 1 } } } } },
+          { "if": { "properties": { "task": { "const": "noise" } } },
+            "then": { "required": ["noiseType"], "properties": { "expectedText": { "const": "" }, "spokenReference": { "const": "" } } } }
+        ]
+      }
+    }
+  },
+  "$comment": "manifest.mjs additionally validates duplicate IDs, task prefixes, paths, readable audio and nonblank references."
+}

@@ -1,0 +1,13 @@
+{
+  "benchmarkVersion": 1,
+  "models": ["base.en", "small.en"],
+  "repetitions": 3,
+  "timeoutMs": 60000,
+  "maxAudioSeconds": 180,
+  "maxUploadBytes": 12582912,
+  "language": "en",
+  "threads": 4,
+  "backend": "CPU",
+  "prompt": null,
+  "decoding": "production whisperArguments; other CLI defaults pinned by engine revision"
+}

@@ -1,0 +1,12 @@
+{
+  "benchmarkVersion": 1,
+  "normalizationVersion": 1,
+  "status": "pending-human-corpus",
+  "measured": false,
+  "humanRaSamples": 0,
+  "humanRsSamples": 0,
+  "recommendation": null,
+  "existingBaseline": { "engine": "whisper.cpp", "version": "1.8.3", "model": "base.en" },
+  "candidates": ["base.en", "small.en"],
+  "note": "Status placeholder, not a result-schema measurement. Replace with reviewed generated summary after a real human benchmark."
+}

@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "benchmark:speech": "node tools/speech-benchmark/benchmark.mjs",
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "oxlint",
