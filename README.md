@@ -6,6 +6,13 @@ Experimental browser STT is a legacy diagnostic adapter available only through
 explicit injection; it is not a normal provider or fallback. Write From Dictation
 does not use STT.
 
+## Content system
+
+[Activity 06.01](docs/content/contract-06.01.md) defines the versioned authoring
+contract, permanent IDs, lifecycle and revision policy. Current question arrays,
+seed and study flows are preserved. JSON validation/build/sync and migration are
+subsequent steps; the contract alone does not validate imported content.
+
 ## Local development
 
 From the repository root, start two terminals:

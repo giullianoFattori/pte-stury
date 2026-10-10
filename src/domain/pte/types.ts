@@ -44,6 +44,8 @@ export type AttemptMetricValue = number | boolean;
 export type Attempt = {
   id: string;
   itemId: string;
+  /** Presented content revision; absent on legacy attempts means unknown. */
+  itemRevision?: number;
   taskType: PteTaskType;
   createdAt: string;
   responseText?: string;
