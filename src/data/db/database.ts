@@ -7,6 +7,7 @@ import type {
   StudyItem,
   StudySession,
 } from '../../domain/pte/types';
+import type { InstalledContentState } from '../../domain/content/installedContent';
 
 export type AppSetting = {
   key: string;
@@ -20,9 +21,10 @@ export class PteDatabase extends Dexie {
   errors!: Table<ErrorRecord, string>;
   reviews!: Table<ReviewItem, string>;
   studySessions!: Table<StudySession, string>;
+  contentState!: Table<InstalledContentState, string>;
 
-  constructor() {
-    super('pte-study-db');
+  constructor(name = 'pte-study-db') {
+    super(name);
 
     this.version(1).stores({
       settings: 'key',
@@ -36,6 +38,9 @@ export class PteDatabase extends Dexie {
       reviews: 'id, sourceAttemptId, sourceErrorId, dueAt',
       studySessions: 'id, startedAt',
     });
+    // Add internal catalog state only. Existing v2 rows stay revision-unknown.
+    // Boolean availability is not a valid IndexedDB index key.
+    this.version(3).stores({ contentState: 'key' });
   }
 }
 

@@ -15,6 +15,7 @@ export function buildWfdAttempt({
   return {
     id: crypto.randomUUID(),
     itemId: question.id,
+    ...(question.revision === undefined ? {} : { itemRevision: question.revision }),
     taskType: 'write-from-dictation',
     createdAt: new Date().toISOString(),
     responseText: answer,

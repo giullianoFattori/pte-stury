@@ -28,4 +28,10 @@ npm run content:stats          # current source counts and warnings, without wri
 npm run content:verify         # verifies the generated pair
 ```
 
-Commit source changes and both `src/generated/question-bank*.json` artifacts together. Errors fail the build and preserve last-good outputs; do not package those stale files after a failed build. Warnings remain visible. Empty production builds fail. See [06.03 build policy](../docs/content/build-06.03.md) for exact ordering, byte/hash rules, limits, recovery and packaging. Audio existence/decode, sync and migration remain later steps.
+Commit source changes and both `src/generated/question-bank*.json` artifacts together. Errors fail the build and preserve last-good outputs; do not package those stale files after a failed build. Warnings remain visible. Empty production builds fail. See [06.03 build policy](../docs/content/build-06.03.md) for exact ordering, byte/hash rules, limits, recovery and packaging. Audio existence/decode, activation and migration remain later steps.
+
+[06.04 sync](../docs/content/sync-06.04.md) now provides the tested transactional
+installer. It is not connected to bootstrap yet: real-question migration and audio
+validation remain deferred. The current legacy seed stays active; installed technical
+drafts cannot enter normal practice. Catalog omission changes local availability,
+not the authored lifecycle or revision.

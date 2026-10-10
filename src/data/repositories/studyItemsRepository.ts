@@ -1,5 +1,6 @@
 import type { StudyItem } from '../../domain/pte/types';
-import { db } from '../db/database';
+import { db } from '../db/database.ts';
+import { isPracticeEligible } from '../../domain/content/installedContent.ts';
 
 export const studyItemsRepository = {
   async create(item: StudyItem) {
@@ -21,6 +22,6 @@ export const studyItemsRepository = {
   },
 
   async getByTaskType(taskType: StudyItem['taskType']) {
-    return db.studyItems.where('taskType').equals(taskType).toArray();
+    return db.studyItems.where('taskType').equals(taskType).filter(isPracticeEligible).toArray();
   },
 };

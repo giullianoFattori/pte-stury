@@ -61,3 +61,13 @@ test('saved metrics are detached from mutable comparison and score objects', () 
   assert.equal(attempt.metrics.correctWords, 7);
   assert.equal(attempt.metrics.exactMatch, true);
 });
+
+test('captures the presented revision without changing legacy attempts or following later question changes', () => {
+  const legacy = inputFor(question.answer);
+  assert.equal(Object.hasOwn(buildWfdAttempt(legacy), 'itemRevision'), false);
+  const presented = { ...legacy, question: { ...legacy.question, revision: 7 } };
+  const saved = buildWfdAttempt(presented);
+  presented.question.revision = 8;
+  assert.equal(saved.itemRevision, 7);
+  assert.equal(buildWfdAttempt(presented).itemRevision, 8);
+});

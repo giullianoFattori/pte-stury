@@ -64,6 +64,7 @@ export function buildReadAloudAttempt({
   }
   return {
     id: crypto.randomUUID(), itemId: question.id, taskType: 'read-aloud',
+    ...(question.revision === undefined ? {} : { itemRevision: question.revision }),
     createdAt: new Date().toISOString(), responseText: transcription.text,
     durationMs, score: contentMetrics.textCoverage, metrics,
   };

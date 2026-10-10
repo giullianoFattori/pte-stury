@@ -1,3 +1,5 @@
+import type { AudioAsset, ContentStatus, ContentSource } from '../content/types';
+
 export type PteTaskType =
   | 'write-from-dictation'
   | 'repeat-sentence'
@@ -37,6 +39,17 @@ export type StudyItem = {
   phraseGroups?: string[];
   stressWords?: string[];
   createdAt: string;
+  /** Absent on legacy rows: unknown, never inferred as revision 1. */
+  revision?: number;
+  status?: ContentStatus;
+  source?: ContentSource;
+  audio?: AudioAsset;
+  tags?: string[];
+  skills?: Skill[];
+  topic?: string;
+  estimatedSeconds?: number;
+  /** Local catalog membership, separate from authored lifecycle. */
+  catalogAvailable?: boolean;
 };
 
 export type AttemptMetricValue = number | boolean;

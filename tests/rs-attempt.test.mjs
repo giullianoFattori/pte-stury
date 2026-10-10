@@ -109,3 +109,13 @@ test('Whisper local result persists without invented confidence or schema metada
   assert.equal('sttConfidence' in attempt.metrics, false);
   assert.equal(Object.values(attempt.metrics).some(value => typeof value === 'string'), false);
 });
+
+test('captures the presented revision without changing legacy attempts or following later question changes', () => {
+  const legacy = input();
+  assert.equal(Object.hasOwn(buildRepeatSentenceAttempt(legacy), 'itemRevision'), false);
+  const presented = { ...legacy, question: { ...legacy.question, revision: 7 } };
+  const saved = buildRepeatSentenceAttempt(presented);
+  presented.question.revision = 8;
+  assert.equal(saved.itemRevision, 7);
+  assert.equal(buildRepeatSentenceAttempt(presented).itemRevision, 8);
+});

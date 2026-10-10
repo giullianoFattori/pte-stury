@@ -23,7 +23,10 @@ npm run content:verify
 ```
 
 The generated bank currently contains only three technical drafts, zero active
-practice items. The learner app is not yet reading it.
+practice items. The learner app is not yet reading it. [Activity 06.04](docs/content/sync-06.04.md)
+adds transactional IndexedDB sync, revision checks, catalog availability and internal
+content state in Dexie v3. Bootstrap retains the legacy seed until real-content
+migration; drafts/retired/unavailable content is excluded from practice queries.
 
 ## Local development
 

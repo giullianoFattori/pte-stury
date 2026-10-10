@@ -22,6 +22,7 @@ export function buildRepeatSentenceAttempt({
   return {
     id: crypto.randomUUID(),
     itemId: question.id,
+    ...(question.revision === undefined ? {} : { itemRevision: question.revision }),
     taskType: 'repeat-sentence',
     createdAt: new Date().toISOString(),
     responseText: transcription.text,
