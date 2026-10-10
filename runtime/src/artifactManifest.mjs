@@ -9,14 +9,14 @@ export function validateArtifactManifest(value) {
   const fail = () => { throw new RuntimeStartupError('ARTIFACT_INTEGRITY_FAILED', 'Packaged artifact inventory is invalid.'); };
   if (value?.manifestVersion !== 1 || !/^\d+\.\d+\.\d+$/.test(value.runtimeVersion ?? '')
     || !['linux', 'darwin', 'win32'].includes(value.platform) || !['x64', 'arm64'].includes(value.arch)
-    || !Array.isArray(value.artifacts) || value.artifacts.length < 1 || value.artifacts.length > 512) fail();
+    || !Array.isArray(value.artifacts) || value.artifacts.length < 1 || value.artifacts.length > 4096) fail();
   const ids = new Set(), paths = new Set();
   for (const artifact of value.artifacts) {
     if (!/^[a-z0-9][a-z0-9.-]{0,63}$/.test(artifact.id ?? '') || ids.has(artifact.id)
       || !/^[a-f0-9]{64}$/.test(artifact.sha256 ?? '') || !Number.isSafeInteger(artifact.size) || artifact.size < 1
       || typeof artifact.path !== 'string' || isAbsolute(artifact.path) || artifact.path.includes('\\')
-      || !/^[a-zA-Z0-9._/-]+$/.test(artifact.path) || artifact.path.split('/').some(part => !part || part === '.' || part === '..')
-      || paths.has(artifact.path) || !['executable', 'model', 'library', 'frontend'].includes(artifact.kind)) fail();
+      || !/^[a-zA-Z0-9._/+-]+$/.test(artifact.path) || artifact.path.split('/').some(part => !part || part === '.' || part === '..')
+      || paths.has(artifact.path) || !['executable', 'model', 'library', 'frontend', 'runtime', 'license', 'metadata'].includes(artifact.kind)) fail();
     ids.add(artifact.id); paths.add(artifact.path);
   }
   return value;

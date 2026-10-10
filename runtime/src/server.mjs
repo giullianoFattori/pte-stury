@@ -65,6 +65,7 @@ export async function startRuntime(input, options = {}) {
         return;
       }
       const route = request.url === '/api/v1/health' ? healthResponse : request.url === '/api/v1/version' ? versionResponse : null;
+      if (!route && services.serveStatic && await services.serveStatic(request, response)) return;
       if (!route) { sendJson(response, 404, errorBody('INVALID_REQUEST', 'The requested runtime route does not exist.')); return; }
       if (request.method !== 'GET') {
         sendJson(response, 405, errorBody('INVALID_REQUEST', 'The requested runtime method is not allowed.'), { Allow: 'GET' }); return;

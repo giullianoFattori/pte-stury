@@ -10,7 +10,7 @@ export async function main(args = process.argv.slice(2), options = {}) {
       throw new RuntimeStartupError('INVALID_ARGUMENTS', 'Usage: node runtime/src/main.mjs [--config CONFIG_FILE]');
     }
     log('runtime starting');
-    const config = await loadConfig(args[1]);
+    const config = options.config ?? await loadConfig(args[1]);
     log('config loaded');
     const runtime = await startRuntime(config, options);
     log('listener bound', { host: config.host, port: config.port, runtimeVersion: runtime.state.runtimeVersion,

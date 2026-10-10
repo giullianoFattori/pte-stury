@@ -29,3 +29,7 @@ dist-ssr
 tools/local-stt/tmp/
 tools/local-stt/models/
 tools/local-stt/samples/private/
+
+# Generated internal packages, downloads and native toolchains
+.local-packaging/
+packaging/out/

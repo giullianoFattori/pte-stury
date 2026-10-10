@@ -1,0 +1,97 @@
+{
+  "activity": "05.09",
+  "status": "internal Linux implementation validated; cross-platform release gates pending",
+  "target": "linux-x64",
+  "signed": false,
+  "cleanMachineCertified": false,
+  "modelChoice": "pending human 05.07 benchmark; base.en baseline only",
+  "size": {
+    "target": "linux-x64",
+    "bytes": {
+      "launcher": 7078048,
+      "licenses": 11684557,
+      "manifest": 8730,
+      "models": 147964211,
+      "native": 138747984,
+      "runtime": 66702,
+      "web": 932967
+    },
+    "totalBytes": 306483199
+  },
+  "archive": {
+    "name": "PTE-Study-0.1.0-linux-x64-internal.tar.xz",
+    "bytes": 185447644,
+    "sha256": "0b071dbaec19575adf232950fee0763f1ac6d873d1d29f58c633f9df3b0e7e46"
+  },
+  "smoke": {
+    "target": "linux-x64",
+    "validation": "internal host smoke; not a clean-machine or Windows/macOS certification",
+    "artifacts": 71,
+    "verificationMs": 271,
+    "readyMs": 3187,
+    "firstTranscriptionMs": 2519,
+    "hostNodeRequired": false,
+    "hostFFmpegRequired": false,
+    "ambientLoaderOverridesIgnored": true,
+    "singleInstance": true,
+    "portCollision": true,
+    "restart": true,
+    "quit": true,
+    "shutdownDuringInference": true,
+    "noOrphanNativeProcesses": true
+  },
+  "browser": {
+    "target": "linux-x64",
+    "browser": "Chrome",
+    "sameOrigin": true,
+    "cspViolations": 0,
+    "pageErrors": 0,
+    "outboundRequests": 0,
+    "realMediaRecorder": true,
+    "realPackagedDecoder": true,
+    "realWhisper": true,
+    "raSaved": true,
+    "rsSaved": true,
+    "indexedDBPersistsAcrossRuntimeRestart": true,
+    "controlledTTS": true,
+    "humanBenchmarkSatisfied": false
+  },
+  "isolation": {
+    "target": "linux-x64",
+    "filesystemIsolation": true,
+    "exposedResources": [
+      "package",
+      "private temporary home",
+      "proc/dev/tmp",
+      "glibc/OS loader"
+    ],
+    "hostNodeExposed": false,
+    "hostFFmpegExposed": false,
+    "hostDevelopmentToolsExposed": false,
+    "realControlledTranscription": true,
+    "cleanMachineCertified": false
+  },
+  "tests": {
+    "appAndRuntime": 254,
+    "runtimeSubset": 49,
+    "package": 4,
+    "goLauncher": 8,
+    "build": true,
+    "lint": true,
+    "diffCheck": true
+  },
+  "crossCompiledLaunchers": [
+    "linux-x64",
+    "windows-x64",
+    "macos-x64",
+    "macos-arm64"
+  ],
+  "remaining": [
+    "Windows/macOS native inputs and installers",
+    "clean-machine desktop install and actual browser handoff",
+    "platform signing/notarization",
+    "actual signed update/reinstall validation",
+    "tray/menu GUI",
+    "human model comparison"
+  ]
+}

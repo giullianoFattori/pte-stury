@@ -58,3 +58,15 @@ Activity 05 steps; this document does not choose them or the final STT model.
 it adds no runtime HTTP/JSON library or application dependency. The optional browser
 test uses an independently installed Playwright/Chrome and does not bundle either
 with the app. Final distribution inventory and license obligations remain unchanged.
+
+05.09 selects an internal packaging baseline: Go 1.27.2 standard-library launcher,
+Node 24.21.0 LTS, pinned Whisper CPU CLI and FFmpeg 8.0.3 shared LGPL build without
+GPL/nonfree/external codec libraries or network support. Actual Node/Go/Whisper,
+GCC runtime-exception and production npm license texts plus FFmpeg LGPL text,
+corresponding source and build flags are staged under `licenses/`; the package
+manifest and CycloneDX SBOM inventory owned artifacts. See
+[packaging instructions](../packaging/README.md) and
+[source locks](../packaging/sources.lock.json). This supersedes the development
+interpreter/decoder choice only for internal packages. Windows/macOS native inputs,
+signing, supported OS boundaries and final redistribution review remain open;
+no claim of final commercial licensing compliance is made.

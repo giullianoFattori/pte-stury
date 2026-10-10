@@ -18,7 +18,13 @@
     "preview": "vite preview",
     "test:speech-browser": "node tests/speech-react-browser.mjs",
     "dev:stt-poc": "vite --config tools/local-stt/vite.config.ts",
-    "test:speech-migration": "node tests/speech-migration-browser.mjs"
+    "test:speech-migration": "node tests/speech-migration-browser.mjs",
+    "package:test": "node --test packaging/tests/*.test.mjs",
+    "package:launchers": "node packaging/build-launchers.mjs",
+    "package:linux": "node packaging/build-linux.mjs",
+    "package:windows": "node packaging/build-windows.mjs",
+    "package:macos": "node packaging/build-macos.mjs",
+    "package:smoke": "node packaging/smoke.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",

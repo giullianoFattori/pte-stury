@@ -1,17 +1,25 @@
 import { spawn } from 'node:child_process';
 
+// Packaged native children inherit the launcher-owned process group / Windows Job.
+let launcherOwned = false;
+let packagedLibraryDirectory;
+export function configurePackagedLibraries(directory) { packagedLibraryDirectory = directory; }
+export function configureLauncherProcessTree() { launcherOwned = true; }
+
 export const NATIVE_OUTPUT_LIMIT = 65536;
 // No inherited loader, Node, proxy, model/path, or tool-specific overrides.
 // Windows needs its trusted OS directory; packaging must sanitize launcher env too.
 export function nativeEnvironment() {
   return { LANG: 'C.UTF-8', LC_ALL: 'C.UTF-8',
+    ...(packagedLibraryDirectory && process.platform === 'linux' ? { LD_LIBRARY_PATH: packagedLibraryDirectory } : {}),
+    ...(packagedLibraryDirectory && process.platform === 'darwin' ? { DYLD_LIBRARY_PATH: packagedLibraryDirectory } : {}),
     ...(process.platform === 'win32' ? { SystemRoot: process.env.SystemRoot } : {}) };
 }
 
 export async function runNative(executable, args, { signal, timeoutMs, unavailable, failed, timeout, onSpawn }) {
   signal.throwIfAborted();
   return new Promise((resolve, reject) => {
-    const grouped = process.platform !== 'win32';
+    const grouped = process.platform !== 'win32' && !launcherOwned;
     const child = spawn(executable, args, { shell: false, detached: grouped,
       env: nativeEnvironment(), stdio: ['ignore', 'pipe', 'pipe'] });
     onSpawn?.(child.pid);

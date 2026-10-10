@@ -1,0 +1,513 @@
+{
+  "manifestVersion": 1,
+  "packageVersion": 1,
+  "appVersion": "0.1.0",
+  "runtimeVersion": "0.1.0",
+  "apiVersion": 1,
+  "engineVersion": "1.8.3",
+  "nodeVersion": "24.21.0",
+  "modelId": "base.en",
+  "origin": "http://127.0.0.1:8765",
+  "target": "linux-x64",
+  "platform": "linux",
+  "arch": "x64",
+  "artifacts": [
+    {
+      "id": "artifact-0",
+      "path": "launcher",
+      "kind": "executable",
+      "size": 7078048,
+      "sha256": "a4044a22dd01ebe0e7c8fc9132af971ba7d88103530bd2ff04b3446de5f4931d"
+    },
+    {
+      "id": "artifact-1",
+      "path": "licenses/FFmpeg-LGPL.txt",
+      "kind": "license",
+      "size": 26517,
+      "sha256": "246041b6ecf9bc32d718a62c57877c78b5eb397b6467e74ed7ae2626ab189c30"
+    },
+    {
+      "id": "artifact-2",
+      "path": "licenses/FFmpeg-build-flags.json",
+      "kind": "license",
+      "size": 595,
+      "sha256": "f915b602a9e1e3716f1dca24049818b44b6380e583a1ee4f9816cda8a2e11b1c"
+    },
+    {
+      "id": "artifact-3",
+      "path": "licenses/FFmpeg-corresponding-source.tar.xz",
+      "kind": "license",
+      "size": 11407656,
+      "sha256": "6136812ea6d4e68bdba27e33c2a94382711cdf4f8602ffef056ff792bd6f9818"
+    },
+    {
+      "id": "artifact-4",
+      "path": "licenses/GCC-runtime.txt",
+      "kind": "license",
+      "size": 69004,
+      "sha256": "20390f8a6f3b1e4d7cb45dd8652dabb259bbef688cbad839bcdb0b9ba7252f79"
+    },
+    {
+      "id": "artifact-5",
+      "path": "licenses/Go.txt",
+      "kind": "license",
+      "size": 1453,
+      "sha256": "911f8f5782931320f5b8d1160a76365b83aea6447ee6c04fa6d5591467db9dad"
+    },
+    {
+      "id": "artifact-6",
+      "path": "licenses/NOTICE.txt",
+      "kind": "license",
+      "size": 370,
+      "sha256": "6d9b3da4a56e562881a30a0efbbcb79f10404ae019ba11b49287df54dac14111"
+    },
+    {
+      "id": "artifact-7",
+      "path": "licenses/Node.txt",
+      "kind": "license",
+      "size": 157609,
+      "sha256": "5888dbb9a1d2b18f2c3e6c5f6af1b39de658372b402a0577b002777f14c62ace"
+    },
+    {
+      "id": "artifact-8",
+      "path": "licenses/Whisper-model-MIT.txt",
+      "kind": "license",
+      "size": 1063,
+      "sha256": "b5d65a59060e68c4ff940e1eddfa6f94b2d68fdf58ed7f4dd57721c997e35e9d"
+    },
+    {
+      "id": "artifact-9",
+      "path": "licenses/cookie.txt",
+      "kind": "license",
+      "size": 1175,
+      "sha256": "c02110eedc16c7114f1a9bdc026c65626ce1d9c7e27fd51a8e0feee8a48a6858"
+    },
+    {
+      "id": "artifact-10",
+      "path": "licenses/dexie.txt",
+      "kind": "license",
+      "size": 11325,
+      "sha256": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14"
+    },
+    {
+      "id": "artifact-11",
+      "path": "licenses/react-dom.txt",
+      "kind": "license",
+      "size": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "id": "artifact-12",
+      "path": "licenses/react-router-dom.txt",
+      "kind": "license",
+      "size": 1161,
+      "sha256": "77c9ee6a9c5d5782fb0c50b50d101189116314c14f7df0a1b0d385fc96a7ba49"
+    },
+    {
+      "id": "artifact-13",
+      "path": "licenses/react-router.txt",
+      "kind": "license",
+      "size": 1161,
+      "sha256": "77c9ee6a9c5d5782fb0c50b50d101189116314c14f7df0a1b0d385fc96a7ba49"
+    },
+    {
+      "id": "artifact-14",
+      "path": "licenses/react.txt",
+      "kind": "license",
+      "size": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "id": "artifact-15",
+      "path": "licenses/scheduler.txt",
+      "kind": "license",
+      "size": 1088,
+      "sha256": "da6d3703ed11cbe42bd212c725957c98da23cbff1998c05fa4b3d976d1a58e93"
+    },
+    {
+      "id": "artifact-16",
+      "path": "licenses/set-cookie-parser.txt",
+      "kind": "license",
+      "size": 1126,
+      "sha256": "c5c6c5183a789d122f267c405f685037efb87e27fcde28ab1dd7378a2d2f5962"
+    },
+    {
+      "id": "artifact-17",
+      "path": "licenses/whisper-ggml.txt",
+      "kind": "license",
+      "size": 1078,
+      "sha256": "e562a2ddfaf8280537795ac5ecd34e3012b6582a147ef69ba6a6a5c08c84757d"
+    },
+    {
+      "id": "artifact-18",
+      "path": "manifest/build.json",
+      "kind": "metadata",
+      "size": 2136,
+      "sha256": "7f2030814ffc1d6b6760c8a015dd9ca8e9c5c6ff1d3731515f8ea9f57c7227cf"
+    },
+    {
+      "id": "artifact-19",
+      "path": "manifest/sbom.cdx.json",
+      "kind": "metadata",
+      "size": 4015,
+      "sha256": "a9e0b222a8635cd2668011176e5b4317e48067daca991f49866376ffa77ce2ac"
+    },
+    {
+      "id": "artifact-20",
+      "path": "manifest/whisper-config.cmake",
+      "kind": "metadata",
+      "size": 2579,
+      "sha256": "6660a8575bcaae2dd7132e2e8e7137f3ade4a5642fdbb7ea4172775e3ee37ff2"
+    },
+    {
+      "id": "artifact-21",
+      "path": "models/ggml-base.en.bin",
+      "kind": "model",
+      "size": 147964211,
+      "sha256": "a03779c86df3323075f5e796cb2ce5029f00ec8869eee3fdfb897afe36c6d002"
+    },
+    {
+      "id": "artifact-22",
+      "path": "native/ffmpeg",
+      "kind": "executable",
+      "size": 444664,
+      "sha256": "5bdc9f9c180a08c89214271b3ac30f80e068f06839144094139cbf3f2a47fd59"
+    },
+    {
+      "id": "artifact-23",
+      "path": "native/ffprobe",
+      "kind": "executable",
+      "size": 208424,
+      "sha256": "87d8cae783edc6b7ffc029d9bae4b86aa08fc4e123565105c540611d712cbc40"
+    },
+    {
+      "id": "artifact-24",
+      "path": "native/libavcodec.so.62",
+      "kind": "library",
+      "size": 963928,
+      "sha256": "bf0cdc583613babdd73dde9ffb0b392a9cfb338d4b2f93dc593f4ab95ece066c"
+    },
+    {
+      "id": "artifact-25",
+      "path": "native/libavdevice.so.62",
+      "kind": "library",
+      "size": 17480,
+      "sha256": "c6bcf87ce05a3056b14b1417e8b36ab11a7e4ded51b7bc028fff36a2fc3cdb41"
+    },
+    {
+      "id": "artifact-26",
+      "path": "native/libavfilter.so.11",
+      "kind": "library",
+      "size": 219344,
+      "sha256": "9e89a79f0c896f9ec9b445922822e984cef17ea884a9ac2e6a5353d8d4edce15"
+    },
+    {
+      "id": "artifact-27",
+      "path": "native/libavformat.so.62",
+      "kind": "library",
+      "size": 621320,
+      "sha256": "efdb819c79abf26817559995e2ad5e18cf0168e5b41bac74282ba3104d23ec24"
+    },
+    {
+      "id": "artifact-28",
+      "path": "native/libavutil.so.60",
+      "kind": "library",
+      "size": 940552,
+      "sha256": "20482f3f4a94c8b5263bb7e69cc969c8a9ee7afe1fe70ac9ae1628bf52b21129"
+    },
+    {
+      "id": "artifact-29",
+      "path": "native/libgcc_s.so.1",
+      "kind": "library",
+      "size": 183024,
+      "sha256": "d93224d2b0dab4247598be683adca02f5cf00586f99c187579cd7e92058fb7cb"
+    },
+    {
+      "id": "artifact-30",
+      "path": "native/libstdc++.so.6",
+      "kind": "library",
+      "size": 2592224,
+      "sha256": "1fd75fe70354a416d75aef22bcae68c47bd25d20e2d0568c30b1a9838cf62f11"
+    },
+    {
+      "id": "artifact-31",
+      "path": "native/libswresample.so.6",
+      "kind": "library",
+      "size": 123864,
+      "sha256": "1a5778f3ab81aca1c80852a005ce0243aaabd5b96540430b296ac184330d9a0f"
+    },
+    {
+      "id": "artifact-32",
+      "path": "native/libswscale.so.9",
+      "kind": "library",
+      "size": 1564200,
+      "sha256": "efbbacb2c0753e755e81d7c1dd6dfabb0172f8a466fe9b88f396c3918a64f940"
+    },
+    {
+      "id": "artifact-33",
+      "path": "native/node",
+      "kind": "executable",
+      "size": 126595440,
+      "sha256": "7fde7b8afa198da66257f42ee2001d874c7355631e6d1579a5fb5ef1f246df4c"
+    },
+    {
+      "id": "artifact-34",
+      "path": "native/whisper-cli",
+      "kind": "executable",
+      "size": 4273520,
+      "sha256": "6fba742a91d95c255be94517b5b89114464d92fc1df773016d4542520ae6056f"
+    },
+    {
+      "id": "artifact-35",
+      "path": "runtime/artifactManifest.mjs",
+      "kind": "runtime",
+      "size": 3473,
+      "sha256": "ead3dbb07cb96b6061ecb7ffd07e14ffefef485e56182efa245e1df36ff2701c"
+    },
+    {
+      "id": "artifact-36",
+      "path": "runtime/audioRequest.mjs",
+      "kind": "runtime",
+      "size": 3810,
+      "sha256": "5eb92bd68dcb5ff66a6119faa68c2c0172fd520c9749db4f173808905ad5220b"
+    },
+    {
+      "id": "artifact-37",
+      "path": "runtime/config.mjs",
+      "kind": "runtime",
+      "size": 3921,
+      "sha256": "cdcbacaed55219353b392503bc744e2a04cc0542ba23f05de4e0f908118368f7"
+    },
+    {
+      "id": "artifact-38",
+      "path": "runtime/engineState.mjs",
+      "kind": "runtime",
+      "size": 773,
+      "sha256": "2ea2ce4836aaf0ca37a6a4dd507cb972f080bc9653558ebc2729266a81eb89a2"
+    },
+    {
+      "id": "artifact-39",
+      "path": "runtime/errors.mjs",
+      "kind": "runtime",
+      "size": 1349,
+      "sha256": "d55e06c2b3eef2f355b647813e34e22a309457f3d6bff2e2720216d89c26752e"
+    },
+    {
+      "id": "artifact-40",
+      "path": "runtime/health.mjs",
+      "kind": "runtime",
+      "size": 617,
+      "sha256": "88d1cd27cd2f4870b7c5a78bf1b72c124645a13b9961a17d3ac441caac9e8e7c"
+    },
+    {
+      "id": "artifact-41",
+      "path": "runtime/main.mjs",
+      "kind": "runtime",
+      "size": 2909,
+      "sha256": "4eafdfa439c5824760a43f97d75cd57207137423ef82ca48cefd20ebf4439db8"
+    },
+    {
+      "id": "artifact-42",
+      "path": "runtime/media.mjs",
+      "kind": "runtime",
+      "size": 4605,
+      "sha256": "82841dde4d7cb867ac9a5e18d54956fd0fbe44d8c5db20a5c112e498497a0f46"
+    },
+    {
+      "id": "artifact-43",
+      "path": "runtime/multipart.mjs",
+      "kind": "runtime",
+      "size": 6847,
+      "sha256": "1bde249e96a417034bda4e77dcebf501005685771ad9fdae6e04e832c8dd410a"
+    },
+    {
+      "id": "artifact-44",
+      "path": "runtime/nativeProcess.mjs",
+      "kind": "runtime",
+      "size": 2968,
+      "sha256": "746742334e59c347c25ed537b20bd835cf6b0f0a463a87e613917348be7e0426"
+    },
+    {
+      "id": "artifact-45",
+      "path": "runtime/packageResources.mjs",
+      "kind": "runtime",
+      "size": 3049,
+      "sha256": "3c789b65aa1467930278857926995a867ed946006a980fc5e2e40e7b044b5eb3"
+    },
+    {
+      "id": "artifact-46",
+      "path": "runtime/packaged.mjs",
+      "kind": "runtime",
+      "size": 1769,
+      "sha256": "8cca881004b151ede65fa10a7e661d95318f312d2a911d44456bd082aeabb0d7"
+    },
+    {
+      "id": "artifact-47",
+      "path": "runtime/preprocess.mjs",
+      "kind": "runtime",
+      "size": 4720,
+      "sha256": "a58b991b86706f260f75c14f51f9064376e5058116ae9e8736a28102b56b1071"
+    },
+    {
+      "id": "artifact-48",
+      "path": "runtime/server.mjs",
+      "kind": "runtime",
+      "size": 8948,
+      "sha256": "4b7ed50badf87e3e006cb47e26f778de2b82a31e46a6254cfe450dfb8e90cc2a"
+    },
+    {
+      "id": "artifact-49",
+      "path": "runtime/static.mjs",
+      "kind": "runtime",
+      "size": 3494,
+      "sha256": "a993833cb8304b268255edef01c7931a095177a55c0e5cfb036f27e97d8de38f"
+    },
+    {
+      "id": "artifact-50",
+      "path": "runtime/temp.mjs",
+      "kind": "runtime",
+      "size": 3135,
+      "sha256": "a4ffb24b54f15b6485c07d26b67195655ce1e2220659f456f3d7da8a87d20de8"
+    },
+    {
+      "id": "artifact-51",
+      "path": "runtime/transcriptionGate.mjs",
+      "kind": "runtime",
+      "size": 381,
+      "sha256": "28955c8ae2e8c4a7d6c3b1cf6990f794dbfe934c1d8cd71671619a08a01a2054"
+    },
+    {
+      "id": "artifact-52",
+      "path": "runtime/transcriptionResponse.mjs",
+      "kind": "runtime",
+      "size": 636,
+      "sha256": "a276d883d197a35154f4fbe2365cb25f3f1b8dfdcee7b25273c7dc137c477848"
+    },
+    {
+      "id": "artifact-53",
+      "path": "runtime/version.mjs",
+      "kind": "runtime",
+      "size": 966,
+      "sha256": "9dc3009e93e479714881c3b0ee50816e84fa6f7bdaf245f97cb5cab49054b631"
+    },
+    {
+      "id": "artifact-54",
+      "path": "runtime/whisper.mjs",
+      "kind": "runtime",
+      "size": 8332,
+      "sha256": "662a93770d7db8285731b643c65eaca73fcf3d0902711f85d5fdbe3626af48e5"
+    },
+    {
+      "id": "artifact-55",
+      "path": "web/assets/index-DvyuR3Co.js",
+      "kind": "frontend",
+      "size": 483884,
+      "sha256": "6afb2c526f395c429ba43801757b9d9336a54112d551d1ed7396f0d568dbfc03"
+    },
+    {
+      "id": "artifact-56",
+      "path": "web/assets/index-aV0bwYaq.css",
+      "kind": "frontend",
+      "size": 4487,
+      "sha256": "e1790d8a20e53ad3010c81b049f3ed436c4d143e0c4e94fe8fdb59ecd8c88199"
+    },
+    {
+      "id": "artifact-57",
+      "path": "web/audio/rs/rs-001.mp3",
+      "kind": "frontend",
+      "size": 26157,
+      "sha256": "ad73ec3319780c90b57f61e14321b515b5bdb329d6b97e4f73eb2ae04c634d51"
+    },
+    {
+      "id": "artifact-58",
+      "path": "web/audio/rs/rs-002.mp3",
+      "kind": "frontend",
+      "size": 22701,
+      "sha256": "e7734bd08d09156a1a09086b98be9a3aa505875d875d1be267247e1e1f7b0b18"
+    },
+    {
+      "id": "artifact-59",
+      "path": "web/audio/rs/rs-003.mp3",
+      "kind": "frontend",
+      "size": 30189,
+      "sha256": "65dd866632191d850ad063cb6131ec93759e65a8a5f24ab5292bde9411cbcb85"
+    },
+    {
+      "id": "artifact-60",
+      "path": "web/audio/rs/rs-004.mp3",
+      "kind": "frontend",
+      "size": 38253,
+      "sha256": "b262e5a437ca40fc16d73066d352137faae3bf6fd93f08bc582b714595caa887"
+    },
+    {
+      "id": "artifact-61",
+      "path": "web/audio/rs/rs-005.mp3",
+      "kind": "frontend",
+      "size": 56877,
+      "sha256": "fcc657101082dc886ed0edd7c5b0949e60e33a9e874d90bb4a0f07f1fe5c573a"
+    },
+    {
+      "id": "artifact-62",
+      "path": "web/audio/rs/rs-006.mp3",
+      "kind": "frontend",
+      "size": 69549,
+      "sha256": "a8dbeaac9431e8af8d1c41416a5086c620ecca507d736a39b706cfcc54b922e3"
+    },
+    {
+      "id": "artifact-63",
+      "path": "web/audio/wfd/wfd-001.mp3",
+      "kind": "frontend",
+      "size": 32256,
+      "sha256": "32400e9eb78e4a475fb8ac766749d3b191c127db4e40a042bad4f331348377f2"
+    },
+    {
+      "id": "artifact-64",
+      "path": "web/audio/wfd/wfd-002.mp3",
+      "kind": "frontend",
+      "size": 36288,
+      "sha256": "9eafe211e1b1c4a11b4db671b0417ed7fc9e02ff1933063666ac8d450933e89e"
+    },
+    {
+      "id": "artifact-65",
+      "path": "web/audio/wfd/wfd-003.mp3",
+      "kind": "frontend",
+      "size": 33024,
+      "sha256": "9a9736b50d7438ab7118182813d6f66e9430da6e420b22f24c64219b127e0145"
+    },
+    {
+      "id": "artifact-66",
+      "path": "web/audio/wfd/wfd-004.mp3",
+      "kind": "frontend",
+      "size": 39552,
+      "sha256": "9e745cb23d6f799d777202085071221bf2615512b888ff28281ded838686a309"
+    },
+    {
+      "id": "artifact-67",
+      "path": "web/audio/wfd/wfd-005.mp3",
+      "kind": "frontend",
+      "size": 44736,
+      "sha256": "8543ef3fbf22c58b037efdc20cf46be995a56b69c4dabc014c92524e469440ae"
+    },
+    {
+      "id": "artifact-68",
+      "path": "web/favicon.svg",
+      "kind": "frontend",
+      "size": 9522,
+      "sha256": "61bc9a161de58248288e6905425d7180f0624c2865007b97d763fdac12043a66"
+    },
+    {
+      "id": "artifact-69",
+      "path": "web/icons.svg",
+      "kind": "frontend",
+      "size": 5031,
+      "sha256": "b45fa506195cfcdef406ba9f0c77b36ddc1a7c224040926ec70abc2fdea7b93a"
+    },
+    {
+      "id": "artifact-70",
+      "path": "web/index.html",
+      "kind": "frontend",
+      "size": 461,
+      "sha256": "e1e6df8195b8ebe07706595ba7c4be698d23cb6d55d7c5fe204a400428173064"
+    }
+  ]
+}

@@ -7,7 +7,15 @@
     "runtimeVersion",
     "platform",
     "arch",
-    "artifacts"
+    "artifacts",
+    "packageVersion",
+    "appVersion",
+    "apiVersion",
+    "engineVersion",
+    "nodeVersion",
+    "modelId",
+    "origin",
+    "target"
   ],
   "properties": {
     "manifestVersion": {
@@ -87,6 +95,35 @@
           }
         }
       }
+    },
+    "packageVersion": {
+      "const": 1
+    },
+    "appVersion": {
+      "const": "0.1.0"
+    },
+    "apiVersion": {
+      "const": 1
+    },
+    "engineVersion": {
+      "const": "1.8.3"
+    },
+    "nodeVersion": {
+      "const": "24.21.0"
+    },
+    "modelId": {
+      "const": "base.en"
+    },
+    "origin": {
+      "const": "http://127.0.0.1:8765"
+    },
+    "target": {
+      "enum": [
+        "linux-x64",
+        "windows-x64",
+        "macos-x64",
+        "macos-arm64"
+      ]
     }
   },
   "$comment": "Launcher must authenticate this manifest, require Node/whisper-cli/ffmpeg/ffprobe/active model plus dependency/frontend inventory, and verify target/runtime identity before using it. This schema is not a shipped signed manifest."
