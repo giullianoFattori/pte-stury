@@ -23,7 +23,7 @@ await copyFile('/usr/share/doc/libgcc-s1/copyright',join(base,'licenses/GCC-runt
 const flags=JSON.parse(await readFile('packaging/ffmpeg-flags.json','utf8'));
 const output=(tool,args)=>{const r=spawnSync(tool,args,{encoding:'utf8',maxBuffer:1024*1024});if(r.status!==0)throw new Error('Build metadata failed');return r.stdout.trim();};
 const commit=output('git',['rev-parse','HEAD']);
-await writeFile(join(base,'build.json'),JSON.stringify({target:'linux-x64',gitCommit:commit,gitDirty:!!output('git',['status','--porcelain']),
+await writeFile(join(base,'build.json'),JSON.stringify({target:'linux-x64',buildTimestamp:new Date().toISOString(),gitCommit:commit,gitDirty:!!output('git',['status','--porcelain']),
  nodeVersion:locks.node.version,whisperRevision:locks.whisper.revision,ffmpegSourceSHA256:locks.ffmpeg.sha256,
  compiler:output('cc',['--version']).split('\n')[0],cmake:output('.local-runtime/cmake-package/cmake/data/bin/cmake',['--version']).split('\n')[0],go:locks.go.version,ffmpegFlags:flags,
  whisperFlags:['Release','BUILD_SHARED_LIBS=OFF','GGML_NATIVE=OFF','GGML_OPENMP=OFF','CPU','AVX/AVX2/FMA/F16C required for this internal x64 build','static-libgcc','static-libstdc++'],

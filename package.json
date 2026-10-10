@@ -24,7 +24,14 @@
     "package:linux": "node packaging/build-linux.mjs",
     "package:windows": "node packaging/build-windows.mjs",
     "package:macos": "node packaging/build-macos.mjs",
-    "package:smoke": "node packaging/smoke.mjs"
+    "package:smoke": "node packaging/smoke.mjs",
+    "validation:speech:integrity": "node tools/runtime-validation/integrity.mjs",
+    "validation:speech:runtime": "node tools/runtime-validation/runtime.mjs",
+    "validation:speech:browser": "node tools/runtime-validation/browser.mjs",
+    "validation:speech:http": "node tools/runtime-validation/http.mjs",
+    "validation:speech:offline": "node tools/runtime-validation/offline.mjs",
+    "validation:speech:resources": "node tools/runtime-validation/resources.mjs",
+    "validation:speech:report": "node tools/runtime-validation/report.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",

@@ -1,0 +1,28 @@
+{
+  "createdAt": "2026-10-10T04:39:35.608Z",
+  "target": "macos-arm64",
+  "status": "PENDING",
+  "identity": {
+    "appVersion": "0.1.0",
+    "runtimeVersion": "0.1.0",
+    "apiVersion": 1,
+    "engineVersion": "1.8.3",
+    "modelId": "base.en",
+    "target": "macos-arm64",
+    "packageSHA256": null,
+    "manifestSHA256": null,
+    "gitCommit": null,
+    "buildTimestamp": null
+  },
+  "matrix": {
+    "packageBuild": "PENDING",
+    "cleanMachine": "PENDING",
+    "browserSpeech": "PENDING",
+    "ra": "PENDING",
+    "rs": "PENDING",
+    "persistence": "PENDING",
+    "shutdown": "PENDING",
+    "signing": "PENDING"
+  },
+  "reason": "No native package, clean machine, browser/media or signing evidence. Launcher cross-compilation is not package validation."
+}

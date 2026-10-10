@@ -51,3 +51,5 @@ Privacy-safe size/timing/browser results are archived in [packaging audits](audi
 - Human model comparison; no final commercial RAM/timeout/model size decision.
 
 Step 05.10 may validate the internal Linux product now, but cannot close Activity 05 across packaged platforms until these gates have evidence.
+
+Step 05.10 now archives [identified extracted-package validation](validation-05.10.md): Linux host technical flow, controlled browser RA/RS/WFD, persistence after restart/reinstall, artifact tampering, real timeout/crash recovery and offline namespaces passed. True clean-machine/physical microphone, other platforms, signing and the human model gate remain PENDING. Activity 05 is PARTIALLY COMPLETE. Embedded private build paths found by the artifact scan are an additional external packaging cleanup gate.

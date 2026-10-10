@@ -1,0 +1,30 @@
+// Long host validation of an extracted package. No learner transcript is archived.
+import assert from 'node:assert/strict';
+import { readFile, readdir, rm, mkdir, stat } from 'node:fs/promises';
+import { join } from 'node:path';
+import { createServer } from 'node:net';
+import { origin, root, launch, ready, quit, upload, pause, childPids, nativePid, tempEntries, persist } from './common.mjs';
+const traceDir=join(root,'..','network-traces');await mkdir(traceDir,{recursive:true});
+let p=launch(['--no-browser'],root,join(traceDir,'connect'));const timings=[],resources=[],checks={};const started=Date.now();
+async function clean(){const end=Date.now()+10000;while((await tempEntries()).length&&Date.now()<end)await pause(50);assert.deepEqual(await tempEntries(),[]);}
+async function gone(pid){const end=Date.now()+10000;while(Date.now()<end){try{await stat(`/proc/${pid}`);}catch(e){if(e.code==='ENOENT')return;throw e;}await pause(50);}throw new Error('Owned process survived');}
+async function sampleParent(){for(const pid of await childPids(p.child.pid)){try{const cmd=await readFile(`/proc/${pid}/cmdline`,'utf8');if(cmd.startsWith(join(root,'native/node')+'\0')){const status=await readFile(`/proc/${pid}/status`,'utf8');return {fd:(await readdir(`/proc/${pid}/fd`)).length,rssKiB:Number(status.match(/^VmRSS:\s+(\d+)/m)?.[1]),pid};}}catch{}}throw new Error('Owned Node parent missing');}
+try{
+ await ready(p);checks.startupMs=Date.now()-started;
+ const health=await(await fetch(origin+'/api/v1/health')).json();assert.equal(health.status,'ready');assert.equal(health.apiVersion,1);assert.equal(health.engine,'whisper.cpp');assert.equal(health.model.loaded,true);assert.equal(health.processedLocally,true);checks.health='PASS';
+ resources.push(await sampleParent());
+ for(let i=0;i<20;i++){const start=Date.now();const r=await upload(i%2?'RS-1':'RA-1');assert.equal(r.status,200);const b=await r.json();assert.ok(b.text.length);assert.equal(b.processedLocally,true);timings.push(Date.now()-start);await clean();resources.push(await sampleParent());if(i%5===4)console.log(JSON.stringify({event:'sequential progress',completed:i+1}));}
+ checks.sequentialTranscriptions='PASS';
+ const pending=upload('RA-3');await nativePid(p.child.pid);const busy=await upload();assert.equal(busy.status,429);assert.equal((await busy.json()).error.code,'RUNTIME_BUSY');assert.equal((await pending).status,200);await clean();checks.busy='PASS';
+ const abort=new AbortController();const aborted=upload('RA-3',abort.signal).then(r=>r.status,()=>0);const abortPid=await nativePid(p.child.pid);abort.abort();assert.equal(await aborted,0);await gone(abortPid);await clean();assert.equal((await upload()).status,200);await clean();checks.abortAndRecovery='PASS';
+ const timeout=upload('RA-3');const timeoutPid=await nativePid(p.child.pid);process.kill(timeoutPid,'SIGSTOP');console.log(JSON.stringify({event:'awaiting real inference deadline',seconds:60}));const timed=await timeout;assert.equal(timed.status,504);assert.equal((await timed.json()).error.code,'INFERENCE_TIMEOUT');await gone(timeoutPid);await clean();assert.equal((await upload()).status,200);await clean();checks.timeoutAndRecovery='PASS';
+ const duplicate=launch();assert.equal((await duplicate.exited)[0],0);checks.singleInstance='PASS';
+ const finalParent=await sampleParent();resources.push(finalParent);await quit(p);await gone(finalParent.pid);await clean();checks.shutdown='PASS';
+ const network=[];for(const name of await readdir(traceDir)){const content=await readFile(join(traceDir,name),'utf8');for(const line of content.split('\n').filter(l=>/connect\(/.test(l)&&/AF_INET/.test(l))){const address=line.match(/inet_addr\("([^"]+)"\)/)?.[1]??line.match(/inet_pton\(AF_INET6, "([^"]+)"/)?.[1];assert.ok(address&&address==='127.0.0.1','Non-loopback or unparsed network connect');network.push(address);}}
+ checks.network='PASS';checks.connectAudit={instrument:'strace -ff -e trace=connect',scope:'launcher/runtime/native children; browser audited separately',inetConnectCalls:network.length,nonLoopbackConnects:0,limitations:'Connect syscall audit; no OS sandbox claim. Raw traces deleted.'};await rm(traceDir,{recursive:true});
+ for(const crash of ['launcher','runtime']){p=launch();await ready(p);const work=upload('RA-3').then(r=>r.status,()=>0);const native=await nativePid(p.child.pid);const parent=await sampleParent();process.kill(crash==='launcher'?p.child.pid:parent.pid,'SIGKILL');await p.exited;assert.notEqual(await work,200);await gone(native);await gone(parent.pid);p=launch();await ready(p);assert.equal((await upload()).status,200);await clean();await quit(p);checks[crash+'CrashRecovery']='PASS';}
+ p=launch();await ready(p);const work=upload('RA-3').then(r=>r.status,()=>0);const native=await nativePid(p.child.pid);await quit(p);assert.notEqual(await work,200);await gone(native);await clean();checks.quitDuringInference='PASS';
+ const collision=createServer();await new Promise((res,rej)=>{collision.once('error',rej);collision.listen(8765,'127.0.0.1',res)});try{const occupied=launch();assert.equal((await occupied.exited)[0],1);assert.match(occupied.error(),/port 8765 is occupied/);checks.portCollision='PASS';}finally{await new Promise(r=>collision.close(r));}
+ const sorted=[...timings].sort((a,b)=>a-b);await persist('linux-runtime.json',{status:'PASS',scope:'Extracted internal unsigned package on existing Linux host; controlled TTS, not human quality or clean-machine certification',checks,sequential:{count:20,requestMs:timings,medianMs:(sorted[9]+sorted[10])/2,parent:resources.map(({fd,rssKiB})=>({fd,rssKiB})),firstFD:resources[0].fd,lastFD:finalParent.fd,firstRSSKiB:resources[0].rssKiB,lastRSSKiB:finalParent.rssKiB,tempEntriesAfter:0},permissions:{temp:'separate permission audit'},logs:{transcriptLogging:false,scope:'launcher output inspected; runtime output is discarded by launcher'},pending:['actual reboot/logout','system sleep/resume','physical microphone','clean machine']});
+ console.log(JSON.stringify({event:'runtime validation',status:'PASS'}));
+}finally{await quit(p);await rm(traceDir,{recursive:true,force:true});}

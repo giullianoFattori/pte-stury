@@ -1,0 +1,174 @@
+{
+  "identity": {
+    "appVersion": "0.1.0",
+    "runtimeVersion": "0.1.0",
+    "apiVersion": 1,
+    "engineVersion": "1.8.3",
+    "modelId": "base.en",
+    "target": "linux-x64",
+    "packageSHA256": "0ccab5a3277e305fec7a0efd5607d0d27c84189274dfa59553c1a9df28f8713c",
+    "manifestSHA256": "c071e427729c065a4fa73b07b5acb3a876a00ff4667d49d2d316f07faa06f0a8",
+    "gitCommit": "533f4d25cfa3b0e7e2a4f6802f7401d8e6d3648d",
+    "buildTimestamp": "2026-10-10T03:32:57.005Z",
+    "buildDirty": true
+  },
+  "createdAt": "2026-10-10T03:49:32.150Z",
+  "status": "PASS",
+  "scope": "Extracted internal unsigned package on existing Linux host; controlled TTS, not human quality or clean-machine certification",
+  "checks": {
+    "startupMs": 9986,
+    "health": "PASS",
+    "sequentialTranscriptions": "PASS",
+    "busy": "PASS",
+    "abortAndRecovery": "PASS",
+    "timeoutAndRecovery": "PASS",
+    "singleInstance": "PASS",
+    "shutdown": "PASS",
+    "network": "PASS",
+    "connectAudit": {
+      "instrument": "strace -ff -e trace=connect",
+      "scope": "launcher/runtime/native children; browser audited separately",
+      "inetConnectCalls": 61,
+      "nonLoopbackConnects": 0,
+      "limitations": "Connect syscall audit; no OS sandbox claim. Raw traces deleted."
+    },
+    "launcherCrashRecovery": "PASS",
+    "runtimeCrashRecovery": "PASS",
+    "quitDuringInference": "PASS",
+    "portCollision": "PASS"
+  },
+  "sequential": {
+    "count": 20,
+    "medianMs": 2766,
+    "parent": [
+      {
+        "fd": 22,
+        "rssKiB": 87116
+      },
+      {
+        "fd": 22,
+        "rssKiB": 87400
+      },
+      {
+        "fd": 22,
+        "rssKiB": 87500
+      },
+      {
+        "fd": 22,
+        "rssKiB": 87552
+      },
+      {
+        "fd": 22,
+        "rssKiB": 87868
+      },
+      {
+        "fd": 22,
+        "rssKiB": 87888
+      },
+      {
+        "fd": 22,
+        "rssKiB": 87936
+      },
+      {
+        "fd": 22,
+        "rssKiB": 87956
+      },
+      {
+        "fd": 22,
+        "rssKiB": 87960
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88044
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88052
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88056
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88092
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88108
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88112
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88112
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88156
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88156
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88156
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88268
+      },
+      {
+        "fd": 22,
+        "rssKiB": 88268
+      },
+      {
+        "fd": 22,
+        "rssKiB": 86132
+      }
+    ],
+    "firstFD": 22,
+    "lastFD": 22,
+    "firstRSSKiB": 87116,
+    "lastRSSKiB": 86132,
+    "tempEntriesAfter": 0,
+    "requestMs": [
+      2963,
+      2422,
+      2643,
+      2822,
+      2767,
+      2502,
+      2970,
+      2381,
+      3178,
+      2904,
+      2730,
+      2840,
+      2874,
+      2464,
+      3083,
+      2582,
+      2765,
+      2755,
+      3030,
+      2703
+    ]
+  },
+  "permissions": {
+    "temp": "separate permission audit"
+  },
+  "logs": {
+    "transcriptLogging": false,
+    "scope": "launcher output inspected; runtime output is discarded by launcher"
+  },
+  "pending": [
+    "actual reboot/logout",
+    "system sleep/resume",
+    "physical microphone",
+    "clean machine"
+  ]
+}

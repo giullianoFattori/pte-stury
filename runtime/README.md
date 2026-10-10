@@ -1,4 +1,6 @@
-# PTE Local Speech Runtime — Activity 05.08
+# PTE Local Speech Runtime — Activity 05
+
+Activity 05 status: **PARTIALLY COMPLETE**. [Step 05.10 packaged validation](docs/validation-05.10.md) records Linux host technical PASS; true clean-machine, physical microphone, Windows/macOS, signing and human model-quality gates remain PENDING. No final model winner is selected.
 
 Security/resilience review: [threat model](docs/threat-model.md), [review and validation](docs/security-review-05.08.md), [logging/privacy](docs/logging-privacy.md), and [Step 05.09 packaging requirements](docs/packaging-security-requirements.md). Long controlled stress tools are separate from `npm test`; see [instructions](../tools/runtime-hardening/README.md). The 05.07 human comparison and model winner remain pending; base.en is the preserved baseline.
 
