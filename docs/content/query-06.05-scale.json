@@ -1,0 +1,77 @@
+{
+  "reportVersion": 1,
+  "date": "2026-10-11",
+  "timezone": "Australia/Sydney",
+  "backend": "Dexie + fake-indexeddb 6.2.5",
+  "platform": "linux-x64",
+  "method": "One pass per operation after bulk insertion. Full-suite timings include parallel test load; LTS timings come from the isolated query suite. No timing threshold or browser performance claim.",
+  "fixture": "Synthetic active items cycle WFD/RS/RA and difficulties 1..5; odd indices have academic/schedule metadata. No production content is changed.",
+  "limits": {
+    "taskQuery": 100,
+    "difficultyQuery": 100,
+    "combinedQuery": 20,
+    "sample": 10
+  },
+  "runs": [
+    {
+      "run": "full-suite",
+      "nodeVersion": "25.8.1",
+      "measurements": [
+        {
+          "size": 1000,
+          "environment": "fake-indexeddb; not browser performance evidence",
+          "matches": 68,
+          "timings": {
+            "taskQueryMs": 206.661,
+            "difficultyQueryMs": 57.301,
+            "combinedQueryMs": 148.424,
+            "countMs": 124.953,
+            "samplingMs": 0.121
+          }
+        },
+        {
+          "size": 5000,
+          "environment": "fake-indexeddb; not browser performance evidence",
+          "matches": 334,
+          "timings": {
+            "taskQueryMs": 1471.184,
+            "difficultyQueryMs": 340.641,
+            "combinedQueryMs": 1373.6,
+            "countMs": 1174.478,
+            "samplingMs": 0.051
+          }
+        }
+      ]
+    },
+    {
+      "run": "isolated-query-suite",
+      "nodeVersion": "24.21.0",
+      "measurements": [
+        {
+          "size": 1000,
+          "environment": "fake-indexeddb; not browser performance evidence",
+          "matches": 68,
+          "timings": {
+            "taskQueryMs": 76.6,
+            "difficultyQueryMs": 20.481,
+            "combinedQueryMs": 55.73,
+            "countMs": 46.002,
+            "samplingMs": 0.113
+          }
+        },
+        {
+          "size": 5000,
+          "environment": "fake-indexeddb; not browser performance evidence",
+          "matches": 334,
+          "timings": {
+            "taskQueryMs": 1025.649,
+            "difficultyQueryMs": 310.356,
+            "combinedQueryMs": 1062.019,
+            "countMs": 1040.83,
+            "samplingMs": 0.035
+          }
+        }
+      ]
+    }
+  ]
+}

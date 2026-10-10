@@ -27,6 +27,9 @@ practice items. The learner app is not yet reading it. [Activity 06.04](docs/con
 adds transactional IndexedDB sync, revision checks, catalog availability and internal
 content state in Dexie v3. Bootstrap retains the legacy seed until real-content
 migration; drafts/retired/unavailable content is excluded from practice queries.
+[Activity 06.05](docs/content/query-06.05.md) adds validated metadata filters,
+deterministic ordering, counts, coverage diagnostics and pure sampling with an
+injected RNG, using the existing indexes. No filter UI or session engine is added.
 
 ## Local development
 
