@@ -25,6 +25,7 @@ export type StudyItemMetadata = Readonly<{
   /** Origin category, not proof of a redistribution license or review approval. */
   source: ContentSource;
   tags?: readonly string[];
+  /** Optional/possibly empty on drafts; active/retired validation requires skills. */
   skills?: readonly Skill[];
   topic?: string;
   estimatedSeconds?: number;
@@ -34,6 +35,7 @@ export type StudyItemMetadata = Readonly<{
 export type AudioAsset = Readonly<{
   path: string;
   sha256?: string;
+  /** Positive safe-integer milliseconds when present, enforced by the v1 parser. */
   durationMs?: number;
   mimeType?: string;
 }>;
@@ -41,7 +43,7 @@ export type AudioAsset = Readonly<{
 /**
  * Durable authoring contract. Deliberately separate from legacy persisted StudyItem:
  * no installation timestamp or audioUrl alias in authored content. JSON validation
- * and task-specific requirements arrive in 06.02; this type is not a validator.
+ * and task-specific requirements are enforced by validation.ts, not this type.
  */
 export type QuestionBankItem = Readonly<
   Pick<StudyItem, 'id' | 'taskType' | 'difficulty' | 'prompt' | 'answer' | 'transcript'>

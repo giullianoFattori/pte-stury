@@ -1,0 +1,32 @@
+{
+  "id": "rs-000001",
+  "taskType": "repeat-sentence",
+  "difficulty": 2,
+  "prompt": "Listen and repeat the sentence.",
+  "answer": "The lecture starts at nine tomorrow.",
+  "transcript": "The lecture starts at nine tomorrow.",
+  "revision": 1,
+  "status": "draft",
+  "source": "generated",
+  "skills": [
+    "listening",
+    "speaking"
+  ],
+  "tags": [
+    "academic",
+    "research"
+  ],
+  "topic": "research",
+  "estimatedSeconds": 12.5,
+  "audio": {
+    "path": "/audio/rs/rs-000001.mp3",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "durationMs": 3200,
+    "mimeType": "audio/mpeg"
+  },
+  "chunks": [
+    "The lecture",
+    "starts at nine",
+    "tomorrow"
+  ]
+}

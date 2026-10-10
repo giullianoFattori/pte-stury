@@ -1,0 +1,406 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pte-study.local/schemas/question-bank-item-v1.json",
+  "title": "PTE Study question-bank item — schema v1",
+  "description": "One authored item, not a bank bundle. Runtime validation is authoritative.",
+  "$comment": "Standard JSON Schema cannot compare two property values. x-pte-semanticRules declares that additional runtime rule; editor validation alone cannot approve content.",
+  "x-pte-schemaVersion": 1,
+  "x-pte-semanticRules": [
+    {
+      "code": "ANSWER_TRANSCRIPT_MISMATCH",
+      "path": "answer",
+      "rule": "When answer and transcript are both present, they must be exactly equal (including on drafts)."
+    }
+  ],
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "taskType",
+    "difficulty",
+    "prompt",
+    "revision",
+    "status",
+    "source"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 64,
+      "pattern": "\\S",
+      "anyOf": [
+        {
+          "pattern": "^wfd-(?!000000)[0-9]{6}$(?![\\s\\S])"
+        },
+        {
+          "enum": [
+            "wfd-001",
+            "wfd-002",
+            "wfd-003",
+            "wfd-004",
+            "wfd-005"
+          ]
+        },
+        {
+          "pattern": "^rs-(?!000000)[0-9]{6}$(?![\\s\\S])"
+        },
+        {
+          "enum": [
+            "rs-001",
+            "rs-002",
+            "rs-003",
+            "rs-004",
+            "rs-005",
+            "rs-006"
+          ]
+        },
+        {
+          "pattern": "^ra-(?!000000)[0-9]{6}$(?![\\s\\S])"
+        },
+        {
+          "enum": [
+            "ra-001",
+            "ra-002",
+            "ra-003",
+            "ra-004",
+            "ra-005",
+            "ra-006"
+          ]
+        }
+      ]
+    },
+    "taskType": {
+      "enum": [
+        "write-from-dictation",
+        "repeat-sentence",
+        "read-aloud"
+      ]
+    },
+    "difficulty": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 5
+    },
+    "prompt": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000,
+      "pattern": "\\S"
+    },
+    "answer": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000,
+      "pattern": "\\S"
+    },
+    "transcript": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 10000,
+      "pattern": "\\S"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 9007199254740991
+    },
+    "status": {
+      "enum": [
+        "draft",
+        "active",
+        "retired"
+      ]
+    },
+    "source": {
+      "enum": [
+        "internal",
+        "licensed",
+        "generated",
+        "imported"
+      ]
+    },
+    "tags": {
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 50,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 100,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true
+    },
+    "skills": {
+      "type": "array",
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "listening",
+          "reading",
+          "speaking",
+          "writing"
+        ]
+      }
+    },
+    "topic": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "pattern": "\\S"
+    },
+    "estimatedSeconds": {
+      "type": "number",
+      "exclusiveMinimum": 0,
+      "maximum": 1.7976931348623157e+308
+    },
+    "chunks": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000,
+        "pattern": "\\S"
+      }
+    },
+    "phraseGroups": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000,
+        "pattern": "\\S"
+      }
+    },
+    "stressWords": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 200,
+      "items": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 1000,
+        "pattern": "\\S"
+      },
+      "uniqueItems": true
+    },
+    "audio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "path"
+      ],
+      "properties": {
+        "path": {
+          "type": "string",
+          "maxLength": 512,
+          "pattern": "^/audio/(?:[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*/)*[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*$(?![\\s\\S])"
+        },
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+        },
+        "durationMs": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "mimeType": {
+          "type": "string",
+          "maxLength": 100,
+          "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
+        }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "write-from-dictation"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "pattern": "^wfd-(?!000000)[0-9]{6}$(?![\\s\\S])"
+              },
+              {
+                "enum": [
+                  "wfd-001",
+                  "wfd-002",
+                  "wfd-003",
+                  "wfd-004",
+                  "wfd-005"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "repeat-sentence"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "pattern": "^rs-(?!000000)[0-9]{6}$(?![\\s\\S])"
+              },
+              {
+                "enum": [
+                  "rs-001",
+                  "rs-002",
+                  "rs-003",
+                  "rs-004",
+                  "rs-005",
+                  "rs-006"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "read-aloud"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "pattern": "^ra-(?!000000)[0-9]{6}$(?![\\s\\S])"
+              },
+              {
+                "enum": [
+                  "ra-001",
+                  "ra-002",
+                  "ra-003",
+                  "ra-004",
+                  "ra-005",
+                  "ra-006"
+                ]
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "active",
+              "retired"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "properties": {
+          "skills": {
+            "minItems": 1
+          }
+        },
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "taskType": {
+                  "const": "write-from-dictation"
+                }
+              },
+              "required": [
+                "taskType"
+              ]
+            },
+            "then": {
+              "required": [
+                "answer",
+                "transcript",
+                "audio",
+                "skills"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "taskType": {
+                  "const": "repeat-sentence"
+                }
+              },
+              "required": [
+                "taskType"
+              ]
+            },
+            "then": {
+              "required": [
+                "answer",
+                "transcript",
+                "audio",
+                "chunks",
+                "skills"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "taskType": {
+                  "const": "read-aloud"
+                }
+              },
+              "required": [
+                "taskType"
+              ]
+            },
+            "then": {
+              "required": [
+                "answer",
+                "transcript",
+                "skills"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}

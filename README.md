@@ -9,9 +9,10 @@ does not use STT.
 ## Content system
 
 [Activity 06.01](docs/content/contract-06.01.md) defines the versioned authoring
-contract, permanent IDs, lifecycle and revision policy. Current question arrays,
-seed and study flows are preserved. JSON validation/build/sync and migration are
-subsequent steps; the contract alone does not validate imported content.
+contract, permanent IDs, lifecycle and revision policy. [Activity 06.02](docs/content/validation-06.02.md)
+adds strict JSON/runtime validation and a validation-only `npm run content:validate`
+preview. Current question arrays, seed and study flows are preserved; production
+build, sync and migration remain subsequent steps.
 
 ## Local development
 

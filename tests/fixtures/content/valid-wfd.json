@@ -1,0 +1,24 @@
+{
+  "id": "wfd-000001",
+  "taskType": "write-from-dictation",
+  "difficulty": 2,
+  "prompt": "Listen and type the sentence.",
+  "answer": "The library closes at nine.",
+  "transcript": "The library closes at nine.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "writing"
+  ],
+  "tags": [
+    "academic",
+    "research"
+  ],
+  "topic": "research",
+  "estimatedSeconds": 12.5,
+  "audio": {
+    "path": "/audio/wfd/wfd-000001.mp3"
+  }
+}
