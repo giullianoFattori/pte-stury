@@ -33,3 +33,8 @@ tools/local-stt/samples/private/
 # Generated internal packages, downloads and native toolchains
 .local-packaging/
 packaging/out/
+
+# Transient content-build directories; generated JSON artifacts are committed.
+src/.generated.content-lock/
+src/.generated.content-next/
+src/.generated.content-previous/

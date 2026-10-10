@@ -32,7 +32,10 @@
     "validation:speech:offline": "node tools/runtime-validation/offline.mjs",
     "validation:speech:resources": "node tools/runtime-validation/resources.mjs",
     "validation:speech:report": "node tools/runtime-validation/report.mjs",
-    "content:validate": "node tools/content/validate.mjs"
+    "content:validate": "node tools/content/validate.mjs",
+    "content:build": "node tools/content/build.mjs",
+    "content:stats": "node tools/content/stats.mjs",
+    "content:verify": "node tools/content/verify.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",

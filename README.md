@@ -11,8 +11,19 @@ does not use STT.
 [Activity 06.01](docs/content/contract-06.01.md) defines the versioned authoring
 contract, permanent IDs, lifecycle and revision policy. [Activity 06.02](docs/content/validation-06.02.md)
 adds strict JSON/runtime validation and a validation-only `npm run content:validate`
-preview. Current question arrays, seed and study flows are preserved; production
-build, sync and migration remain subsequent steps.
+preview. [Activity 06.03](docs/content/build-06.03.md) adds deterministic discovery,
+canonical bundles, SHA-256 manifests and package-owned JSON assets. Current question
+arrays, seed and study flows are preserved; sync and migration remain subsequent steps.
+
+```bash
+npm run content:validate
+npm run content:build
+npm run content:stats
+npm run content:verify
+```
+
+The generated bank currently contains only three technical drafts, zero active
+practice items. The learner app is not yet reading it.
 
 ## Local development
 

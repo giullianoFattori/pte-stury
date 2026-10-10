@@ -1,0 +1,12 @@
+{
+  "id": "ra-900001",
+  "taskType": "read-aloud",
+  "difficulty": 1,
+  "prompt": "Build pipeline fixture for read-aloud; not learner practice.",
+  "revision": 1,
+  "status": "draft",
+  "source": "internal",
+  "tags": [
+    "build-fixture"
+  ]
+}

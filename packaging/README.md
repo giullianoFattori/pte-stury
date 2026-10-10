@@ -55,6 +55,13 @@ Browser IndexedDB remains at the stable origin and in the browser profile. An up
 
 ## Validation and release gates
 
+Platform build scripts run `npm run content:build` before regressions. Staging
+verifies the committed generated catalog pair and inventories both files under
+`web/content/` with SHA-256/size. The runtime serves these local JSON assets with
+CSP/no-store; the current learner app still consumes its existing TypeScript bank.
+See [06.03 build policy](../docs/content/build-06.03.md). After a failed content
+build, do not package stale last-good outputs.
+
 ```bash
 npm run package:test
 GOCACHE=/tmp/pte-packaging-go-cache .local-packaging/go/bin/go test -C packaging/launcher ./...

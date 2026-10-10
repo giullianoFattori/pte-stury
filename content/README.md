@@ -1,4 +1,4 @@
-# Content authoring — schema v1 preview
+# Content authoring — schema v1
 
 The production WFD/RS/RA bank still lives in `src/data/question-bank/`. Files under `examples/` are **validation examples only**, all drafts. They are not installed, seeded, imported into IndexedDB or packaged as a production question bundle. Referenced audio is illustrative and need not exist at this stage.
 
@@ -17,4 +17,15 @@ New IDs: `wfd-000001`, `rs-000001`, `ra-000001`; zero, upper-case prefixes and d
 
 Canonical shape and full rules: [06.02 validation](../docs/content/validation-06.02.md). Stable identity, lifecycle and revisions: [06.01 contract](../docs/content/contract-06.01.md).
 
-The schema generator `node tools/content/schema.mjs --write` refreshes the documentation artifact from shared policy. It does not build question bundles, allocate IDs, generate a content hash or synchronize learner data. Those remain later steps.
+The schema generator `node tools/content/schema.mjs --write` refreshes only the documentation artifact from shared policy. Building content never rewrites it.
+
+Production authoring directories are `write-from-dictation/`, `repeat-sentence/` and `read-aloud/`. Use one item per `.json` file in its task directory. Only these trees are discovered; `examples/` is excluded. Three draft `build-fixture` records (`wfd-900001`, `rs-900001`, `ra-900001`) demonstrate the build and are reserved technical identities, never learner questions. The current learner app is **not yet reading the generated bank in 06.03**.
+
+```bash
+npm run content:validate       # examples, or pass explicit authored files
+npm run content:build          # validates production trees and writes bundle + manifest
+npm run content:stats          # current source counts and warnings, without writes
+npm run content:verify         # verifies the generated pair
+```
+
+Commit source changes and both `src/generated/question-bank*.json` artifacts together. Errors fail the build and preserve last-good outputs; do not package those stale files after a failed build. Warnings remain visible. Empty production builds fail. See [06.03 build policy](../docs/content/build-06.03.md) for exact ordering, byte/hash rules, limits, recovery and packaging. Audio existence/decode, sync and migration remain later steps.

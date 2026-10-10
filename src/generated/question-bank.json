@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "items": [
+    {
+      "id": "wfd-900001",
+      "taskType": "write-from-dictation",
+      "difficulty": 1,
+      "prompt": "Build pipeline fixture for write-from-dictation; not learner practice.",
+      "revision": 1,
+      "status": "draft",
+      "source": "internal",
+      "tags": [
+        "build-fixture"
+      ]
+    },
+    {
+      "id": "rs-900001",
+      "taskType": "repeat-sentence",
+      "difficulty": 1,
+      "prompt": "Build pipeline fixture for repeat-sentence; not learner practice.",
+      "revision": 1,
+      "status": "draft",
+      "source": "internal",
+      "tags": [
+        "build-fixture"
+      ]
+    },
+    {
+      "id": "ra-900001",
+      "taskType": "read-aloud",
+      "difficulty": 1,
+      "prompt": "Build pipeline fixture for read-aloud; not learner practice.",
+      "revision": 1,
+      "status": "draft",
+      "source": "internal",
+      "tags": [
+        "build-fixture"
+      ]
+    }
+  ]
+}

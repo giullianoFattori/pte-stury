@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "contentVersion": "sha256:69780bb9094ecc13f70d107c35037b9396c77851f35b06c1c1e01a21e7c8fbf5",
+  "itemCount": 3,
+  "countsByTaskType": {
+    "write-from-dictation": 1,
+    "repeat-sentence": 1,
+    "read-aloud": 1
+  },
+  "audioAssetCount": 0
+}

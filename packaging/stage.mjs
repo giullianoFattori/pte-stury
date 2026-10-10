@@ -1,6 +1,7 @@
 import { cp, copyFile, mkdir, readFile, writeFile, lstat, realpath, rm } from 'node:fs/promises';
 import { resolve, join, basename } from 'node:path';
 import { generateManifest, verifyPackage, listFiles, TARGETS } from './inventory.mjs';
+import { stageGeneratedContent } from './content.mjs';
 const target = process.argv[2];
 if (!TARGETS[target] || TARGETS[target][0] !== process.platform || TARGETS[target][1] !== process.arch) throw new Error('Stage on the matching native target; cross-compilation alone is not validation');
 const locks = JSON.parse(await readFile('packaging/sources.lock.json', 'utf8'));
@@ -14,6 +15,7 @@ await cp(join(input,'native'),join(output,'native'),{recursive:true, dereference
 await copyFile(`.local-packaging/launchers/${target}/launcher${process.platform==='win32'?'.exe':''}`,join(output,`launcher${process.platform==='win32'?'.exe':''}`));
 for (const name of await listFiles('runtime/src')) if(name.endsWith('.mjs')) await copyFile(join('runtime/src',name),join(output,'runtime',name));
 await cp('dist',join(output,'web'),{recursive:true});
+await stageGeneratedContent(output);
 await copyFile('.local-runtime/models/ggml-base.en.bin',join(output,'models/ggml-base.en.bin'));
 await copyFile(join(input,'whisper-config.cmake'),join(output,'manifest/whisper-config.cmake'));
 await copyFile(join(input,'build.json'),join(output,'manifest/build.json'));

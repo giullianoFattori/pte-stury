@@ -14,7 +14,7 @@ await acquire(locks.ffmpeg.url,`${cache}/downloads/ffmpeg.tar.xz`,locks.ffmpeg.s
 run('tar',['-xzf',`${cache}/downloads/go.tar.gz`,'-C',cache]);run('tar',['-xJf',`${cache}/downloads/node.tar.xz`,'-C',cache]);run('tar',['-xJf',`${cache}/downloads/ffmpeg.tar.xz`,'-C',cache]);
 const node=`${cache}/node-v${locks.node.version}-linux-x64/bin/node`,npm=`${cache}/node-v${locks.node.version}-linux-x64/lib/node_modules/npm/bin/npm-cli.js`;
 const buildEnv={...process.env,PATH:`${cache}/node-v${locks.node.version}-linux-x64/bin:${process.env.PATH}`};
-for(const args of [['ci'],['run','runtime:test'],['test'],['run','lint'],['run','build'],['run','package:test']])run(node,[npm,...args],{env:buildEnv});
+for(const args of [['ci'],['run','content:build'],['run','runtime:test'],['test'],['run','lint'],['run','build'],['run','package:test']])run(node,[npm,...args],{env:buildEnv});
 run(node,['packaging/build-launchers.mjs']);
 run(`${cache}/go/bin/go`,['test','./...'],{cwd:'packaging/launcher',env:{...buildEnv,GOCACHE:cache+'/go-cache',GOTOOLCHAIN:'local'}});
 // Fetch only the pinned repository/revision into an isolated build checkout.
