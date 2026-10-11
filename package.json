@@ -36,7 +36,11 @@
     "content:build": "node tools/content/build.mjs",
     "content:stats": "node tools/content/stats.mjs",
     "content:verify": "node tools/content/verify.mjs",
-    "content:verify-audio": "node tools/content/audio-report.mjs"
+    "content:verify-audio": "node tools/content/audio-report.mjs",
+    "content:reserve-id": "node tools/content/reserve-id.mjs",
+    "content:new": "node tools/content/new-item.mjs",
+    "content:import": "node tools/content/import.mjs",
+    "content:ids": "node tools/content/ids.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",

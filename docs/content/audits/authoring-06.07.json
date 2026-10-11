@@ -1,0 +1,42 @@
+{
+  "activity": "06.07",
+  "date": "2026-10-11",
+  "status": "PASS",
+  "environment": "Linux host; isolated synthetic temporary roots",
+  "nodeVersion": "24.21.0",
+  "authoringTestsPassed": 69,
+  "fullAppRuntimeTestsPassed": 651,
+  "packageTestsPassed": 6,
+  "syntheticMeasurements": [
+    {
+      "size": 100,
+      "parseMs": 0.56,
+      "mapMs": 0.42,
+      "allocationMs": 0.34,
+      "validationMs": 4.44,
+      "stageMs": 66.98,
+      "reservationMs": 6.05,
+      "installMs": 8.51,
+      "importMs": 89.05,
+      "environment": "Node filesystem fixture; not browser startup performance"
+    },
+    {
+      "size": 1000,
+      "parseMs": 4.79,
+      "mapMs": 2.32,
+      "allocationMs": 0.69,
+      "validationMs": 12.72,
+      "stageMs": 705.6,
+      "reservationMs": 15.44,
+      "installMs": 155.26,
+      "importMs": 897.77,
+      "environment": "Node filesystem fixture; not browser startup performance"
+    }
+  ],
+  "limitations": [
+    "Host filesystem timings are not browser performance evidence.",
+    "No production content batch imported.",
+    "Windows/macOS native and clean-machine validation remain pending.",
+    "Human speech model selection remains pending."
+  ]
+}

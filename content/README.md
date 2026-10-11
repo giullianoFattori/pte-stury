@@ -1,15 +1,15 @@
 # Content authoring — schema v1
 
-The production WFD/RS/RA bank still lives in `src/data/question-bank/`. Files under `examples/` are **validation examples only**, all drafts. They are not installed, seeded, imported into IndexedDB or packaged as a production question bundle. Referenced audio is illustrative and need not exist at this stage.
+The production WFD/RS/RA bank still lives in `src/data/question-bank/`. Files under `examples/` are **validation examples only**, all drafts. They are not installed, seeded, imported into IndexedDB or packaged as a production question bundle. Example audio is illustrative; structural preview does not inspect bytes. Production builds and actual imports require every referenced asset to exist and validate.
 
 To author a draft:
 
 1. Choose an implemented task: write-from-dictation, repeat-sentence or read-aloud.
-2. Reserve a never-used six-digit ID with its task prefix (nonzero). Allocation is manual for now: check all allocated identities, including retired/withdrawn ones, and record the reservation. Copying an example is not permission to reuse its ID. Automated allocation is 06.07.
-3. Copy a draft example and supply id, taskType, difficulty, prompt, revision, status and source. Keep generated/imported unfinished content in draft for review. Provenance category alone does not establish permission to redistribute.
+2. Use `npm run content:reserve-id -- <task>` to reserve a permanent six-digit ID, or `content:new` for a draft scaffold. Never remove/reuse a registry entry. Copying an example is not permission to reuse its ID.
+3. Author `<id>.json` in the matching task directory and supply id, taskType, difficulty, prompt, revision, status and source. Keep generated/imported unfinished content in draft for review. Provenance category alone does not establish permission to redistribute.
 4. Run `npm run content:validate -- path/to/item.json [another.json]` and fix every error. All supplied files are checked together for duplicate IDs. Warnings are shown and require review, but do not make the preview fail.
 
-`npm run content:validate` with no paths validates exactly the three checked-in examples. It is a thin preview, not directory discovery or the future bank build. Exit 0 means the supplied shape/batch passed; exit 1 means syntax, read or validation errors. Missing audio is not checked yet. Drafts passing validation are still excluded from future practice.
+`npm run content:validate` with no paths validates exactly the three checked-in examples. It is a thin preview, not directory discovery or the future bank build. Exit 0 means the supplied shape/batch passed; exit 1 means syntax, read or validation errors. This command checks structural/batch rules; audio bytes are checked by import/build and `content:verify-audio`. Drafts passing validation are still excluded from future practice.
 
 Use [schemas/question-bank.schema.json](schemas/question-bank.schema.json) for editor assistance. Its `$id` is an internal identifier, not a hosted service. Do not put `$schema`, `createdAt`, `audioUrl` or any other unknown key into an authored item. The runtime parser is authoritative; editor validation cannot prove answer/transcript equality, review approval, file existence or decoded audio correctness.
 
@@ -19,7 +19,7 @@ Canonical shape and full rules: [06.02 validation](../docs/content/validation-06
 
 The schema generator `node tools/content/schema.mjs --write` refreshes only the documentation artifact from shared policy. Building content never rewrites it.
 
-Production authoring directories are `write-from-dictation/`, `repeat-sentence/` and `read-aloud/`. Use one item per `.json` file in its task directory. Only these trees are discovered; `examples/` is excluded. Three draft `build-fixture` records (`wfd-900001`, `rs-900001`, `ra-900001`) demonstrate the build and are reserved technical identities, never learner questions. The current learner app is **not yet reading the generated bank in 06.03**.
+Production authoring directories are `write-from-dictation/`, `repeat-sentence/` and `read-aloud/`. Use one item per `.json` file in its task directory. Only these trees are discovered; `examples/` is excluded. Three draft `build-fixture` records (`wfd-900001`, `rs-900001`, `ra-900001`) demonstrate the build and are reserved technical identities, never learner questions. The current learner app still uses the legacy bank until migration in 06.08.
 
 ```bash
 npm run content:validate       # examples, or pass explicit authored files
@@ -28,11 +28,10 @@ npm run content:stats          # current source counts and warnings, without wri
 npm run content:verify         # verifies the generated pair
 ```
 
-Commit source changes and both `src/generated/question-bank*.json` artifacts together. Errors fail the build and preserve last-good outputs; do not package those stale files after a failed build. Warnings remain visible. Empty production builds fail. See [06.03 build policy](../docs/content/build-06.03.md) for exact ordering, byte/hash rules, limits, recovery and packaging. Audio existence/decode, activation and migration remain later steps.
+Commit source changes and both `src/generated/question-bank*.json` artifacts together. Errors fail the build and preserve last-good outputs; do not package those stale files after a failed build. Warnings remain visible. Empty production builds fail. See [06.03 build policy](../docs/content/build-06.03.md) for exact ordering, byte/hash rules, limits, recovery and packaging. Audio integrity is implemented; explicit human activation and real-question migration remain separate steps.
 
 [06.04 sync](../docs/content/sync-06.04.md) now provides the tested transactional
-installer. It is not connected to bootstrap yet: real-question migration and audio
-validation remain deferred. The current legacy seed stays active; installed technical
+installer. It is not connected to bootstrap yet: real-question migration remains deferred; audio validation is implemented. The current legacy seed stays active; installed technical
 drafts cannot enter normal practice. Catalog omission changes local availability,
 not the authored lifecycle or revision.
 
@@ -44,3 +43,23 @@ Use `npm run content:verify-audio` for a JSON report, or append `-- --legacy` to
 check the 11 current WFD/RS files without migrating their definitions. Missing
 published duration is a warning; orphan legacy assets are also warnings.
 See [audio policy](../docs/content/audio-06.06.md) for bounds and decoder protections.
+
+Authoring/import (06.07): allocate permanent IDs through `content:reserve-id` or
+create a draft scaffold with `content:new`. Production source filenames must be
+`<id>.json`; never delete entries from `id-registry.json` or reuse withdrawn IDs.
+The entire `900000–999999` suffix range is reserved for technical content.
+
+```bash
+npm run content:ids
+npm run content:new -- read-aloud
+npm run content:import -- questions.csv --source internal --allocate-ids --dry-run
+npm run content:import -- questions.csv --source internal --allocate-ids
+```
+
+Imports only create drafts, require explicit provenance and never overwrite/update
+an existing ID or automatically build/publish. CSV arrays are JSON array cells;
+unknown columns and malformed content fail. Any referenced audio must already be
+local and valid. Commercial question banks require permission; `licensed` alone
+is not evidence. Review content, metadata, difficulty, copyright and audio before
+explicit activation. See [authoring policy](../docs/content/authoring-06.07.md),
+including staging/lock recovery and the full developer workflow.

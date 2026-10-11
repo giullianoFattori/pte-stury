@@ -11,6 +11,7 @@ test('staging checks actual owned audio before publishing generated catalog file
   t.after(() => rm(root, { recursive: true, force: true }));
   const generated = join(root, 'generated'), packageRoot = join(root, 'package');
   const result = await buildBank({ sourceRoot: resolve('tests/fixtures/content-build/valid'), outputRoot: generated,
+    strictFilenames: false,
     audioOptions: { audioRoot: resolve('tests/fixtures/audio/valid'), reportOrphans: false } });
   for (const dir of ['native', 'web/audio/wfd', 'web/audio/rs']) await mkdir(join(packageRoot, dir), { recursive: true });
   for (const name of ['ffmpeg', 'ffprobe']) {

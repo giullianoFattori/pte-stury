@@ -1,0 +1,3 @@
+taskType,difficulty,prompt,answer,transcript,chunks,tags
+repeat-sentence,2,"Listen, then repeat.","The lecture starts tomorrow.","The lecture starts tomorrow.","[""The lecture"",""starts tomorrow""]","[""academic"",""schedule""]"
+read-aloud,3,"Read this line.","The sign says ""Welcome"".","The sign says ""Welcome"".",,"[""reading""]"

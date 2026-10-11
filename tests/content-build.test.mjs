@@ -12,11 +12,14 @@ import { discover, BuildError } from '../tools/content/discover.mjs';
 import { verifyGenerated, verifyBytes } from '../tools/content/verify.mjs';
 import { CONTENT_FIELDS } from '../src/domain/content/validationPolicy.ts';
 import { schemaBytes } from '../tools/content/schema.mjs';
+import { initialRegistry, appendReservations } from '../tools/content/ids.mjs';
 
 // Build fixtures use real synthetic MP3 bytes, isolated from legacy assets.
 const audioOptions = { audioRoot: resolve('tests/fixtures/audio/valid'), reportOrphans: false };
-const prepareBank = options => realPrepareBank({ audioOptions, ...options });
-const buildBank = options => realBuildBank({ audioOptions, ...options });
+// Filename permutation fixtures exercise serialization independently of the
+// production authoring filename rule, which has dedicated authoring tests.
+const prepareBank = options => realPrepareBank({ audioOptions, strictFilenames: false, ...options });
+const buildBank = options => realBuildBank({ audioOptions, strictFilenames: false, ...options });
 const fixtures = resolve('tests/fixtures/content-build');
 const fixture = name => join(fixtures, name);
 const valid = await prepareBank({ sourceRoot: fixture('valid') });
@@ -214,6 +217,7 @@ test('committed artifacts match production sources; schema remains unchanged', a
 });
 test('build/stats/verifier CLI report success without absolute paths and reject unknown flags', async t => {
   const { root, sourceRoot } = await workspace(t);
+  await writeFile(join(sourceRoot, 'id-registry.json'), jsonBytes(appendReservations(initialRegistry(), [{ id: 'ra-000001', taskType: 'read-aloud' }])));
   await put(sourceRoot, draft()); await rename(sourceRoot, join(root, 'content'));
   for (const tool of ['build', 'stats', 'verify']) {
     const run = spawnSync(process.execPath, [resolve(`tools/content/${tool}.mjs`)], { encoding: 'utf8', cwd: root });

@@ -184,14 +184,18 @@ function checkJsonKeys(json: string) {
     }
   }
 }
-export function parseQuestionBankItemJson(input: unknown): QuestionBankItem {
+/** Shared bounded JSON syntax boundary for canonical items and authoring batches. */
+export function parseContentJson(input: unknown, maximum: number = CONTENT_LIMITS.jsonCodeUnits): unknown {
   if (typeof input !== 'string') throw new ContentValidationError([{ path: '$', code: 'INVALID_JSON', message: 'Expected JSON text.' }]);
-  if (input.length > CONTENT_LIMITS.jsonCodeUnits) throw new ContentValidationError([{ path: '$', code: 'JSON_TOO_LARGE', message: 'Item JSON exceeds the 2 Mi-code-unit authoring budget.' }]);
+  if (!Number.isSafeInteger(maximum) || maximum < 1 || maximum > 16 * 1024 * 1024 || input.length > maximum) throw new ContentValidationError([{ path: '$', code: 'JSON_TOO_LARGE', message: 'JSON exceeds the bounded authoring budget.' }]);
   let value: unknown;
   try { value = JSON.parse(input); }
   catch { throw new ContentValidationError([{ path: '$', code: 'INVALID_JSON', message: 'JSON syntax is invalid.' }]); }
   checkJsonKeys(input);
-  return parseQuestionBankItem(value);
+  return value;
+}
+export function parseQuestionBankItemJson(input: unknown): QuestionBankItem {
+  return parseQuestionBankItem(parseContentJson(input));
 }
 
 export function validateQuestionBankItems(input: unknown): ContentBatchValidationResult {

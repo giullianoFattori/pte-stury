@@ -1,15 +1,22 @@
 import { resolve } from 'node:path';
+import { lstat } from 'node:fs/promises';
 import { parseQuestionBankItemJson, validateQuestionBankItems } from '../../src/domain/content/validation.ts';
 import { ContentValidationError } from '../../src/domain/content/validationTypes.ts';
 import { discover, BuildError, issue, assertDirectory } from './discover.mjs';
 import { dirname } from 'node:path';
+import { basename } from 'node:path';
+import { readRegistry, checkSourceReservations } from './ids.mjs';
 import { readSource } from './read-source.mjs';
 import { canonicalBundle, jsonBytes } from './canonicalize.mjs';
 import { manifestFor, statsFor } from './manifest.mjs';
 import { validateAudioAssets } from './audio-integrity.mjs';
 
 export const BANK_BYTE_LIMIT = 128 * 1024 * 1024;
-export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty = false, audioOptions } = {}) {
+export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty = false, audioOptions, strictFilenames = true, enforceRegistry = sourceRoot === resolve('content'), authorLockHeld = false } = {}) {
+  if (enforceRegistry && !authorLockHeld) for (const name of ['.author-lock', '.author-stage']) {
+    try { await lstat(resolve(sourceRoot, name)); throw new BuildError([issue('content', 'ID_REGISTRY_LOCKED', 'Authoring is pending or locked; finish/recover it before reading a production build.')]); }
+    catch (error) { if (error.code !== 'ENOENT') throw error; }
+  }
   const files = await discover(sourceRoot), values = [], names = [], errors = [];
   let totalBytes = 0;
   for (const source of files) {
@@ -19,6 +26,7 @@ export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty 
       totalBytes += Buffer.byteLength(text);
       if (totalBytes > BANK_BYTE_LIMIT) throw new BuildError([issue('content', 'BANK_TOO_LARGE', 'Aggregate source byte budget exceeded.')]);
       const item = parseQuestionBankItemJson(text);
+      if (strictFilenames && basename(source.path) !== item.id + '.json') errors.push(issue(source.file, 'AUTHOR_FILENAME_MISMATCH', 'Production filename must equal <id>.json.', 'id'));
       if (item.taskType !== source.task) errors.push(issue(source.file, 'TASK_DIRECTORY_MISMATCH', 'Item taskType must match its registered source directory.', 'taskType'));
       values.push(item); names.push(source.file);
     } catch (error) {
@@ -33,6 +41,10 @@ export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty 
   const warnings = batch.warnings.map(locate);
   if (!files.length && !allowEmpty) errors.push(issue('content', 'EMPTY_BANK', 'Production bank must contain at least one item.'));
   if (errors.length) throw new BuildError(errors, warnings);
+  if (enforceRegistry) {
+    try { checkSourceReservations(await readRegistry(sourceRoot), batch.items); }
+    catch (error) { throw new BuildError(error.issues ?? [issue('content/id-registry.json', 'ID_REGISTRY_INVALID', 'Registry validation failed.')], warnings); }
+  }
   const audio = await validateAudioAssets(batch.items, audioOptions);
   warnings.push(...audio.warnings);
   if (audio.errors.length) throw new BuildError(audio.errors, warnings);

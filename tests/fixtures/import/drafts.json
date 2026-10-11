@@ -1,0 +1,4 @@
+[
+  {"taskType":"read-aloud","difficulty":2,"prompt":"A small validation draft — café."},
+  {"taskType":"repeat-sentence","difficulty":1,"prompt":"Listen and repeat."}
+]

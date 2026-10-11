@@ -38,3 +38,8 @@ packaging/out/
 src/.generated.content-lock/
 src/.generated.content-next/
 src/.generated.content-previous/
+
+# Authoring transactions: durable IDs/history are committed; staging/locks are not.
+content/.author-lock/
+content/.author-stage/
+content/.id-registry.next
