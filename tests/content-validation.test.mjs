@@ -99,7 +99,7 @@ test('batch duplicates fail across revisions/lifecycles, aggregate paths, and ne
 test('same task exact prompt/content and active shared audio warn without failing',()=>{
   const result=validateQuestionBankItems([rs,{...rs,id:'rs-000003'}]);assert.equal(result.success,true);assert.deepEqual(result.errors,[]);assert.deepEqual(result.warnings.map(e=>e.code),['DUPLICATE_PROMPT','DUPLICATE_ANSWER','DUPLICATE_TRANSCRIPT','DUPLICATE_AUDIO_PATH']);assert.equal(result.warnings[0].path,'items[1].prompt');
   const draftShared=validateQuestionBankItems([{...rs,status:'draft'},{...rs,id:'rs-000003',status:'draft'}]);assert.ok(!draftShared.warnings.some(e=>e.code==='DUPLICATE_AUDIO_PATH'));
-  const different=validateQuestionBankItems([rs,{...rs,id:'rs-000003',prompt:rs.prompt+' ',answer:rs.answer.toUpperCase(),transcript:rs.transcript.toUpperCase(),audio:{path:'/audio/other.mp3'}}]);assert.deepEqual(different.warnings,[]);
+  const different=validateQuestionBankItems([rs,{...rs,id:'rs-000003',prompt:rs.prompt+' ',answer:rs.answer.toUpperCase(),transcript:rs.transcript.toUpperCase(),audio:{...rs.audio,path:'/audio/other.mp3'}}]);assert.deepEqual(different.warnings,[]);
 });
 test('named invalid fixtures report their field-specific issue',async()=>{
   for(const [name,path,code]of [['invalid-short-id','id','INVALID_ID'],['prefix-mismatch','id','ID_TASK_MISMATCH'],['bad-revision','revision','INVALID_REVISION'],['bad-difficulty','difficulty','INVALID_DIFFICULTY'],['bad-audio-path','audio.path','INVALID_AUDIO_PATH'],['unknown-field','dificulty','UNKNOWN_FIELD'],['active-rs-missing-chunks','chunks','REQUIRED_FIELD'],['ra-answer-mismatch','answer','ANSWER_TRANSCRIPT_MISMATCH']])fails(await fixture(name),path,code);
@@ -128,4 +128,10 @@ test('CLI rejects invalid UTF-8 and nonregular source input without silent repla
   try {const file=join(directory,'bad.json');await writeFile(file,Buffer.from([0x7b,0x22,0x61,0x22,0x3a,0x22,0xff,0x22,0x7d]));
     for(const [path,code]of [[file,'INVALID_JSON'],[directory,'READ_FAILED']]){const r=spawnSync(process.execPath,['tools/content/validate.mjs',path],{encoding:'utf8'});assert.equal(r.status,1);assert.equal(JSON.parse(r.stdout).errors[0].code,code);}
   }finally{await rm(directory,{recursive:true,force:true});}
+});
+
+test('published audio requires hash; drafts may omit it', () => {
+ const value = structuredClone(rs); delete value.audio.sha256;
+ for (const status of ['active', 'retired']) fails({...value, status}, 'audio.sha256', 'REQUIRED_FIELD');
+ assert.equal(parseQuestionBankItem({...value, status:'draft'}).audio.sha256, undefined);
 });

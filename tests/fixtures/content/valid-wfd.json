@@ -19,6 +19,7 @@
   "topic": "research",
   "estimatedSeconds": 12.5,
   "audio": {
-    "path": "/audio/wfd/wfd-000001.mp3"
+    "path": "/audio/wfd/wfd-000001.mp3",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   }
 }

@@ -89,6 +89,7 @@ function audio(record: Record<string, unknown>, issues: ContentValidationIssue[]
   const validPath = typeof path === 'string' && path.length <= CONTENT_LIMITS.audioPath && new RegExp(AUDIO_PATH_PATTERN).test(path);
   if (has(value, 'path') && !validPath) issue(issues, 'audio.path', 'INVALID_AUDIO_PATH', 'Expected a safe root-relative /audio/ path with ASCII segments, no traversal, encoding, query or fragment.');
   const sha256 = value.sha256;
+  if ((record.status === 'active' || record.status === 'retired') && !has(value, 'sha256')) issue(issues, 'audio.sha256', 'REQUIRED_FIELD', 'Published audio requires a declared SHA-256 identity.');
   if (has(value, 'sha256') && (typeof sha256 !== 'string' || !new RegExp(SHA256_PATTERN).test(sha256))) issue(issues, 'audio.sha256', 'INVALID_AUDIO_SHA256', 'Expected exactly 64 lowercase hexadecimal characters.');
   const durationMs = duration(value, 'durationMs', true, issues, 'audio.');
   const mimeType = value.mimeType;

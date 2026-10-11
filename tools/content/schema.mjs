@@ -48,7 +48,7 @@ export function questionBankItemSchema() {
         then: { properties: { id: { anyOf: [{ pattern: newQuestionIdPattern(task) }, { enum: LEGACY_QUESTION_IDS[task] }] } } },
       })),
       { if: { properties: { status: { enum: ['active', 'retired'] } }, required: ['status'] },
-        then: { properties: { skills: { minItems: 1 } }, allOf: Object.keys(QUESTION_ID_PREFIXES).map(task => ({
+        then: { properties: { skills: { minItems: 1 }, audio: { required: ['sha256'] } }, allOf: Object.keys(QUESTION_ID_PREFIXES).map(task => ({
           if: { properties: { taskType: { const: task } }, required: ['taskType'] },
           then: { required: PUBLISHED_REQUIRED_FIELDS[task] },
         })) } },

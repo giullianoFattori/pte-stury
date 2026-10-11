@@ -4,8 +4,8 @@ import { mkdtemp, mkdir, readFile, writeFile, readdir, rm, symlink, rename } fro
 import { join, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 import { spawnSync } from 'node:child_process';
-import { buildBank } from '../tools/content/build.mjs';
-import { prepareBank } from '../tools/content/pipeline.mjs';
+import { buildBank as realBuildBank } from '../tools/content/build.mjs';
+import { prepareBank as realPrepareBank } from '../tools/content/pipeline.mjs';
 import { canonicalBundle, jsonBytes, TASK_ORDER } from '../tools/content/canonicalize.mjs';
 import { manifestFor, contentVersion } from '../tools/content/manifest.mjs';
 import { discover, BuildError } from '../tools/content/discover.mjs';
@@ -13,6 +13,10 @@ import { verifyGenerated, verifyBytes } from '../tools/content/verify.mjs';
 import { CONTENT_FIELDS } from '../src/domain/content/validationPolicy.ts';
 import { schemaBytes } from '../tools/content/schema.mjs';
 
+// Build fixtures use real synthetic MP3 bytes, isolated from legacy assets.
+const audioOptions = { audioRoot: resolve('tests/fixtures/audio/valid'), reportOrphans: false };
+const prepareBank = options => realPrepareBank({ audioOptions, ...options });
+const buildBank = options => realBuildBank({ audioOptions, ...options });
 const fixtures = resolve('tests/fixtures/content-build');
 const fixture = name => join(fixtures, name);
 const valid = await prepareBank({ sourceRoot: fixture('valid') });

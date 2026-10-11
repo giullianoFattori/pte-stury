@@ -169,3 +169,9 @@ final bounded lock-reader adjustment. The first smoke encountered an already-run
 quit through its launcher before the isolated repeat passed. These are host
 measurements, not clean-machine, real learner quality or other-platform evidence.
 Existing Activity 05 release/model gates remain pending.
+
+06.06 extends the pipeline with [audio integrity](audio-06.06.md) after batch
+validation and before canonical output installation. Actual files must exist,
+match declared metadata and decode; failures preserve the last-good generated pair.
+Orphan audio warnings are now included in build/stats reports. Canonical bytes,
+manifest fields, source ordering and application/bootstrap behavior are unchanged.

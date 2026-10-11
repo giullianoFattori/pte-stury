@@ -6,9 +6,10 @@ import { dirname } from 'node:path';
 import { readSource } from './read-source.mjs';
 import { canonicalBundle, jsonBytes } from './canonicalize.mjs';
 import { manifestFor, statsFor } from './manifest.mjs';
+import { validateAudioAssets } from './audio-integrity.mjs';
 
 export const BANK_BYTE_LIMIT = 128 * 1024 * 1024;
-export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty = false } = {}) {
+export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty = false, audioOptions } = {}) {
   const files = await discover(sourceRoot), values = [], names = [], errors = [];
   let totalBytes = 0;
   for (const source of files) {
@@ -32,8 +33,11 @@ export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty 
   const warnings = batch.warnings.map(locate);
   if (!files.length && !allowEmpty) errors.push(issue('content', 'EMPTY_BANK', 'Production bank must contain at least one item.'));
   if (errors.length) throw new BuildError(errors, warnings);
+  const audio = await validateAudioAssets(batch.items, audioOptions);
+  warnings.push(...audio.warnings);
+  if (audio.errors.length) throw new BuildError(audio.errors, warnings);
   const bundle = canonicalBundle(batch.items), bundleBytes = jsonBytes(bundle);
   if (Buffer.byteLength(bundleBytes) > BANK_BYTE_LIMIT) throw new BuildError([issue('content', 'BANK_TOO_LARGE', 'Canonical bundle byte budget exceeded.')], warnings);
   const manifest = manifestFor(bundle, bundleBytes);
-  return { bundle, bundleBytes, manifest, manifestBytes: jsonBytes(manifest), stats: statsFor(bundle.items), warnings, discoveredItems: files.length };
+  return { bundle, bundleBytes, manifest, manifestBytes: jsonBytes(manifest), stats: { ...statsFor(bundle.items), audio: audio.stats }, audio, warnings, discoveredItems: files.length };
 }

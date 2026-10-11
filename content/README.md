@@ -35,3 +35,12 @@ installer. It is not connected to bootstrap yet: real-question migration and aud
 validation remain deferred. The current legacy seed stays active; installed technical
 drafts cannot enter normal practice. Catalog omission changes local availability,
 not the authored lifecycle or revision.
+
+Audio integrity (06.06): production references map exclusively to `public/audio`.
+Only MP3 is currently supported. Audio on active/retired items requires a lowercase
+SHA-256; draft references may omit it but any referenced file must still exist and
+fully decode. Builds never generate/repair audio or fill metadata automatically.
+Use `npm run content:verify-audio` for a JSON report, or append `-- --legacy` to
+check the 11 current WFD/RS files without migrating their definitions. Missing
+published duration is a warning; orphan legacy assets are also warnings.
+See [audio policy](../docs/content/audio-06.06.md) for bounds and decoder protections.

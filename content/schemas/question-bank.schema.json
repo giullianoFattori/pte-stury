@@ -336,6 +336,11 @@
         "properties": {
           "skills": {
             "minItems": 1
+          },
+          "audio": {
+            "required": [
+              "sha256"
+            ]
           }
         },
         "allOf": [

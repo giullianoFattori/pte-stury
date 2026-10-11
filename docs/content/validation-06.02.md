@@ -104,3 +104,8 @@ Unit tests use independent primitive/field/task cases, valid/invalid JSON fixtur
 Validation evidence: `npm test` — 405 PASS (including 148 content-validator cases); `npm run build`, `npm run lint`, `npm run content:validate` and `git diff --check` — PASS. No new dependency was required. The production frontend asset hashes remained unchanged.
 
 Next: 06.03 deterministic discovery/build/bundle/manifest/hash. Do not treat these fixtures as migrated production content. Audio existence/decode is 06.06; seed/sync/DB upgrades are 06.04; allocator/importer is 06.07. No scoring changes are part of authored validation.
+
+06.06 publication refinement: `audio.sha256` is now required whenever an
+active/retired item contains audio. It remains optional for drafts. Runtime
+validation and JSON Schema were updated together; file-byte/media verification
+belongs to the build's [audio integrity stage](audio-06.06.md).

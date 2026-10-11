@@ -19,6 +19,9 @@
   "topic": "research",
   "estimatedSeconds": 12.5,
   "audio": {
-    "path": "/audio/wfd/wfd-000001.mp3"
+    "path": "/audio/wfd/wfd-000001.mp3",
+    "sha256": "f7b407e90e939e510d1d3dd56674f61f3d7c27c2faae04b0be3adfe72fa9b1b0",
+    "durationMs": 313,
+    "mimeType": "audio/mpeg"
   }
 }

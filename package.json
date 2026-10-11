@@ -35,7 +35,8 @@
     "content:validate": "node tools/content/validate.mjs",
     "content:build": "node tools/content/build.mjs",
     "content:stats": "node tools/content/stats.mjs",
-    "content:verify": "node tools/content/verify.mjs"
+    "content:verify": "node tools/content/verify.mjs",
+    "content:verify-audio": "node tools/content/audio-report.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",

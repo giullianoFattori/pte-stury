@@ -34,6 +34,7 @@ export type StudyItemMetadata = Readonly<{
 /** Application-owned audio. Path and declared integrity need validation before use. */
 export type AudioAsset = Readonly<{
   path: string;
+  /** Optional on drafts; active/retired audio requires SHA-256 at validation. */
   sha256?: string;
   /** Positive safe-integer milliseconds when present, enforced by the v1 parser. */
   durationMs?: number;

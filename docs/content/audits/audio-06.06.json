@@ -1,0 +1,146 @@
+{
+  "activity": "06.06",
+  "date": "2026-10-11",
+  "scope": "Legacy local content audio readiness; not model-quality evidence",
+  "status": "PASS",
+  "legacy": {
+    "errors": [],
+    "warnings": [],
+    "assets": [
+      {
+        "path": "/audio/rs/rs-001.mp3",
+        "sizeBytes": 26157,
+        "sha256": "ad73ec3319780c90b57f61e14321b515b5bdb329d6b97e4f73eb2ae04c634d51",
+        "durationMs": 3240,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/rs/rs-002.mp3",
+        "sizeBytes": 22701,
+        "sha256": "e7734bd08d09156a1a09086b98be9a3aa505875d875d1be267247e1e1f7b0b18",
+        "durationMs": 2808,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/rs/rs-003.mp3",
+        "sizeBytes": 30189,
+        "sha256": "65dd866632191d850ad063cb6131ec93759e65a8a5f24ab5292bde9411cbcb85",
+        "durationMs": 3744,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/rs/rs-004.mp3",
+        "sizeBytes": 38253,
+        "sha256": "b262e5a437ca40fc16d73066d352137faae3bf6fd93f08bc582b714595caa887",
+        "durationMs": 4752,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/rs/rs-005.mp3",
+        "sizeBytes": 56877,
+        "sha256": "fcc657101082dc886ed0edd7c5b0949e60e33a9e874d90bb4a0f07f1fe5c573a",
+        "durationMs": 7080,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/rs/rs-006.mp3",
+        "sizeBytes": 69549,
+        "sha256": "a8dbeaac9431e8af8d1c41416a5086c620ecca507d736a39b706cfcc54b922e3",
+        "durationMs": 8664,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/wfd/wfd-001.mp3",
+        "sizeBytes": 32256,
+        "sha256": "32400e9eb78e4a475fb8ac766749d3b191c127db4e40a042bad4f331348377f2",
+        "durationMs": 4032,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/wfd/wfd-002.mp3",
+        "sizeBytes": 36288,
+        "sha256": "9eafe211e1b1c4a11b4db671b0417ed7fc9e02ff1933063666ac8d450933e89e",
+        "durationMs": 4536,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/wfd/wfd-003.mp3",
+        "sizeBytes": 33024,
+        "sha256": "9a9736b50d7438ab7118182813d6f66e9430da6e420b22f24c64219b127e0145",
+        "durationMs": 4128,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/wfd/wfd-004.mp3",
+        "sizeBytes": 39552,
+        "sha256": "9e745cb23d6f799d777202085071221bf2615512b888ff28281ded838686a309",
+        "durationMs": 4944,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      },
+      {
+        "path": "/audio/wfd/wfd-005.mp3",
+        "sizeBytes": 44736,
+        "sha256": "8543ef3fbf22c58b037efdc20cf46be995a56b69c4dabc014c92524e469440ae",
+        "durationMs": 5592,
+        "mimeType": "audio/mpeg",
+        "container": "mp3",
+        "codec": "mp3",
+        "sampleRate": 24000,
+        "channels": 1
+      }
+    ],
+    "stats": {
+      "referencedAssets": 11,
+      "validatedAssets": 11,
+      "missingFiles": 0,
+      "totalBytes": 429582,
+      "totalDurationMs": 53520,
+      "formats": {
+        "mp3": 11
+      },
+      "codecs": {
+        "mp3": 11
+      }
+    }
+  }
+}

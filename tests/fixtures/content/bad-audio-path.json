@@ -19,7 +19,8 @@
   "topic": "research",
   "estimatedSeconds": 12.5,
   "audio": {
-    "path": "/audio/../secret.mp3"
+    "path": "/audio/../secret.mp3",
+    "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
   },
   "chunks": [
     "The lecture",
