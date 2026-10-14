@@ -22,7 +22,7 @@ export async function syncQuestionBank(inputBundle: unknown, inputManifest: unkn
     return { status: 'installed', plan };
   });
 }
-/** Future activation entrypoint. Deliberately not called by current legacy bootstrap. */
+/** Startup installs the application-owned catalog or preserves a previous valid bank. */
 export async function initializeQuestionBank(inputBundle: unknown, inputManifest: unknown, database: PteDatabase = db) {
   try {
     const catalog = verifyQuestionBankCatalog(inputBundle, inputManifest);

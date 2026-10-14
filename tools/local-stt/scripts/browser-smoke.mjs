@@ -48,8 +48,8 @@ try {
   await page.getByRole('button',{name:'Measure STT WER'}).click();
   const evaluation=await page.evaluate(async ({reference,text,index})=>{
     const {measureWordErrors,comparePocResponse}=await import('/src/infrastructure/speech/whisperPocEvaluation.ts');
-    const {readAloudQuestions}=await import('/src/data/question-bank/read-aloud.ts');
-    const {repeatSentenceQuestions}=await import('/src/data/question-bank/repeat-sentence.ts');
+    const {readAloudQuestions}=await import('/src/data/question-bank/diagnosticQuestionBank.ts');
+    const {repeatSentenceQuestions}=await import('/src/data/question-bank/diagnosticQuestionBank.ts');
     const item=[readAloudQuestions[0],readAloudQuestions[4],repeatSentenceQuestions[0],repeatSentenceQuestions[2],repeatSentenceQuestions[4]][index];
     return {...measureWordErrors(reference,text),pte:comparePocResponse(index<2?'ra':'rs',item.transcript,text,item.chunks)};
   },{reference,text:result.text,index});

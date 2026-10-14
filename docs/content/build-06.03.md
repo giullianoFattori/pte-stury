@@ -1,9 +1,8 @@
 # Activity 06.03 — Deterministic question bank build
 
-The generated catalog is build infrastructure, **not the current learner bank**.
-The application still uses the existing TypeScript arrays and `seedQuestionBank()`.
-No IndexedDB migration, scoring, bootstrap or exercise UI changed. Content sync is
-06.04; production question migration is 06.08.
+The deterministic catalog is now the learner bank after [06.08 migration](migration-06.08.md).
+Bootstrap installs generated content through the 06.04 sync engine. The technical
+fixtures used to establish this pipeline are now excluded examples.
 
 ## Sources and validation
 
@@ -45,7 +44,7 @@ on the exported build/test API; the production CLI accepts no bypass flags.
 An all-draft catalog is valid and explicitly reported as **zero active items**.
 
 Three checked-in non-live drafts exercise the pipeline while migration is deferred:
-`wfd-900001`, `rs-900001`, `ra-900001`, tagged `build-fixture`. These permanent
+`wfd-900001`, `rs-900001`, `ra-900001`, tagged `build-fixture`, now in excluded examples. These permanent
 identities are reserved for technical fixtures and must never be reused as learner
 questions or activated. Future migration must retire or withdraw these fixtures
 and independently verify a populated active practice bank. Do not mistake this
@@ -155,7 +154,7 @@ On 2026-10-10, all 441 app/runtime tests passed, including 36 new build-pipeline
 tests; all five package tests passed. `content:validate`, `content:build`,
 `content:stats`, `content:verify`, frontend build, lint and diff whitespace checks
 passed. The unchanged production frontend emitted `index-aV0bwYaq.css` and
-`index-DvyuR3Co.js`. The generated bank has three technical drafts, zero active
+`index-DvyuR3Co.js`. At the historical 06.03 checkpoint, the generated bank had three technical drafts, zero active
 items and zero audio references. Content version:
 `sha256:69780bb9094ecc13f70d107c35037b9396c77851f35b06c1c1e01a21e7c8fbf5`.
 

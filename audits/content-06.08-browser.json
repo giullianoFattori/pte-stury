@@ -1,0 +1,126 @@
+{
+  "identity": {
+    "appVersion": "0.1.0",
+    "runtimeVersion": "0.1.0",
+    "apiVersion": 1,
+    "engineVersion": "1.8.3",
+    "modelId": "base.en",
+    "target": "linux-x64",
+    "packageSHA256": "a383b3d2cd687182ca873b609592ff29e04213996ca5830d906fee68be085dd2",
+    "manifestSHA256": "31586ec7a829504ae7843318fd04ee001aa440b06f49ff9354e8e3517b7141ed",
+    "gitCommit": "631992324aceb686e62311d54f25c975bc03e835",
+    "buildTimestamp": "2026-10-11T15:06:08.173Z",
+    "buildDirty": true
+  },
+  "createdAt": "2026-10-13T22:36:35.297Z",
+  "status": "PASS",
+  "catalog": {
+    "freshInstall": "PASS",
+    "realIndexedDBv2Upgrade": "PASS",
+    "historyPreserved": "PASS",
+    "oldAttemptRevision": "unknown",
+    "newAttemptRevision": 1,
+    "eligibleItems": 17,
+    "technicalItems": 0,
+    "repeatLaunch": "unchanged",
+    "contentVersion": "sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2",
+    "freshPageReadyMs": 172.604,
+    "audioAssetsServed": 11
+  },
+  "browser": {
+    "name": "Chrome",
+    "version": "154.0.8037.97",
+    "os": "Linux x64",
+    "mediaRecorderMIME": [
+      "audio/webm;codecs=opus"
+    ],
+    "source": "injected Web Audio stream from controlled TTS WAV; actual MediaRecorder and packaged decoding",
+    "microphoneAllow": "PENDING",
+    "microphoneDeny": "PENDING",
+    "microphoneReenable": "PENDING",
+    "physicalDevice": "PENDING"
+  },
+  "cases": [
+    {
+      "task": "RA",
+      "itemId": "ra-001",
+      "controlledPartialUtterance": false,
+      "status": "PASS",
+      "errorRecords": 0,
+      "reviewItems": 0
+    },
+    {
+      "task": "RA",
+      "itemId": "ra-003",
+      "controlledPartialUtterance": false,
+      "status": "PASS",
+      "errorRecords": 0,
+      "reviewItems": 0
+    },
+    {
+      "task": "RA",
+      "itemId": "ra-006",
+      "controlledPartialUtterance": false,
+      "status": "PASS",
+      "errorRecords": 1,
+      "reviewItems": 1
+    },
+    {
+      "task": "RS",
+      "itemId": "rs-001",
+      "controlledPartialUtterance": false,
+      "status": "PASS",
+      "errorRecords": 1,
+      "reviewItems": 1
+    },
+    {
+      "task": "RS",
+      "itemId": "rs-003",
+      "controlledPartialUtterance": false,
+      "status": "PASS",
+      "errorRecords": 0,
+      "reviewItems": 0
+    },
+    {
+      "task": "RS",
+      "itemId": "rs-005",
+      "controlledPartialUtterance": false,
+      "status": "PASS",
+      "errorRecords": 0,
+      "reviewItems": 0
+    },
+    {
+      "task": "RA",
+      "itemId": "ra-001",
+      "controlledPartialUtterance": true,
+      "status": "PASS",
+      "errorRecords": 8,
+      "reviewItems": 1
+    }
+  ],
+  "wfd": "PASS",
+  "explicitSave": "PASS",
+  "noAnswerInRuntimeRequest": "PASS",
+  "uploadRequests": 7,
+  "persistence": {
+    "attempts": 8,
+    "errorRecords": 10,
+    "reviewItems": 3,
+    "closeReopenTab": "PASS",
+    "runtimeRestart": "PASS",
+    "sameVersionReinstallDifferentDirectory": "PASS",
+    "stableOrigin": "http://127.0.0.1:8765",
+    "signedVersionUpdate": "PENDING",
+    "scope": "same browser profile, same version reinstalled; no study content archived"
+  },
+  "normalFlow": {
+    "pageErrors": 0,
+    "cspViolations": 0,
+    "nonLocalRequests": 0
+  },
+  "cspRemoteScriptAndConnect": "PASS",
+  "blobPlayback": "PASS",
+  "multipleTabs": "PASS",
+  "humanBenchmark": "PENDING",
+  "signing": "PENDING"
+}

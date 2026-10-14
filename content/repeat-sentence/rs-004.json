@@ -1,0 +1,26 @@
+{
+  "id": "rs-004",
+  "taskType": "repeat-sentence",
+  "difficulty": 2,
+  "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+  "answer": "Several students requested extra time to complete the assignment.",
+  "transcript": "Several students requested extra time to complete the assignment.",
+  "chunks": [
+    "Several students",
+    "requested extra time",
+    "to complete the assignment"
+  ],
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "speaking"
+  ],
+  "audio": {
+    "path": "/audio/rs/rs-004.mp3",
+    "sha256": "b262e5a437ca40fc16d73066d352137faae3bf6fd93f08bc582b714595caa887",
+    "durationMs": 4752,
+    "mimeType": "audio/mpeg"
+  }
+}

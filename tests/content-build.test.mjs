@@ -209,10 +209,10 @@ test('verifier rejects tampered bundle, hash/count/schema/task/audio and noncano
   for (const bytes of [valid.bundleBytes.replace('Listen', 'Changed'), JSON.stringify(valid.bundle), valid.bundleBytes.replace('"schemaVersion": 1', '"schemaVersion": 2')]) assert.throws(() => verifyBytes(bytes, valid.manifestBytes));
 });
 test('committed artifacts match production sources; schema remains unchanged', async () => {
-  const built = await prepareBank(), checked = await verifyGenerated();
+  const built = await realPrepareBank(), checked = await verifyGenerated();
   assert.equal(await readFile('src/generated/question-bank.json', 'utf8'), built.bundleBytes);
   assert.equal(await readFile('src/generated/question-bank.manifest.json', 'utf8'), built.manifestBytes);
-  assert.equal(checked.bundle.items.every(i => i.status === 'draft' && i.tags.includes('build-fixture')), true);
+  assert.equal(checked.bundle.items.length === 17 && checked.bundle.items.every(i => i.status === 'active' && !i.id.endsWith('900001')), true);
   assert.equal(await readFile('content/schemas/question-bank.schema.json', 'utf8'), schemaBytes());
 });
 test('build/stats/verifier CLI report success without absolute paths and reject unknown flags', async t => {

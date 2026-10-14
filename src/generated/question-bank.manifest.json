@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
-  "contentVersion": "sha256:69780bb9094ecc13f70d107c35037b9396c77851f35b06c1c1e01a21e7c8fbf5",
-  "itemCount": 3,
+  "contentVersion": "sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2",
+  "itemCount": 17,
   "countsByTaskType": {
-    "write-from-dictation": 1,
-    "repeat-sentence": 1,
-    "read-aloud": 1
+    "write-from-dictation": 5,
+    "repeat-sentence": 6,
+    "read-aloud": 6
   },
-  "audioAssetCount": 0
+  "audioAssetCount": 11
 }

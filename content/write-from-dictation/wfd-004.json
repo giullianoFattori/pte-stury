@@ -1,0 +1,21 @@
+{
+  "id": "wfd-004",
+  "taskType": "write-from-dictation",
+  "difficulty": 2,
+  "prompt": "Listen to the sentence and type exactly what you hear.",
+  "answer": "The research project requires careful planning and accurate data.",
+  "transcript": "The research project requires careful planning and accurate data.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "writing"
+  ],
+  "audio": {
+    "path": "/audio/wfd/wfd-004.mp3",
+    "sha256": "9e745cb23d6f799d777202085071221bf2615512b888ff28281ded838686a309",
+    "durationMs": 4944,
+    "mimeType": "audio/mpeg"
+  }
+}

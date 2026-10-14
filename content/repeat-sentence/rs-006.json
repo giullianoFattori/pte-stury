@@ -1,0 +1,27 @@
+{
+  "id": "rs-006",
+  "taskType": "repeat-sentence",
+  "difficulty": 3,
+  "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+  "answer": "Researchers are examining how digital technology influences communication habits among young adults in modern workplaces.",
+  "transcript": "Researchers are examining how digital technology influences communication habits among young adults in modern workplaces.",
+  "chunks": [
+    "Researchers are examining",
+    "how digital technology influences",
+    "communication habits among young adults",
+    "in modern workplaces"
+  ],
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "speaking"
+  ],
+  "audio": {
+    "path": "/audio/rs/rs-006.mp3",
+    "sha256": "a8dbeaac9431e8af8d1c41416a5086c620ecca507d736a39b706cfcc54b922e3",
+    "durationMs": 8664,
+    "mimeType": "audio/mpeg"
+  }
+}

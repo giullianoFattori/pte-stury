@@ -1,0 +1,302 @@
+[
+  {
+    "id": "wfd-001",
+    "taskType": "write-from-dictation",
+    "difficulty": 1,
+    "prompt": "Listen to the sentence and type exactly what you hear.",
+    "answer": "Students should submit their assignments before Friday.",
+    "transcript": "Students should submit their assignments before Friday.",
+    "audioUrl": "/audio/wfd/wfd-001.mp3",
+    "createdAt": "2026-10-01T00:00:00.000Z"
+  },
+  {
+    "id": "wfd-002",
+    "taskType": "write-from-dictation",
+    "difficulty": 1,
+    "prompt": "Listen to the sentence and type exactly what you hear.",
+    "answer": "The library will remain open during the examination period.",
+    "transcript": "The library will remain open during the examination period.",
+    "audioUrl": "/audio/wfd/wfd-002.mp3",
+    "createdAt": "2026-10-01T00:00:00.000Z"
+  },
+  {
+    "id": "wfd-003",
+    "taskType": "write-from-dictation",
+    "difficulty": 2,
+    "prompt": "Listen to the sentence and type exactly what you hear.",
+    "answer": "Many students struggle to manage their time effectively.",
+    "transcript": "Many students struggle to manage their time effectively.",
+    "audioUrl": "/audio/wfd/wfd-003.mp3",
+    "createdAt": "2026-10-01T00:00:00.000Z"
+  },
+  {
+    "id": "wfd-004",
+    "taskType": "write-from-dictation",
+    "difficulty": 2,
+    "prompt": "Listen to the sentence and type exactly what you hear.",
+    "answer": "The research project requires careful planning and accurate data.",
+    "transcript": "The research project requires careful planning and accurate data.",
+    "audioUrl": "/audio/wfd/wfd-004.mp3",
+    "createdAt": "2026-10-01T00:00:00.000Z"
+  },
+  {
+    "id": "wfd-005",
+    "taskType": "write-from-dictation",
+    "difficulty": 3,
+    "prompt": "Listen to the sentence and type exactly what you hear.",
+    "answer": "Environmental policies can influence economic development in different ways.",
+    "transcript": "Environmental policies can influence economic development in different ways.",
+    "audioUrl": "/audio/wfd/wfd-005.mp3",
+    "createdAt": "2026-10-01T00:00:00.000Z"
+  },
+  {
+    "id": "rs-001",
+    "taskType": "repeat-sentence",
+    "difficulty": 1,
+    "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+    "answer": "Students must arrive before nine tomorrow.",
+    "transcript": "Students must arrive before nine tomorrow.",
+    "audioUrl": "/audio/rs/rs-001.mp3",
+    "chunks": [
+      "Students must arrive",
+      "before nine tomorrow"
+    ],
+    "createdAt": "2026-10-02T00:00:00.000Z"
+  },
+  {
+    "id": "rs-002",
+    "taskType": "repeat-sentence",
+    "difficulty": 1,
+    "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+    "answer": "The lecture starts after lunch today.",
+    "transcript": "The lecture starts after lunch today.",
+    "audioUrl": "/audio/rs/rs-002.mp3",
+    "chunks": [
+      "The lecture starts",
+      "after lunch today"
+    ],
+    "createdAt": "2026-10-02T00:00:00.000Z"
+  },
+  {
+    "id": "rs-003",
+    "taskType": "repeat-sentence",
+    "difficulty": 2,
+    "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+    "answer": "The research team will publish its findings next month.",
+    "transcript": "The research team will publish its findings next month.",
+    "audioUrl": "/audio/rs/rs-003.mp3",
+    "chunks": [
+      "The research team",
+      "will publish its findings",
+      "next month"
+    ],
+    "createdAt": "2026-10-02T00:00:00.000Z"
+  },
+  {
+    "id": "rs-004",
+    "taskType": "repeat-sentence",
+    "difficulty": 2,
+    "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+    "answer": "Several students requested extra time to complete the assignment.",
+    "transcript": "Several students requested extra time to complete the assignment.",
+    "audioUrl": "/audio/rs/rs-004.mp3",
+    "chunks": [
+      "Several students",
+      "requested extra time",
+      "to complete the assignment"
+    ],
+    "createdAt": "2026-10-02T00:00:00.000Z"
+  },
+  {
+    "id": "rs-005",
+    "taskType": "repeat-sentence",
+    "difficulty": 3,
+    "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+    "answer": "The university library will remain open during the examination period for all registered students.",
+    "transcript": "The university library will remain open during the examination period for all registered students.",
+    "audioUrl": "/audio/rs/rs-005.mp3",
+    "chunks": [
+      "The university library",
+      "will remain open",
+      "during the examination period",
+      "for all registered students"
+    ],
+    "createdAt": "2026-10-02T00:00:00.000Z"
+  },
+  {
+    "id": "rs-006",
+    "taskType": "repeat-sentence",
+    "difficulty": 3,
+    "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+    "answer": "Researchers are examining how digital technology influences communication habits among young adults in modern workplaces.",
+    "transcript": "Researchers are examining how digital technology influences communication habits among young adults in modern workplaces.",
+    "audioUrl": "/audio/rs/rs-006.mp3",
+    "chunks": [
+      "Researchers are examining",
+      "how digital technology influences",
+      "communication habits among young adults",
+      "in modern workplaces"
+    ],
+    "createdAt": "2026-10-02T00:00:00.000Z"
+  },
+  {
+    "id": "ra-001",
+    "difficulty": 1,
+    "transcript": "Many students use public transport to travel to university each day because it is convenient and affordable.",
+    "phraseGroups": [
+      "Many students use public transport",
+      "to travel to university each day",
+      "because it is convenient and affordable"
+    ],
+    "stressWords": [
+      "students",
+      "public",
+      "transport",
+      "travel",
+      "university",
+      "convenient",
+      "affordable"
+    ],
+    "taskType": "read-aloud",
+    "prompt": "Read the text aloud clearly and naturally.",
+    "answer": "Many students use public transport to travel to university each day because it is convenient and affordable.",
+    "createdAt": "2026-10-04T00:00:00.000Z"
+  },
+  {
+    "id": "ra-002",
+    "difficulty": 1,
+    "transcript": "Regular exercise can improve both physical health and mental wellbeing when it becomes part of a consistent routine.",
+    "phraseGroups": [
+      "Regular exercise can improve",
+      "both physical health and mental wellbeing",
+      "when it becomes part of a consistent routine"
+    ],
+    "stressWords": [
+      "regular",
+      "exercise",
+      "improve",
+      "physical",
+      "health",
+      "mental",
+      "wellbeing",
+      "consistent",
+      "routine"
+    ],
+    "taskType": "read-aloud",
+    "prompt": "Read the text aloud clearly and naturally.",
+    "answer": "Regular exercise can improve both physical health and mental wellbeing when it becomes part of a consistent routine.",
+    "createdAt": "2026-10-04T00:00:00.000Z"
+  },
+  {
+    "id": "ra-003",
+    "difficulty": 2,
+    "transcript": "Researchers often collect data from several sources so they can compare results and identify patterns more accurately.",
+    "phraseGroups": [
+      "Researchers often collect data",
+      "from several sources",
+      "so they can compare results",
+      "and identify patterns more accurately"
+    ],
+    "stressWords": [
+      "researchers",
+      "collect",
+      "data",
+      "sources",
+      "compare",
+      "results",
+      "identify",
+      "patterns",
+      "accurately"
+    ],
+    "taskType": "read-aloud",
+    "prompt": "Read the text aloud clearly and naturally.",
+    "answer": "Researchers often collect data from several sources so they can compare results and identify patterns more accurately.",
+    "createdAt": "2026-10-04T00:00:00.000Z"
+  },
+  {
+    "id": "ra-004",
+    "difficulty": 2,
+    "transcript": "Urban planning plays an important role in determining how efficiently people can move through growing cities.",
+    "phraseGroups": [
+      "Urban planning plays an important role",
+      "in determining how efficiently",
+      "people can move through growing cities"
+    ],
+    "stressWords": [
+      "urban",
+      "planning",
+      "important",
+      "role",
+      "determining",
+      "efficiently",
+      "people",
+      "move",
+      "growing",
+      "cities"
+    ],
+    "taskType": "read-aloud",
+    "prompt": "Read the text aloud clearly and naturally.",
+    "answer": "Urban planning plays an important role in determining how efficiently people can move through growing cities.",
+    "createdAt": "2026-10-04T00:00:00.000Z"
+  },
+  {
+    "id": "ra-005",
+    "difficulty": 3,
+    "transcript": "Although digital technology has increased access to information, researchers continue to examine how constant connectivity affects concentration and long-term learning.",
+    "phraseGroups": [
+      "Although digital technology has increased access to information",
+      "researchers continue to examine",
+      "how constant connectivity affects concentration",
+      "and long-term learning"
+    ],
+    "stressWords": [
+      "digital",
+      "technology",
+      "increased",
+      "access",
+      "information",
+      "researchers",
+      "examine",
+      "constant",
+      "connectivity",
+      "affects",
+      "concentration",
+      "learning"
+    ],
+    "taskType": "read-aloud",
+    "prompt": "Read the text aloud clearly and naturally.",
+    "answer": "Although digital technology has increased access to information, researchers continue to examine how constant connectivity affects concentration and long-term learning.",
+    "createdAt": "2026-10-04T00:00:00.000Z"
+  },
+  {
+    "id": "ra-006",
+    "difficulty": 3,
+    "transcript": "Economic decisions are influenced by a combination of individual behaviour, government policy, market conditions, and expectations about future growth.",
+    "phraseGroups": [
+      "Economic decisions are influenced",
+      "by a combination of individual behaviour",
+      "government policy",
+      "market conditions",
+      "and expectations about future growth"
+    ],
+    "stressWords": [
+      "economic",
+      "decisions",
+      "influenced",
+      "combination",
+      "individual",
+      "behaviour",
+      "government",
+      "policy",
+      "market",
+      "conditions",
+      "expectations",
+      "future",
+      "growth"
+    ],
+    "taskType": "read-aloud",
+    "prompt": "Read the text aloud clearly and naturally.",
+    "answer": "Economic decisions are influenced by a combination of individual behaviour, government policy, market conditions, and expectations about future growth.",
+    "createdAt": "2026-10-04T00:00:00.000Z"
+  }
+]

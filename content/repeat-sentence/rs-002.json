@@ -1,0 +1,25 @@
+{
+  "id": "rs-002",
+  "taskType": "repeat-sentence",
+  "difficulty": 1,
+  "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+  "answer": "The lecture starts after lunch today.",
+  "transcript": "The lecture starts after lunch today.",
+  "chunks": [
+    "The lecture starts",
+    "after lunch today"
+  ],
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "speaking"
+  ],
+  "audio": {
+    "path": "/audio/rs/rs-002.mp3",
+    "sha256": "e7734bd08d09156a1a09086b98be9a3aa505875d875d1be267247e1e1f7b0b18",
+    "durationMs": 2808,
+    "mimeType": "audio/mpeg"
+  }
+}

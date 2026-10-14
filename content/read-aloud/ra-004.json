@@ -1,0 +1,32 @@
+{
+  "id": "ra-004",
+  "difficulty": 2,
+  "transcript": "Urban planning plays an important role in determining how efficiently people can move through growing cities.",
+  "phraseGroups": [
+    "Urban planning plays an important role",
+    "in determining how efficiently",
+    "people can move through growing cities"
+  ],
+  "stressWords": [
+    "urban",
+    "planning",
+    "important",
+    "role",
+    "determining",
+    "efficiently",
+    "people",
+    "move",
+    "growing",
+    "cities"
+  ],
+  "taskType": "read-aloud",
+  "prompt": "Read the text aloud clearly and naturally.",
+  "answer": "Urban planning plays an important role in determining how efficiently people can move through growing cities.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading",
+    "speaking"
+  ]
+}

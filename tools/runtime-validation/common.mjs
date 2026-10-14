@@ -7,7 +7,7 @@ import { homedir } from 'node:os';
 import { verifyPackage } from '../../packaging/inventory.mjs';
 export const origin='http://127.0.0.1:8765';
 export const archive=resolve('packaging/out/PTE-Study-0.1.0-linux-x64-internal.tar.xz');
-export const root=resolve('.local-packaging/validation-05.10/PTE-Study');
+export const root=resolve(process.env.PACKAGE_VALIDATION_ROOT ?? '.local-packaging/validation-05.10/PTE-Study');
 export const audit=resolve('runtime/docs/audits/05.10');
 export const pause=ms=>new Promise(r=>setTimeout(r,ms));
 export async function hash(path){return createHash('sha256').update(await readFile(path)).digest('hex');}

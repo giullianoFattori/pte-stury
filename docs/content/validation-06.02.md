@@ -1,5 +1,9 @@
 # Activity 06.02 — JSON content and runtime validation
 
+Current status: [06.08](migration-06.08.md) migrated and activated all 17 learner
+items. Earlier scope/result statements below describe the historical step boundary;
+production authoring now uses canonical JSON and bootstrap uses generated sync.
+
 Status: implemented. Production arrays/seed/bootstrap, Dexie version 2, scoring and study UI are unchanged. Source examples are drafts and are not production questions. No bank bundle, content hash, installed manifest, sync, audio decode/existence check, importer or allocator is introduced.
 
 ## Canonical JSON
@@ -99,7 +103,7 @@ Standard JSON Schema cannot compare answer to transcript. The artifact explicitl
 
 ## Tests and next step
 
-Unit tests use independent primitive/field/task cases, valid/invalid JSON fixtures, all 17 legacy IDs, exact new IDs, whitespace/Unicode preservation, immutability, duplicate aggregation, warning-only success, malformed JSON, schema parity and CLI exits. Full app/runtime regression, build, lint and diff checks accompany this step. Current starter bank stays untouched.
+Unit tests use independent primitive/field/task cases, valid/invalid JSON fixtures, all 17 legacy IDs, exact new IDs, whitespace/Unicode preservation, immutability, duplicate aggregation, warning-only success, malformed JSON, schema parity and CLI exits. Full app/runtime regression, build, lint and diff checks accompany this step. The historical starter bank was preserved field-for-field in 06.08.
 
 Validation evidence: `npm test` — 405 PASS (including 148 content-validator cases); `npm run build`, `npm run lint`, `npm run content:validate` and `git diff --check` — PASS. No new dependency was required. The production frontend asset hashes remained unchanged.
 
@@ -109,3 +113,7 @@ Next: 06.03 deterministic discovery/build/bundle/manifest/hash. Do not treat the
 active/retired item contains audio. It remains optional for drafts. Runtime
 validation and JSON Schema were updated together; file-byte/media verification
 belongs to the build's [audio integrity stage](audio-06.06.md).
+
+06.08 CLI update: `content:validate` now discovers production sources by default;
+explicit file arguments still support isolated structural previews. Audio/registry
+integrity remains mandatory in the production build.

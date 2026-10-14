@@ -107,7 +107,7 @@ test('named invalid fixtures report their field-specific issue',async()=>{
 test('committed schema is generated from the runtime policy and declares runtime equality',async()=>{
   assert.equal(await readFile('content/schemas/question-bank.schema.json','utf8'),schemaBytes());const schema=JSON.parse(schemaBytes());assert.equal(schema.additionalProperties,false);assert.equal(schema['x-pte-schemaVersion'],1);assert.equal(schema['x-pte-semanticRules'][0].code,'ANSWER_TRANSCRIPT_MISMATCH');assert.deepEqual(Object.keys(schema.properties).sort(),['id','taskType','difficulty','prompt','answer','transcript','audio','chunks','phraseGroups','stressWords','revision','status','source','tags','skills','topic','estimatedSeconds'].sort());
 });
-test('validation-only CLI accepts examples and fails on invalid/syntax input',()=>{
+test('validation-only CLI accepts production sources and fails on invalid/syntax input',()=>{
   for(const args of [[],['tests/fixtures/content/bad-revision.json'],['tests/fixtures/content/malformed.json']]){const r=spawnSync(process.execPath,['tools/content/validate.mjs',...args],{encoding:'utf8'});assert.equal(r.status,args.length?1:0);const report=JSON.parse(r.stdout);assert.equal(report.success,!args.length);if(args.length)assert.ok(report.errors.length);}
 });
 

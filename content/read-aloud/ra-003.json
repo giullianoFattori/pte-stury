@@ -1,0 +1,32 @@
+{
+  "id": "ra-003",
+  "difficulty": 2,
+  "transcript": "Researchers often collect data from several sources so they can compare results and identify patterns more accurately.",
+  "phraseGroups": [
+    "Researchers often collect data",
+    "from several sources",
+    "so they can compare results",
+    "and identify patterns more accurately"
+  ],
+  "stressWords": [
+    "researchers",
+    "collect",
+    "data",
+    "sources",
+    "compare",
+    "results",
+    "identify",
+    "patterns",
+    "accurately"
+  ],
+  "taskType": "read-aloud",
+  "prompt": "Read the text aloud clearly and naturally.",
+  "answer": "Researchers often collect data from several sources so they can compare results and identify patterns more accurately.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading",
+    "speaking"
+  ]
+}

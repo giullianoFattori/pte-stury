@@ -1,0 +1,37 @@
+{
+  "id": "ra-006",
+  "difficulty": 3,
+  "transcript": "Economic decisions are influenced by a combination of individual behaviour, government policy, market conditions, and expectations about future growth.",
+  "phraseGroups": [
+    "Economic decisions are influenced",
+    "by a combination of individual behaviour",
+    "government policy",
+    "market conditions",
+    "and expectations about future growth"
+  ],
+  "stressWords": [
+    "economic",
+    "decisions",
+    "influenced",
+    "combination",
+    "individual",
+    "behaviour",
+    "government",
+    "policy",
+    "market",
+    "conditions",
+    "expectations",
+    "future",
+    "growth"
+  ],
+  "taskType": "read-aloud",
+  "prompt": "Read the text aloud clearly and naturally.",
+  "answer": "Economic decisions are influenced by a combination of individual behaviour, government policy, market conditions, and expectations about future growth.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading",
+    "speaking"
+  ]
+}

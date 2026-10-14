@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, writeFile, rm, symlink } from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, rm, symlink, cp, copyFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { generateManifest, verifyPackage, validatePackageManifest } from '../inventory.mjs';
@@ -15,6 +15,12 @@ async function fixture(t) {
  }
  return root;
 }
+async function stageAudio(root) {
+ await cp('public/audio', join(root, 'web/audio'), {recursive:true});
+ // Controlled package fixture owns real decoder files; no host decoder fallback.
+ for (const name of ['ffmpeg','ffprobe']) await cp('/usr/bin/'+name, join(root,'native',name));
+ for (const name of ['libstdc++.so.6','libgcc_s.so.1']) await copyFile('/lib/x86_64-linux-gnu/'+name, join(root,'native',name));
+}
 test('complete package inventory verifies; corrupted and extra files fail',async t=>{
  const root=await fixture(t);const m=await generateManifest(root,'linux-x64');assert.equal(m.artifacts.length,23);await verifyPackage(root);
  await writeFile(join(root,'web/index.html'),'corrupt');await assert.rejects(verifyPackage(root));await writeFile(join(root,'web/index.html'),'fixture');
@@ -25,7 +31,7 @@ test('missing artifacts and symlink parents fail closed',async t=>{
  await symlink('/usr/bin/node',join(root,'native/node'));await assert.rejects(verifyPackage(root));
 });
 test('generated content is verified and included in the owned package inventory',async t=>{
- const root=await fixture(t);const content=await stageGeneratedContent(root);
+ const root=await fixture(t);await stageAudio(root);const content=await stageGeneratedContent(root);
  assert.equal(content.schemaVersion,1);
  const manifest=await generateManifest(root,'linux-x64');
  for(const name of ['question-bank.json','question-bank.manifest.json']) assert.ok(manifest.artifacts.some(a=>a.path==='web/content/'+name && a.size>0 && /^[0-9a-f]{64}$/.test(a.sha256)));
@@ -40,7 +46,7 @@ test('manifest rejects traversal, duplicate paths and unsupported targets',async
  await rm(join(root,'launcher'));await assert.rejects(generateManifest(root,'linux-x64'));
 });
 test('same-origin static serving, CSP, SPA and API isolation',async t=>{
- const root=await fixture(t);const content=await stageGeneratedContent(root);const manifest=await generateManifest(root,'linux-x64');const serveStatic=await createStaticServer(join(root,'web'),manifest.artifacts);
+ const root=await fixture(t);await stageAudio(root);const content=await stageGeneratedContent(root);const manifest=await generateManifest(root,'linux-x64');const serveStatic=await createStaticServer(join(root,'web'),manifest.artifacts);
  const port=await freePort();const runtime=await startRuntime({apiVersion:1,host:'127.0.0.1',port,model:'base.en',maxUploadBytes:12582912,maxAudioSeconds:180,inferenceTimeoutMs:60000,maxConcurrentTranscriptions:1},{serveStatic, initializeEngine:async()=>({transcribeNormalizedAudio:async()=>({text:'fixture'})})});t.after(()=>runtime.close());
  const base=`http://127.0.0.1:${port}`;
  for(const route of ['/','/study/read-aloud','/study/repeat-sentence']){const r=await fetch(base+route);assert.equal(r.status,200);assert.equal(r.headers.get('content-security-policy'),PACKAGED_CSP);assert.equal(r.headers.get('cache-control'),'no-store');assert.equal(await r.text(),'fixture');}

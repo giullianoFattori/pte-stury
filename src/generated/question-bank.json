@@ -2,39 +2,460 @@
   "schemaVersion": 1,
   "items": [
     {
-      "id": "wfd-900001",
+      "id": "wfd-001",
       "taskType": "write-from-dictation",
       "difficulty": 1,
-      "prompt": "Build pipeline fixture for write-from-dictation; not learner practice.",
+      "prompt": "Listen to the sentence and type exactly what you hear.",
+      "answer": "Students should submit their assignments before Friday.",
+      "transcript": "Students should submit their assignments before Friday.",
+      "audio": {
+        "path": "/audio/wfd/wfd-001.mp3",
+        "sha256": "32400e9eb78e4a475fb8ac766749d3b191c127db4e40a042bad4f331348377f2",
+        "durationMs": 4032,
+        "mimeType": "audio/mpeg"
+      },
       "revision": 1,
-      "status": "draft",
+      "status": "active",
       "source": "internal",
-      "tags": [
-        "build-fixture"
+      "skills": [
+        "listening",
+        "writing"
       ]
     },
     {
-      "id": "rs-900001",
+      "id": "wfd-002",
+      "taskType": "write-from-dictation",
+      "difficulty": 1,
+      "prompt": "Listen to the sentence and type exactly what you hear.",
+      "answer": "The library will remain open during the examination period.",
+      "transcript": "The library will remain open during the examination period.",
+      "audio": {
+        "path": "/audio/wfd/wfd-002.mp3",
+        "sha256": "9eafe211e1b1c4a11b4db671b0417ed7fc9e02ff1933063666ac8d450933e89e",
+        "durationMs": 4536,
+        "mimeType": "audio/mpeg"
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "listening",
+        "writing"
+      ]
+    },
+    {
+      "id": "wfd-003",
+      "taskType": "write-from-dictation",
+      "difficulty": 2,
+      "prompt": "Listen to the sentence and type exactly what you hear.",
+      "answer": "Many students struggle to manage their time effectively.",
+      "transcript": "Many students struggle to manage their time effectively.",
+      "audio": {
+        "path": "/audio/wfd/wfd-003.mp3",
+        "sha256": "9a9736b50d7438ab7118182813d6f66e9430da6e420b22f24c64219b127e0145",
+        "durationMs": 4128,
+        "mimeType": "audio/mpeg"
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "listening",
+        "writing"
+      ]
+    },
+    {
+      "id": "wfd-004",
+      "taskType": "write-from-dictation",
+      "difficulty": 2,
+      "prompt": "Listen to the sentence and type exactly what you hear.",
+      "answer": "The research project requires careful planning and accurate data.",
+      "transcript": "The research project requires careful planning and accurate data.",
+      "audio": {
+        "path": "/audio/wfd/wfd-004.mp3",
+        "sha256": "9e745cb23d6f799d777202085071221bf2615512b888ff28281ded838686a309",
+        "durationMs": 4944,
+        "mimeType": "audio/mpeg"
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "listening",
+        "writing"
+      ]
+    },
+    {
+      "id": "wfd-005",
+      "taskType": "write-from-dictation",
+      "difficulty": 3,
+      "prompt": "Listen to the sentence and type exactly what you hear.",
+      "answer": "Environmental policies can influence economic development in different ways.",
+      "transcript": "Environmental policies can influence economic development in different ways.",
+      "audio": {
+        "path": "/audio/wfd/wfd-005.mp3",
+        "sha256": "8543ef3fbf22c58b037efdc20cf46be995a56b69c4dabc014c92524e469440ae",
+        "durationMs": 5592,
+        "mimeType": "audio/mpeg"
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "listening",
+        "writing"
+      ]
+    },
+    {
+      "id": "rs-001",
       "taskType": "repeat-sentence",
       "difficulty": 1,
-      "prompt": "Build pipeline fixture for repeat-sentence; not learner practice.",
+      "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+      "answer": "Students must arrive before nine tomorrow.",
+      "transcript": "Students must arrive before nine tomorrow.",
+      "audio": {
+        "path": "/audio/rs/rs-001.mp3",
+        "sha256": "ad73ec3319780c90b57f61e14321b515b5bdb329d6b97e4f73eb2ae04c634d51",
+        "durationMs": 3240,
+        "mimeType": "audio/mpeg"
+      },
+      "chunks": [
+        "Students must arrive",
+        "before nine tomorrow"
+      ],
       "revision": 1,
-      "status": "draft",
+      "status": "active",
       "source": "internal",
-      "tags": [
-        "build-fixture"
+      "skills": [
+        "listening",
+        "speaking"
       ]
     },
     {
-      "id": "ra-900001",
+      "id": "rs-002",
+      "taskType": "repeat-sentence",
+      "difficulty": 1,
+      "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+      "answer": "The lecture starts after lunch today.",
+      "transcript": "The lecture starts after lunch today.",
+      "audio": {
+        "path": "/audio/rs/rs-002.mp3",
+        "sha256": "e7734bd08d09156a1a09086b98be9a3aa505875d875d1be267247e1e1f7b0b18",
+        "durationMs": 2808,
+        "mimeType": "audio/mpeg"
+      },
+      "chunks": [
+        "The lecture starts",
+        "after lunch today"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "listening",
+        "speaking"
+      ]
+    },
+    {
+      "id": "rs-003",
+      "taskType": "repeat-sentence",
+      "difficulty": 2,
+      "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+      "answer": "The research team will publish its findings next month.",
+      "transcript": "The research team will publish its findings next month.",
+      "audio": {
+        "path": "/audio/rs/rs-003.mp3",
+        "sha256": "65dd866632191d850ad063cb6131ec93759e65a8a5f24ab5292bde9411cbcb85",
+        "durationMs": 3744,
+        "mimeType": "audio/mpeg"
+      },
+      "chunks": [
+        "The research team",
+        "will publish its findings",
+        "next month"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "listening",
+        "speaking"
+      ]
+    },
+    {
+      "id": "rs-004",
+      "taskType": "repeat-sentence",
+      "difficulty": 2,
+      "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+      "answer": "Several students requested extra time to complete the assignment.",
+      "transcript": "Several students requested extra time to complete the assignment.",
+      "audio": {
+        "path": "/audio/rs/rs-004.mp3",
+        "sha256": "b262e5a437ca40fc16d73066d352137faae3bf6fd93f08bc582b714595caa887",
+        "durationMs": 4752,
+        "mimeType": "audio/mpeg"
+      },
+      "chunks": [
+        "Several students",
+        "requested extra time",
+        "to complete the assignment"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "listening",
+        "speaking"
+      ]
+    },
+    {
+      "id": "rs-005",
+      "taskType": "repeat-sentence",
+      "difficulty": 3,
+      "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+      "answer": "The university library will remain open during the examination period for all registered students.",
+      "transcript": "The university library will remain open during the examination period for all registered students.",
+      "audio": {
+        "path": "/audio/rs/rs-005.mp3",
+        "sha256": "fcc657101082dc886ed0edd7c5b0949e60e33a9e874d90bb4a0f07f1fe5c573a",
+        "durationMs": 7080,
+        "mimeType": "audio/mpeg"
+      },
+      "chunks": [
+        "The university library",
+        "will remain open",
+        "during the examination period",
+        "for all registered students"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "listening",
+        "speaking"
+      ]
+    },
+    {
+      "id": "rs-006",
+      "taskType": "repeat-sentence",
+      "difficulty": 3,
+      "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+      "answer": "Researchers are examining how digital technology influences communication habits among young adults in modern workplaces.",
+      "transcript": "Researchers are examining how digital technology influences communication habits among young adults in modern workplaces.",
+      "audio": {
+        "path": "/audio/rs/rs-006.mp3",
+        "sha256": "a8dbeaac9431e8af8d1c41416a5086c620ecca507d736a39b706cfcc54b922e3",
+        "durationMs": 8664,
+        "mimeType": "audio/mpeg"
+      },
+      "chunks": [
+        "Researchers are examining",
+        "how digital technology influences",
+        "communication habits among young adults",
+        "in modern workplaces"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "listening",
+        "speaking"
+      ]
+    },
+    {
+      "id": "ra-001",
       "taskType": "read-aloud",
       "difficulty": 1,
-      "prompt": "Build pipeline fixture for read-aloud; not learner practice.",
+      "prompt": "Read the text aloud clearly and naturally.",
+      "answer": "Many students use public transport to travel to university each day because it is convenient and affordable.",
+      "transcript": "Many students use public transport to travel to university each day because it is convenient and affordable.",
+      "phraseGroups": [
+        "Many students use public transport",
+        "to travel to university each day",
+        "because it is convenient and affordable"
+      ],
+      "stressWords": [
+        "students",
+        "public",
+        "transport",
+        "travel",
+        "university",
+        "convenient",
+        "affordable"
+      ],
       "revision": 1,
-      "status": "draft",
+      "status": "active",
       "source": "internal",
-      "tags": [
-        "build-fixture"
+      "skills": [
+        "reading",
+        "speaking"
+      ]
+    },
+    {
+      "id": "ra-002",
+      "taskType": "read-aloud",
+      "difficulty": 1,
+      "prompt": "Read the text aloud clearly and naturally.",
+      "answer": "Regular exercise can improve both physical health and mental wellbeing when it becomes part of a consistent routine.",
+      "transcript": "Regular exercise can improve both physical health and mental wellbeing when it becomes part of a consistent routine.",
+      "phraseGroups": [
+        "Regular exercise can improve",
+        "both physical health and mental wellbeing",
+        "when it becomes part of a consistent routine"
+      ],
+      "stressWords": [
+        "regular",
+        "exercise",
+        "improve",
+        "physical",
+        "health",
+        "mental",
+        "wellbeing",
+        "consistent",
+        "routine"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading",
+        "speaking"
+      ]
+    },
+    {
+      "id": "ra-003",
+      "taskType": "read-aloud",
+      "difficulty": 2,
+      "prompt": "Read the text aloud clearly and naturally.",
+      "answer": "Researchers often collect data from several sources so they can compare results and identify patterns more accurately.",
+      "transcript": "Researchers often collect data from several sources so they can compare results and identify patterns more accurately.",
+      "phraseGroups": [
+        "Researchers often collect data",
+        "from several sources",
+        "so they can compare results",
+        "and identify patterns more accurately"
+      ],
+      "stressWords": [
+        "researchers",
+        "collect",
+        "data",
+        "sources",
+        "compare",
+        "results",
+        "identify",
+        "patterns",
+        "accurately"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading",
+        "speaking"
+      ]
+    },
+    {
+      "id": "ra-004",
+      "taskType": "read-aloud",
+      "difficulty": 2,
+      "prompt": "Read the text aloud clearly and naturally.",
+      "answer": "Urban planning plays an important role in determining how efficiently people can move through growing cities.",
+      "transcript": "Urban planning plays an important role in determining how efficiently people can move through growing cities.",
+      "phraseGroups": [
+        "Urban planning plays an important role",
+        "in determining how efficiently",
+        "people can move through growing cities"
+      ],
+      "stressWords": [
+        "urban",
+        "planning",
+        "important",
+        "role",
+        "determining",
+        "efficiently",
+        "people",
+        "move",
+        "growing",
+        "cities"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading",
+        "speaking"
+      ]
+    },
+    {
+      "id": "ra-005",
+      "taskType": "read-aloud",
+      "difficulty": 3,
+      "prompt": "Read the text aloud clearly and naturally.",
+      "answer": "Although digital technology has increased access to information, researchers continue to examine how constant connectivity affects concentration and long-term learning.",
+      "transcript": "Although digital technology has increased access to information, researchers continue to examine how constant connectivity affects concentration and long-term learning.",
+      "phraseGroups": [
+        "Although digital technology has increased access to information",
+        "researchers continue to examine",
+        "how constant connectivity affects concentration",
+        "and long-term learning"
+      ],
+      "stressWords": [
+        "digital",
+        "technology",
+        "increased",
+        "access",
+        "information",
+        "researchers",
+        "examine",
+        "constant",
+        "connectivity",
+        "affects",
+        "concentration",
+        "learning"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading",
+        "speaking"
+      ]
+    },
+    {
+      "id": "ra-006",
+      "taskType": "read-aloud",
+      "difficulty": 3,
+      "prompt": "Read the text aloud clearly and naturally.",
+      "answer": "Economic decisions are influenced by a combination of individual behaviour, government policy, market conditions, and expectations about future growth.",
+      "transcript": "Economic decisions are influenced by a combination of individual behaviour, government policy, market conditions, and expectations about future growth.",
+      "phraseGroups": [
+        "Economic decisions are influenced",
+        "by a combination of individual behaviour",
+        "government policy",
+        "market conditions",
+        "and expectations about future growth"
+      ],
+      "stressWords": [
+        "economic",
+        "decisions",
+        "influenced",
+        "combination",
+        "individual",
+        "behaviour",
+        "government",
+        "policy",
+        "market",
+        "conditions",
+        "expectations",
+        "future",
+        "growth"
+      ],
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading",
+        "speaking"
       ]
     }
   ]

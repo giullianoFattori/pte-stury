@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { readAloudQuestions } from '../../../src/data/question-bank/read-aloud.ts';
-import { repeatSentenceQuestions } from '../../../src/data/question-bank/repeat-sentence.ts';
+import { readAloudQuestions } from '../../../src/data/question-bank/diagnosticQuestionBank.ts';
+import { repeatSentenceQuestions } from '../../../src/data/question-bank/diagnosticQuestionBank.ts';
 import { WhisperCppPocSpeechToTextAdapter, type WhisperCppPocResult } from './WhisperCppPocSpeechToTextAdapter.ts';
 import { comparePocResponse, measureWordErrors } from '../../../src/infrastructure/speech/whisperPocEvaluation.ts';
 

@@ -3,7 +3,7 @@ import test from 'node:test';
 
 import { compareReadAloud, calculateReadAloudMetrics } from '../src/domain/scoring/read-aloud/index.ts';
 import { compareTokens } from '../src/domain/scoring/shared/compareTokens.ts';
-import { readAloudQuestions } from '../src/data/question-bank/read-aloud.ts';
+import { readAloudQuestions } from './helpers/legacy-question-bank.mjs';
 
 const expected = 'The research team published the report.';
 function evaluate(actual, source = expected) {

@@ -1,0 +1,21 @@
+{
+  "id": "wfd-003",
+  "taskType": "write-from-dictation",
+  "difficulty": 2,
+  "prompt": "Listen to the sentence and type exactly what you hear.",
+  "answer": "Many students struggle to manage their time effectively.",
+  "transcript": "Many students struggle to manage their time effectively.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "writing"
+  ],
+  "audio": {
+    "path": "/audio/wfd/wfd-003.mp3",
+    "sha256": "9a9736b50d7438ab7118182813d6f66e9430da6e420b22f24c64219b127e0145",
+    "durationMs": 4128,
+    "mimeType": "audio/mpeg"
+  }
+}

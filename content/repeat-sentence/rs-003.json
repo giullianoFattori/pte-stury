@@ -1,0 +1,26 @@
+{
+  "id": "rs-003",
+  "taskType": "repeat-sentence",
+  "difficulty": 2,
+  "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+  "answer": "The research team will publish its findings next month.",
+  "transcript": "The research team will publish its findings next month.",
+  "chunks": [
+    "The research team",
+    "will publish its findings",
+    "next month"
+  ],
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "speaking"
+  ],
+  "audio": {
+    "path": "/audio/rs/rs-003.mp3",
+    "sha256": "65dd866632191d850ad063cb6131ec93759e65a8a5f24ab5292bde9411cbcb85",
+    "durationMs": 3744,
+    "mimeType": "audio/mpeg"
+  }
+}

@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import { compareRepeatSentence, calculateRepeatSentenceMetrics, analyseRepeatSentenceChunks, RsChunkMetadataError } from '../src/domain/scoring/repeat-sentence/index.ts';
-import { repeatSentenceQuestions } from '../src/data/question-bank/repeat-sentence.ts';
+import { repeatSentenceQuestions } from './helpers/legacy-question-bank.mjs';
 import { compareWfdAnswer } from '../src/domain/scoring/wfd/compareWfdAnswer.ts';
 
 const expected = 'The research team will publish its findings next month.';

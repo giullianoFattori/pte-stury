@@ -1,13 +1,9 @@
 # Activity 06.04 — Transactional installed content
 
-The sync engine is implemented and tested, but **not activated in bootstrap**.
-`bootstrapApp()` still runs the existing legacy seed. The 17 live WFD/RS/RA items
-are not migrated. The generated catalog's three `*-900001` technical drafts cannot
-appear in normal practice, even if explicitly installed with the new sync API.
-Activation follows real-content migration in 06.08; no learner scoring changed.
-Do not run the legacy upsert seed after adopting those same IDs into versioned
-content: it could overwrite their metadata. Activation must replace that seed,
-not run both flows together. The only generated IDs currently differ from live IDs.
+The sync engine is activated by bootstrap after [06.08 migration](migration-06.08.md).
+The generated catalog contains the 17 original learner identities at canonical revision 1.
+The legacy upsert seed has been removed; it must never run after versioned sync.
+Technical fixtures are excluded from the production source trees.
 
 ## Persisted model and migration
 
@@ -108,15 +104,15 @@ IDs are not grandfathered and all remain draft. `getByTaskType()` uses this rule
 historical queries retain access to every identity.
 
 `syncGeneratedQuestionBank()` is an explicit installation API and can install the
-technical drafts. `initializeQuestionBank()` is the future startup entrypoint:
+technical drafts. `initializeQuestionBank()` is the active startup entrypoint:
 it requires a catalog with active items, attempts transactional sync and on failure
 checks for a usable previous bank. Versioned fallback rows must pass canonical item
 validation; the grandfathered legacy fallback uses a readiness check for required
 text/audio/chunks without inventing version metadata. A valid previous bank returns
 a controlled `CONTENT_SYNC_FAILED` warning. A fresh/invalid/draft-only bank raises
-`CONTENT_INITIALIZATION_FAILED`, suitable for a visible future startup error.
-The existing database is never wiped. These entrypoints are not yet invoked by
-bootstrap; warning/error presentation will be connected when content is activated.
+`CONTENT_INITIALIZATION_FAILED`, displayed as a controlled startup error.
+The existing database is never wiped. Bootstrap uses this entrypoint and presents
+a controlled warning/error; raw exceptions are not displayed.
 
 WFD, RS and RA attempt builders now copy optional revision from the exact question
 object passed by the exercise. They do no later database lookup. Legacy attempts
@@ -131,7 +127,7 @@ simulated IndexedDB to cover v2→v3 upgrade, transaction rollback, state writes
 unchanged learner history and practice filtering. They are not evidence of physical
 browser/microphone or cross-platform package validation. Synthetic 1,000/5,000-item
 catalogs run one transaction and a no-scan repeat install; fixtures never enter the
-production bank. Timing/browser-startup measurements remain 06.08.
+production bank. Timing/browser-startup measurements are archived in 06.08.
 
 ```bash
 npm run content:build

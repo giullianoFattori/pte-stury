@@ -1,8 +1,8 @@
 # Activity 06.05 — Practice metadata queries
 
-This step adds selection infrastructure only. Bootstrap still seeds the 17 legacy
-questions; real-content migration, study sessions, ranking, mastery and review UI
-are unchanged. Dexie remains version 3 with the existing taskType/difficulty indexes.
+Selection queries consume installed canonical content. [06.08 migration](migration-06.08.md)
+activated generated-catalog sync and authored skills for all 17 live questions.
+Legacy unknown-revision rows remain supported during upgrades/fallback.
 
 ## Contract and validation
 
@@ -137,7 +137,7 @@ npm run package:test
 git diff --check
 ```
 
-Actual browser/storage/startup profiling is still pending scale validation in 06.08.
+Actual browser/storage/startup profiling is archived in 06.08; Dexie v3 is retained.
 Audio integrity/decode, authoring/import tools, new tasks, migration, study-session
 generation and adaptive/review features are outside this step. Activity 05 release
 and human-model quality gates remain unchanged.

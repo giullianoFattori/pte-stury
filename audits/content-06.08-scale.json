@@ -1,0 +1,78 @@
+{
+  "status": "PASS",
+  "environment": "Node; fake-indexeddb timings are not browser performance evidence",
+  "measurements": [
+    {
+      "size": 1000,
+      "status": "PASS",
+      "bundleBytes": 427221,
+      "transactions": 4,
+      "timingsMs": {
+        "discovery": 89.518,
+        "readAndParse": 340.657,
+        "batchValidation": 23.279,
+        "canonicalization": 1.841,
+        "serialization": 1.388,
+        "fullBuild": 526.513,
+        "verification": 24.844,
+        "freshSync": 77.578,
+        "repeatNoop": 18.719,
+        "subsetUpdate": 185.473,
+        "availabilityUpdate": 191.544,
+        "taskQuery": 348.388,
+        "difficultyQuery": 53.747,
+        "metadataQuery": 347.08,
+        "count": 334.682,
+        "sampling": 0.246
+      }
+    },
+    {
+      "size": 5000,
+      "status": "PASS",
+      "bundleBytes": 2149221,
+      "transactions": 4,
+      "timingsMs": {
+        "discovery": 249.936,
+        "readAndParse": 1926.038,
+        "batchValidation": 85.379,
+        "canonicalization": 5.325,
+        "serialization": 6.952,
+        "fullBuild": 2551.223,
+        "verification": 106.266,
+        "freshSync": 254.103,
+        "repeatNoop": 84.616,
+        "subsetUpdate": 3305.586,
+        "availabilityUpdate": 3367.583,
+        "taskQuery": 9019.997,
+        "difficultyQuery": 1173.109,
+        "metadataQuery": 8932.927,
+        "count": 8917.397,
+        "sampling": 0.175
+      }
+    },
+    {
+      "size": 10000,
+      "status": "PASS",
+      "bundleBytes": 4301724,
+      "transactions": 4,
+      "timingsMs": {
+        "discovery": 508.727,
+        "readAndParse": 3528.597,
+        "batchValidation": 164.741,
+        "canonicalization": 10.548,
+        "serialization": 13.51,
+        "fullBuild": 4215.802,
+        "verification": 239.017,
+        "freshSync": 510.964,
+        "repeatNoop": 171.435,
+        "subsetUpdate": 13609.267,
+        "availabilityUpdate": 13524.11,
+        "taskQuery": 37229.819,
+        "difficultyQuery": 4394.592,
+        "metadataQuery": 36542.796,
+        "count": 37991.447,
+        "sampling": 0.087
+      }
+    }
+  ]
+}

@@ -7,9 +7,9 @@ import { parseStudyItemQuery, comparePracticeItems } from '../src/domain/content
 import { StudyItemQueryError } from '../src/domain/content/queryTypes.ts';
 import { sampleStudyItems } from '../src/domain/content/sampling.ts';
 import { createStudyItemsRepository } from '../src/data/repositories/studyItemsRepository.ts';
-import { readAloudQuestions } from '../src/data/question-bank/read-aloud.ts';
-import { repeatSentenceQuestions } from '../src/data/question-bank/repeat-sentence.ts';
-import { writeFromDictationQuestions } from '../src/data/question-bank/write-from-dictation.ts';
+import { readAloudQuestions } from './helpers/legacy-question-bank.mjs';
+import { repeatSentenceQuestions } from './helpers/legacy-question-bank.mjs';
+import { writeFromDictationQuestions } from './helpers/legacy-question-bank.mjs';
 const rows = [
   installItem({ ...ra, id: 'ra-000003', difficulty: 3, skills: ['reading', 'speaking'], tags: ['academic', 'Science'], topic: 'Research' }, now),
   installItem({ ...rs, id: 'rs-000002', difficulty: 2, tags: ['academic', 'schedule'], topic: 'schedule' }, now),

@@ -1,0 +1,29 @@
+{
+  "id": "ra-001",
+  "difficulty": 1,
+  "transcript": "Many students use public transport to travel to university each day because it is convenient and affordable.",
+  "phraseGroups": [
+    "Many students use public transport",
+    "to travel to university each day",
+    "because it is convenient and affordable"
+  ],
+  "stressWords": [
+    "students",
+    "public",
+    "transport",
+    "travel",
+    "university",
+    "convenient",
+    "affordable"
+  ],
+  "taskType": "read-aloud",
+  "prompt": "Read the text aloud clearly and naturally.",
+  "answer": "Many students use public transport to travel to university each day because it is convenient and affordable.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading",
+    "speaking"
+  ]
+}

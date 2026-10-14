@@ -1,10 +1,13 @@
 # Authoring and import tooling — 06.07
 
+Current status: [06.08](migration-06.08.md) migrated and activated all 17 learner
+items. Earlier scope/result statements below describe the historical step boundary;
+production authoring now uses canonical JSON and bootstrap uses generated sync.
+
 New content enters as drafts through local developer commands. Authoring does not
 seed IndexedDB, change learner scoring, download/generate audio, invoke a cloud
-service or publish a catalog. The 17 learner questions remain in the legacy bank
-until 06.08. Only technical source **filenames** changed to their existing stable
-IDs; their wording, IDs and generated bundle/contentVersion remain unchanged.
+service or publish a catalog. The 17 learner questions now use the canonical bank through 06.08. The 06.07 checkpoint changed only technical filenames; 06.08 removed those
+fixtures from production discovery while retaining their permanent reservations.
 
 ## Permanent identity registry
 

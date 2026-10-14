@@ -6,9 +6,9 @@ import {
   QUESTION_BANK_SCHEMA_VERSION, CONTENT_STATUSES, CONTENT_SOURCES,
   QUESTION_ID_PREFIXES, NEW_QUESTION_ID_DIGITS,
 } from '../src/domain/content/types.ts';
-import { readAloudQuestions } from '../src/data/question-bank/read-aloud.ts';
-import { repeatSentenceQuestions } from '../src/data/question-bank/repeat-sentence.ts';
-import { writeFromDictationQuestions } from '../src/data/question-bank/write-from-dictation.ts';
+import { readAloudQuestions } from './helpers/legacy-question-bank.mjs';
+import { repeatSentenceQuestions } from './helpers/legacy-question-bank.mjs';
+import { writeFromDictationQuestions } from './helpers/legacy-question-bank.mjs';
 
 test('content v1 exposes immutable lifecycle/source/prefix vocabulary for existing tasks', () => {
   assert.equal(QUESTION_BANK_SCHEMA_VERSION, 1);
@@ -23,7 +23,7 @@ test('content v1 exposes immutable lifecycle/source/prefix vocabulary for existi
   }
 });
 
-test('published legacy identities remain unchanged and content is not prematurely migrated', () => {
+test('published legacy identities remain unchanged are recorded in the historical baseline', () => {
   const banks = [writeFromDictationQuestions, repeatSentenceQuestions, readAloudQuestions];
   assert.deepEqual(banks.map(items => items.map(item => item.id)), [
     ['wfd-001', 'wfd-002', 'wfd-003', 'wfd-004', 'wfd-005'],

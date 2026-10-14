@@ -1,0 +1,35 @@
+{
+  "id": "ra-005",
+  "difficulty": 3,
+  "transcript": "Although digital technology has increased access to information, researchers continue to examine how constant connectivity affects concentration and long-term learning.",
+  "phraseGroups": [
+    "Although digital technology has increased access to information",
+    "researchers continue to examine",
+    "how constant connectivity affects concentration",
+    "and long-term learning"
+  ],
+  "stressWords": [
+    "digital",
+    "technology",
+    "increased",
+    "access",
+    "information",
+    "researchers",
+    "examine",
+    "constant",
+    "connectivity",
+    "affects",
+    "concentration",
+    "learning"
+  ],
+  "taskType": "read-aloud",
+  "prompt": "Read the text aloud clearly and naturally.",
+  "answer": "Although digital technology has increased access to information, researchers continue to examine how constant connectivity affects concentration and long-term learning.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading",
+    "speaking"
+  ]
+}

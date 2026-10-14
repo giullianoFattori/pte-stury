@@ -1,0 +1,21 @@
+{
+  "id": "wfd-001",
+  "taskType": "write-from-dictation",
+  "difficulty": 1,
+  "prompt": "Listen to the sentence and type exactly what you hear.",
+  "answer": "Students should submit their assignments before Friday.",
+  "transcript": "Students should submit their assignments before Friday.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "writing"
+  ],
+  "audio": {
+    "path": "/audio/wfd/wfd-001.mp3",
+    "sha256": "32400e9eb78e4a475fb8ac766749d3b191c127db4e40a042bad4f331348377f2",
+    "durationMs": 4032,
+    "mimeType": "audio/mpeg"
+  }
+}

@@ -3,8 +3,8 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
-import { readAloudQuestions } from '../../../src/data/question-bank/read-aloud.ts';
-import { repeatSentenceQuestions } from '../../../src/data/question-bank/repeat-sentence.ts';
+import { readAloudQuestions } from '../../../src/data/question-bank/diagnosticQuestionBank.ts';
+import { repeatSentenceQuestions } from '../../../src/data/question-bank/diagnosticQuestionBank.ts';
 
 // Technical fixtures only: synthetic flite speech, never label these learner recordings.
 const output = fileURLToPath(new URL('../tmp/controlled/', import.meta.url));

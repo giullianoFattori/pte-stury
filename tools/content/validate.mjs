@@ -1,10 +1,15 @@
-// Thin preview only: three explicit examples or files supplied by the author.
-// Production discovery/build/sync is deliberately not part of 06.02.
+// Structural/batch preview: production sources by default, or explicit author files.
+// Audio bytes and registry integrity remain mandatory in content:build.
 import { parseQuestionBankItemJson, validateQuestionBankItems } from '../../src/domain/content/validation.ts';
 import { ContentValidationError } from '../../src/domain/content/validationTypes.ts';
 import { readSource } from './read-source.mjs';
+import { discover } from './discover.mjs';
+import { resolve } from 'node:path';
 const files = process.argv.slice(2);
-if (!files.length) files.push('content/examples/read-aloud/draft.json', 'content/examples/repeat-sentence/draft.json', 'content/examples/write-from-dictation/draft.json');
+if (!files.length) {
+ try { files.push(...(await discover(resolve('content'))).map(source => source.file)); }
+ catch (error) { console.log(JSON.stringify({success:false,validatedFiles:0,errors:error.errors ?? [{path:'content',code:'READ_FAILED',message:'Production discovery failed.'}],warnings:[]})); process.exit(1); }
+}
 const values = [], errors = [], names = [];
 for (const file of files) {
   try { values.push(parseQuestionBankItemJson(await readSource(file))); names.push(file); }

@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { now, history, seedHistory, snapshot, catalog, ra } from './helpers/content-db.mjs';
 import Dexie from 'dexie';
 import { PteDatabase } from '../src/data/db/database.ts';
-import { readAloudQuestions } from '../src/data/question-bank/read-aloud.ts';
+import { readAloudQuestions } from './helpers/legacy-question-bank.mjs';
 import { syncQuestionBank } from '../src/data/question-bank/syncQuestionBank.ts';
 
 test('real Dexie v2→v3 upgrade adds only contentState and preserves every legacy row/index/history', async t => {

@@ -12,21 +12,21 @@ does not use STT.
 contract, permanent IDs, lifecycle and revision policy. [Activity 06.02](docs/content/validation-06.02.md)
 adds strict JSON/runtime validation and a validation-only `npm run content:validate`
 preview. [Activity 06.03](docs/content/build-06.03.md) adds deterministic discovery,
-canonical bundles, SHA-256 manifests and package-owned JSON assets. Current question
-arrays, seed and study flows are preserved; sync and migration remain subsequent steps.
+canonical bundles, SHA-256 manifests and package-owned JSON assets.
+[Activity 06.08](docs/content/migration-06.08.md) activates the canonical catalog:
+17 active questions (5 WFD, 6 RS, 6 RA), authored only in `content/<task>/<id>.json`.
+Startup installs the generated catalog transactionally in Dexie v3. Historical IDs,
+learner history and legacy timestamps are preserved; new attempts capture revision 1.
+Draft/retired/unavailable content is excluded from practice.
 
 ```bash
 npm run content:validate
 npm run content:build
 npm run content:stats
 npm run content:verify
+npm run content:verify-audio
 ```
 
-The generated bank currently contains only three technical drafts, zero active
-practice items. The learner app is not yet reading it. [Activity 06.04](docs/content/sync-06.04.md)
-adds transactional IndexedDB sync, revision checks, catalog availability and internal
-content state in Dexie v3. Bootstrap retains the legacy seed until real-content
-migration; drafts/retired/unavailable content is excluded from practice queries.
 [Activity 06.05](docs/content/query-06.05.md) adds validated metadata filters,
 deterministic ordering, counts, coverage diagnostics and pure sampling with an
 injected RNG, using the existing indexes. No filter UI or session engine is added.

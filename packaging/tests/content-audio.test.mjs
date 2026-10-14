@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, writeFile, rm, copyFile, chmod } from 'node:fs/promises';
+import { mkdtemp, mkdir, writeFile, rm, copyFile, chmod, readFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join, resolve } from 'node:path';
 import { buildBank } from '../../tools/content/build.mjs';
@@ -25,4 +25,10 @@ test('staging checks actual owned audio before publishing generated catalog file
   assert.equal(staged.contentVersion, result.manifest.contentVersion);
   await writeFile(join(packageRoot, 'web/audio/rs/rs-000001.mp3'), 'tampered');
   await assert.rejects(stageGeneratedContent(packageRoot, generated), /Staged question audio failed/);
+});
+
+test('pinned decoder build includes MP3 content inspection and full null decode', async () => {
+ const flags = JSON.parse(await readFile('packaging/ffmpeg-flags.json','utf8'));
+ for(const [prefix,value] of [['--enable-protocol=','pipe'],['--enable-demuxer=','mp3'],['--enable-decoder=','mp3'],['--enable-parser=','mpegaudio'],['--enable-muxer=','null']]) assert.ok(flags.find(f=>f.startsWith(prefix)).slice(prefix.length).split(',').includes(value));
+ assert.ok(flags.includes('--disable-network'));assert.ok(flags.includes('--disable-gpl'));assert.ok(flags.includes('--disable-nonfree'));
 });

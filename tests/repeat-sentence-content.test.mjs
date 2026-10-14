@@ -2,9 +2,9 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
-import { repeatSentenceQuestions } from '../src/data/question-bank/repeat-sentence.ts';
-import { writeFromDictationQuestions } from '../src/data/question-bank/write-from-dictation.ts';
-import { readAloudQuestions } from '../src/data/question-bank/read-aloud.ts';
+import { repeatSentenceQuestions } from './helpers/legacy-question-bank.mjs';
+import { writeFromDictationQuestions } from './helpers/legacy-question-bank.mjs';
+import { readAloudQuestions } from './helpers/legacy-question-bank.mjs';
 
 const normalizeContent = value => value.toLowerCase().replace(/[.,!?;:"]/g, '').replace(/\s+/g, ' ').trim();
 

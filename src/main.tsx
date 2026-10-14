@@ -9,15 +9,17 @@ import './index.css'
 
 async function startApp() {
   try {
-    await bootstrapApp()
+    const content = await bootstrapApp()
 
     createRoot(document.getElementById('root')!).render(
       <StrictMode>
+        {content.status === 'preserved' && <p role="status">{content.warning.message}</p>}
         <RouterProvider router={router} />
       </StrictMode>,
     )
-  } catch (error) {
-    console.error('Application bootstrap failed:', error)
+  } catch {
+    console.error('CONTENT_INITIALIZATION_FAILED')
+    document.getElementById('root')!.textContent = 'Study content could not be initialized. Please restart the app.'
   }
 }
 

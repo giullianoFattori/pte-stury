@@ -1,0 +1,21 @@
+{
+  "id": "wfd-005",
+  "taskType": "write-from-dictation",
+  "difficulty": 3,
+  "prompt": "Listen to the sentence and type exactly what you hear.",
+  "answer": "Environmental policies can influence economic development in different ways.",
+  "transcript": "Environmental policies can influence economic development in different ways.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "writing"
+  ],
+  "audio": {
+    "path": "/audio/wfd/wfd-005.mp3",
+    "sha256": "8543ef3fbf22c58b037efdc20cf46be995a56b69c4dabc014c92524e469440ae",
+    "durationMs": 5592,
+    "mimeType": "audio/mpeg"
+  }
+}

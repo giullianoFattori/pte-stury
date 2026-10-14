@@ -3,9 +3,9 @@
 import assert from 'node:assert/strict';
 import { readFile, cp, rm } from 'node:fs/promises';
 import { join } from 'node:path';
-import { readAloudQuestions } from '../../src/data/question-bank/read-aloud.ts';
-import { repeatSentenceQuestions } from '../../src/data/question-bank/repeat-sentence.ts';
-import { writeFromDictationQuestions } from '../../src/data/question-bank/write-from-dictation.ts';
+import { readAloudQuestions } from '../../src/data/question-bank/diagnosticQuestionBank.ts';
+import { repeatSentenceQuestions } from '../../src/data/question-bank/diagnosticQuestionBank.ts';
+import { writeFromDictationQuestions } from '../../src/data/question-bank/diagnosticQuestionBank.ts';
 import { root, origin, launch, ready, quit, persist } from './common.mjs';
 const {chromium}=await import(process.env.PLAYWRIGHT_MODULE??'playwright');
 let runtime=launch();await ready(runtime);let installation=root;

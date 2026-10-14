@@ -1,5 +1,9 @@
 # Audio asset contract and integrity — 06.06
 
+Current status: [06.08](migration-06.08.md) migrated and activated all 17 learner
+items. Earlier scope/result statements below describe the historical step boundary;
+production authoring now uses canonical JSON and bootstrap uses generated sync.
+
 Authored audio is application-owned offline content. `/audio/rs/example.mp3`
 resolves only beneath `public/audio`; no authored filesystem paths, remote URLs,
 encoded traversal, query strings or fragments are accepted. Examples remain
@@ -86,7 +90,7 @@ missing references, total bytes/duration and format/codec counts.
 
 Managed audio-tree traversal is bounded (16 levels, 40,000 entries), rejects
 symlinks and reports unreferenced files as `AUDIO_ORPHAN` warnings. The current
-11 legacy files legitimately appear orphaned in the technical-draft catalog.
+At the 06.06 checkpoint, 11 legacy files appeared orphaned in the technical-draft catalog. After 06.08 all 11 are referenced by canonical active items.
 Only explicit system placeholders `.gitkeep`, `.DS_Store`, `Thumbs.db` are ignored.
 
 Commands:
@@ -102,7 +106,7 @@ npm run content:verify-audio -- --legacy # additionally inspect 5 WFD + 6 RS fil
 
 `content:verify` deliberately verifies the generated pair independently of source
 media; build and package staging enforce actual media integrity. The optional
-legacy adapter reads existing TS `audioUrl` references, inspects real files and
+compatibility `--legacy` adapter now reads canonical references, inspects real files and
 records actual identities without modifying those definitions or inventing revisions.
 Legacy content is not retroactively claimed to have published canonical hashes.
 
@@ -133,7 +137,7 @@ Legacy readiness: PASS for all 5 WFD and 6 RS files, with SHA-256, ffprobe metad
 and full decode evidence archived locally in the committed audit report. This is
 Linux-host validation, not a clean-machine or Windows/macOS support claim.
 
-06.06 is complete within its content-infrastructure scope. The learner-facing
-17-item bank is intentionally unchanged, and its future canonical metadata
-publication belongs to 06.08. Activity 05 human speech and release/platform gates
+06.06 is complete within its content-infrastructure scope. At that checkpoint the
+17 learner items were unchanged. 06.08 now installs their canonical metadata using
+the measured audio identity. Activity 05 human speech and release/platform gates
 remain PENDING.

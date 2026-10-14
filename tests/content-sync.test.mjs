@@ -8,9 +8,9 @@ import { syncQuestionBank, initializeQuestionBank, syncGeneratedQuestionBank } f
 import { verifyQuestionBankCatalog } from '../src/data/question-bank/generatedQuestionBank.ts';
 import { db as appDb } from '../src/data/db/database.ts';
 import { studyItemsRepository } from '../src/data/repositories/studyItemsRepository.ts';
-import { readAloudQuestions } from '../src/data/question-bank/read-aloud.ts';
-import { repeatSentenceQuestions } from '../src/data/question-bank/repeat-sentence.ts';
-import { writeFromDictationQuestions } from '../src/data/question-bank/write-from-dictation.ts';
+import { readAloudQuestions } from './helpers/legacy-question-bank.mjs';
+import { repeatSentenceQuestions } from './helpers/legacy-question-bank.mjs';
+import { writeFromDictationQuestions } from './helpers/legacy-question-bank.mjs';
 
 const sync = (db, items) => { const { bundle, manifest } = catalog(items); return syncQuestionBank(bundle, manifest, db); };
 test('pure planner inserts and preserves input; new createdAt is local installation time', () => {
@@ -92,12 +92,12 @@ test('last content-state write failure rolls back successful item writes', async
   db.contentState.hook('updating', () => { throw new Error('Injected state failure'); });
   await assert.rejects(sync(db, [{ ...ra, revision: 2 }, rs])); assert.deepEqual(await snapshot(db), before);
 });
-test('draft-only generated bank installs separately without retiring legacy rows or entering practice', async t => {
+test('generated production bank adopts legacy rows and installs only 17 active items', async t => {
   const db = await database(t), legacy = [...writeFromDictationQuestions, ...repeatSentenceQuestions, ...readAloudQuestions];
   await db.studyItems.bulkAdd(legacy); await syncGeneratedQuestionBank(db);
-  const all = await db.studyItems.toArray(); assert.equal(all.length, 20);
+  const all = await db.studyItems.toArray(); assert.equal(all.length, 17);
   assert.equal(all.filter(isPracticeEligible).length, 17);
-  for (const old of legacy) assert.deepEqual(await db.studyItems.get(old.id), old);
+  for (const old of legacy) { const row = await db.studyItems.get(old.id); assert.equal(row.revision, 1); assert.equal(row.createdAt, old.createdAt); }
   assert.equal(all.filter(i => i.id.endsWith('900001')).every(i => i.status === 'draft' && !isPracticeEligible(i)), true);
 });
 test('legacy unknown revision adoption preserves timestamp and old attempts without inventing revision', async t => {
@@ -132,7 +132,7 @@ test('current repository task query excludes drafts/retired/unavailable while pr
   assert.equal((await studyItemsRepository.getByTaskType('read-aloud')).length, 7);
   assert.equal((await studyItemsRepository.getByTaskType('repeat-sentence')).length, 6);
   assert.equal((await studyItemsRepository.getByTaskType('write-from-dictation')).length, 5);
-  assert.ok(await studyItemsRepository.getById('ra-900001')); // history/admin can resolve non-practice identities
+  assert.equal(await studyItemsRepository.getById('ra-900001'), undefined);
 });
 for (const size of [1000, 5000]) {
   test(`${size} synthetic items plan with maps and sync in one transaction`, async t => {

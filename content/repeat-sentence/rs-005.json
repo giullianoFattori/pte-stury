@@ -1,0 +1,27 @@
+{
+  "id": "rs-005",
+  "taskType": "repeat-sentence",
+  "difficulty": 3,
+  "prompt": "Listen to the sentence and repeat it as accurately as possible.",
+  "answer": "The university library will remain open during the examination period for all registered students.",
+  "transcript": "The university library will remain open during the examination period for all registered students.",
+  "chunks": [
+    "The university library",
+    "will remain open",
+    "during the examination period",
+    "for all registered students"
+  ],
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening",
+    "speaking"
+  ],
+  "audio": {
+    "path": "/audio/rs/rs-005.mp3",
+    "sha256": "fcc657101082dc886ed0edd7c5b0949e60e33a9e874d90bb4a0f07f1fe5c573a",
+    "durationMs": 7080,
+    "mimeType": "audio/mpeg"
+  }
+}

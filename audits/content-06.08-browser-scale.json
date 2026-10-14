@@ -1,0 +1,47 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "environment": "Linux x64 headless Chrome; real IndexedDB; source modules served only by test harness, not a production frontend",
+  "results": [
+    {
+      "size": 1000,
+      "status": "PASS",
+      "dbVersion": 3,
+      "matches": 200,
+      "timingsMs": {
+        "freshSync": 98.8,
+        "repeatNoop": 15.5,
+        "taskQuery": 56.8,
+        "difficultyQuery": 22.3,
+        "metadataQuery": 51.4,
+        "count": 51.2,
+        "sampling": 0.2
+      },
+      "heapBytes": {
+        "before": 15220543,
+        "after": 19222615,
+        "scope": "Approximate main-page JS heap; no forced GC, includes modules and catalog; not an RSS/leak measurement"
+      }
+    },
+    {
+      "size": 5000,
+      "status": "PASS",
+      "dbVersion": 3,
+      "matches": 1000,
+      "timingsMs": {
+        "freshSync": 400.8,
+        "repeatNoop": 63.3,
+        "taskQuery": 260.4,
+        "difficultyQuery": 120.9,
+        "metadataQuery": 292.9,
+        "count": 303.9,
+        "sampling": 0.1
+      },
+      "heapBytes": {
+        "before": 19448423,
+        "after": 28478647,
+        "scope": "Approximate main-page JS heap; no forced GC, includes modules and catalog; not an RSS/leak measurement"
+      }
+    }
+  ]
+}

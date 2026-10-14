@@ -1,8 +1,12 @@
 # Activity 06.01 — Content contract and versioning
 
+Current status: [06.08](migration-06.08.md) migrated and activated all 17 learner
+items. Earlier scope/result statements below describe the historical step boundary;
+production authoring now uses canonical JSON and bootstrap uses generated sync.
+
 Status: contract defined. The canonical types/constants live in [domain/content/types.ts](../../src/domain/content/types.ts). This step defines the authoring boundary; the existing arrays, StudyItem rows, seed, exercise UI, scoring and database schema continue to operate as before. Runtime JSON validation begins in 06.02, deterministic builds in 06.03, persistence migration/sync in 06.04 and existing-content migration in 06.08. TypeScript types alone do not validate imported JSON.
 
-[06.02 runtime validation](validation-06.02.md) is now implemented. Its v1 activation rules require nonempty skills on active/retired content and positive safe-integer audio milliseconds; draft skills remain optional/possibly empty and estimatedSeconds accepts positive finite decimals. These refinements are enforced by the parser, while legacy production content remains untouched.
+[06.02 runtime validation](validation-06.02.md) is now implemented. Its v1 activation rules require nonempty skills on active/retired content and positive safe-integer audio milliseconds; draft skills remain optional/possibly empty and estimatedSeconds accepts positive finite decimals. These refinements are enforced by the parser, while historical learner identity/content remains preserved.
 
 ## Authored content and persisted data
 

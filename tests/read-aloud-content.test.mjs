@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { readAloudQuestions } from '../src/data/question-bank/read-aloud.ts';
+import { readAloudQuestions } from './helpers/legacy-question-bank.mjs';
 import { normalizeText } from '../src/domain/scoring/shared/normalizeText.ts';
 import { tokenizeText } from '../src/domain/scoring/shared/tokenizeText.ts';
 
