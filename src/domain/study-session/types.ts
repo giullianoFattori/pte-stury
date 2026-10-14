@@ -19,7 +19,7 @@ export type StudySession = Readonly<{
   finishedAt?: string;
   /** Catalog identity at creation; never replaced on resume. Absence means unknown. */
   contentVersion?: ContentVersion;
-  /** Allowed selection tasks; a small mixed queue need not contain every task. */
+  /** Tasks used by builder queues, in canonical order; requested tasks live in config. */
   taskTypes: readonly PteTaskType[];
   itemIds: readonly string[];
   /** Next unanswered position; queue length means awaiting explicit completion. */

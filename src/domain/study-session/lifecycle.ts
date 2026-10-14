@@ -100,9 +100,10 @@ function parseVersioned(input: Record<string, unknown>): StudySession {
   if (attemptIds.length !== currentIndex) fail('attemptIds', 'Exactly one attempt is required for each answered position.');
   const config = parseStudySessionConfig(input.config);
   if (config.itemCount !== itemIds.length) fail('config.itemCount', 'Configured count must equal the frozen queue size.', 'INVALID_SESSION_CONFIG');
-  if (config.taskTypes && (config.taskTypes.length !== taskTypes.length || config.taskTypes.some(t => !taskTypes.includes(t))))
-    fail('config.taskTypes', 'Configured tasks must match allowed session tasks.', 'INVALID_SESSION_CONFIG');
-  if (mode === 'task' && taskTypes.length !== 1 || mode === 'mixed' && taskTypes.length < 2)
+  if (config.taskTypes && taskTypes.some(t => !config.taskTypes?.includes(t)))
+    fail('config.taskTypes', 'Queue tasks must belong to configured selection tasks.', 'INVALID_SESSION_CONFIG');
+  const selectionTasks = config.taskTypes ?? taskTypes;
+  if (mode === 'task' && selectionTasks.length !== 1 || mode === 'mixed' && selectionTasks.length < 2)
     fail('taskTypes', 'Task practice needs one task; mixed practice needs at least two.', 'INVALID_SESSION_CONFIG');
   itemIds.forEach((id, i) => { if (!taskTypes.includes(itemTask(id, `itemIds[${i}]`))) fail(`itemIds[${i}]`, 'Queue item task is outside the configured selection.'); });
   let finishedAt: string | undefined, contentVersion: ContentVersion | undefined;

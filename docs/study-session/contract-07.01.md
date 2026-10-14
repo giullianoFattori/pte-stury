@@ -39,8 +39,10 @@ selection are **not implemented** in this step.
 
 The constructor requires the allowed taskTypes explicitly. Task Practice allows
 exactly one; Mixed Practice requires at least two; Quick Practice allows one or
-more available tasks. If config.taskTypes is supplied, its membership must equal
-session.taskTypes (order need not match). Every queue identity must have a known
+more available tasks. After the 07.02 refinement, supplied config.taskTypes describes selection scope;
+session.taskTypes must be a subset of that scope. New builder sessions list
+actually used queue tasks. Mode cardinality uses selection scope, including when
+a small Mixed queue uses only one task. Older 07.01 domain values are preserved. Every queue identity must have a known
 permanent content ID/prefix and belong to an allowed task. ID syntax reuses the
 Activity 06 policy, including the explicit 17 grandfathered IDs. Syntax alone does
 not prove practice eligibility, asset availability or difficulty membership;
@@ -116,8 +118,8 @@ Messages are controlled text and do not echo raw input/storage exceptions.
 Implemented lifecycle errors include INVALID_SESSION_CONFIG,
 INVALID_SESSION_STATE, SESSION_PROGRESS_CONFLICT, SESSION_ATTEMPT_MISMATCH,
 SESSION_NOT_ACTIVE, SESSION_ALREADY_COMPLETED and LEGACY_SESSION_NOT_RESUMABLE.
-INSUFFICIENT_CONTENT, SESSION_NOT_FOUND and SESSION_ITEM_UNAVAILABLE are reserved
-for selection/resume implementations; this step does not pretend to implement
+07.02 implements INSUFFICIENT_CONTENT and SESSION_BUILD_FAILED for selection.
+SESSION_NOT_FOUND and SESSION_ITEM_UNAVAILABLE remain reserved for resume; this step does not pretend to implement
 those workflows.
 
 Expected-state checks protect a domain operation **only if** the future repository
