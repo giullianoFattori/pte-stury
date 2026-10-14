@@ -36,9 +36,10 @@ injected RNG, using the existing indexes. No filter UI or session engine is adde
 [Activity 07.01](docs/study-session/contract-07.01.md) defines the immutable session
 contract, lifecycle, attempt linkage and explicit legacy-session compatibility.
 [Activity 07.02](docs/study-session/builder-07.02.md) adds deterministic Quick/Task/
-Mixed selection, capacity-aware balancing and read-only preparation. Transactional
-progress/resume and session UI remain later steps; standalone WFD/RS/RA behavior
-is unchanged.
+Mixed selection, capacity-aware balancing and read-only preparation.
+[Activity 07.03](docs/study-session/persistence-07.03.md) adds persisted sessions,
+one-active-session enforcement, historical resume and atomic outcomes/progress.
+Session UI/adapters remain later steps; standalone WFD/RS/RA scoring is unchanged.
 
 ## Local development
 

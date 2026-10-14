@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "pageErrors": 0,
+  "browser": "154.0.8037.97",
+  "scope": "Linux headless Chrome, actual IndexedDB, two tabs and disk-backed temporary profile; test-only Vite module harness; no session UI or packaged/browser microphone certification",
+  "simultaneousStarts": "PASS",
+  "simultaneousPartialProgress": "PASS",
+  "finalItemRace": "PASS",
+  "browserProcessRestart": "PASS",
+  "frozenQueue": "PASS",
+  "historicalUnavailableResume": "PASS",
+  "catalogMismatch": "PASS",
+  "counts": {
+    "sessions": 1,
+    "attempts": 2,
+    "errors": 2,
+    "reviews": 2
+  },
+  "dbVersion": 3
+}

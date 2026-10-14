@@ -11,7 +11,7 @@ export type SessionPreparationDependencies = Readonly<{
   now: () => string;
   rng: () => number;
 }>;
-/** Read-only application boundary. Persistence and one-active-session policy are 07.03. */
+/** Read-only application boundary. startStudySession adds 07.03 persistence and active-session policy. */
 export async function prepareStudySession(request: unknown, deps: SessionPreparationDependencies) {
   const validated = validateBuildRequest(request);
   try {
