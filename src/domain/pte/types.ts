@@ -59,6 +59,8 @@ export type Attempt = {
   itemId: string;
   /** Presented content revision; absent on legacy attempts means unknown. */
   itemRevision?: number;
+  /** Absent for historical and standalone attempts; assigned by future session adapters. */
+  sessionId?: string;
   taskType: PteTaskType;
   createdAt: string;
   responseText?: string;
@@ -100,10 +102,4 @@ export type ReviewItem = {
   createdAt: string;
 };
 
-export type StudySession = {
-  id: string;
-  startedAt: string;
-  finishedAt?: string;
-  taskTypes: PteTaskType[];
-  attemptIds: string[];
-};
+export type { StudySession, LegacyStudySession, StoredStudySession } from '../study-session/types';

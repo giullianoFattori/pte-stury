@@ -5,7 +5,7 @@ import type {
   ErrorRecord,
   ReviewItem,
   StudyItem,
-  StudySession,
+  StoredStudySession,
 } from '../../domain/pte/types';
 import type { InstalledContentState } from '../../domain/content/installedContent';
 
@@ -20,7 +20,7 @@ export class PteDatabase extends Dexie {
   attempts!: Table<Attempt, string>;
   errors!: Table<ErrorRecord, string>;
   reviews!: Table<ReviewItem, string>;
-  studySessions!: Table<StudySession, string>;
+  studySessions!: Table<StoredStudySession, string>;
   contentState!: Table<InstalledContentState, string>;
 
   constructor(name = 'pte-study-db') {

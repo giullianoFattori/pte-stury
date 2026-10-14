@@ -31,6 +31,13 @@ npm run content:verify-audio
 deterministic ordering, counts, coverage diagnostics and pure sampling with an
 injected RNG, using the existing indexes. No filter UI or session engine is added.
 
+## Study sessions
+
+[Activity 07.01](docs/study-session/contract-07.01.md) defines the immutable session
+contract, lifecycle, attempt linkage and explicit legacy-session compatibility.
+Selection, transactional progress/resume and session UI remain later steps;
+standalone WFD/RS/RA behavior is unchanged.
+
 ## Local development
 
 From the repository root, start two terminals:

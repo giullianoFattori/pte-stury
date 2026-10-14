@@ -1,13 +1,13 @@
-import type { StudySession } from '../../domain/pte/types';
+import type { StoredStudySession } from '../../domain/pte/types';
 import { db } from '../db/database';
 
 export const studySessionsRepository = {
-  async create(session: StudySession) {
+  async create(session: StoredStudySession) {
     await db.studySessions.add(session);
     return session;
   },
 
-  async update(session: StudySession) {
+  async update(session: StoredStudySession) {
     await db.studySessions.put(session);
     return session;
   },
