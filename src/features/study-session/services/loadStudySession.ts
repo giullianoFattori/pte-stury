@@ -38,7 +38,7 @@ export function sessionMessage(error: unknown): string {
       case 'SESSION_NOT_ACTIVE': return 'This session is no longer active.';
       case 'LEGACY_SESSION_NOT_RESUMABLE': return 'This historical session cannot be resumed.';
       case 'SESSION_ITEM_UNAVAILABLE': return 'This session’s current question is unavailable.';
-      case 'INSUFFICIENT_CONTENT': return 'There are not enough questions available for Quick Practice.';
+      case 'INSUFFICIENT_CONTENT': return 'There are not enough questions available for this selection.';
       case 'MULTIPLE_ACTIVE_SESSIONS':
       case 'SESSION_STORAGE_CORRUPT': return 'Saved session data could not be read safely.';
     }

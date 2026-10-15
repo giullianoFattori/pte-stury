@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { TaskPracticeCard } from '../../features/study-session/TaskPracticeCard';
+import { useActiveStudySession } from '../../features/study-session/hooks/useActiveStudySession';
 import { QuickPracticeButton } from '../../features/study-session/QuickPracticeButton';
 import { db } from '../../data/db/database';
 
@@ -50,12 +52,16 @@ export function HomePage() {
 }
 
 export function StudyPage() {
+  const sessions = useActiveStudySession();
   return (
     <section className="practice-card">
       <p className="eyebrow">Practice</p>
       <h2>Study</h2>
-      <QuickPracticeButton />
-      <h3>Practice by task</h3>
+      <QuickPracticeButton controller={sessions} />
+      <TaskPracticeCard controller={sessions} />
+      {sessions.error && <><p role="alert">{sessions.error}</p>
+        <button type="button" disabled={sessions.checking || sessions.starting} onClick={() => void sessions.check()}>Check again</button></>}
+      <h3>Standalone Practice</h3>
       <div className="study-exercise-links">
         <Link className="study-exercise-link" to="/study/write-from-dictation">
           Write From Dictation
