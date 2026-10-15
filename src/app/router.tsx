@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
 import App from './App';
+import { StudySessionPage } from '../features/study-session/StudySessionPage';
 import { HomePage, PlaceholderPage, StudyPage } from './layout/Pages';
 import { WriteFromDictationPage } from '../features/write-from-dictation/WriteFromDictationPage';
 import { RepeatSentencePage } from '../features/repeat-sentence/RepeatSentencePage';
@@ -17,6 +18,10 @@ export const router = createBrowserRouter([
       {
         path: '/study',
         element: <StudyPage />,
+      },
+      {
+        path: '/study/session/:sessionId',
+        element: <StudySessionPage />,
       },
       {
         path: '/study/write-from-dictation',

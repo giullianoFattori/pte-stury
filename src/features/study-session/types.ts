@@ -1,3 +1,4 @@
+import type { ExercisePersistenceError } from './services/persistExerciseOutcome';
 import type { PteTaskType, StudyItem, StudySession } from '../../domain/pte/types';
 
 export type ExerciseMode = Readonly<{ kind: 'standalone' }> | Readonly<{
@@ -10,6 +11,7 @@ export type ExerciseProps = Readonly<{
   item: StudyItem;
   mode?: ExerciseMode;
   onCompleted?: (completion: ExerciseCompletion) => void;
+  onPersistenceError?: (error: ExercisePersistenceError) => void;
   /** Local standalone sequencing only; the session runner owns continuation. */
   onNext?: () => void;
   progress?: Readonly<{ currentIndex: number; total: number }>;

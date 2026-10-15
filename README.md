@@ -43,6 +43,10 @@ one-active-session enforcement, historical resume and atomic outcomes/progress.
 exercises and a shared standalone/session persistence adapter, with guarded saves
 and completion callbacks after commit. Session runner UI remains a later step;
 standalone scoring is unchanged.
+[Activity 07.05](docs/study-session/quick-practice-07.05.md) adds one-click Quick
+Practice, active-session Resume, and `/study/session/:sessionId` with saved feedback,
+Continue, refresh recovery and conflict reload. Task/Mixed configuration and full
+summaries remain later steps.
 
 ## Local development
 
@@ -84,6 +88,7 @@ npm run test:speech-migration                 # mock runtime HTTP; real React/In
 npm run test:speech-migration -- --real       # six controlled recordings; real Whisper
 npm run test:speech-browser                   # runtime recovery and native abort
 npm run test:exercise-session-browser         # React adapters + actual IndexedDB; controlled STT
+npm run test:quick-practice-browser           # real Quick routes, refresh, completion and two-tab conflict
 ```
 
 See [05.06 validation](runtime/docs/validation-05.06.md) for measured observations,

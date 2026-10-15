@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { QuickPracticeButton } from '../../features/study-session/QuickPracticeButton';
 import { db } from '../../data/db/database';
 
 export function HomePage() {
@@ -53,7 +54,8 @@ export function StudyPage() {
     <section className="practice-card">
       <p className="eyebrow">Practice</p>
       <h2>Study</h2>
-      <p>Choose a PTE task to practise.</p>
+      <QuickPracticeButton />
+      <h3>Practice by task</h3>
       <div className="study-exercise-links">
         <Link className="study-exercise-link" to="/study/write-from-dictation">
           Write From Dictation

@@ -4,7 +4,7 @@ import { STANDALONE_EXERCISE_MODE } from '../types';
 import { persistExerciseOutcome, exercisePersistenceError, type ExerciseOutcome, type ExercisePersistenceError } from '../services/persistExerciseOutcome';
 
 /** Only persistence state is shared; each exercise retains its scoring and speech state. */
-export function useExercisePersistence({ item, mode = STANDALONE_EXERCISE_MODE, onCompleted }: ExerciseProps) {
+export function useExercisePersistence({ item, mode = STANDALONE_EXERCISE_MODE, onCompleted, onPersistenceError }: ExerciseProps) {
   const phase = useRef<'idle' | 'saving' | 'saved'>('idle');
   const mounted = useRef(false);
   const [isSaving, setIsSaving] = useState(false);
@@ -27,7 +27,11 @@ export function useExercisePersistence({ item, mode = STANDALONE_EXERCISE_MODE, 
       if (mounted.current) setSavedAttemptId(completion.attemptId);
     } catch (error) {
       phase.current = 'idle';
-      if (mounted.current) setError(exercisePersistenceError(error));
+      if (mounted.current) {
+        const safeError = exercisePersistenceError(error);
+        setError(safeError);
+        try { onPersistenceError?.(safeError); } catch { console.error('Exercise error handler failed.'); }
+      }
       return;
     } finally { if (mounted.current) setIsSaving(false); }
     // Callback errors cannot undo a committed save or reopen the save gate.

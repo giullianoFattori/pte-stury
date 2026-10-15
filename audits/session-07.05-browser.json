@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "scope": "Linux host Chrome; real app routes/StrictMode/IndexedDB/MediaRecorder/Web Audio; controlled STT HTTP, no physical microphone or packaged-platform certification",
+  "quickStart": "PASS",
+  "doubleClick": "PASS",
+  "fiveQuestionQueue": "PASS",
+  "feedbackContinue": "PASS",
+  "refreshBeforeSave": "PASS",
+  "refreshAfterSaveBeforeContinue": "PASS",
+  "browserBackResume": "PASS",
+  "fiveItemCompletion": "PASS",
+  "completedRouteReload": "PASS",
+  "activeCreationRace": "PASS",
+  "staleSaveConflictReload": "PASS",
+  "missingRoute": "PASS",
+  "dbVersion": 3,
+  "pageErrors": 0,
+  "remoteRequests": 0
+}
