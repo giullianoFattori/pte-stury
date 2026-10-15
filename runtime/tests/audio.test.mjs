@@ -211,6 +211,8 @@ test('production subprocess preprocessing works with all outbound Node APIs disa
   const config = { ...defaults, port: await freePort() };
   const child = await launchRuntime(config, context); await child.ready();
   const env = { origin: `http://127.0.0.1:${config.port}` };
+  // listener bound precedes asynchronous engine initialization; do not race readiness.
+  await waitFor(async () => (await (await fetch(`${env.origin}/api/v1/health`)).json()).status === 'ready');
   success(await post(env));
   assert.equal(child.output().stderr, '');
   assert.doesNotMatch(child.output().stdout, /input.bin|normalized.wav|recording.wav/);

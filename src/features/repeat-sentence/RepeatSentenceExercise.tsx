@@ -1,0 +1,190 @@
+import { useMemo, useState } from 'react';
+
+import { exerciseIdentity, type ExerciseProps } from '../study-session/types';
+import { useExercisePersistence } from '../study-session/hooks/useExercisePersistence';
+
+import {
+  analyseRepeatSentenceChunks, calculateRepeatSentenceMetrics, compareRepeatSentence,
+  RsChunkMetadataError, type RsChunkAnalysis,
+} from '../../domain/scoring/repeat-sentence';
+import { tokenizeText } from '../../domain/scoring/shared/tokenizeText';
+
+import { MicrophonePanel } from '../../shared/speech/components/MicrophonePanel';
+import { RecorderPanel } from '../../shared/speech/components/RecorderPanel';
+import { RsSourceAudioPlayer } from './components/RsSourceAudioPlayer';
+import { TranscriptionPanel } from '../../shared/speech/components/TranscriptionPanel';
+import { RsContentResult } from './components/RsContentResult';
+import { useMicrophonePermission } from '../../shared/speech/hooks/useMicrophonePermission';
+import { useAudioRecorder } from '../../shared/speech/hooks/useAudioRecorder';
+import { useSpeechTranscription } from '../../shared/speech/hooks/useSpeechTranscription';
+import { buildRepeatSentenceAttempt } from './services/buildRepeatSentenceAttempt';
+import { buildRepeatSentenceErrorRecords } from './services/buildRepeatSentenceErrorRecords';
+import { buildRepeatSentenceReviewItems } from './services/buildRepeatSentenceReviewItems';
+
+const difficultyLabels: Record<number, string> = { 1: 'Short', 2: 'Medium', 3: 'Long' };
+
+export function RepeatSentenceExercise(props: ExerciseProps) {
+  return <RepeatSentenceExerciseBody key={exerciseIdentity(props)} {...props} />;
+}
+
+function RepeatSentenceExerciseBody(props: ExerciseProps) {
+  const { item: currentQuestion, mode, onNext, progress } = props;
+  const persistence = useExercisePersistence(props);
+  const { isSaving: isSavingAttempt, savedAttemptId } = persistence;
+  const saveAttemptError = persistence.error
+    ? persistence.error.code === 'SESSION_PROGRESS_CONFLICT' ? persistence.error.message
+      : 'Your Repeat Sentence attempt could not be saved. Please try again.'
+    : null;
+  const locked = isSavingAttempt || persistence.isSessionSaved;
+  const {
+    status: microphoneStatus, errorMessage: microphoneError, streamRef, requestMicrophone, stopMicrophone,
+  } = useMicrophonePermission();
+  const {
+    status: recordingStatus, recording, errorMessage: recordingError, isFinalizing,
+    startRecording, stopRecording, resetRecording,
+  } = useAudioRecorder();
+  const transcription = useSpeechTranscription();
+  const [isSourceAudioPlaying, setIsSourceAudioPlaying] = useState(false);
+  const isRecording = recordingStatus === 'recording';
+  const canStart = microphoneStatus === 'ready' && !isSourceAudioPlaying && !isRecording && !locked;
+  // Derive feedback from the current successful transcript: resetting STT also clears all results.
+  const content = useMemo(() => {
+    if (transcription.status !== 'success' || !transcription.result || !currentQuestion) return null;
+    const actual = transcription.result.text;
+    if (!tokenizeText(actual).length) return { error: 'No usable detected speech is available for content comparison.' };
+    const expected = currentQuestion.transcript ?? currentQuestion.answer ?? '';
+    if (!tokenizeText(expected).length) return { error: 'Content feedback is unavailable: this question has no usable expected sentence.' };
+    const comparison = compareRepeatSentence(expected, actual);
+    const score = calculateRepeatSentenceMetrics(comparison);
+    let chunkAnalysis: RsChunkAnalysis | null = null;
+    let chunkError: string | null = null;
+    try {
+      chunkAnalysis = analyseRepeatSentenceChunks(comparison, currentQuestion.chunks ?? []);
+    } catch (error) {
+      chunkError = error instanceof RsChunkMetadataError ? error.message : 'Chunk feedback is unavailable.';
+    }
+    return { comparison, score, chunkAnalysis, chunkError };
+  }, [currentQuestion, transcription.status, transcription.result]);
+
+  async function saveAttempt() {
+    if (persistence.isBlocked() || savedAttemptId
+      || !currentQuestion || !recording || recordingStatus !== 'recorded'
+      || transcription.status !== 'success' || !transcription.result
+      || transcription.result.processedLocally !== true || !content || 'error' in content) return;
+    const result = transcription.result;
+    await persistence.saveOutcome(() => {
+      const attempt = buildRepeatSentenceAttempt({
+        question: currentQuestion, transcription: result,
+        comparison: content.comparison, score: content.score,
+        chunkAnalysis: content.chunkAnalysis, durationMs: recording.durationMs,
+      });
+      const errors = buildRepeatSentenceErrorRecords(attempt, content.comparison);
+      const reviews = buildRepeatSentenceReviewItems({ question: currentQuestion, attempt, errors });
+      return { attempt, errors, reviews };
+    });
+  }
+
+  async function handleTranscribe() {
+    if (persistence.isBlocked() || !recording || isRecording || isSourceAudioPlaying) return;
+    persistence.reset();
+    await transcription.transcribe(recording.blob);
+  }
+
+  function handleStartRecording() {
+    if (!persistence.isBlocked() && canStart && streamRef.current) {
+      persistence.reset();
+      transcription.resetTranscription();
+      startRecording(streamRef.current);
+    }
+  }
+
+  function handleResetRecording() {
+    if (persistence.isBlocked()) return;
+    persistence.reset();
+    transcription.resetTranscription();
+    resetRecording();
+  }
+
+  function handleNextQuestion() {
+    if (isRecording || persistence.isBlocked()) return;
+    handleResetRecording();
+    setIsSourceAudioPlaying(false);
+    if (mode?.kind !== 'session') onNext?.();
+  }
+
+  function handleRetrySentence() {
+    if (isRecording || persistence.isBlocked()) return;
+    handleResetRecording();
+  }
+
+  function handleDisableMicrophone() {
+    if (isRecording || persistence.isBlocked()) return;
+    handleResetRecording();
+    stopMicrophone();
+  }
+
+  return (
+    <section className="practice-card" aria-labelledby="rs-title" aria-busy={isSavingAttempt}>
+      <header>
+        <p className="eyebrow">Listening + Speaking</p>
+        <h2 id="rs-title">Repeat Sentence</h2>
+      </header>
+      {progress && <p role="status">Question {progress.currentIndex + 1} of {progress.total}</p>}
+      <p>Difficulty: {currentQuestion.difficulty} — {difficultyLabels[currentQuestion.difficulty] ?? 'Practice'}</p>
+      <p>{currentQuestion.prompt}</p>
+      {currentQuestion.audioUrl ? (
+        <RsSourceAudioPlayer
+          key={currentQuestion.id}
+          audioUrl={currentQuestion.audioUrl}
+          disabled={isRecording || locked}
+          onPlayingChange={setIsSourceAudioPlaying}
+        />
+      ) : <p>Audio unavailable for this question.</p>}
+      <MicrophonePanel
+        description="Repeat Sentence needs microphone access."
+        status={microphoneStatus} errorMessage={microphoneError}
+        onRequest={requestMicrophone} onDisable={handleDisableMicrophone} disableBlocked={isRecording || locked}
+      />
+      <RecorderPanel
+        instruction="Enable the microphone and finish listening to the sentence before recording."
+        status={recordingStatus} recording={recording} errorMessage={recordingError}
+        canStart={canStart} isFinalizing={isFinalizing} disabled={locked}
+        onStart={handleStartRecording} onStop={stopRecording} onReset={handleResetRecording}
+      />
+      <TranscriptionPanel
+        provider={transcription.provider}
+        language={transcription.language} onLanguageChange={transcription.changeLanguage}
+        status={transcription.status} result={transcription.result} errorMessage={transcription.errorMessage}
+        hasRecording={recordingStatus === 'recorded' && !!recording} disabled={isRecording || isSourceAudioPlaying || locked}
+        onCheck={transcription.checkAvailability} onInstall={transcription.installLanguage}
+        onTranscribe={handleTranscribe}
+      />
+      {content && ('error' in content ? <p role="alert">{content.error}</p> : (
+        <>
+          <RsContentResult comparison={content.comparison} score={content.score}
+            chunkAnalysis={content.chunkAnalysis} chunkError={content.chunkError} />
+          <div className="rs-attempt-save" aria-busy={isSavingAttempt}>
+            <button type="button" onClick={() => void saveAttempt()}
+              disabled={isSavingAttempt || !!savedAttemptId || transcription.result?.processedLocally !== true}>
+              {isSavingAttempt ? 'Saving…' : savedAttemptId ? 'Attempt saved' : 'Save attempt'}
+            </button>
+            {savedAttemptId && (
+              <>
+                <p role="status">Attempt saved locally.</p>
+                {mode?.kind !== 'session' && (
+                  <button type="button" onClick={handleRetrySentence} disabled={isRecording || locked}>
+                    Retry same sentence
+                  </button>
+                )}
+              </>
+            )}
+            {saveAttemptError && <p role="alert">{saveAttemptError}</p>}
+          </div>
+        </>
+      ))}
+      {mode?.kind !== 'session' && onNext && (
+        <button type="button" onClick={handleNextQuestion} disabled={isRecording || locked}>Next question</button>
+      )}
+    </section>
+  );
+}

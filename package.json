@@ -46,7 +46,8 @@
     "content:audit-package": "node tools/content-validation/browser-package.mjs",
     "content:audit-persistence": "node tools/content-validation/browser-persistence.mjs",
     "content:audit-offline": "node tools/content-validation/offline.mjs",
-    "test:session-persistence-browser": "node tests/study-session-persistence-browser.mjs"
+    "test:session-persistence-browser": "node tests/study-session-persistence-browser.mjs",
+    "test:exercise-session-browser": "node tests/exercise-session-browser.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",

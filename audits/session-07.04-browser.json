@@ -1,0 +1,39 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "scope": "Isolated React StrictMode/actual IndexedDB, actual MediaRecorder and Web Audio; deterministic HTTP STT fixture, not native inference or human quality validation",
+  "tasks": {
+    "write-from-dictation": {
+      "sessionAtomicSave": "PASS",
+      "failureRetry": "PASS",
+      "doubleClickGuard": "PASS",
+      "completionOnce": "PASS",
+      "postSaveLocked": "PASS",
+      "finalCompletion": "PASS",
+      "itemStateReset": "PASS",
+      "standalone": "PASS"
+    },
+    "repeat-sentence": {
+      "sessionAtomicSave": "PASS",
+      "failureRetry": "PASS",
+      "doubleClickGuard": "PASS",
+      "completionOnce": "PASS",
+      "postSaveLocked": "PASS",
+      "finalCompletion": "PASS",
+      "itemStateReset": "PASS",
+      "standalone": "PASS"
+    },
+    "read-aloud": {
+      "sessionAtomicSave": "PASS",
+      "failureRetry": "PASS",
+      "doubleClickGuard": "PASS",
+      "completionOnce": "PASS",
+      "postSaveLocked": "PASS",
+      "finalCompletion": "PASS",
+      "itemStateReset": "PASS",
+      "standalone": "PASS"
+    }
+  },
+  "pageErrors": 0,
+  "remoteRequests": 0
+}
