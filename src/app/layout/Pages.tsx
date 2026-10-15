@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { MixedPracticeCard } from '../../features/study-session/MixedPracticeCard';
 import { TaskPracticeCard } from '../../features/study-session/TaskPracticeCard';
 import { useActiveStudySession } from '../../features/study-session/hooks/useActiveStudySession';
 import { QuickPracticeButton } from '../../features/study-session/QuickPracticeButton';
@@ -59,6 +60,7 @@ export function StudyPage() {
       <h2>Study</h2>
       <QuickPracticeButton controller={sessions} />
       <TaskPracticeCard controller={sessions} />
+      <MixedPracticeCard controller={sessions} />
       {sessions.error && <><p role="alert">{sessions.error}</p>
         <button type="button" disabled={sessions.checking || sessions.starting} onClick={() => void sessions.check()}>Check again</button></>}
       <h3>Standalone Practice</h3>

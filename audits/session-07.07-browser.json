@@ -1,0 +1,37 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "scope": "Linux Chrome, actual app/StrictMode/IndexedDB/MediaRecorder/Web Audio; controlled STT HTTP, no physical microphone/human-quality/package certification",
+  "selectedTasks": [
+    "write-from-dictation",
+    "repeat-sentence",
+    "read-aloud"
+  ],
+  "requestedCount": 5,
+  "allocation": {
+    "write-from-dictation": 2,
+    "repeat-sentence": 2,
+    "read-aloud": 1
+  },
+  "taskSequence": [
+    "wfd",
+    "rs",
+    "ra",
+    "wfd",
+    "rs"
+  ],
+  "selectionCapacity": "PASS",
+  "singleTaskBlocked": "PASS",
+  "zeroSelectedCapacityBlocked": "PASS",
+  "staleCapacityIgnored": "PASS",
+  "countPresets": "PASS",
+  "maxCount": 17,
+  "feedbackContinue": "PASS",
+  "refreshAcrossWfdRs": "PASS",
+  "crossTaskReset": "PASS",
+  "completion": "PASS",
+  "activeMixedResume": "PASS",
+  "dbVersion": 3,
+  "pageErrors": 0,
+  "unexpectedRemoteRequests": 0
+}

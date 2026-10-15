@@ -48,7 +48,11 @@ Practice, active-session Resume, and `/study/session/:sessionId` with saved feed
 Continue, refresh recovery and conflict reload.
 [Activity 07.06](docs/study-session/task-practice-07.06.md) adds single-task sessions
 with live capacity, 3/5/Max counts, optional difficulty and shared active-session
-handling. Mixed configuration and full summaries remain later steps.
+handling.
+[Activity 07.07](docs/study-session/mixed-practice-07.07.md) adds Mixed Practice
+with two-or-more tasks, 5/10/Max counts, per-task capacity and global difficulty,
+using the existing balanced builder and runner. Exit/navigation polish and full
+summaries remain later steps.
 
 ## Local development
 
@@ -92,6 +96,7 @@ npm run test:speech-browser                   # runtime recovery and native abor
 npm run test:exercise-session-browser         # React adapters + actual IndexedDB; controlled STT
 npm run test:quick-practice-browser           # real Quick routes, refresh, completion and two-tab conflict
 npm run test:task-practice-browser            # WFD Task completion, capacity, Max and Resume
+npm run test:mixed-practice-browser           # mixed task transitions, capacity and controlled speech
 ```
 
 See [05.06 validation](runtime/docs/validation-05.06.md) for measured observations,

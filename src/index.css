@@ -375,7 +375,7 @@ textarea:focus-visible {
 .session-continuation { margin-top: 1.25rem; }
 .session-continuation button { background: #2258a4; color: white; border: 1px solid #2258a4; border-radius: 0.5rem; padding: 0.75rem 1rem; font-weight: 600; cursor: pointer; }
 
-.task-practice { margin: 1.5rem 0 2.5rem; }
-.task-practice fieldset { border: 1px solid #d9e1ec; border-radius: 0.5rem; padding: 0.75rem; margin: 0.75rem 0; }
-.task-practice label { display: inline-flex; align-items: center; gap: 0.35rem; margin: 0.35rem 1rem 0.35rem 0; }
-.task-practice input:focus-visible { outline: 3px solid #2258a4; outline-offset: 3px; }
+.task-practice, .mixed-practice { margin: 1.5rem 0 2.5rem; }
+.task-practice fieldset, .mixed-practice fieldset { border: 1px solid #d9e1ec; border-radius: 0.5rem; padding: 0.75rem; margin: 0.75rem 0; }
+.task-practice label, .mixed-practice label { display: inline-flex; align-items: center; gap: 0.35rem; margin: 0.35rem 1rem 0.35rem 0; }
+.task-practice input:focus-visible, .mixed-practice input:focus-visible { outline: 3px solid #2258a4; outline-offset: 3px; }

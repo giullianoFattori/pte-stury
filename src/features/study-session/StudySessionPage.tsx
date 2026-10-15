@@ -21,7 +21,7 @@ function SessionRunner({ sessionId }: { sessionId: string }) {
   const { session } = result;
   if (result.kind === 'completed') return (
     <section className="practice-card">
-      <h2>{session.mode === 'quick' ? 'Quick Practice complete' : session.mode === 'task' ? 'Task Practice complete' : 'Practice complete'}</h2>
+      <h2>{session.mode === 'quick' ? 'Quick Practice complete' : session.mode === 'task' ? 'Task Practice complete' : 'Mixed Practice complete'}</h2>
       <p role="status">{session.attemptIds.length} questions completed</p>
       <Link className="study-exercise-link" to="/study">Back to Study</Link>
     </section>

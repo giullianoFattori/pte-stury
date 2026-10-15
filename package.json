@@ -49,7 +49,8 @@
     "test:session-persistence-browser": "node tests/study-session-persistence-browser.mjs",
     "test:exercise-session-browser": "node tests/exercise-session-browser.mjs",
     "test:quick-practice-browser": "node tests/quick-practice-browser.mjs",
-    "test:task-practice-browser": "node tests/task-practice-browser.mjs"
+    "test:task-practice-browser": "node tests/task-practice-browser.mjs",
+    "test:mixed-practice-browser": "node tests/mixed-practice-browser.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",
