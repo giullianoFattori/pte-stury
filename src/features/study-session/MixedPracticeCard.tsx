@@ -24,7 +24,7 @@ export function MixedPracticeCard({ controller }: { controller: ActiveStudySessi
   const loading = capacity === undefined && !capacityError;
   const count = capacity ? mixedPracticeCount(choice, capacity.total) : undefined;
   const emptyTasks = capacity ? tasks.filter(task => capacity.byTask[task] === 0) : [];
-  const blocked = controller.checking || controller.starting || !!controller.active;
+  const blocked = !controller.known || controller.checking || controller.starting || !!controller.active;
   useEffect(() => {
     mounted.current = true;
     let cancelled = false;
@@ -53,7 +53,6 @@ export function MixedPracticeCard({ controller }: { controller: ActiveStudySessi
   return (
     <section className="mixed-practice" aria-labelledby="mixed-practice-title" aria-busy={loading || controller.starting}>
       <h3 id="mixed-practice-title">Mixed Practice</h3>
-      {controller.active && <p>Resume current session above before starting another.</p>}
       <fieldset disabled={blocked}>
         <legend>Choose at least two tasks</legend>
         {TASK_ORDER.map(task => <label key={task}><input type="checkbox" checked={tasks.includes(task)}

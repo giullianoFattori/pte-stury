@@ -41,7 +41,7 @@ test('resume preserves queue when catalog changes; historical unavailable item s
 });
 test('not found, malformed, abandoned and legacy rows have safe route errors',async t=>{
  const h=await setup(t);await assert.rejects(loadStudySession('missing',h.sessions),e=>e.code==='SESSION_NOT_FOUND');
- const {session}=await startQuickPractice(deps(h));await h.sessions.abandonActiveSession(session.id,0,now);await assert.rejects(loadStudySession(session.id,h.sessions),e=>e.code==='SESSION_NOT_ACTIVE');
+ const {session}=await startQuickPractice(deps(h));await h.sessions.abandonActiveSession(session.id,0,now);assert.equal((await loadStudySession(session.id,h.sessions)).kind,'abandoned');
  await h.db.studySessions.add({id:'legacy',startedAt:now,taskTypes:['read-aloud'],attemptIds:[]});await assert.rejects(loadStudySession('legacy',h.sessions),e=>e.code==='LEGACY_SESSION_NOT_RESUMABLE');
  await h.db.studySessions.put({...session,currentIndex:-1});await assert.rejects(loadStudySession(session.id,h.sessions),e=>e.code==='SESSION_STORAGE_CORRUPT');
  assert.doesNotMatch(sessionMessage(new Error('/private/path database internals')),/private|internals/);

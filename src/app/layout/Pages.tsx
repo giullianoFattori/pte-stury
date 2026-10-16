@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { ActiveSessionCard } from '../../features/study-session/components/ActiveSessionCard';
 import { MixedPracticeCard } from '../../features/study-session/MixedPracticeCard';
 import { TaskPracticeCard } from '../../features/study-session/TaskPracticeCard';
 import { useActiveStudySession } from '../../features/study-session/hooks/useActiveStudySession';
@@ -58,6 +59,8 @@ export function StudyPage() {
     <section className="practice-card">
       <p className="eyebrow">Practice</p>
       <h2>Study</h2>
+      {sessions.checking && <p role="status">Checking for a session…</p>}
+      <ActiveSessionCard controller={sessions} />
       <QuickPracticeButton controller={sessions} />
       <TaskPracticeCard controller={sessions} />
       <MixedPracticeCard controller={sessions} />

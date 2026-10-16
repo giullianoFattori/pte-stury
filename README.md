@@ -51,8 +51,10 @@ with live capacity, 3/5/Max counts, optional difficulty and shared active-sessio
 handling.
 [Activity 07.07](docs/study-session/mixed-practice-07.07.md) adds Mixed Practice
 with two-or-more tasks, 5/10/Max counts, per-task capacity and global difficulty,
-using the existing balanced builder and runner. Exit/navigation polish and full
-summaries remain later steps.
+using the existing balanced builder and runner.
+[Activity 07.08](docs/study-session/runner-navigation-07.08.md) adds mode-aware
+headers, a shared Resume card, explicit End confirmation and safe abandoned/conflict
+states. Leaving keeps unfinished sessions resumable; full summaries remain later.
 
 ## Local development
 
@@ -97,6 +99,7 @@ npm run test:exercise-session-browser         # React adapters + actual IndexedD
 npm run test:quick-practice-browser           # real Quick routes, refresh, completion and two-tab conflict
 npm run test:task-practice-browser            # WFD Task completion, capacity, Max and Resume
 npm run test:mixed-practice-browser           # mixed task transitions, capacity and controlled speech
+npm run test:session-navigation-browser       # cancel/end, Back/Resume, media cleanup and abandon races
 ```
 
 See [05.06 validation](runtime/docs/validation-05.06.md) for measured observations,

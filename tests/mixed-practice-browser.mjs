@@ -80,7 +80,7 @@ try {
  const maximum=await current(page);assert.equal(maximum.session.config.itemCount,17);assert.equal(new Set(maximum.session.itemIds).size,17);
  await page.getByRole('link',{name:'Back to Study',exact:true}).click();await page.getByRole('button',{name:'Resume current session',exact:true}).waitFor();assert.equal(await start().isDisabled(),true);assert.equal(await card.getByRole('checkbox',{name:'Write From Dictation',exact:true}).isDisabled(),true);
  // Safe missing route remains shared for every mode.
- await page.goto(base+'/study/session/not-found');await page.getByRole('alert').filter({hasText:'This session could not be found.'}).waitFor();
+ await page.goto(base+'/study/session/not-found');await page.getByRole('alert').filter({hasText:'This study session could not be found.'}).waitFor();
  assert.deepEqual(pageErrors,[]);assert.deepEqual(outbound,[]);
  const sequence=first.session.itemIds.map(id=>id.split('-')[0]);assert.deepEqual(sequence,['wfd','rs','ra','wfd','rs']);
  const report={status:'PASS',browser:browser.version(),scope:'Linux Chrome, actual app/StrictMode/IndexedDB/MediaRecorder/Web Audio; controlled STT HTTP, no physical microphone/human-quality/package certification',selectedTasks:['write-from-dictation','repeat-sentence','read-aloud'],requestedCount:5,allocation:{'write-from-dictation':2,'repeat-sentence':2,'read-aloud':1},taskSequence:sequence,selectionCapacity:'PASS',singleTaskBlocked:'PASS',zeroSelectedCapacityBlocked:'PASS',staleCapacityIgnored:'PASS',countPresets:'PASS',maxCount:17,feedbackContinue:'PASS',refreshAcrossWfdRs:'PASS',crossTaskReset:'PASS',completion:'PASS',activeMixedResume:'PASS',dbVersion:3,pageErrors:0,unexpectedRemoteRequests:0};

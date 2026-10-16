@@ -1,5 +1,9 @@
 import { Link, useParams } from 'react-router-dom';
 import { StudyItemExercise } from './components/StudyItemExercise';
+import { SessionHeader } from './components/SessionHeader';
+import { SessionNavigation } from './components/SessionNavigation';
+import { EndSessionConfirmation } from './components/EndSessionConfirmation';
+import { SessionTerminalState } from './components/SessionTerminalState';
 import { useStudySessionRunner } from './hooks/useStudySessionRunner';
 
 export function StudySessionPage() {
@@ -7,7 +11,8 @@ export function StudySessionPage() {
   return <SessionRunner key={sessionId} sessionId={sessionId ?? ''} />;
 }
 function SessionRunner({ sessionId }: { sessionId: string }) {
-  const { state, conflict, reload, onCompleted, onPersistenceError } = useStudySessionRunner(sessionId);
+  const runner = useStudySessionRunner(sessionId);
+  const { state, conflict, reload, onCompleted, onPersistenceError } = runner;
   if (conflict || state.kind === 'error') return (
     <section className="practice-card">
       <h2>Study session</h2>
@@ -19,22 +24,20 @@ function SessionRunner({ sessionId }: { sessionId: string }) {
   if (state.kind === 'loading') return <section className="practice-card" aria-busy="true"><p role="status">Loading session…</p></section>;
   const { result, saved } = state;
   const { session } = result;
-  if (result.kind === 'completed') return (
-    <section className="practice-card">
-      <h2>{session.mode === 'quick' ? 'Quick Practice complete' : session.mode === 'task' ? 'Task Practice complete' : 'Mixed Practice complete'}</h2>
-      <p role="status">{session.attemptIds.length} questions completed</p>
-      <Link className="study-exercise-link" to="/study">Back to Study</Link>
-    </section>
-  );
+  const notice = runner.notice && <p className="session-notice" role="status">{runner.notice}</p>;
+  if (result.kind !== 'item') return <>{notice}<SessionTerminalState session={session} ended={result.kind === 'abandoned'} /></>;
   return (
     <>
-      <div className="session-navigation"><Link to="/study">Back to Study</Link><p>Session progress is saved after each answer.</p></div>
+      {notice}
+      <SessionHeader session={session} />
+      <SessionNavigation onEnd={runner.requestEnd} />
       <StudyItemExercise item={result.item}
         mode={{ kind: 'session', sessionId: session.id, expectedIndex: session.currentIndex, expectedItemId: result.item.id,
           isFinalItem: session.currentIndex === session.itemIds.length - 1 }}
-        progress={{ currentIndex: session.currentIndex, total: session.itemIds.length }}
         onCompleted={onCompleted} onPersistenceError={onPersistenceError} />
       {saved && <div className="session-continuation"><button type="button" onClick={() => void reload()}>Continue</button></div>}
+      {runner.confirmingEnd && <EndSessionConfirmation ending={runner.ending} error={runner.endError}
+        onKeep={runner.keepStudying} onEnd={() => void runner.confirmEnd()} />}
     </>
   );
 }

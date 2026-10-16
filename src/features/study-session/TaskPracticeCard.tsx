@@ -23,7 +23,7 @@ export function TaskPracticeCard({ controller }: { controller: ActiveStudySessio
   const capacityError = capacityState?.key === key ? capacityState.error : undefined;
   const loading = capacity === undefined && !capacityError;
   const count = capacity === undefined ? undefined : taskPracticeCount(choice, capacity);
-  const blocked = controller.checking || controller.starting || !!controller.active;
+  const blocked = !controller.known || controller.checking || controller.starting || !!controller.active;
   useEffect(() => {
     mounted.current = true;
     let cancelled = false;
@@ -50,7 +50,6 @@ export function TaskPracticeCard({ controller }: { controller: ActiveStudySessio
   return (
     <section className="task-practice" aria-labelledby="task-practice-title" aria-busy={loading || controller.starting}>
       <h3 id="task-practice-title">Task Practice</h3>
-      {controller.active && <p>Resume current session above before starting another.</p>}
       <fieldset disabled={blocked}>
         <legend>Choose one task</legend>
         {TASK_ORDER.map(task => <label key={task}><input type="radio" name="practice-task" checked={taskType === task}

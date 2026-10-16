@@ -379,3 +379,12 @@ textarea:focus-visible {
 .task-practice fieldset, .mixed-practice fieldset { border: 1px solid #d9e1ec; border-radius: 0.5rem; padding: 0.75rem; margin: 0.75rem 0; }
 .task-practice label, .mixed-practice label { display: inline-flex; align-items: center; gap: 0.35rem; margin: 0.35rem 1rem 0.35rem 0; }
 .task-practice input:focus-visible, .mixed-practice input:focus-visible { outline: 3px solid #2258a4; outline-offset: 3px; }
+.active-session-card { background: #edf3fc; border: 1px solid #c5d6ee; border-radius: 0.75rem; padding: 1.25rem; margin: 1.5rem 0; }
+.session-header, .session-notice { max-width: 680px; margin: 0 auto 1.25rem; }
+.session-header h2 { margin-bottom: 0.5rem; }
+.session-navigation p { flex-basis: 100%; color: #52627c; }
+.session-navigation button, dialog button { border: 1px solid #2258a4; border-radius: 0.5rem; background: #2258a4; color: #fff; padding: 0.75rem 1rem; font-weight: 600; cursor: pointer; }
+dialog { max-width: min(32rem, calc(100vw - 3rem)); border: 1px solid #d9e1ec; border-radius: 1rem; padding: 1.5rem; color: #253650; }
+dialog::backdrop { background: rgb(15 25 45 / 55%); }
+dialog button { margin: 0.5rem 0.75rem 0 0; }
+dialog button:disabled { background: #e7edf5; color: #687894; cursor: not-allowed; }

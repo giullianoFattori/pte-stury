@@ -64,7 +64,7 @@ try {
  await page.getByRole('alert').filter({hasText:'This session changed in another tab.'}).waitFor();assert.equal(await page.getByRole('button',{name:'Continue',exact:true}).count(),0);
  assert.equal((await current(page)).attempts,6);await page.getByRole('button',{name:'Reload session',exact:true}).click();await loaded(page,1);assert.equal(page.url(),secondUrl);
  // No unsafe database detail for invalid/not-found route IDs.
- await page.goto(base+'/study/session/not-found');await page.getByRole('alert').filter({hasText:'This session could not be found.'}).waitFor();
+ await page.goto(base+'/study/session/not-found');await page.getByRole('alert').filter({hasText:'This study session could not be found.'}).waitFor();
  await page.goto(base+'/study');await page.getByRole('button',{name:'Resume current session',exact:true}).waitFor();
  assert.deepEqual(pageErrors,[]);assert.deepEqual(outbound,[]);
  const report={status:'PASS',browser:browser.version(),scope:'Linux host Chrome; real app routes/StrictMode/IndexedDB/MediaRecorder/Web Audio; controlled STT HTTP, no physical microphone or packaged-platform certification',quickStart:'PASS',doubleClick:'PASS',fiveQuestionQueue:'PASS',feedbackContinue:'PASS',refreshBeforeSave:'PASS',refreshAfterSaveBeforeContinue:'PASS',browserBackResume:'PASS',fiveItemCompletion:'PASS',completedRouteReload:'PASS',activeCreationRace:'PASS',staleSaveConflictReload:'PASS',missingRoute:'PASS',dbVersion:3,pageErrors:0,remoteRequests:0};
