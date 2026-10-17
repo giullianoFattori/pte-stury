@@ -1,0 +1,190 @@
+{
+  "status": "PASS",
+  "activity": "07",
+  "step": "07.10",
+  "createdAt": "2026-10-17T07:26:38.286Z",
+  "finishedAt": "2026-10-17T07:27:59.527Z",
+  "gitCommit": "291f8bf5af5d1c6a1d34236ede77c6deab2b9e8c",
+  "platform": "linux-x64",
+  "browser": "154.0.8037.97",
+  "identity": {
+    "appVersion": "0.1.0",
+    "runtimeVersion": "0.1.0",
+    "apiVersion": 1,
+    "engineVersion": "1.8.3",
+    "modelId": "base.en",
+    "target": "linux-x64",
+    "packageSHA256": "6517512ff3ac801b4e1f47582b64309491d1aca40f7a971eb99039523cdfd973",
+    "manifestSHA256": "01d21131aa9c33eb3b63c68ffd562405990028f2c083ba0abb9906a47de407cb",
+    "gitCommit": "291f8bf5af5d1c6a1d34236ede77c6deab2b9e8c",
+    "buildTimestamp": "2026-10-17T03:56:45.679Z",
+    "buildDirty": true
+  },
+  "contentVersion": "sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2",
+  "scope": "Extracted unsigned internal package on existing Linux build host; persistent synthetic browser profile; actual packaged decoder and Whisper using controlled TTS/Web Audio; no clean-machine or human microphone/quality certification",
+  "resolvedFindings": [
+    {
+      "severity": "medium",
+      "owner": "Activity 05 runtime static serving",
+      "impact": "Activity 07 refresh/deep-link usability",
+      "issue": "Session route returned 404 on direct navigation",
+      "fixCommit": "291f8bf",
+      "resolution": "Bounded identity-only SPA fallback with query/path/method isolation regression tests"
+    }
+  ],
+  "launcher": "PASS",
+  "sameOrigin": "PASS",
+  "spaRoutes": {
+    "status": "PASS",
+    "paths": [
+      "/study",
+      "/study/write-from-dictation",
+      "/study/repeat-sentence",
+      "/study/read-aloud",
+      "/study/session/:id"
+    ]
+  },
+  "indexedDb": "PASS",
+  "dexieVersion": 3,
+  "freshInstall": {
+    "status": "PASS",
+    "learnerItems": 17,
+    "technicalItems": 0,
+    "sessions": 0,
+    "attempts": 0
+  },
+  "quick": {
+    "status": "PASS",
+    "questions": 5,
+    "fullCompletion": "PASS",
+    "taskCards": 3
+  },
+  "task": {
+    "status": "PASS",
+    "selected": "write-from-dictation",
+    "questions": 3,
+    "partialSaveResumeAbandon": "PASS"
+  },
+  "mixed": {
+    "status": "PASS",
+    "questions": 5,
+    "taskSequence": [
+      "wfd",
+      "rs",
+      "ra",
+      "wfd",
+      "rs"
+    ],
+    "transitionRefreshResumeAbandon": "PASS"
+  },
+  "resume": "PASS",
+  "frozenQueueAfterBootstrapRestart": "PASS",
+  "summary": "PASS",
+  "summaryReload": "PASS",
+  "abandon": "PASS",
+  "abandonedReload": "PASS",
+  "crossTabConflictReload": "PASS",
+  "runtimeRestart": {
+    "status": "PASS",
+    "runtimeRestarted": true,
+    "browserProcessRestarted": true,
+    "sameProfilePreserved": true,
+    "currentIndex": 1,
+    "persistedAttempts": 1
+  },
+  "integrity": {
+    "oneActiveMax": "PASS",
+    "uniqueQueue": "PASS",
+    "attemptLinkage": "PASS",
+    "atomicProgress": "PASS",
+    "abandonPreservesHistory": "PASS",
+    "completedSummaryStable": "PASS"
+  },
+  "speech": "PASS",
+  "speechCases": [
+    {
+      "taskType": "repeat-sentence",
+      "engine": "whisper.cpp",
+      "processedLocally": true,
+      "status": "PASS"
+    },
+    {
+      "taskType": "read-aloud",
+      "engine": "whisper.cpp",
+      "processedLocally": true,
+      "status": "PASS"
+    },
+    {
+      "taskType": "repeat-sentence",
+      "engine": "whisper.cpp",
+      "processedLocally": true,
+      "status": "PASS"
+    }
+  ],
+  "mediaRecorderMIME": [
+    "audio/webm;codecs=opus"
+  ],
+  "expectedAnswerInUpload": false,
+  "offline": {
+    "status": "PASS",
+    "browser": "Non-origin HTTP blocked; zero attempted remote app requests",
+    "runtime": {
+      "status": "PASS",
+      "catalogItems": 17,
+      "audioAssets": 11,
+      "ui": "PASS",
+      "health": "PASS",
+      "ra": "PASS",
+      "rs": "PASS",
+      "network": "isolated network namespace with loopback only",
+      "systemResources": "glibc/OS loader only",
+      "cleanMachine": "PENDING"
+    },
+    "instrumentation": "strace connect on launcher-owned tree across both runs",
+    "loopbackConnectCalls": 124
+  },
+  "pageErrors": 0,
+  "remoteRequests": 0,
+  "developmentAssetRequests": 0,
+  "cspViolations": 0,
+  "launcherBrowserHandoff": "Not separately repeated; --no-browser plus automated Chrome",
+  "privacy": {
+    "noLearnerRecordingsCommitted": true,
+    "noRawTranscriptInAudit": true,
+    "noTranscriptInLauncherLogs": true
+  },
+  "shutdown": {
+    "status": "PASS",
+    "noOwnedProcessRemaining": true,
+    "requestTempEntries": 0
+  },
+  "timingsMs": {
+    "runtimeReadyMs": 9485,
+    "studyLoadMs": 288,
+    "quickStartMs": 118,
+    "restartReadyMs": 9285,
+    "resumeMs": 109,
+    "continue1Ms": 76,
+    "continue2Ms": 48,
+    "continue3Ms": 60,
+    "summaryLoadMs": 70
+  },
+  "sizes": {
+    "archiveBytes": 185518172,
+    "frontendJsBytes": 556726,
+    "frontendCssBytes": 6329
+  },
+  "automatedBaseline": {
+    "applicationRuntime": 995,
+    "package": 7
+  },
+  "gates": {
+    "cleanMachineLinux": "PENDING",
+    "windows": "PENDING",
+    "macos": "PENDING",
+    "physicalMicrophone": "PENDING",
+    "humanModelBenchmark": "PENDING",
+    "signingNotarization": "PENDING",
+    "manualHumanSmoke": "PENDING"
+  }
+}

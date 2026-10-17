@@ -58,6 +58,11 @@ states. Leaving keeps unfinished sessions resumable.
 [Activity 07.09](docs/study-session/summary-07.09.md) adds completion summaries from
 the exact persisted Attempt ledger: weighted task metrics, wall-clock duration,
 integrity checks and safe retry, without an official PTE overall score.
+[Activity 07 closure](docs/study-session/activity-07-closure.md) certifies the session
+engine and internal Linux host package: full Quick with actual packaged Whisper,
+Task/Mixed smokes, profile-preserving restart, conflicts, abandonment, summaries and
+offline isolation. Clean-machine, Windows/macOS, signing and human speech gates
+remain separate Activity 05 release work.
 
 ## Local development
 

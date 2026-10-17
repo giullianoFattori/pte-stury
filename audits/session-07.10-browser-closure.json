@@ -1,0 +1,118 @@
+{
+  "status": "PASS",
+  "activity": "07",
+  "step": "07.10",
+  "createdAt": "2026-10-17T03:54:25.491Z",
+  "finishedAt": "2026-10-17T03:55:59.107Z",
+  "gitCommit": "291f8bf5af5d1c6a1d34236ede77c6deab2b9e8c",
+  "gitDirty": true,
+  "platform": "linux-x64",
+  "browser": "154.0.8037.97",
+  "contentVersion": "sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2",
+  "scope": "Linux host development browser; actual app/IndexedDB/MediaRecorder/Web Audio, controlled local STT HTTP; no physical microphone, human model-quality or clean-machine certification",
+  "testCounts": {
+    "applicationRuntime": 995,
+    "package": 7
+  },
+  "checks": [
+    {
+      "command": "npm run content:validate",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run content:build",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run content:verify",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run content:verify-audio",
+      "status": "PASS"
+    },
+    {
+      "command": "npm test",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run build",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run lint",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run package:test",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:exercise-session-browser",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:quick-practice-browser",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:task-practice-browser",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:mixed-practice-browser",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:session-navigation-browser",
+      "status": "PASS"
+    },
+    {
+      "command": "npm run test:session-summary-browser",
+      "status": "PASS"
+    }
+  ],
+  "evidence": [
+    {
+      "path": "audits/session-07.04-browser.json",
+      "status": "PASS",
+      "browser": "154.0.8037.97"
+    },
+    {
+      "path": "audits/session-07.05-browser.json",
+      "status": "PASS",
+      "browser": "154.0.8037.97"
+    },
+    {
+      "path": "audits/session-07.06-browser.json",
+      "status": "PASS",
+      "browser": "154.0.8037.97"
+    },
+    {
+      "path": "audits/session-07.07-browser.json",
+      "status": "PASS",
+      "browser": "154.0.8037.97"
+    },
+    {
+      "path": "audits/session-07.08-browser.json",
+      "status": "PASS",
+      "browser": "154.0.8037.97"
+    },
+    {
+      "path": "audits/session-07.09-browser.json",
+      "status": "PASS",
+      "browser": "154.0.8037.97"
+    }
+  ],
+  "standaloneTasks": "PASS",
+  "quickPractice": "PASS",
+  "taskPractice": "PASS",
+  "mixedPractice": "PASS",
+  "navigation": "PASS",
+  "summary": "PASS",
+  "pageErrors": 0,
+  "unexpectedRemoteRequests": 0,
+  "dexieVersion": 3,
+  "packagedProduct": "separate audits/session-07.10-package.json",
+  "readiness": "Bounded Vite module graph warmup and HTTP HTML probe before browser; no automatic product assertion retries"
+}

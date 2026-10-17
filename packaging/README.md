@@ -58,8 +58,9 @@ Browser IndexedDB remains at the stable origin and in the browser profile. An up
 Platform build scripts run `npm run content:build` before regressions. Staging
 verifies the committed generated catalog pair and inventories both files under
 `web/content/` with SHA-256/size. The runtime serves these local JSON assets with
-CSP/no-store; the current learner app still consumes its existing TypeScript bank.
-See [06.03 build policy](../docs/content/build-06.03.md). After a failed content
+CSP/no-store; learner bootstrap installs the generated canonical bank through
+transactional content sync. See [06.08 migration](../docs/content/migration-06.08.md)
+and [06.03 build policy](../docs/content/build-06.03.md). After a failed content
 build, do not package stale last-good outputs.
 
 ```bash

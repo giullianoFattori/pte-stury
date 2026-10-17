@@ -1,3 +1,4 @@
+import { waitForBrowserServer } from './helpers/browser-readiness.mjs';
 // Isolated React adapter regression: actual IndexedDB/MediaRecorder/Web Audio; controlled HTTP STT fixture.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
@@ -9,7 +10,7 @@ vite.middlewares.use(async(req,res,next)=>{
  if(req.url==='/favicon.ico'){res.statusCode=204;res.end();return;}
  if(req.url==='/exercise-harness'){res.setHeader('Content-Type','text/html');res.end(await vite.transformIndexHtml(req.url, '<!doctype html><title>Exercise adapter regression</title><div id="root"></div>'));return;}next();
 });
-await vite.listen();let browser;
+await vite.listen();await waitForBrowserServer(vite,'http://127.0.0.1:5177/exercise-harness',null);let browser;
 try {
  browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox','--autoplay-policy=no-user-gesture-required']});
  const page=await browser.newPage();const errors=[];const remote=[];

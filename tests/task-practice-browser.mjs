@@ -1,10 +1,11 @@
+import { waitForBrowserServer } from './helpers/browser-readiness.mjs';
 // Real application routes/StrictMode/IndexedDB. WFD-only completion needs no microphone/STT.
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createServer } from 'vite';
 const { chromium }=await import(process.env.PLAYWRIGHT_MODULE??'playwright');
 const server=await createServer({server:{host:'127.0.0.1',port:5182,strictPort:true}});
-await server.listen();let browser;
+await server.listen();await waitForBrowserServer(server,'http://127.0.0.1:5182/study');let browser;
 const base='http://127.0.0.1:5182';
 try {
  browser=await chromium.launch({executablePath:'/usr/bin/google-chrome',headless:true,args:['--no-sandbox']});
