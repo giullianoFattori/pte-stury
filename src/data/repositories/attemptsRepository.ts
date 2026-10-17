@@ -1,21 +1,29 @@
 import type { Attempt } from '../../domain/pte/types';
-import { db } from '../db/database';
+import { db, type PteDatabase } from '../db/database.ts';
 
-export const attemptsRepository = {
-  async create(attempt: Attempt) {
-    await db.attempts.add(attempt);
-    return attempt;
-  },
+export function createAttemptsRepository(database: PteDatabase = db) {
+  return {
+    async create(attempt: Attempt) {
+      await database.attempts.add(attempt);
+      return attempt;
+    },
 
-  async getById(id: string) {
-    return db.attempts.get(id);
-  },
+    async getById(id: string) {
+      return database.attempts.get(id);
+    },
 
-  async getByItemId(itemId: string) {
-    return db.attempts.where('itemId').equals(itemId).toArray();
-  },
+    // Preserve requested order and missing slots: callers must never average partial results.
+    async getByIds(ids: readonly string[]): Promise<(Attempt | undefined)[]> {
+      return database.attempts.bulkGet([...ids]);
+    },
 
-  async getAll() {
-    return db.attempts.toArray();
-  },
-};
+    async getByItemId(itemId: string) {
+      return database.attempts.where('itemId').equals(itemId).toArray();
+    },
+
+    async getAll() {
+      return database.attempts.toArray();
+    },
+  };
+}
+export const attemptsRepository = createAttemptsRepository();

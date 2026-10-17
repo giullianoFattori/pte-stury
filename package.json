@@ -51,7 +51,8 @@
     "test:quick-practice-browser": "node tests/quick-practice-browser.mjs",
     "test:task-practice-browser": "node tests/task-practice-browser.mjs",
     "test:mixed-practice-browser": "node tests/mixed-practice-browser.mjs",
-    "test:session-navigation-browser": "node tests/study-session-navigation-browser.mjs"
+    "test:session-navigation-browser": "node tests/study-session-navigation-browser.mjs",
+    "test:session-summary-browser": "node tests/study-session-summary-browser.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",

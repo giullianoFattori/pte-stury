@@ -54,7 +54,10 @@ with two-or-more tasks, 5/10/Max counts, per-task capacity and global difficulty
 using the existing balanced builder and runner.
 [Activity 07.08](docs/study-session/runner-navigation-07.08.md) adds mode-aware
 headers, a shared Resume card, explicit End confirmation and safe abandoned/conflict
-states. Leaving keeps unfinished sessions resumable; full summaries remain later.
+states. Leaving keeps unfinished sessions resumable.
+[Activity 07.09](docs/study-session/summary-07.09.md) adds completion summaries from
+the exact persisted Attempt ledger: weighted task metrics, wall-clock duration,
+integrity checks and safe retry, without an official PTE overall score.
 
 ## Local development
 

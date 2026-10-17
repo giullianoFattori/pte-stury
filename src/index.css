@@ -388,3 +388,8 @@ dialog { max-width: min(32rem, calc(100vw - 3rem)); border: 1px solid #d9e1ec; b
 dialog::backdrop { background: rgb(15 25 45 / 55%); }
 dialog button { margin: 0.5rem 0.75rem 0 0; }
 dialog button:disabled { background: #e7edf5; color: #687894; cursor: not-allowed; }
+
+.session-task-summary { margin: 1.5rem 0; padding: 1rem; border: 1px solid #c5d6ee; border-radius: 0.75rem; }
+.session-task-summary h3 { margin-top: 0; }
+.session-task-summary dl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.5rem 1rem; }
+.session-task-summary dd { margin: 0; text-align: right; overflow-wrap: anywhere; }

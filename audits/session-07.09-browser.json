@@ -1,0 +1,23 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "scope": "Linux host Chrome, actual app/IndexedDB/MediaRecorder/Web Audio; controlled local STT HTTP, no physical microphone or package certification",
+  "completedCount": 5,
+  "allocation": {
+    "wfd": 2,
+    "rs": 2,
+    "ra": 1
+  },
+  "perfectContentMetrics": "PASS",
+  "durationAndTaskCards": "PASS",
+  "practiceDisclaimer": "PASS",
+  "reloadStable": "PASS",
+  "catalogIndependent": "PASS",
+  "unreferencedAttemptIsolation": "PASS",
+  "missingAttemptSafeError": "PASS",
+  "retryRecovery": "PASS",
+  "backToStudy": "PASS",
+  "dbVersion": 3,
+  "pageErrors": 0,
+  "remoteRequests": 0
+}

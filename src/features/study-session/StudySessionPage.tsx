@@ -1,3 +1,4 @@
+import { CompletedSessionSummary } from './components/SessionSummaryView';
 import { Link, useParams } from 'react-router-dom';
 import { StudyItemExercise } from './components/StudyItemExercise';
 import { SessionHeader } from './components/SessionHeader';
@@ -25,6 +26,7 @@ function SessionRunner({ sessionId }: { sessionId: string }) {
   const { result, saved } = state;
   const { session } = result;
   const notice = runner.notice && <p className="session-notice" role="status">{runner.notice}</p>;
+  if (result.kind === 'completed') return <>{notice}<CompletedSessionSummary key={session.id} session={session} /></>;
   if (result.kind !== 'item') return <>{notice}<SessionTerminalState session={session} ended={result.kind === 'abandoned'} /></>;
   return (
     <>
