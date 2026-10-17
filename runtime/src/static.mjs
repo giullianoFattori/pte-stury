@@ -24,10 +24,12 @@ export async function createStaticServer(root, artifacts) {
     if (request.method !== 'GET' || request.headers['transfer-encoding'] !== undefined
       || (request.headers['content-length'] !== undefined && request.headers['content-length'] !== '0')) return false;
     const url = request.url;
-    if (!/^\/[a-zA-Z0-9_./-]*$/.test(url) || url.startsWith('/api') || url.includes('//')
+    // Only the bounded session identity segment gets SPA fallback; never arbitrary paths.
+    const sessionRoute = /^\/study\/session\/[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(url);
+    if ((!/^\/[a-zA-Z0-9_./-]*$/.test(url) && !sessionRoute) || url.startsWith('/api') || url.includes('//')
       || url.split('/').some(part => part === '.' || part === '..')) return false;
     const file = files.get(url === '/' ? '/index.html' : url)
-      ?? (['/study', '/study/read-aloud', '/study/repeat-sentence', '/study/write-from-dictation', '/review', '/errors', '/settings'].includes(url) ? files.get('/index.html') : undefined);
+      ?? (['/study', '/study/read-aloud', '/study/repeat-sentence', '/study/write-from-dictation', '/review', '/errors', '/settings'].includes(url) || sessionRoute ? files.get('/index.html') : undefined);
     if (!file) return false;
     let handle;
     try {
