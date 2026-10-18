@@ -28,7 +28,7 @@ test('draft can omit task fields/skills; publication requires them for every tas
 });
 // Each invalid rule has a separate named case/path assertion.
 const bad = [
-  ['taskType', 'retell-lecture', 'INVALID_TASK_TYPE'], ['taskType', 'Read-Aloud', 'INVALID_TASK_TYPE'],
+  ['taskType', 'answer-short-question', 'INVALID_TASK_TYPE'], ['taskType', 'Read-Aloud', 'INVALID_TASK_TYPE'],
   ['difficulty', 0, 'INVALID_DIFFICULTY'], ['difficulty', 6, 'INVALID_DIFFICULTY'],
   ['difficulty', 2.5, 'INVALID_DIFFICULTY'], ['difficulty', '2', 'INVALID_DIFFICULTY'],
   ['difficulty', NaN, 'INVALID_DIFFICULTY'], ['difficulty', Infinity, 'INVALID_DIFFICULTY'],
@@ -105,7 +105,7 @@ test('named invalid fixtures report their field-specific issue',async()=>{
   for(const [name,path,code]of [['invalid-short-id','id','INVALID_ID'],['prefix-mismatch','id','ID_TASK_MISMATCH'],['bad-revision','revision','INVALID_REVISION'],['bad-difficulty','difficulty','INVALID_DIFFICULTY'],['bad-audio-path','audio.path','INVALID_AUDIO_PATH'],['unknown-field','dificulty','UNKNOWN_FIELD'],['active-rs-missing-chunks','chunks','REQUIRED_FIELD'],['ra-answer-mismatch','answer','ANSWER_TRANSCRIPT_MISMATCH']])fails(await fixture(name),path,code);
 });
 test('committed schema is generated from the runtime policy and declares runtime equality',async()=>{
-  assert.equal(await readFile('content/schemas/question-bank.schema.json','utf8'),schemaBytes());const schema=JSON.parse(schemaBytes());assert.equal(schema.additionalProperties,false);assert.equal(schema['x-pte-schemaVersion'],1);assert.equal(schema['x-pte-semanticRules'][0].code,'ANSWER_TRANSCRIPT_MISMATCH');assert.deepEqual(Object.keys(schema.properties).sort(),['id','taskType','difficulty','prompt','answer','transcript','audio','chunks','phraseGroups','stressWords','revision','status','source','tags','skills','topic','estimatedSeconds'].sort());
+  assert.equal(await readFile('content/schemas/question-bank.schema.json','utf8'),schemaBytes());const schema=JSON.parse(schemaBytes());assert.equal(schema.additionalProperties,false);assert.equal(schema['x-pte-schemaVersion'],2);assert.equal(schema['x-pte-semanticRules'][0].code,'ANSWER_TRANSCRIPT_MISMATCH');assert.deepEqual(Object.keys(schema.properties).sort(),['id','taskType','difficulty','prompt','answer','transcript','audio','chunks','phraseGroups','stressWords','revision','status','source','tags','skills','topic','estimatedSeconds','taskData'].sort());
 });
 test('validation-only CLI accepts production sources and fails on invalid/syntax input',()=>{
   for(const args of [[],['tests/fixtures/content/bad-revision.json'],['tests/fixtures/content/malformed.json']]){const r=spawnSync(process.execPath,['tools/content/validate.mjs',...args],{encoding:'utf8'});assert.equal(r.status,args.length?1:0);const report=JSON.parse(r.stdout);assert.equal(report.success,!args.length);if(args.length)assert.ok(report.errors.length);}

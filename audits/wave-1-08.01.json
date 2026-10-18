@@ -1,0 +1,66 @@
+{
+  "activity": "08",
+  "step": "08.01",
+  "status": "PASS",
+  "verifiedAt": "2026-10-18",
+  "sourceCommit": "6faf9acc8085a1d073c3bc29ea7e7196236f978f",
+  "workingTreeAtAudit": "dirty; 113 paths changed or untracked in the shared workspace",
+  "browser": "Google Chrome 154.0.8037.97",
+  "scope": "Wave 1 task catalogue, task data contracts, authoring/build tooling, safe practice rollout, and session architecture only",
+  "specVersion": "2026-10-01",
+  "knownTaskOrder": [
+    "write-from-dictation",
+    "repeat-sentence",
+    "read-aloud",
+    "retell-lecture",
+    "summarize-group-discussion",
+    "describe-image",
+    "summarize-written-text",
+    "summarize-spoken-text",
+    "highlight-incorrect-words"
+  ],
+  "wave1Tasks": [
+    "retell-lecture",
+    "summarize-group-discussion",
+    "describe-image",
+    "summarize-written-text",
+    "summarize-spoken-text",
+    "highlight-incorrect-words"
+  ],
+  "practiceReady": ["write-from-dictation", "repeat-sentence", "read-aloud"],
+  "quickTaskPool": ["write-from-dictation", "repeat-sentence", "read-aloud"],
+  "content": {
+    "validation": "PASS",
+    "discoveredProductionItems": 17,
+    "wave1ProductionItems": 0,
+    "generatedSchemaVersion": 2,
+    "contentVersion": "sha256:714ea490c9e33763f94bdc7c95719c9480a2bde738c693d67fc103e413dc21bd",
+    "audioIntegrity": "PASS",
+    "verifiedAudioAssets": 11,
+    "inheritedDuplicatePromptWarnings": 14
+  },
+  "checks": {
+    "npm run content:validate": "PASS",
+    "npm run content:build": "PASS",
+    "npm run content:verify": "PASS",
+    "npm run content:verify-audio": "PASS",
+    "npm test": { "status": "PASS", "passed": 1073, "failed": 0 },
+    "npm run build": "PASS",
+    "npm run lint": "PASS",
+    "npm run package:test": { "status": "PASS", "passed": 7, "failed": 0 },
+    "git diff --check": "PASS",
+    "exercise-session-browser": "PASS",
+    "quick-practice-browser": "PASS",
+    "task-practice-browser": "PASS",
+    "mixed-practice-browser": "PASS",
+    "study-session-navigation-browser": "PASS",
+    "study-session-summary-browser": "PASS",
+    "study-session-persistence-browser": "PASS"
+  },
+  "databaseVersion": 3,
+  "limitations": [
+    "Linux host browser evidence uses controlled local STT and does not establish physical-microphone or human-scoring quality.",
+    "Package tests validate package inventory and loopback serving; this is not clean-machine, Windows, macOS, signing, or Activity 05 certification.",
+    "Content validation reports existing duplicate prompt warnings in the inherited 17-item bank."
+  ]
+}

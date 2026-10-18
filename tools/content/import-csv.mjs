@@ -2,7 +2,7 @@ import { CONTENT_LIMITS } from '../../src/domain/content/validationPolicy.ts';
 import { rejectAuthor } from './author-errors.mjs';
 export const CSV_COLUMNS = Object.freeze(['id', 'taskType', 'difficulty', 'prompt', 'answer', 'transcript',
   'audioPath', 'audioSha256', 'audioDurationMs', 'audioMimeType', 'chunks', 'phraseGroups', 'stressWords',
-  'revision', 'status', 'source', 'skills', 'tags', 'topic', 'estimatedSeconds']);
+  'revision', 'status', 'source', 'skills', 'tags', 'topic', 'estimatedSeconds', 'taskData']);
 // Strict RFC4180-style state machine. Quoted line endings and whitespace are
 // preserved, including CRLF; no delimiter guessing or implicit trimming.
 export function parseCsv(text) {

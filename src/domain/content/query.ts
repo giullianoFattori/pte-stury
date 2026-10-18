@@ -3,7 +3,7 @@ import type { StudyItemQuery, QueryIssue } from './queryTypes';
 import { StudyItemQueryError } from './queryTypes.ts';
 import { TASK_ORDER, compare } from './canonical.ts';
 import { CONTENT_LIMITS, CONTENT_SKILLS, LEGACY_QUESTION_IDS, newQuestionIdPattern } from './validationPolicy.ts';
-import { isPracticeEligible } from './installedContent.ts';
+import { isCatalogEligible, isPracticeEligible } from './installedContent.ts';
 
 export const MAX_QUERY_LIMIT = 500;
 const fields = ['taskTypes', 'difficulties', 'skills', 'tags', 'topic', 'excludeIds', 'matchSkills', 'matchTags', 'limit'];
@@ -56,7 +56,7 @@ export function matchesNothing(query: StudyItemQuery): boolean {
   return [query.taskTypes, query.difficulties, query.skills, query.tags].some(values => values?.length === 0);
 }
 /** Compile once per query; no metadata inference or text normalization. */
-export function practiceItemPredicate(query: StudyItemQuery): (item: StudyItem) => boolean {
+export function catalogItemPredicate(query: StudyItemQuery): (item: StudyItem) => boolean {
   const excluded = new Set(query.excludeIds);
   const tasks = query.taskTypes && new Set(query.taskTypes), difficulties = query.difficulties && new Set(query.difficulties);
   const match = (authored: readonly string[] | undefined, requested: readonly string[] | undefined, mode: 'any' | 'all' = 'any') => {
@@ -64,8 +64,13 @@ export function practiceItemPredicate(query: StudyItemQuery): (item: StudyItem) 
     if (!requested.length || !authored?.length) return false;
     return mode === 'all' ? requested.every(value => authored.includes(value)) : requested.some(value => authored.includes(value));
   };
-  return item => isPracticeEligible(item) && !excluded.has(item.id)
+  return item => isCatalogEligible(item) && !excluded.has(item.id)
     && (!tasks || tasks.has(item.taskType)) && (!difficulties || difficulties.has(item.difficulty))
     && match(item.skills, query.skills, query.matchSkills) && match(item.tags, query.tags, query.matchTags)
     && (query.topic === undefined || item.topic === query.topic);
+}
+
+export function practiceItemPredicate(query: StudyItemQuery): (item: StudyItem) => boolean {
+  const matches = catalogItemPredicate(query);
+  return item => isPracticeEligible(item) && matches(item);
 }

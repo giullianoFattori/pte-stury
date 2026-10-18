@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { TASK_ORDER } from '../../domain/content/canonical';
+import { PRACTICE_TASK_ORDER as TASK_ORDER, TASK_LABELS as labels } from '../../domain/pte/taskRegistry';
 import type { Difficulty, PteTaskType } from '../../domain/pte/types';
 import { MAX_SESSION_ITEMS } from '../../domain/study-session/types';
 import { StudySessionError } from '../../domain/study-session/errors';
@@ -8,9 +8,7 @@ import type { ActiveStudySessionController } from './hooks/useActiveStudySession
 import { startTaskPractice } from './services/startTaskPractice';
 import { taskPracticeQuery, taskPracticeCount, type TaskCountChoice } from './services/taskPracticeCapacity';
 
-const labels: Record<PteTaskType, string> = {
-  'write-from-dictation': 'Write From Dictation', 'repeat-sentence': 'Repeat Sentence', 'read-aloud': 'Read Aloud',
-};
+
 export function TaskPracticeCard({ controller }: { controller: ActiveStudySessionController }) {
   const [taskType, setTaskType] = useState<PteTaskType>('write-from-dictation');
   const [difficulty, setDifficulty] = useState<Difficulty>();

@@ -1,10 +1,11 @@
+import { taskRecord } from '../pte/taskRegistry.ts';
 import type { PteTaskType } from '../pte/types';
 import { TASK_ORDER } from '../content/canonical.ts';
 import { MAX_SESSION_ITEMS } from './types.ts';
 import { StudySessionError } from './errors.ts';
 import { invalidBuildConfig } from './buildRequest.ts';
 import type { TaskCounts } from './buildTypes';
-export const emptyTaskCounts = (): Record<PteTaskType, number> => ({ 'write-from-dictation': 0, 'repeat-sentence': 0, 'read-aloud': 0 });
+export const emptyTaskCounts = (): Record<PteTaskType, number> => taskRecord(() => 0);
 export function allocateTaskCounts(itemCount: number, selected: readonly PteTaskType[], capacity: TaskCounts): TaskCounts {
   if (!Number.isSafeInteger(itemCount) || itemCount < 1 || itemCount > MAX_SESSION_ITEMS)
     invalidBuildConfig('itemCount', 'Requested count must be an integer from 1 to 500.');

@@ -1,0 +1,19 @@
+{
+  "id": "sst-900001",
+  "taskType": "summarize-spoken-text",
+  "difficulty": 2,
+  "prompt": "Technical validation fixture; not learner content.",
+  "revision": 1,
+  "status": "draft",
+  "source": "internal",
+  "taskData": {
+    "audio": {
+      "path": "/audio/technical/source.mp3"
+    },
+    "transcript": "The lecture gives a technical example.",
+    "keyPoints": [
+      "A technical example."
+    ],
+    "referenceSummary": "This illustrates a contract."
+  }
+}

@@ -9,10 +9,10 @@ import { buildBank } from '../tools/content/build.mjs';
 import { parseQuestionBankItemJson } from '../src/domain/content/validation.ts';
 import { authorRoot, record, rejectsAuthor, snapshot } from './helpers/content-authoring.mjs';
 
-test('permanent baseline contains exactly all 17 historical and three technical identities', () => {
+test('permanent baseline contains exactly all 17 historical and nine technical identities', () => {
   const registry = validateRegistry(initialRegistry());
   assert.equal(registry.entries.filter(e => e.kind === 'legacy').length, 17);
-  assert.equal(registry.entries.filter(e => e.kind === 'technical').length, 3);
+  assert.equal(registry.entries.filter(e => e.kind === 'technical').length, 9);
   assert.deepEqual(registry.technicalRange, [900000, 999999]);
 });
 test('allocation uses lowest normal six-digit gap and never recycles abandoned/retired reservations', () => {
@@ -28,7 +28,7 @@ test('normal allocation never reaches technical range; bounded space exhaustion 
 for (const [label, mutate] of [
   ['duplicate entry', value => value.entries.push(value.entries[0])],
   ['lost historical identity', value => value.entries.shift()],
-  ['unknown task', value => value.entries[0].taskType = 'retell-lecture'],
+  ['unknown task', value => value.entries[0].taskType = 'answer-short-question'],
   ['wrong prefix', value => value.entries[0].id = 'ra-001'],
   ['altered range', value => value.technicalRange[0] = 800000],
   ['unexpected field', value => value.nextId = 1],
@@ -56,13 +56,13 @@ test('concurrent OS processes cannot reserve the same identity', async t => {
   const ids = results.filter(result => result.success).map(result => result.id);
   assert.ok(ids.length > 0); assert.equal(new Set(ids).size, ids.length);
   assert.ok(results.every(result => result.success || result.code === 'ID_REGISTRY_LOCKED'));
-  const registry = await readRegistry(root); assert.equal(registry.entries.length, 20 + ids.length);
+  const registry = await readRegistry(root); assert.equal(registry.entries.length, initialRegistry().entries.length + ids.length);
 });
 test('scaffolding reserves and writes a valid canonical draft without question activation', async t => {
   const root = await authorRoot(t), result = await newItem('repeat-sentence', { root });
   const item = parseQuestionBankItemJson(await readFile(join(root, 'repeat-sentence', result.id + '.json'), 'utf8'));
   assert.equal(item.status, 'draft'); assert.equal(item.source, 'internal'); assert.equal(item.revision, 1);
-  assert.equal((await readRegistry(root)).entries.length, 21);
+  assert.equal((await readRegistry(root)).entries.length, initialRegistry().entries.length + 1);
   const build = await buildBank({ sourceRoot: root, outputRoot: join(root, 'generated'), enforceRegistry: true });
   assert.equal(build.bundle.items[0].id, result.id);
 });
@@ -105,14 +105,14 @@ test('production build shares the authoring lock and refuses in-progress writes'
 test('reserve-id, new-item and ids CLIs operate only on the isolated working-directory content root', async t => {
   const root = await authorRoot(t), content = join(root, 'content'); await mkdir(content);
   const { rename } = await import('node:fs/promises');
-  for (const name of ['write-from-dictation', 'repeat-sentence', 'read-aloud', 'id-registry.json']) await rename(join(root, name), join(content, name));
+  for (const name of [...KNOWN_TASK_ORDER, 'id-registry.json']) await rename(join(root, name), join(content, name));
   const { spawnSync } = await import('node:child_process');
   const { resolve } = await import('node:path');
   for (const [script, args] of [['reserve-id', ['repeat-sentence']], ['new-item', ['repeat-sentence']], ['ids', []], ['ids', ['--recover-stage']]]) {
     const run = spawnSync(process.execPath, [resolve('tools/content/' + script + '.mjs'), ...args], { cwd: root, encoding: 'utf8', shell: false });
     assert.equal(run.status, 0, run.stdout + run.stderr); assert.equal(JSON.parse(run.stdout).success, true);
   }
-  assert.equal((await readRegistry(content)).entries.length, 22);
+  assert.equal((await readRegistry(content)).entries.length, initialRegistry().entries.length + 2);
   const item = parseQuestionBankItemJson(await readFile(join(content, 'repeat-sentence/rs-000002.json'), 'utf8'));
   assert.equal(item.status, 'draft');
 });
@@ -123,3 +123,4 @@ test('registry replacement cannot drop an abandoned reservation', async t => {
   await rejectsAuthor(() => writeRegistry(root, initialRegistry()), 'ID_REGISTRY_INVALID');
   assert.equal((await readRegistry(root)).entries.at(-1).id, 'ra-000001');
 });
+import { KNOWN_TASK_ORDER } from '../src/domain/pte/taskRegistry.ts';

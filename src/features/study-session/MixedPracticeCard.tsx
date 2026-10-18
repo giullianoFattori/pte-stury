@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { TASK_ORDER } from '../../domain/content/canonical';
+import { PRACTICE_TASK_ORDER as TASK_ORDER, TASK_LABELS as labels } from '../../domain/pte/taskRegistry';
 import type { Difficulty, PteTaskType } from '../../domain/pte/types';
 import { MAX_SESSION_ITEMS } from '../../domain/study-session/types';
 import { StudySessionError } from '../../domain/study-session/errors';
@@ -7,9 +7,7 @@ import type { ActiveStudySessionController } from './hooks/useActiveStudySession
 import { startMixedPractice } from './services/startMixedPractice';
 import { mixedPracticeCapacity, mixedPracticeCount, type MixedCountChoice } from './services/mixedPracticeCapacity';
 
-const labels: Record<PteTaskType, string> = {
-  'write-from-dictation': 'Write From Dictation', 'repeat-sentence': 'Repeat Sentence', 'read-aloud': 'Read Aloud',
-};
+
 type Capacity = Awaited<ReturnType<typeof mixedPracticeCapacity>>;
 export function MixedPracticeCard({ controller }: { controller: ActiveStudySessionController }) {
   const [tasks, setTasks] = useState<readonly PteTaskType[]>(TASK_ORDER);

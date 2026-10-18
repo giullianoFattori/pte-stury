@@ -1,3 +1,4 @@
+import { taskRecord } from '../src/domain/pte/taskRegistry.ts';
 import 'fake-indexeddb/auto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -22,7 +23,7 @@ test('all 17 published canonical items retain every semantic legacy field exactl
     if (item.audio) { assert.match(item.audio.sha256, /^[a-f0-9]{64}$/); assert.ok(item.audio.durationMs > 0); }
     const authored = JSON.parse(await readFile(`content/${item.taskType}/${item.id}.json`, 'utf8')); assert.equal(authored.id, old.id);
   }
-  assert.deepEqual(catalog.manifest.countsByTaskType, {'write-from-dictation':5,'repeat-sentence':6,'read-aloud':6});
+  assert.deepEqual(catalog.manifest.countsByTaskType, { ...taskRecord(()=>0), 'write-from-dictation':5,'repeat-sentence':6,'read-aloud':6 });
   assert.equal(catalog.bundle.items.some(i => i.id.endsWith('900001')), false);
 });
 test('fresh bootstrap installs exactly 17 eligible rows; repeated bootstrap writes nothing', async t => {

@@ -10,12 +10,12 @@ import { readAloudQuestions } from './helpers/legacy-question-bank.mjs';
 import { repeatSentenceQuestions } from './helpers/legacy-question-bank.mjs';
 import { writeFromDictationQuestions } from './helpers/legacy-question-bank.mjs';
 
-test('content v1 exposes immutable lifecycle/source/prefix vocabulary for existing tasks', () => {
-  assert.equal(QUESTION_BANK_SCHEMA_VERSION, 1);
+test('content v2 exposes immutable lifecycle/source/prefix vocabulary for existing tasks', () => {
+  assert.equal(QUESTION_BANK_SCHEMA_VERSION, 2);
   assert.deepEqual(CONTENT_STATUSES, ['draft', 'active', 'retired']);
   assert.deepEqual(CONTENT_SOURCES, ['internal', 'licensed', 'generated', 'imported']);
   assert.deepEqual(QUESTION_ID_PREFIXES, {
-    'write-from-dictation': 'wfd', 'repeat-sentence': 'rs', 'read-aloud': 'ra',
+    'write-from-dictation': 'wfd', 'repeat-sentence': 'rs', 'read-aloud': 'ra', 'retell-lecture': 'rtl', 'summarize-group-discussion': 'sgd', 'describe-image': 'di', 'summarize-written-text': 'swt', 'summarize-spoken-text': 'sst', 'highlight-incorrect-words': 'hiw',
   });
   assert.equal(NEW_QUESTION_ID_DIGITS, 6);
   for (const value of [CONTENT_STATUSES, CONTENT_SOURCES, QUESTION_ID_PREFIXES]) {
@@ -51,10 +51,10 @@ const item: QuestionBankItem = {
   revision: 1, status: 'draft', source: 'generated', tags: ['academic'], skills: ['listening', 'speaking'],
   topic: 'schedule', estimatedSeconds: 10, audio: { path: '/audio/rs/rs-000001.mp3' }, chunks: ['The lecture', 'starts at nine'],
 };
-const bundle: QuestionBankBundle = { schemaVersion: 1, items: [item] };
+const bundle: QuestionBankBundle = { schemaVersion: 2, items: [item] };
 const manifest: QuestionBankManifest = {
-  schemaVersion: 1, contentVersion: 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', itemCount: 1, audioAssetCount: 1,
-  countsByTaskType: { 'write-from-dictation': 0, 'repeat-sentence': 1, 'read-aloud': 0 },
+  schemaVersion: 2, contentVersion: 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', itemCount: 1, audioAssetCount: 1,
+  countsByTaskType: { 'write-from-dictation': 0, 'repeat-sentence': 1, 'read-aloud': 0, 'retell-lecture':0, 'summarize-group-discussion':0, 'describe-image':0, 'summarize-written-text':0, 'summarize-spoken-text':0, 'highlight-incorrect-words':0 },
 };
 const legacy: StudyItem = { id: 'rs-001', taskType: 'repeat-sentence', difficulty: 1, prompt: 'Listen.', audioUrl: '/audio/rs/rs-001.mp3', createdAt: '2026-10-02T00:00:00.000Z' };
 const oldAttempt: Attempt = { id: 'attempt', itemId: legacy.id, taskType: legacy.taskType, createdAt: legacy.createdAt };
@@ -66,9 +66,9 @@ const badStatus: StudyItemMetadata = { revision: 1, status: 'published', source:
 // @ts-expect-error provenance is not an arbitrary string
 const badSource: StudyItemMetadata = { revision: 1, status: 'draft', source: 'commercial' };
 // @ts-expect-error declaring the content contract does not register a new task
-const newTask: PteTaskType = 'retell-lecture';
-// @ts-expect-error schema version is literal 1
-const badBundle: QuestionBankBundle = { schemaVersion: 2, items: [] };
+const newTask: PteTaskType = 'answer-short-question';
+// @ts-expect-error schema version is literal 2
+const badBundle: QuestionBankBundle = { schemaVersion: 1, items: [] };
 // @ts-expect-error every implemented task needs a count, including zero
 const partialCounts: QuestionBankManifest['countsByTaskType'] = { 'read-aloud': 1 };
 // @ts-expect-error content identity uses the SHA-256 namespace
@@ -83,6 +83,14 @@ const alias: QuestionBankItem = { ...item, audioUrl: '/audio/rs/rs-001.mp3' };
 const timestamp: QuestionBankItem = { ...item, createdAt: 'today' };
 // @ts-expect-error attempt revision is numeric when present
 const badAttempt: Attempt = { ...oldAttempt, itemRevision: '1' };
+const lecture: StudyItem<'retell-lecture'> = { ...legacy, taskType: 'retell-lecture', taskData: { audio: { path: '/audio/lecture.mp3' }, transcript: 'A lecture.', keyPoints: ['Main point'] } };
+const written: QuestionBankItem<'summarize-written-text'> = { ...item, taskType: 'summarize-written-text', taskData: { passage: 'Source passage.', keyPoints: ['Main idea'] } };
+// @ts-expect-error typed task payload is not interchangeable with an image payload
+const wrongPayload: StudyItem<'describe-image'> = { ...legacy, taskType: 'describe-image', taskData: lecture.taskData };
+// @ts-expect-error foundation tasks cannot acquire unrelated taskData
+const foundationPayload: StudyItem<'read-aloud'> = { ...legacy, taskType: 'read-aloud', taskData: written.taskData };
+// @ts-expect-error nested authored semantic arrays are immutable
+written.taskData?.keyPoints.push('Extra');
 `;
   const options = { noEmit: true, strict: true, skipLibCheck: true,
     module: ts.ModuleKind.ESNext, moduleResolution: ts.ModuleResolutionKind.Bundler,

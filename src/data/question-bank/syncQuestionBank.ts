@@ -3,6 +3,7 @@ import type { QuestionBankSyncPlan } from '../../domain/content/syncTypes';
 import { ContentSyncError } from '../../domain/content/syncTypes.ts';
 import { planQuestionBankSync } from '../../domain/content/sync.ts';
 import { isValidPracticeItem } from '../../domain/content/installedContent.ts';
+import { isPracticeReadyTask } from '../../domain/pte/taskRegistry.ts';
 import { verifyQuestionBankCatalog, generatedQuestionBank } from './generatedQuestionBank.ts';
 
 export type ContentSyncResult = { status: 'installed'; plan: QuestionBankSyncPlan } | { status: 'unchanged' };
@@ -26,7 +27,7 @@ export async function syncQuestionBank(inputBundle: unknown, inputManifest: unkn
 export async function initializeQuestionBank(inputBundle: unknown, inputManifest: unknown, database: PteDatabase = db) {
   try {
     const catalog = verifyQuestionBankCatalog(inputBundle, inputManifest);
-    if (!catalog.bundle.items.some(item => item.status === 'active')) throw new ContentSyncError([{ code: 'NO_ACTIVE_CONTENT', message: 'Catalog has no active practice content.' }]);
+    if (!catalog.bundle.items.some(item => item.status === 'active' && isPracticeReadyTask(item.taskType))) throw new ContentSyncError([{ code: 'NO_ACTIVE_CONTENT', message: 'Catalog has no active practice content.' }]);
     return await syncQuestionBank(catalog.bundle, catalog.manifest, database);
   }
   catch {

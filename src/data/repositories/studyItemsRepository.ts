@@ -1,3 +1,4 @@
+import { taskRecord } from '../../domain/pte/taskRegistry.ts';
 import type { StudyItem } from '../../domain/pte/types';
 import { db, type PteDatabase } from '../db/database.ts';
 import { comparePracticeItems, matchesNothing, parseStudyItemQuery, practiceItemPredicate } from '../../domain/content/query.ts';
@@ -51,7 +52,7 @@ export function createStudyItemsRepository(database: PteDatabase = db) {
       return matchesNothing(query) ? 0 : candidates(query).count();
     },
     async countPracticeItemsByTaskType() {
-      const counts = { 'write-from-dictation': 0, 'repeat-sentence': 0, 'read-aloud': 0 };
+      const counts = taskRecord(() => 0);
       await database.studyItems.filter(practiceItemPredicate({})).each(item => { counts[item.taskType]++; });
       return counts;
     },

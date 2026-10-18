@@ -1,0 +1,24 @@
+{
+  "id": "di-900001",
+  "taskType": "describe-image",
+  "difficulty": 2,
+  "prompt": "Technical validation fixture; not learner content.",
+  "revision": 1,
+  "status": "draft",
+  "source": "internal",
+  "taskData": {
+    "image": {
+      "path": "/images/technical/chart.png",
+      "sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "bytes": 128,
+      "mediaType": "image/png",
+      "width": 640,
+      "height": 480
+    },
+    "imageAlt": "A technical bar chart.",
+    "imageType": "chart",
+    "keyFeatures": [
+      "A larger bar."
+    ]
+  }
+}

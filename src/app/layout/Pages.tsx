@@ -1,3 +1,5 @@
+import { PRACTICE_TASK_ORDER, TASK_LABELS } from '../../domain/pte/taskRegistry';
+import { PTE_SPEC_VERSION } from '../../domain/pte/spec';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -17,7 +19,7 @@ export function HomePage() {
     void db.settings
       .put({
         key: 'pteSpecVersion',
-        value: '2026-10-01',
+        value: PTE_SPEC_VERSION,
       })
       .then(() => db.settings.get('pteSpecVersion'))
       .then((setting) => {
@@ -68,15 +70,9 @@ export function StudyPage() {
         <button type="button" disabled={sessions.checking || sessions.starting} onClick={() => void sessions.check()}>Check again</button></>}
       <h3>Standalone Practice</h3>
       <div className="study-exercise-links">
-        <Link className="study-exercise-link" to="/study/write-from-dictation">
-          Write From Dictation
-        </Link>
-        <Link className="study-exercise-link" to="/study/repeat-sentence">
-          Repeat Sentence
-        </Link>
-        <Link className="study-exercise-link" to="/study/read-aloud">
-          Read Aloud
-        </Link>
+        {PRACTICE_TASK_ORDER.map(task => <Link key={task} className="study-exercise-link" to={'/study/' + task}>
+          {TASK_LABELS[task]}
+        </Link>)}
       </div>
     </section>
   );

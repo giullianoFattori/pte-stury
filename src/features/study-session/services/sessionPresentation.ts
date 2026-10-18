@@ -1,7 +1,6 @@
-import type { PteTaskType, StudySession } from '../../../domain/pte/types';
-export const SESSION_TASK_LABELS: Readonly<Record<PteTaskType, string>> = {
-  'write-from-dictation': 'Write From Dictation', 'repeat-sentence': 'Repeat Sentence', 'read-aloud': 'Read Aloud',
-};
+import type { StudySession } from '../../../domain/pte/types';
+export { TASK_LABELS as SESSION_TASK_LABELS } from '../../../domain/pte/taskRegistry.ts';
+import { TASK_LABELS as SESSION_TASK_LABELS } from '../../../domain/pte/taskRegistry.ts';
 export function sessionModeLabel(session: StudySession): string {
   return session.mode === 'quick' ? 'Quick Practice' : session.mode === 'task' ? 'Task Practice' : 'Mixed Practice';
 }

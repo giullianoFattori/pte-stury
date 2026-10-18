@@ -1,0 +1,18 @@
+{
+  "id": "rtl-900001",
+  "taskType": "retell-lecture",
+  "difficulty": 2,
+  "prompt": "Technical validation fixture; not learner content.",
+  "revision": 1,
+  "status": "draft",
+  "source": "internal",
+  "taskData": {
+    "audio": {
+      "path": "/audio/technical/source.mp3"
+    },
+    "transcript": "The lecture explains a process.",
+    "keyPoints": [
+      "A process is explained."
+    ]
+  }
+}

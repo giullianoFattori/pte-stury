@@ -1,3 +1,4 @@
+import { taskRecord } from '../src/domain/pte/taskRegistry.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { performance } from 'node:perf_hooks';
@@ -78,7 +79,7 @@ test('historical/admin lookups retain drafts, retired and unavailable identities
   const { repo } = await setup(t); assert.equal((await repo.getAll()).length, rows.length);
   for (const id of ['ra-900001', 'ra-000004', 'rs-000004']) assert.equal((await repo.getById(id)).id, id);
   assert.equal((await repo.queryPracticeItems()).some(i => i.id.endsWith('900001')), false);
-  assert.deepEqual(await repo.countPracticeItemsByTaskType(), { 'write-from-dictation': 1, 'repeat-sentence': 2, 'read-aloud': 3 });
+  assert.deepEqual(await repo.countPracticeItemsByTaskType(), { ...taskRecord(()=>0), 'write-from-dictation': 1, 'repeat-sentence': 2, 'read-aloud': 3 });
 });
 test('17 legacy items match task/difficulty but never inferred metadata; coverage is informational', async t => {
   const { db, repo } = await setup(t); await db.studyItems.bulkAdd([...writeFromDictationQuestions, ...repeatSentenceQuestions, ...readAloudQuestions]);
@@ -87,15 +88,15 @@ test('17 legacy items match task/difficulty but never inferred metadata; coverag
   for (const query of [{ skills: ['speaking'] }, { tags: ['academic'] }, { topic: 'Research' }]) assert.equal((await repo.queryPracticeItems({ ...legacyOnly, ...query })).length, 0);
   assert.equal((await repo.queryPracticeItems({ ...legacyOnly, difficulties: [1] })).length > 0, true);
   assert.deepEqual(await repo.practiceMetadataCoverage(), { eligibleItems: 23, missingSkills: 17, missingTags: 17, missingTopic: 17 });
-  assert.deepEqual(await repo.countPracticeItemsByTaskType(), { 'write-from-dictation': 6, 'repeat-sentence': 8, 'read-aloud': 9 });
+  assert.deepEqual(await repo.countPracticeItemsByTaskType(), { ...taskRecord(()=>0),  'write-from-dictation': 6, 'repeat-sentence': 8, 'read-aloud': 9  });
 });
 test('zero counts expose all implemented task keys and coverage on empty DB', async t => {
   const repo = createStudyItemsRepository(await database(t));
-  assert.deepEqual(await repo.countPracticeItemsByTaskType(), { 'write-from-dictation': 0, 'repeat-sentence': 0, 'read-aloud': 0 });
+  assert.deepEqual(await repo.countPracticeItemsByTaskType(), { ...taskRecord(()=>0),  'write-from-dictation': 0, 'repeat-sentence': 0, 'read-aloud': 0  });
   assert.deepEqual(await repo.practiceMetadataCoverage(), { eligibleItems: 0, missingSkills: 0, missingTags: 0, missingTopic: 0 });
 });
 for (const [field, value] of [
-  ['taskTypes', ['retell-lecture']], ['taskTypes', ['read-aloud', 'read-aloud']], ['taskTypes', 'read-aloud'],
+  ['taskTypes', ['answer-short-question']], ['taskTypes', ['read-aloud', 'read-aloud']], ['taskTypes', 'read-aloud'],
   ['difficulties', [0]], ['difficulties', [6]], ['difficulties', [2.5]], ['difficulties', ['2']], ['difficulties', [NaN]],
   ['skills', ['math']], ['skills', ['speaking', 'speaking']], ['tags', [1]], ['tags', ['']], ['tags', [' ']], ['tags', ['a', 'a']],
   ['tags', ['x'.repeat(101)]], ['tags', Array.from({ length: 51 }, (_, i) => String(i))],

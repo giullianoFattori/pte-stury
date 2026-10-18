@@ -1,7 +1,9 @@
+import { parseTaskData } from './taskDataValidation.ts';
 import type { QuestionBankItem, QuestionBankBundle } from './types.ts';
 import { QUESTION_BANK_SCHEMA_VERSION } from './types.ts';
 
-export const TASK_ORDER = Object.freeze(['write-from-dictation', 'repeat-sentence', 'read-aloud'] as const);
+export { KNOWN_TASK_ORDER as TASK_ORDER } from '../pte/taskRegistry.ts';
+import { KNOWN_TASK_ORDER as TASK_ORDER } from '../pte/taskRegistry.ts';
 export const compare = (a: string, b: string) => a < b ? -1 : a > b ? 1 : 0;
 /** Shared browser/build semantics; local installation fields and aliases are excluded. */
 export function canonicalItem(item: QuestionBankItem): QuestionBankItem {
@@ -18,6 +20,7 @@ export function canonicalItem(item: QuestionBankItem): QuestionBankItem {
     ...(item.chunks === undefined ? {} : { chunks: [...item.chunks] }),
     ...(item.phraseGroups === undefined ? {} : { phraseGroups: [...item.phraseGroups] }),
     ...(item.stressWords === undefined ? {} : { stressWords: [...item.stressWords] }),
+    ...(item.taskData === undefined ? {} : { taskData: parseTaskData(item.taskType, item.taskData, item.status !== 'draft') }),
     revision: item.revision, status: item.status, source: item.source,
     ...(item.tags === undefined ? {} : { tags: [...item.tags].sort(compare) }),
     ...(item.skills === undefined ? {} : { skills: [...item.skills].sort(compare) }),

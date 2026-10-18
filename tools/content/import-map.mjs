@@ -26,6 +26,9 @@ export function mapRecord(record, { format, source, allocateIds }) {
     } else if (format === 'csv' && ['tags', 'skills', 'chunks', 'phraseGroups', 'stressWords'].includes(key)) {
       try { const values = parseContentJson(value); if (!Array.isArray(values)) throw new Error(); output[key] = values; }
       catch { rejectAuthor('IMPORT_INVALID_ARRAY_CELL', 'Array cells must contain JSON arrays.', key); }
+    } else if (format === 'csv' && key === 'taskData') {
+      try { const data = parseContentJson(value); if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error(); output[key] = data; }
+      catch { rejectAuthor('IMPORT_MAPPING_FAILED', 'taskData cells must contain a JSON object.', key); }
     } else output[key] = value;
   }
   if (format === 'csv') {

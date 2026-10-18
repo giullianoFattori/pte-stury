@@ -1,3 +1,4 @@
+import { isPracticeReadyTask } from '../../domain/pte/taskRegistry.ts';
 import type { StudyItem } from '../../domain/pte/types';
 import type { StudyItemQuery } from '../../domain/content/queryTypes';
 import type { ContentVersion } from '../../domain/content/types';
@@ -14,6 +15,7 @@ export type SessionPreparationDependencies = Readonly<{
 /** Read-only application boundary. startStudySession adds 07.03 persistence and active-session policy. */
 export async function prepareStudySession(request: unknown, deps: SessionPreparationDependencies) {
   const validated = validateBuildRequest(request);
+  if (validated.taskTypes.some(task => !isPracticeReadyTask(task))) throw new StudySessionError({ path: 'taskTypes', code: 'INVALID_SESSION_CONFIG', message: 'This task is not ready for practice.' });
   try {
     const candidates = await deps.source.queryPracticeItems({ taskTypes: validated.taskTypes,
       ...(validated.difficulties ? { difficulties: validated.difficulties } : {}) });

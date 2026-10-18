@@ -56,7 +56,7 @@ function unique<T>(values: readonly T[], path: string, code?: StudySessionErrorC
   if (new Set(values).size !== values.length) fail(path, 'Duplicate entries are unsupported.', code);
 }
 function taskList(input: unknown, path: string): readonly PteTaskType[] {
-  const values = list(input, path, (value, key) => enumValue(value, tasks, key), 3);
+  const values = list(input, path, (value, key) => enumValue(value, tasks, key), tasks.length);
   if (!values.length) fail(path, 'At least one selection task is required.');
   unique(values, path); return values;
 }

@@ -1,0 +1,48 @@
+{
+  "id": "sgd-900001",
+  "taskType": "summarize-group-discussion",
+  "difficulty": 2,
+  "prompt": "Technical validation fixture; not learner content.",
+  "revision": 1,
+  "status": "draft",
+  "source": "internal",
+  "taskData": {
+    "audio": {
+      "path": "/audio/technical/source.mp3"
+    },
+    "speakers": [
+      {
+        "id": "1",
+        "label": "Speaker 1"
+      },
+      {
+        "id": "2",
+        "label": "Speaker 2"
+      },
+      {
+        "id": "3",
+        "label": "Speaker 3"
+      }
+    ],
+    "turns": [
+      {
+        "speakerId": "1",
+        "text": "Perspective 1"
+      },
+      {
+        "speakerId": "2",
+        "text": "Perspective 2"
+      },
+      {
+        "speakerId": "3",
+        "text": "Perspective 3"
+      }
+    ],
+    "keyPoints": [
+      "Three perspectives are discussed."
+    ],
+    "relationships": [
+      "The third speaker contrasts the first."
+    ]
+  }
+}

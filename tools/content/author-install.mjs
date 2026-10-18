@@ -1,3 +1,4 @@
+import { isKnownTaskType } from '../../src/domain/pte/taskRegistry.ts';
 import { mkdir, writeFile, lstat, readdir, rm, link } from 'node:fs/promises';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
@@ -24,7 +25,7 @@ export async function recoverAuthorStage(root) {
     for (const entry of journal.entries) {
       if (!entry || Object.keys(entry).sort().join(',') !== 'id,sha256,taskType' || !/^[0-9a-f]{64}$/.test(entry.sha256)
         || !/^(?:rs|ra|wfd)-(?!000000)[0-9]{6}$/.test(entry.id) || Number(entry.id.slice(-6)) >= 900000
-        || !['write-from-dictation', 'repeat-sentence', 'read-aloud'].includes(entry.taskType) || names.has(entry.id + '.json')) throw new Error();
+        || !isKnownTaskType(entry.taskType) || names.has(entry.id + '.json')) throw new Error();
       names.add(entry.id + '.json');
       const staged = join(stage, entry.id + '.json'), target = join(root, entry.taskType, entry.id + '.json');
       await assertDirectory(join(root, entry.taskType));

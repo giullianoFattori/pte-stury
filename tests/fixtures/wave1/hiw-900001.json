@@ -1,0 +1,33 @@
+{
+  "id": "hiw-900001",
+  "taskType": "highlight-incorrect-words",
+  "difficulty": 2,
+  "prompt": "Technical validation fixture; not learner content.",
+  "revision": 1,
+  "status": "draft",
+  "source": "internal",
+  "taskData": {
+    "audio": {
+      "path": "/audio/technical/source.mp3"
+    },
+    "spokenTranscript": "The lecture begins.",
+    "displayedTokens": [
+      {
+        "id": "token-1",
+        "text": "The",
+        "incorrect": false
+      },
+      {
+        "id": "token-2",
+        "text": "seminar",
+        "incorrect": true,
+        "spokenText": "lecture"
+      },
+      {
+        "id": "token-3",
+        "text": "begins.",
+        "incorrect": false
+      }
+    ]
+  }
+}

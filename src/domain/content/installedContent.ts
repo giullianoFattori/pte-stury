@@ -1,3 +1,4 @@
+import { isPracticeReadyTask } from '../pte/taskRegistry.ts';
 import type { StudyItem } from '../pte/types';
 import type { ContentVersion, QuestionBankItem, ContentStatus, ContentSource } from './types.ts';
 import { canonicalItem } from './canonical.ts';
@@ -29,7 +30,7 @@ export function installItem(item: QuestionBankItem, createdAt: string): Installe
     ...(stressWords ? { stressWords: [...stressWords] } : {}),
   };
 }
-export function isPracticeEligible(item: StudyItem): boolean {
+export function isCatalogEligible(item: StudyItem): boolean {
   if (item.revision !== undefined || item.status !== undefined || item.source !== undefined || item.catalogAvailable !== undefined) {
     return Number.isSafeInteger(item.revision) && (item.revision ?? 0) > 0 && item.source !== undefined
       && item.status === 'active' && item.catalogAvailable === true;
@@ -37,6 +38,7 @@ export function isPracticeEligible(item: StudyItem): boolean {
   // Transitional compatibility only for the explicit 17 identities, never new drafts.
   return LEGACY_QUESTION_IDS[item.taskType]?.some(id => id === item.id) ?? false;
 }
+export function isPracticeEligible(item: StudyItem): boolean { return isPracticeReadyTask(item.taskType) && isCatalogEligible(item); }
 export function isValidPracticeItem(item: StudyItem): boolean {
   if (!isPracticeEligible(item)) return false;
   if (item.revision !== undefined) return safeParseQuestionBankItem(authoredContent(item)).success;

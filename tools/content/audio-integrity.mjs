@@ -1,3 +1,4 @@
+import { contentAudio } from '../../src/domain/pte/taskData.ts';
 import { lstat, open, realpath, opendir } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { resolve, relative, join, sep, extname, dirname } from 'node:path';
@@ -7,7 +8,7 @@ import { AudioError, failAudio, createAudioMedia, inspectAudioMetadata } from '.
 
 export const AUDIO_MAX_BYTES = 20 * 1024 * 1024;
 const identity = stat => [stat.dev, stat.ino, stat.size, stat.mtimeMs, stat.ctimeMs].join(':');
-const diagnostic = (item, code, message) => ({ itemId: item.id, file: item.audio.path, path: 'audio', code, message });
+const diagnostic = (item, code, message) => ({ itemId: item.id, file: item.audio.path, path: item.taskData ? 'taskData.audio' : 'audio', code, message });
 async function trustedDirectory(path) {
   const stat = await lstat(path);
   if (stat.isSymbolicLink() || await realpath(path) !== resolve(path)) failAudio('AUDIO_SYMLINK', 'Audio directories cannot contain symlink components.');
@@ -67,7 +68,8 @@ export async function validateAudioAssets(items, { audioRoot = resolve('public/a
   const errors = [], warnings = [], assets = [], cache = new Map(), recorded = new Set();
   // Resolve tools lazily: audio-free banks need no native tools installed.
   let checker = media;
-  for (const item of items) {
+  for (const original of items) {
+    const item = { ...original, audio: contentAudio(original) };
     if (!item.audio) continue;
     try {
       const path = await resolveAudioPath(item.audio.path, audioRoot);
@@ -111,13 +113,13 @@ export async function validateAudioAssets(items, { audioRoot = resolve('public/a
       }
       await scan(audioRoot, 0);
     } catch (error) {
-      if (!(error.code === 'ENOENT' && !items.some(item => item.audio))) errors.push({ file: '/audio/', path: 'audio',
+      if (!(error.code === 'ENOENT' && !items.some(item => contentAudio(item)))) errors.push({ file: '/audio/', path: 'audio',
         code: error instanceof AudioError ? error.code : 'AUDIO_CHECK_FAILED', message: 'Managed audio tree could not be inventoried safely.' });
     }
   }
   assets.sort((a, b) => a.path < b.path ? -1 : a.path > b.path ? 1 : 0);
   const distribution = field => Object.fromEntries([...new Set(assets.map(a => a[field]))].sort().map(value => [value, assets.filter(a => a[field] === value).length]));
-  return { errors, warnings, assets, stats: { referencedAssets: new Set(items.filter(item => item.audio).map(item => item.audio.path)).size, validatedAssets: assets.length,
+  return { errors, warnings, assets, stats: { referencedAssets: new Set(items.map(contentAudio).filter(Boolean).map(audio => audio.path)).size, validatedAssets: assets.length,
     missingFiles: errors.filter(e => e.code === 'AUDIO_NOT_FOUND').length, totalBytes: assets.reduce((n, a) => n + a.sizeBytes, 0),
     totalDurationMs: assets.reduce((n, a) => n + a.durationMs, 0), formats: distribution('container'), codecs: distribution('codec') } };
 }

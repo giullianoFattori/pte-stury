@@ -1,8 +1,12 @@
+import { KNOWN_TASK_ORDER, taskTypeForItemId, isKnownTaskType } from '../pte/taskRegistry.ts';
 import type { PteTaskType } from '../pte/types';
 import type { StudySessionMode } from './types';
 import { parseStudySession } from './lifecycle.ts';
 import { StudySessionError } from './errors.ts';
 
+// A rollout must register explicit metric handling before enabling practice. No RA fallback.
+const SUMMARY_EXACT_KEYS: Readonly<Partial<Record<PteTaskType, string>>> = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' });
+export const SESSION_SUMMARY_TASKS = Object.freeze(KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)));
 export type TaskSessionSummary = Readonly<{
   taskType: PteTaskType;
   questionCount: number;
@@ -66,14 +70,15 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
   Array.from(rows).forEach((row, index) => {
     if (row === undefined || row === null) throw new StudySessionError({ path: `attempts[${index}]`, code: 'SESSION_SUMMARY_INCOMPLETE', message: 'A referenced session result is missing.' });
     const path = `attempts[${index}]`, attempt = object(row, path);
-    const task = session.taskTypes.find(t => session.itemIds[index].startsWith(t === 'write-from-dictation' ? 'wfd-' : t === 'repeat-sentence' ? 'rs-' : 'ra-'));
+    const task = attempt.taskType;
+    if (!isKnownTaskType(task) || taskTypeForItemId(session.itemIds[index]) !== task || !session.taskTypes.includes(task) || !Object.hasOwn(SUMMARY_EXACT_KEYS, task)) corrupt(`${path}.taskType`);
     if (attempt.id !== session.attemptIds[index] || attempt.itemId !== session.itemIds[index] || !task || attempt.taskType !== task ||
         (attempt.sessionId !== undefined && attempt.sessionId !== session.id)) corrupt(path);
     const metrics = object(attempt.metrics, `${path}.metrics`);
     const correct = metric(metrics, 'correctWords', path, true), expected = metric(metrics, 'expectedWords', path, true);
     if (expected === 0 || correct > expected) corrupt(`${path}.expectedWords`);
     metric(metrics, 'totalErrors', path, true);
-    const exact = task === 'write-from-dictation' ? 'exactMatch' : task === 'repeat-sentence' ? 'exactContentMatch' : 'exactTextMatch';
+    const exact = SUMMARY_EXACT_KEYS[task]!;
     if (typeof metrics[exact] !== 'boolean') corrupt(`${path}.${exact}`);
     if (task === 'repeat-sentence') {
       metric(metrics, 'sequenceAccuracyPercent', path, false, 100);
@@ -92,12 +97,12 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     groups.set(task, [...(groups.get(task) ?? []), metrics]);
   });
   const byTask: Partial<Record<PteTaskType, TaskSessionSummary>> = {};
-  for (const task of ['write-from-dictation', 'repeat-sentence', 'read-aloud'] as const) {
+  for (const task of KNOWN_TASK_ORDER) {
     const group = groups.get(task); if (!group) continue;
     // All fields below were individually validated above. No optional measurement becomes zero.
     const numbers = (key: string) => group.map(m => m[key] as number);
     const correctWords = total(numbers('correctWords'), task), expectedWords = total(numbers('expectedWords'), task);
-    const exactKey = task === 'write-from-dictation' ? 'exactMatch' : task === 'repeat-sentence' ? 'exactContentMatch' : 'exactTextMatch';
+    const exactKey = SUMMARY_EXACT_KEYS[task]!;
     const extra: { -readonly [K in keyof TaskSessionSummary]?: TaskSessionSummary[K] } = {};
     if (task === 'repeat-sentence') {
       extra.sequenceAccuracyPercent = group.reduce((sum, m) => sum + (m.sequenceAccuracyPercent as number) * ((m.expectedWords as number) / expectedWords), 0);

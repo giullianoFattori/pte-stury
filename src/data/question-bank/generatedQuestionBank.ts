@@ -1,3 +1,5 @@
+import { contentAudio } from '../../domain/pte/taskData.ts';
+import { taskRecord } from '../../domain/pte/taskRegistry.ts';
 import bundle from '../../generated/question-bank.json' with { type: 'json' };
 import manifest from '../../generated/question-bank.manifest.json' with { type: 'json' };
 import type { QuestionBankBundle, QuestionBankManifest } from '../../domain/content/types';
@@ -22,9 +24,9 @@ export function verifyQuestionBankCatalog(inputBundle: unknown, inputManifest: u
   if (!parsed.success || parsed.items.length === 0) invalid();
   const counts = inputManifest.countsByTaskType;
   if (!record(counts) || Object.keys(counts).sort().join(',') !== [...TASK_ORDER].sort().join(',')) invalid();
-  const taskCounts = { 'write-from-dictation': 0, 'repeat-sentence': 0, 'read-aloud': 0 };
+  const taskCounts = taskRecord(() => 0);
   const audio = new Set<string>();
-  for (const item of parsed.items) { taskCounts[item.taskType]++; if (item.audio) audio.add(item.audio.path); }
+  for (const item of parsed.items) { taskCounts[item.taskType]++; const asset = contentAudio(item); if (asset) audio.add(asset.path); }
   if (inputManifest.itemCount !== parsed.items.length || inputManifest.audioAssetCount !== audio.size
     || TASK_ORDER.some(task => counts[task] !== taskCounts[task])) invalid();
   return {

@@ -1,15 +1,20 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://pte-study.local/schemas/question-bank-item-v1.json",
-  "title": "PTE Study question-bank item — schema v1",
+  "$id": "https://pte-study.local/schemas/question-bank-item-v2.json",
+  "title": "PTE Study question-bank item — schema v2",
   "description": "One authored item, not a bank bundle. Runtime validation is authoritative.",
   "$comment": "Standard JSON Schema cannot compare two property values. x-pte-semanticRules declares that additional runtime rule; editor validation alone cannot approve content.",
-  "x-pte-schemaVersion": 1,
+  "x-pte-schemaVersion": 2,
   "x-pte-semanticRules": [
     {
       "code": "ANSWER_TRANSCRIPT_MISMATCH",
       "path": "answer",
-      "rule": "When answer and transcript are both present, they must be exactly equal (including on drafts)."
+      "rule": "Foundation answer and transcript, when both present, must be exactly equal (including drafts)."
+    },
+    {
+      "code": "INVALID_TASK_DATA",
+      "path": "taskData",
+      "rule": "Runtime additionally enforces unique/referenced three-speaker IDs, coherent HIW token truth/transcript and image MIME/extension agreement."
     }
   ],
   "type": "object",
@@ -67,6 +72,24 @@
             "ra-005",
             "ra-006"
           ]
+        },
+        {
+          "pattern": "^rtl-(?!000000)[0-9]{6}$(?![\\s\\S])"
+        },
+        {
+          "pattern": "^sgd-(?!000000)[0-9]{6}$(?![\\s\\S])"
+        },
+        {
+          "pattern": "^di-(?!000000)[0-9]{6}$(?![\\s\\S])"
+        },
+        {
+          "pattern": "^swt-(?!000000)[0-9]{6}$(?![\\s\\S])"
+        },
+        {
+          "pattern": "^sst-(?!000000)[0-9]{6}$(?![\\s\\S])"
+        },
+        {
+          "pattern": "^hiw-(?!000000)[0-9]{6}$(?![\\s\\S])"
         }
       ]
     },
@@ -74,7 +97,13 @@
       "enum": [
         "write-from-dictation",
         "repeat-sentence",
-        "read-aloud"
+        "read-aloud",
+        "retell-lecture",
+        "summarize-group-discussion",
+        "describe-image",
+        "summarize-written-text",
+        "summarize-spoken-text",
+        "highlight-incorrect-words"
       ]
     },
     "difficulty": {
@@ -192,10 +221,6 @@
     },
     "audio": {
       "type": "object",
-      "additionalProperties": false,
-      "required": [
-        "path"
-      ],
       "properties": {
         "path": {
           "type": "string",
@@ -216,7 +241,517 @@
           "maxLength": 100,
           "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
         }
-      }
+      },
+      "required": [
+        "path"
+      ],
+      "additionalProperties": false
+    },
+    "taskData": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "audio": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "maxLength": 512,
+                  "pattern": "^/audio/(?:[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*/)*[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*$(?![\\s\\S])"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                },
+                "durationMs": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "mimeType": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
+                }
+              },
+              "required": [
+                "path"
+              ],
+              "additionalProperties": false
+            },
+            "transcript": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50000,
+              "pattern": "\\S"
+            },
+            "keyPoints": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 200,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            },
+            "keywords": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 200,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            },
+            "image": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "maxLength": 512,
+                  "pattern": "^/images/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp)$(?![\\s\\S])"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20971520
+                },
+                "mediaType": {
+                  "type": "string",
+                  "enum": [
+                    "image/png",
+                    "image/jpeg",
+                    "image/webp"
+                  ]
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16384
+                },
+                "height": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16384
+                }
+              },
+              "required": [
+                "path",
+                "sha256",
+                "bytes",
+                "mediaType",
+                "width",
+                "height"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "audio",
+            "transcript",
+            "keyPoints"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "audio": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "maxLength": 512,
+                  "pattern": "^/audio/(?:[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*/)*[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*$(?![\\s\\S])"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                },
+                "durationMs": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "mimeType": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
+                }
+              },
+              "required": [
+                "path"
+              ],
+              "additionalProperties": false
+            },
+            "speakers": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$(?![\\s\\S])"
+                  },
+                  "label": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 200,
+                    "pattern": "\\S"
+                  }
+                },
+                "required": [
+                  "id",
+                  "label"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "turns": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 500,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "speakerId": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$(?![\\s\\S])"
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 10000,
+                    "pattern": "\\S"
+                  }
+                },
+                "required": [
+                  "speakerId",
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "keyPoints": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 200,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            },
+            "relationships": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 200,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            }
+          },
+          "required": [
+            "audio",
+            "speakers",
+            "turns",
+            "keyPoints"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "image": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "maxLength": 512,
+                  "pattern": "^/images/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp)$(?![\\s\\S])"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 20971520
+                },
+                "mediaType": {
+                  "type": "string",
+                  "enum": [
+                    "image/png",
+                    "image/jpeg",
+                    "image/webp"
+                  ]
+                },
+                "width": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16384
+                },
+                "height": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 16384
+                }
+              },
+              "required": [
+                "path",
+                "sha256",
+                "bytes",
+                "mediaType",
+                "width",
+                "height"
+              ],
+              "additionalProperties": false
+            },
+            "imageAlt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2000,
+              "pattern": "\\S"
+            },
+            "imageType": {
+              "type": "string",
+              "enum": [
+                "chart",
+                "graph",
+                "map",
+                "table",
+                "process",
+                "photo",
+                "diagram",
+                "mixed"
+              ]
+            },
+            "keyFeatures": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 200,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            },
+            "keywords": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 200,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            }
+          },
+          "required": [
+            "image",
+            "imageAlt",
+            "imageType",
+            "keyFeatures"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "passage": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50000,
+              "pattern": "\\S"
+            },
+            "keyPoints": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 200,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            },
+            "referenceSummary": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "passage",
+            "keyPoints"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "audio": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "maxLength": 512,
+                  "pattern": "^/audio/(?:[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*/)*[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*$(?![\\s\\S])"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                },
+                "durationMs": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "mimeType": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
+                }
+              },
+              "required": [
+                "path"
+              ],
+              "additionalProperties": false
+            },
+            "transcript": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50000,
+              "pattern": "\\S"
+            },
+            "keyPoints": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 200,
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
+              }
+            },
+            "referenceSummary": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000,
+              "pattern": "\\S"
+            }
+          },
+          "required": [
+            "audio",
+            "transcript",
+            "keyPoints"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "audio": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "maxLength": 512,
+                  "pattern": "^/audio/(?:[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*/)*[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*$(?![\\s\\S])"
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                },
+                "durationMs": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 9007199254740991
+                },
+                "mimeType": {
+                  "type": "string",
+                  "maxLength": 100,
+                  "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
+                }
+              },
+              "required": [
+                "path"
+              ],
+              "additionalProperties": false
+            },
+            "spokenTranscript": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 50000,
+              "pattern": "\\S"
+            },
+            "displayedTokens": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 2000,
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$(?![\\s\\S])"
+                  },
+                  "text": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "^[^\\s\\x00-\\x1f]+$(?![\\s\\S])"
+                  },
+                  "incorrect": {
+                    "type": "boolean"
+                  },
+                  "spokenText": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 1000,
+                    "pattern": "^[^\\s\\x00-\\x1f]+$(?![\\s\\S])"
+                  }
+                },
+                "required": [
+                  "id",
+                  "text",
+                  "incorrect"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "audio",
+            "spokenTranscript",
+            "displayedTokens"
+          ],
+          "additionalProperties": false
+        }
+      ]
     }
   },
   "allOf": [
@@ -321,6 +856,1003 @@
     {
       "if": {
         "properties": {
+          "taskType": {
+            "const": "retell-lecture"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "pattern": "^rtl-(?!000000)[0-9]{6}$(?![\\s\\S])"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "summarize-group-discussion"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "pattern": "^sgd-(?!000000)[0-9]{6}$(?![\\s\\S])"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "describe-image"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "pattern": "^di-(?!000000)[0-9]{6}$(?![\\s\\S])"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "summarize-written-text"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "pattern": "^swt-(?!000000)[0-9]{6}$(?![\\s\\S])"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "summarize-spoken-text"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "pattern": "^sst-(?!000000)[0-9]{6}$(?![\\s\\S])"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "highlight-incorrect-words"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "id": {
+            "anyOf": [
+              {
+                "pattern": "^hiw-(?!000000)[0-9]{6}$(?![\\s\\S])"
+              }
+            ]
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "retell-lecture"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "taskData": {
+            "type": "object",
+            "properties": {
+              "audio": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "pattern": "^/audio/(?:[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*/)*[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*$(?![\\s\\S])"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                  },
+                  "durationMs": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "mimeType": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "transcript": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50000,
+                "pattern": "\\S"
+              },
+              "keyPoints": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000,
+                  "pattern": "\\S"
+                }
+              },
+              "keywords": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000,
+                  "pattern": "\\S"
+                }
+              },
+              "image": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "pattern": "^/images/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp)$(?![\\s\\S])"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                  },
+                  "bytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20971520
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "enum": [
+                      "image/png",
+                      "image/jpeg",
+                      "image/webp"
+                    ]
+                  },
+                  "width": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 16384
+                  },
+                  "height": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 16384
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256",
+                  "bytes",
+                  "mediaType",
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "audio",
+              "transcript",
+              "keyPoints"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "answer"
+              ]
+            },
+            {
+              "required": [
+                "transcript"
+              ]
+            },
+            {
+              "required": [
+                "audio"
+              ]
+            },
+            {
+              "required": [
+                "chunks"
+              ]
+            },
+            {
+              "required": [
+                "phraseGroups"
+              ]
+            },
+            {
+              "required": [
+                "stressWords"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "summarize-group-discussion"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "taskData": {
+            "type": "object",
+            "properties": {
+              "audio": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "pattern": "^/audio/(?:[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*/)*[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*$(?![\\s\\S])"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                  },
+                  "durationMs": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "mimeType": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "speakers": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 3,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$(?![\\s\\S])"
+                    },
+                    "label": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 200,
+                      "pattern": "\\S"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "label"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "turns": {
+                "type": "array",
+                "minItems": 3,
+                "maxItems": 500,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "speakerId": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$(?![\\s\\S])"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 10000,
+                      "pattern": "\\S"
+                    }
+                  },
+                  "required": [
+                    "speakerId",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "keyPoints": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000,
+                  "pattern": "\\S"
+                }
+              },
+              "relationships": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000,
+                  "pattern": "\\S"
+                }
+              }
+            },
+            "required": [
+              "audio",
+              "speakers",
+              "turns",
+              "keyPoints"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "answer"
+              ]
+            },
+            {
+              "required": [
+                "transcript"
+              ]
+            },
+            {
+              "required": [
+                "audio"
+              ]
+            },
+            {
+              "required": [
+                "chunks"
+              ]
+            },
+            {
+              "required": [
+                "phraseGroups"
+              ]
+            },
+            {
+              "required": [
+                "stressWords"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "describe-image"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "taskData": {
+            "type": "object",
+            "properties": {
+              "image": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "pattern": "^/images/(?:[A-Za-z0-9_-]+/)*[A-Za-z0-9_-]+\\.(?:png|jpg|jpeg|webp)$(?![\\s\\S])"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                  },
+                  "bytes": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 20971520
+                  },
+                  "mediaType": {
+                    "type": "string",
+                    "enum": [
+                      "image/png",
+                      "image/jpeg",
+                      "image/webp"
+                    ]
+                  },
+                  "width": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 16384
+                  },
+                  "height": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 16384
+                  }
+                },
+                "required": [
+                  "path",
+                  "sha256",
+                  "bytes",
+                  "mediaType",
+                  "width",
+                  "height"
+                ],
+                "additionalProperties": false
+              },
+              "imageAlt": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2000,
+                "pattern": "\\S"
+              },
+              "imageType": {
+                "type": "string",
+                "enum": [
+                  "chart",
+                  "graph",
+                  "map",
+                  "table",
+                  "process",
+                  "photo",
+                  "diagram",
+                  "mixed"
+                ]
+              },
+              "keyFeatures": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000,
+                  "pattern": "\\S"
+                }
+              },
+              "keywords": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000,
+                  "pattern": "\\S"
+                }
+              }
+            },
+            "required": [
+              "image",
+              "imageAlt",
+              "imageType",
+              "keyFeatures"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "answer"
+              ]
+            },
+            {
+              "required": [
+                "transcript"
+              ]
+            },
+            {
+              "required": [
+                "audio"
+              ]
+            },
+            {
+              "required": [
+                "chunks"
+              ]
+            },
+            {
+              "required": [
+                "phraseGroups"
+              ]
+            },
+            {
+              "required": [
+                "stressWords"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "summarize-written-text"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "taskData": {
+            "type": "object",
+            "properties": {
+              "passage": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50000,
+                "pattern": "\\S"
+              },
+              "keyPoints": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000,
+                  "pattern": "\\S"
+                }
+              },
+              "referenceSummary": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "passage",
+              "keyPoints"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "answer"
+              ]
+            },
+            {
+              "required": [
+                "transcript"
+              ]
+            },
+            {
+              "required": [
+                "audio"
+              ]
+            },
+            {
+              "required": [
+                "chunks"
+              ]
+            },
+            {
+              "required": [
+                "phraseGroups"
+              ]
+            },
+            {
+              "required": [
+                "stressWords"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "summarize-spoken-text"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "taskData": {
+            "type": "object",
+            "properties": {
+              "audio": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "pattern": "^/audio/(?:[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*/)*[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*$(?![\\s\\S])"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                  },
+                  "durationMs": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "mimeType": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "transcript": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50000,
+                "pattern": "\\S"
+              },
+              "keyPoints": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 200,
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000,
+                  "pattern": "\\S"
+                }
+              },
+              "referenceSummary": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 10000,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "audio",
+              "transcript",
+              "keyPoints"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "answer"
+              ]
+            },
+            {
+              "required": [
+                "transcript"
+              ]
+            },
+            {
+              "required": [
+                "audio"
+              ]
+            },
+            {
+              "required": [
+                "chunks"
+              ]
+            },
+            {
+              "required": [
+                "phraseGroups"
+              ]
+            },
+            {
+              "required": [
+                "stressWords"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "highlight-incorrect-words"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "properties": {
+          "taskData": {
+            "type": "object",
+            "properties": {
+              "audio": {
+                "type": "object",
+                "properties": {
+                  "path": {
+                    "type": "string",
+                    "maxLength": 512,
+                    "pattern": "^/audio/(?:[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*/)*[A-Za-z0-9_-]+(?:\\.[A-Za-z0-9_-]+)*$(?![\\s\\S])"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{64}$(?![\\s\\S])"
+                  },
+                  "durationMs": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 9007199254740991
+                  },
+                  "mimeType": {
+                    "type": "string",
+                    "maxLength": 100,
+                    "pattern": "^audio/[A-Za-z0-9][A-Za-z0-9!#$&^_.+-]*$(?![\\s\\S])"
+                  }
+                },
+                "required": [
+                  "path"
+                ],
+                "additionalProperties": false
+              },
+              "spokenTranscript": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 50000,
+                "pattern": "\\S"
+              },
+              "displayedTokens": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 2000,
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string",
+                      "maxLength": 64,
+                      "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$(?![\\s\\S])"
+                    },
+                    "text": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "^[^\\s\\x00-\\x1f]+$(?![\\s\\S])"
+                    },
+                    "incorrect": {
+                      "type": "boolean"
+                    },
+                    "spokenText": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1000,
+                      "pattern": "^[^\\s\\x00-\\x1f]+$(?![\\s\\S])"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "text",
+                    "incorrect"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "audio",
+              "spokenTranscript",
+              "displayedTokens"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "answer"
+              ]
+            },
+            {
+              "required": [
+                "transcript"
+              ]
+            },
+            {
+              "required": [
+                "audio"
+              ]
+            },
+            {
+              "required": [
+                "chunks"
+              ]
+            },
+            {
+              "required": [
+                "phraseGroups"
+              ]
+            },
+            {
+              "required": [
+                "stressWords"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "write-from-dictation"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "taskData"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "repeat-sentence"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "taskData"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "taskType": {
+            "const": "read-aloud"
+          }
+        },
+        "required": [
+          "taskType"
+        ]
+      },
+      "then": {
+        "not": {
+          "required": [
+            "taskData"
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
           "status": {
             "enum": [
               "active",
@@ -341,6 +1873,15 @@
             "required": [
               "sha256"
             ]
+          },
+          "taskData": {
+            "properties": {
+              "audio": {
+                "required": [
+                  "sha256"
+                ]
+              }
+            }
           }
         },
         "allOf": [
@@ -400,6 +1941,114 @@
               "required": [
                 "answer",
                 "transcript",
+                "skills"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "taskType": {
+                  "const": "retell-lecture"
+                }
+              },
+              "required": [
+                "taskType"
+              ]
+            },
+            "then": {
+              "required": [
+                "taskData",
+                "skills"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "taskType": {
+                  "const": "summarize-group-discussion"
+                }
+              },
+              "required": [
+                "taskType"
+              ]
+            },
+            "then": {
+              "required": [
+                "taskData",
+                "skills"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "taskType": {
+                  "const": "describe-image"
+                }
+              },
+              "required": [
+                "taskType"
+              ]
+            },
+            "then": {
+              "required": [
+                "taskData",
+                "skills"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "taskType": {
+                  "const": "summarize-written-text"
+                }
+              },
+              "required": [
+                "taskType"
+              ]
+            },
+            "then": {
+              "required": [
+                "taskData",
+                "skills"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "taskType": {
+                  "const": "summarize-spoken-text"
+                }
+              },
+              "required": [
+                "taskType"
+              ]
+            },
+            "then": {
+              "required": [
+                "taskData",
+                "skills"
+              ]
+            }
+          },
+          {
+            "if": {
+              "properties": {
+                "taskType": {
+                  "const": "highlight-incorrect-words"
+                }
+              },
+              "required": [
+                "taskType"
+              ]
+            },
+            "then": {
+              "required": [
+                "taskData",
                 "skills"
               ]
             }

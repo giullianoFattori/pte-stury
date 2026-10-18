@@ -1,3 +1,4 @@
+import { QUICK_TASK_POOL } from '../pte/taskRegistry.ts';
 import { TASK_ORDER } from '../content/canonical.ts';
 import { parseStudySessionConfig } from './lifecycle.ts';
 import { StudySessionError } from './errors.ts';
@@ -19,8 +20,8 @@ export function validateBuildRequest(input: unknown): ValidatedSessionBuildReque
   if (mode === 'quick') {
     if (Object.hasOwn(value, 'taskTypes') || Object.hasOwn(value, 'difficulties')
       || Object.hasOwn(value, 'itemCount') && value.itemCount !== 5)
-      invalidBuildConfig('request', 'Quick Practice uses five questions, all available tasks and unrestricted difficulty.');
-    return Object.freeze({ mode, itemCount: 5, taskTypes: TASK_ORDER });
+      invalidBuildConfig('request', 'Quick Practice uses five questions, the explicit Quick pool and unrestricted difficulty.');
+    return Object.freeze({ mode, itemCount: 5, taskTypes: QUICK_TASK_POOL });
   }
   const config = parseStudySessionConfig({ itemCount: value.itemCount,
     ...(Object.hasOwn(value, 'taskTypes') ? { taskTypes: value.taskTypes } : {}),

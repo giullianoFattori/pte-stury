@@ -50,7 +50,7 @@ test('fresh transactional install persists state, canonical metadata and audio a
   const db = await database(t), result = await sync(db, [ra, rs, wfd]);
   assert.equal(result.status, 'installed'); assert.equal(await db.studyItems.count(), 3);
   assert.equal((await db.studyItems.get(rs.id)).audioUrl, rs.audio.path);
-  const state = await db.contentState.get('question-bank'); assert.equal(state.schemaVersion, 1);
+  const state = await db.contentState.get('question-bank'); assert.equal(state.schemaVersion, 2);
   assert.equal(state.contentVersion, catalog([ra, rs, wfd]).manifest.contentVersion); assert.equal(new Date(state.installedAt).toISOString(), state.installedAt);
   for (const table of ['attempts', 'errors', 'reviews', 'studySessions']) assert.equal(await db.table(table).count(), 0);
 });
@@ -121,7 +121,7 @@ test('legacy bank is valid fallback; malformed old bank is never accepted as usa
 });
 test('browser sanity checks reject wrong counts/schema/hash shape/unknown fields and duplicates', () => {
   const good = catalog([ra, rs]); verifyQuestionBankCatalog(good.bundle, good.manifest);
-  for (const changed of [{ ...good.manifest, schemaVersion: 2 }, { ...good.manifest, contentVersion: 'sha256:BAD' }, { ...good.manifest, contentVersion: good.manifest.contentVersion + '\n' }, { ...good.manifest, itemCount: 9 }, { ...good.manifest, audioAssetCount: 9 }, { ...good.manifest, extra: true }, { ...good.manifest, countsByTaskType: {} }]) assert.throws(() => verifyQuestionBankCatalog(good.bundle, changed), ContentSyncError);
+  for (const changed of [{ ...good.manifest, schemaVersion: 3 }, { ...good.manifest, contentVersion: 'sha256:BAD' }, { ...good.manifest, contentVersion: good.manifest.contentVersion + '\n' }, { ...good.manifest, itemCount: 9 }, { ...good.manifest, audioAssetCount: 9 }, { ...good.manifest, extra: true }, { ...good.manifest, countsByTaskType: {} }]) assert.throws(() => verifyQuestionBankCatalog(good.bundle, changed), ContentSyncError);
   assert.throws(() => verifyQuestionBankCatalog({ ...good.bundle, extra: true }, good.manifest), ContentSyncError);
   assert.throws(() => verifyQuestionBankCatalog({ ...good.bundle, items: [ra, ra] }, good.manifest), ContentSyncError);
 });

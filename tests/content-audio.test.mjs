@@ -1,3 +1,4 @@
+import { KNOWN_TASK_ORDER } from '../src/domain/pte/taskRegistry.ts';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, writeFile, readFile, rm, symlink, copyFile, truncate } from 'node:fs/promises';
@@ -139,7 +140,7 @@ test('orphan assets are warnings and publication duration is advisory', async t 
 });
 test('audio failure preserves the last-good generated pair and leaves no staging files', async t => {
   const { root, audioRoot } = await space(t), sourceRoot = join(root, 'content'), outputRoot = join(root, 'generated');
-  for (const task of ['write-from-dictation', 'repeat-sentence', 'read-aloud']) await mkdir(join(sourceRoot, task), { recursive: true });
+  for (const task of KNOWN_TASK_ORDER) await mkdir(join(sourceRoot, task), { recursive: true });
   const content = { ...item({ sha256 }), taskType: 'repeat-sentence', difficulty: 2, prompt: 'Draft fixture', revision: 1, source: 'internal' };
   const path = join(sourceRoot, 'repeat-sentence/rs-000001.json'); await writeFile(path, JSON.stringify(content));
   const audioOptions = { audioRoot, reportOrphans: false };

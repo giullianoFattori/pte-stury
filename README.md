@@ -19,6 +19,13 @@ Startup installs the generated catalog transactionally in Dexie v3. Historical I
 learner history and legacy timestamps are preserved; new attempts capture revision 1.
 Draft/retired/unavailable content is excluded from practice.
 
+[Activity 08.01](docs/content/wave-1-contracts-08.01.md) freezes six Wave 1 tasks,
+centralizes task metadata and adds typed payloads under content schema v2.
+Only WFD/RS/RA remain practice-ready; Quick keeps its explicit foundation pool.
+The existing 17 questions and revisions are unchanged, and Dexie stays v3.
+See [verified Pearson task facts](docs/pte-spec/wave-1-2026-10.md) before each
+exercise implementation. Retell Lecture is next; new exercises are not enabled yet.
+
 ```bash
 npm run content:validate
 npm run content:build

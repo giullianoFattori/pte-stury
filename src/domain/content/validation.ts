@@ -1,3 +1,6 @@
+import { contentAudio } from '../pte/taskData.ts';
+import { KNOWN_TASK_ORDER } from '../pte/taskRegistry.ts';
+import { taskDataIssues } from './taskDataValidation.ts';
 import {
   CONTENT_SOURCES, CONTENT_STATUSES,
 } from './types.ts';
@@ -14,7 +17,7 @@ import type {
 } from './validationTypes';
 
 const has = (record: Record<string, unknown>, key: string) => Object.hasOwn(record, key);
-const taskTypes: readonly PteTaskType[] = ['write-from-dictation', 'repeat-sentence', 'read-aloud'];
+const taskTypes: readonly PteTaskType[] = KNOWN_TASK_ORDER;
 function member<T extends string>(value: unknown, choices: readonly T[]): value is T {
   return typeof value === 'string' && choices.some(choice => choice === value);
 }
@@ -145,13 +148,18 @@ export function parseQuestionBankItem(input: unknown): QuestionBankItem {
   const stressWords = strings(input, 'stressWords', CONTENT_LIMITS.entries, CONTENT_LIMITS.entry, 1, true, issues);
   const estimatedSeconds = duration(input, 'estimatedSeconds', false, issues);
   const itemAudio = audio(input, issues);
+  const payload = knownTask && has(input, 'taskData') ? taskDataIssues(taskType, input.taskData, status !== 'draft') : { issues: [], data: undefined };
+  issues.push(...payload.issues);
+  if (knownTask && !['write-from-dictation','repeat-sentence','read-aloud'].includes(taskType)) {
+    for (const key of ['answer','transcript','audio','chunks','phraseGroups','stressWords']) if (has(input, key)) issue(issues, key, 'UNKNOWN_FIELD', 'Wave 1 task content belongs in taskData.');
+  }
   if (knownTask && knownStatus && status !== 'draft') {
     for (const field of PUBLISHED_REQUIRED_FIELDS[taskType]) if (!has(input, field)) issue(issues, field, 'REQUIRED_FIELD', `${field} is required for active/retired ${taskType} content.`);
   }
   // Construct the typed result from narrowed primitives; no unknown-to-item cast.
   if (issues.length || id === undefined || !knownTask || !difficulty(itemDifficulty) || typeof revision !== 'number'
     || !knownStatus || !knownSource || prompt === undefined) throw new ContentValidationError(issues, id);
-  return Object.freeze({ id, taskType, difficulty: itemDifficulty, prompt, revision, status, source,
+  return Object.freeze({ ...(payload.data ? { taskData: payload.data } : {}), id, taskType, difficulty: itemDifficulty, prompt, revision, status, source,
     ...(answer !== undefined ? { answer } : {}), ...(transcript !== undefined ? { transcript } : {}),
     ...(itemAudio !== undefined ? { audio: itemAudio } : {}), ...(topic !== undefined ? { topic } : {}),
     ...(tags !== undefined ? { tags } : {}), ...(skillValues !== undefined ? { skills: Object.freeze(skills) } : {}),
@@ -226,7 +234,8 @@ export function validateQuestionBankItems(input: unknown): ContentBatchValidatio
     warn(index, item, 'prompt', JSON.stringify(['prompt', item.taskType, item.prompt]), 'DUPLICATE_PROMPT');
     if (item.answer !== undefined) warn(index, item, 'answer', JSON.stringify(['answer', item.taskType, item.answer]), 'DUPLICATE_ANSWER');
     if (item.transcript !== undefined) warn(index, item, 'transcript', JSON.stringify(['transcript', item.taskType, item.transcript]), 'DUPLICATE_TRANSCRIPT');
-    if (item.status === 'active' && item.audio) warn(index, item, 'audio.path', JSON.stringify(['audio', item.audio.path]), 'DUPLICATE_AUDIO_PATH');
+    const asset = contentAudio(item);
+    if (item.status === 'active' && asset) warn(index, item, item.taskData ? 'taskData.audio.path' : 'audio.path', JSON.stringify(['audio', asset.path]), 'DUPLICATE_AUDIO_PATH');
   }
   const report = { errors: Object.freeze(errors), warnings: Object.freeze(warnings) };
   // Failed batches expose diagnostics only, never a partially usable items array.

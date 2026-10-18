@@ -1,9 +1,16 @@
+import type { StudyItemDataMap } from './taskData';
 import type { AudioAsset, ContentStatus, ContentSource } from '../content/types';
 
 export type PteTaskType =
   | 'write-from-dictation'
   | 'repeat-sentence'
-  | 'read-aloud';
+  | 'read-aloud'
+  | 'retell-lecture'
+  | 'summarize-group-discussion'
+  | 'describe-image'
+  | 'summarize-written-text'
+  | 'summarize-spoken-text'
+  | 'highlight-incorrect-words';
 
 export type Skill =
   | 'listening'
@@ -27,9 +34,10 @@ export type ErrorCategory =
   | 'substitution'
   | 'other';
 
-export type StudyItem = {
+export type StudyItem<T extends PteTaskType = PteTaskType> = {
   id: string;
-  taskType: PteTaskType;
+  taskType: T;
+  taskData?: StudyItemDataMap[T];
   difficulty: Difficulty;
   prompt: string;
   answer?: string;

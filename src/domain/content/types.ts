@@ -1,7 +1,9 @@
+import { TASK_ID_PREFIXES } from '../pte/taskRegistry.ts';
+import type { StudyItemDataMap } from '../pte/taskData';
 import type { PteTaskType, Skill, StudyItem } from '../pte/types';
 
 /** Version of the authored/built content shape, independent of Dexie and app versions. */
-export const QUESTION_BANK_SCHEMA_VERSION = 1 as const;
+export const QUESTION_BANK_SCHEMA_VERSION = 2 as const;
 
 export const CONTENT_STATUSES = Object.freeze(['draft', 'active', 'retired'] as const);
 export type ContentStatus = typeof CONTENT_STATUSES[number];
@@ -9,12 +11,8 @@ export type ContentStatus = typeof CONTENT_STATUSES[number];
 export const CONTENT_SOURCES = Object.freeze(['internal', 'licensed', 'generated', 'imported'] as const);
 export type ContentSource = typeof CONTENT_SOURCES[number];
 
-/** Prefixes for implemented exercises only; registering content does not add an exercise. */
-export const QUESTION_ID_PREFIXES = Object.freeze({
-  'write-from-dictation': 'wfd',
-  'repeat-sentence': 'rs',
-  'read-aloud': 'ra',
-} as const satisfies Record<PteTaskType, string>);
+/** Prefixes for known tasks; registration alone does not enable an exercise. */
+export const QUESTION_ID_PREFIXES = TASK_ID_PREFIXES;
 
 export const NEW_QUESTION_ID_DIGITS = 6 as const;
 
@@ -41,15 +39,19 @@ export type AudioAsset = Readonly<{
   mimeType?: string;
 }>;
 
+export type ImageAsset = Readonly<{ path: string; sha256: string; bytes: number; mediaType: 'image/png' | 'image/jpeg' | 'image/webp'; width: number; height: number }>;
+
 /**
  * Durable authoring contract. Deliberately separate from legacy persisted StudyItem:
  * no installation timestamp or audioUrl alias in authored content. JSON validation
  * and task-specific requirements are enforced by validation.ts, not this type.
  */
-export type QuestionBankItem = Readonly<
-  Pick<StudyItem, 'id' | 'taskType' | 'difficulty' | 'prompt' | 'answer' | 'transcript'>
+export type QuestionBankItem<T extends PteTaskType = PteTaskType> = Readonly<
+  Pick<StudyItem, 'id' | 'difficulty' | 'prompt' | 'answer' | 'transcript'>
   & StudyItemMetadata
   & {
+    taskType: T;
+    taskData?: StudyItemDataMap[T];
     audio?: AudioAsset;
     chunks?: readonly string[];
     phraseGroups?: readonly string[];

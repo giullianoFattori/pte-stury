@@ -1,0 +1,16 @@
+{
+  "id": "swt-900001",
+  "taskType": "summarize-written-text",
+  "difficulty": 2,
+  "prompt": "Technical validation fixture; not learner content.",
+  "revision": 1,
+  "status": "draft",
+  "source": "internal",
+  "taskData": {
+    "passage": "A short technical passage for contract validation.",
+    "keyPoints": [
+      "This is a fixture."
+    ],
+    "referenceSummary": "The passage supplies a technical fixture."
+  }
+}

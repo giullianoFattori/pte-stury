@@ -32,7 +32,7 @@ test('missing artifacts and symlink parents fail closed',async t=>{
 });
 test('generated content is verified and included in the owned package inventory',async t=>{
  const root=await fixture(t);await stageAudio(root);const content=await stageGeneratedContent(root);
- assert.equal(content.schemaVersion,1);
+ assert.equal(content.schemaVersion,2);
  const manifest=await generateManifest(root,'linux-x64');
  for(const name of ['question-bank.json','question-bank.manifest.json']) assert.ok(manifest.artifacts.some(a=>a.path==='web/content/'+name && a.size>0 && /^[0-9a-f]{64}$/.test(a.sha256)));
  await verifyPackage(root);
@@ -51,7 +51,7 @@ test('same-origin static serving, CSP, SPA and API isolation',async t=>{
  const base=`http://127.0.0.1:${port}`;
  for(const route of ['/','/study/read-aloud','/study/repeat-sentence','/study/session/a12b3456-1234-4567-89ab-0123456789ab','/study/session/session:1','/study/session/'+ 'a'.repeat(128)]){const r=await fetch(base+route);assert.equal(r.status,200);assert.equal(r.headers.get('content-security-policy'),PACKAGED_CSP);assert.equal(r.headers.get('cache-control'),'no-store');assert.equal(await r.text(),'fixture');}
  const asset=await fetch(base+'/assets/app-abcdefgh.js');assert.equal(asset.headers.get('cache-control'),'public, max-age=31536000, immutable');
- for(const name of ['question-bank.json','question-bank.manifest.json']){const r=await fetch(base+'/content/'+name);assert.equal(r.status,200);assert.match(r.headers.get('content-type'),/^application\/json/);assert.equal(r.headers.get('cache-control'),'no-store');assert.equal(r.headers.get('content-security-policy'),PACKAGED_CSP);const data=await r.json();assert.equal(data.schemaVersion,1);if(name.includes('manifest'))assert.equal(data.contentVersion,content.contentVersion);}
+ for(const name of ['question-bank.json','question-bank.manifest.json']){const r=await fetch(base+'/content/'+name);assert.equal(r.status,200);assert.match(r.headers.get('content-type'),/^application\/json/);assert.equal(r.headers.get('cache-control'),'no-store');assert.equal(r.headers.get('content-security-policy'),PACKAGED_CSP);const data=await r.json();assert.equal(data.schemaVersion,2);if(name.includes('manifest'))assert.equal(data.contentVersion,content.contentVersion);}
  for(const route of ['/api/no-such-route','/api/v1/health?x=1','/assets/missing.js','/web/index.html','/%2e%2e/runtime/main.mjs','//index.html','/native/node','/study/session','/study/session/','/study/session/_invalid','/study/session/'+ 'a'.repeat(129),'/study/session/id?x=1','/study/session/id/','/study/session/a/b','/study/session/a%2fb','/study/session/a%00','/other/session/id']){const r=await fetch(base+route);assert.equal(r.status,404,route);assert.match(r.headers.get('content-type'),/json/);}
  for(const method of ['POST','HEAD','OPTIONS','PUT'])for(const route of ['/','/study/session/id'])assert.equal((await fetch(base+route,{method})).status,404);
  assert.equal((await fetch(base+'/api/v1/health')).status,200);

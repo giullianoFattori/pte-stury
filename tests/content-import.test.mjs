@@ -103,7 +103,7 @@ test('authored semantic strings and arrays are never corrected or normalized', a
 test('audio reference integrity failure blocks import before reservation', async t => {
   const root = await authorRoot(t);
   await rejectsAuthor(() => importRecords([record({ audio: { path: '/audio/absent.mp3' } })], { ...options(root), audioOptions: { audioRoot: join(root, 'no-audio') } }), 'AUDIO_NOT_FOUND');
-  assert.equal((await readRegistry(root)).entries.length, 20);
+  assert.equal((await readRegistry(root)).entries.length, initialRegistry().entries.length);
 });
 test('staging failure and registry-write failure install nothing and preserve previous sources', async t => {
   for (const failure of [
@@ -113,7 +113,7 @@ test('staging failure and registry-write failure install nothing and preserve pr
     const root = await authorRoot(t), before = await snapshot(root);
     await rejectsAuthor(() => importRecords([record()], { ...options(root), ...failure }), 'AUTHOR_WRITE_FAILED');
     const after = await snapshot(root); delete after['import-history/']; assert.deepEqual(after, before);
-    assert.equal((await readRegistry(root)).entries.length, 20);
+    assert.equal((await readRegistry(root)).entries.length, initialRegistry().entries.length);
   }
 });
 test('installation failure rolls back all owned files while retaining committed reservations', async t => {
@@ -121,7 +121,7 @@ test('installation failure rolls back all owned files while retaining committed 
   await assert.rejects(importRecords([record(), record({ prompt: 'Second draft.' })], { ...options(root), installOptions: { installLink: async (from, to) => {
     if (++installed === 2) throw new Error('disk failure'); await link(from, to);
   } } }), error => error.reservedIds.length === 2);
-  assert.equal((await readRegistry(root)).entries.length, 22);
+  assert.equal((await readRegistry(root)).entries.length, initialRegistry().entries.length + 2);
   assert.deepEqual(await readdir(join(root, 'read-aloud')), []);
   const next = await importRecords([record()], options(root)); assert.deepEqual(next.itemIds, ['ra-000003']);
 });
@@ -130,7 +130,7 @@ test('destination collision never overwrites another author file', async t => {
   await assert.rejects(importRecords([record()], { ...options(root), installOptions: { installLink: async (from, to) => {
     await writeFile(to, 'another author', { flag: 'wx' }); await link(from, to);
   } } }), error => error.recoveryRequired === true);
-  assert.equal(await readFile(target, 'utf8'), 'another author'); assert.equal((await readRegistry(root)).entries.length, 21);
+  assert.equal(await readFile(target, 'utf8'), 'another author'); assert.equal((await readRegistry(root)).entries.length, initialRegistry().entries.length + 1);
 });
 test('recovery removes only verified staged hardlinks and retains reserved IDs', async t => {
   const root = await authorRoot(t), stage = join(root, '.author-stage'); await mkdir(stage); await mkdir(join(root, 'import-history'));
@@ -159,7 +159,7 @@ for (const size of [100, 1000]) test(`synthetic ${size}-row import validates, al
   phase = performance.now(); validateImportRecords(mapped.map((row, index) => ({ ...row, id: ids[index] }))); const validationMs = performance.now() - phase;
   const start = performance.now(), result = await importRecords(rows, options(root));
   t.diagnostic(JSON.stringify({ size, parseMs, mapMs, allocationMs, validationMs, ...result.timings, importMs: Number((performance.now() - start).toFixed(2)), environment: 'Node filesystem fixture; not browser startup performance' }));
-  assert.equal(result.createdDrafts, size); assert.equal((await readRegistry(root)).entries.length, size + 20);
+  assert.equal(result.createdDrafts, size); assert.equal((await readRegistry(root)).entries.length, size + initialRegistry().entries.length);
   assert.equal((await readdir(join(root, 'read-aloud'))).length, size);
 });
 
@@ -168,7 +168,7 @@ test('partial staging write is safely discarded before any ID commit', async t =
   await rejectsAuthor(() => importRecords([record()], { ...options(root), installOptions: { stageWrite: async path => {
     await writeFile(path, '{partial'); throw new Error('disk full');
   } } }), 'AUTHOR_WRITE_FAILED');
-  assert.equal((await readRegistry(root)).entries.length, 20);
+  assert.equal((await readRegistry(root)).entries.length, initialRegistry().entries.length);
   await assert.rejects(lstat(join(root, '.author-stage')), { code: 'ENOENT' });
 });
 test('bounded UTF-8 file reads report CSV errors separately from JSON syntax', async t => {

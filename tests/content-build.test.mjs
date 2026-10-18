@@ -46,7 +46,7 @@ test('equivalent source keys, filenames, indentation and metadata order produce 
   assert.match(a.manifest.contentVersion, /^sha256:[0-9a-f]{64}$/);
 });
 test('explicit task/id/property/audio order and stable byte format', () => {
-  assert.deepEqual(valid.bundle.items.map(i => i.taskType), TASK_ORDER);
+  assert.deepEqual(valid.bundle.items.map(i => i.taskType), TASK_ORDER.slice(0,3));
   for (const item of valid.bundle.items) {
     assert.deepEqual(Object.keys(item), CONTENT_FIELDS.filter(key => Object.hasOwn(item, key)));
     if (item.audio) assert.deepEqual(Object.keys(item.audio), ['path', 'sha256', 'durationMs', 'mimeType'].filter(key => Object.hasOwn(item.audio, key)));
@@ -91,7 +91,7 @@ test('manifest counts include all lifecycle rows, zero tasks and unique audio pa
   items[0].status = 'draft'; items[1].status = 'retired'; items[1].audio.path = items[0].audio.path;
   const bundle = canonicalBundle(items), manifest = manifestFor(bundle, jsonBytes(bundle));
   assert.equal(manifest.itemCount, 3); assert.equal(manifest.audioAssetCount, 1);
-  assert.deepEqual(manifest.countsByTaskType, Object.fromEntries(TASK_ORDER.map(task => [task, 1])));
+  assert.deepEqual(manifest.countsByTaskType, Object.fromEntries(TASK_ORDER.map((task,index) => [task, index < 3 ? 1 : 0])));
   const empty = canonicalBundle([]), zero = manifestFor(empty, jsonBytes(empty));
   assert.deepEqual(zero.countsByTaskType, Object.fromEntries(TASK_ORDER.map(task => [task, 0])));
   assert.equal(zero.itemCount, 0); assert.equal(zero.audioAssetCount, 0);
@@ -202,11 +202,11 @@ test('active lock and unsafe output/stale-stage symlinks fail closed', async t =
 });
 test('verifier rejects tampered bundle, hash/count/schema/task/audio and noncanonical bytes', () => {
   verifyBytes(valid.bundleBytes, valid.manifestBytes);
-  for (const change of [m => m.itemCount++, m => m.audioAssetCount++, m => m.countsByTaskType['read-aloud']++, m => m.contentVersion = 'sha256:' + '0'.repeat(64), m => m.schemaVersion = 2, m => m.extra = true]) {
+  for (const change of [m => m.itemCount++, m => m.audioAssetCount++, m => m.countsByTaskType['read-aloud']++, m => m.contentVersion = 'sha256:' + '0'.repeat(64), m => m.schemaVersion = 3, m => m.extra = true]) {
     const manifest = structuredClone(valid.manifest); change(manifest);
     assert.throws(() => verifyBytes(valid.bundleBytes, jsonBytes(manifest)));
   }
-  for (const bytes of [valid.bundleBytes.replace('Listen', 'Changed'), JSON.stringify(valid.bundle), valid.bundleBytes.replace('"schemaVersion": 1', '"schemaVersion": 2')]) assert.throws(() => verifyBytes(bytes, valid.manifestBytes));
+  for (const bytes of [valid.bundleBytes.replace('Listen', 'Changed'), JSON.stringify(valid.bundle), valid.bundleBytes.replace('"schemaVersion": 2', '"schemaVersion": 3')]) assert.throws(() => verifyBytes(bytes, valid.manifestBytes));
 });
 test('committed artifacts match production sources; schema remains unchanged', async () => {
   const built = await realPrepareBank(), checked = await verifyGenerated();

@@ -1,10 +1,18 @@
-# Content authoring — schema v1
+# Content authoring — schema v2
 
-The production bank is authored only in the three registered task directories:
+The learner production bank is authored in the three foundation task directories:
 5 Write From Dictation, 6 Repeat Sentence and 6 Read Aloud items. The generated
 catalog is installed by bootstrap through transactional IndexedDB sync.
 `examples/`, including reserved technical fixtures, is excluded from production.
 Historical snapshots under tests are migration evidence, never a learner source.
+
+Six additional Wave 1 directories are registered but empty. Their typed `taskData`
+contracts and technical fixtures are defined in [08.01](../docs/content/wave-1-contracts-08.01.md).
+They are known to authoring tools but not practice-ready. CSV `taskData` cells use
+JSON objects. New-task audio lives inside the payload as an `AudioAsset`; images
+use an integrity-bearing `ImageAsset`. Image byte verification is deferred to
+08.04 and image-bearing production builds currently fail closed. A valid draft
+shape alone does not enable a learner exercise.
 
 To author a draft:
 

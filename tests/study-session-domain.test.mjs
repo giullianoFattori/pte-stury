@@ -35,7 +35,7 @@ for(const [name,change,path] of [
 for(const [value,path]of [
  [{itemCount:0},'config.itemCount'],[{itemCount:501},'config.itemCount'],[{itemCount:2.5},'config.itemCount'],[{itemCount:'2'},'config.itemCount'],[{itemCount:NaN},'config.itemCount'],[{itemCount:Infinity},'config.itemCount'],
  [{itemCount:2,difficulties:[]},'config.difficulties'],[{itemCount:2,difficulties:[2,2]},'config.difficulties'],[{itemCount:2,difficulties:[6]},'config.difficulties[0]'],[{itemCount:2,difficulties:['2']},'config.difficulties[0]'],
- [{itemCount:2,taskTypes:[]},'config.taskTypes'],[{itemCount:2,taskTypes:['retell-lecture']},'config.taskTypes[0]'],[{itemCount:2,taskTypes:['read-aloud','read-aloud']},'config.taskTypes'],[{itemCount:2,unknown:true},'config'],
+ [{itemCount:2,taskTypes:[]},'config.taskTypes'],[{itemCount:2,taskTypes:['answer-short-question']},'config.taskTypes[0]'],[{itemCount:2,taskTypes:['read-aloud','read-aloud']},'config.taskTypes'],[{itemCount:2,unknown:true},'config'],
 ])test('config rejects '+JSON.stringify(value),()=>issue(()=>parseStudySessionConfig(value),'INVALID_SESSION_CONFIG',path));
 test('config count/tasks must agree with queue and mode',()=>{
  issue(()=>createStudySession({...input(),config:{itemCount:2}}),'INVALID_SESSION_CONFIG','config.itemCount');

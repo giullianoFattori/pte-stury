@@ -5,7 +5,7 @@ import { startMixedPractice } from '../src/features/study-session/services/start
 import { startQuickPractice } from '../src/features/study-session/services/startQuickPractice.ts';
 import { startTaskPractice } from '../src/features/study-session/services/startTaskPractice.ts';
 import { mixedPracticeCapacity, mixedPracticeCount } from '../src/features/study-session/services/mixedPracticeCapacity.ts';
-import { TASK_ORDER } from '../src/domain/content/canonical.ts';
+import { FOUNDATION_TASKS as TASK_ORDER } from '../src/domain/pte/taskRegistry.ts';
 import { buildStudySession } from '../src/domain/study-session/builder.ts';
 const [wfd,rs,ra]=TASK_ORDER;
 const deps=h=>({...h.deps,getContentVersion:async()=> (await h.db.contentState.get('question-bank'))?.contentVersion});

@@ -2,7 +2,7 @@ import 'fake-indexeddb/auto';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { performance } from 'node:perf_hooks';
-import { TASK_ORDER } from '../src/domain/content/canonical.ts';
+import { FOUNDATION_TASKS as TASK_ORDER, taskRecord } from '../src/domain/pte/taskRegistry.ts';
 import { installItem } from '../src/domain/content/installedContent.ts';
 import { sampleStudyItems } from '../src/domain/content/sampling.ts';
 import { buildStudySession, validateBuildRequest } from '../src/domain/study-session/builder.ts';
@@ -17,8 +17,8 @@ import { bootstrapApp } from '../src/app/bootstrap.ts';
 const version=generatedQuestionBank().manifest.contentVersion,now='2026-10-14T01:00:00.000Z';
 const real=generatedQuestionBank().bundle.items.map(item=>installItem(item,now));
 const [wfd,rs,ra]=TASK_ORDER;
-const capacity=(a,b,c)=>({[wfd]:a,[rs]:b,[ra]:c});
-const counts=session=>Object.fromEntries(TASK_ORDER.map(task=>[task,session.itemIds.filter(id=>id.startsWith({[wfd]:'wfd',[rs]:'rs',[ra]:'ra'}[task]+'-')).length]));
+const capacity=(a,b,c)=>({...taskRecord(()=>0),[wfd]:a,[rs]:b,[ra]:c});
+const counts=session=>({...taskRecord(()=>0),...Object.fromEntries(TASK_ORDER.map(task=>[task,session.itemIds.filter(id=>id.startsWith({[wfd]:'wfd',[rs]:'rs',[ra]:'ra'}[task]+'-')).length]))});
 const taskSequence=session=>session.itemIds.map(id=>id.split('-')[0]);
 const build=(request,candidates=real,rng=()=>0)=>buildStudySession({request,candidates,sessionId:'session-fixed',startedAt:now,contentVersion:version,rng});
 const mixed=(count=10)=>({mode:'mixed',itemCount:count,taskTypes:[ra,wfd,rs]});
@@ -73,7 +73,7 @@ test('source duplicates fail rather than inflate capacity or choose last row',()
 });
 for(const request of [null,[],{}, {mode:'adaptive'},{mode:'quick',itemCount:4},{mode:'quick',taskTypes:TASK_ORDER},{mode:'quick',difficulties:[]},{mode:'quick',difficulties:undefined},{mode:'quick',unknown:true},
  {mode:'task',taskTypes:[] ,itemCount:1},{mode:'task',taskTypes:[wfd,rs],itemCount:1},{mode:'task',taskTypes:[wfd]},
- {mode:'mixed',taskTypes:[wfd],itemCount:1},{mode:'mixed',taskTypes:[wfd,wfd],itemCount:1},{mode:'mixed',taskTypes:['retell-lecture',rs],itemCount:1},
+ {mode:'mixed',taskTypes:[wfd],itemCount:1},{mode:'mixed',taskTypes:[wfd,wfd],itemCount:1},{mode:'mixed',taskTypes:['answer-short-question',rs],itemCount:1},
  ...[0,-1,501,1.5,'2',NaN,Infinity].map(itemCount=>({...mixed(),itemCount})),
  ...[[],[0],[6],['2'],[2,2]].map(difficulties=>({...mixed(),difficulties})),{...mixed(),excludeIds:['ra-001']}])test('invalid dynamic request '+JSON.stringify(request),()=>error(()=>validateBuildRequest(request),'INVALID_SESSION_CONFIG'));
 test('request getters, sparse arrays and inherited objects fail without reading accessors',()=>{
@@ -82,7 +82,7 @@ test('request getters, sparse arrays and inherited objects fail without reading 
 });
 for(const rng of [undefined,()=>-1,()=>1,()=>NaN,()=>Infinity,()=>{throw Error('private RNG failure');}])test('invalid injected RNG yields safe structured failure',()=>error(()=>build({mode:'quick'},real,rng??null),'SESSION_BUILD_FAILED'));
 test('interleaving handles empty buckets and tails without mutating selections',()=>{
- const selections={[wfd]:['w1','w2','w3'],[rs]:['r1'],[ra]:['a1','a2']},before=structuredClone(selections);assert.deepEqual(interleaveTaskSelections(selections),['w1','r1','a1','w2','a2','w3']);assert.deepEqual(selections,before);assert.ok(Object.isFrozen(interleaveTaskSelections(selections)));
+ const selections={...taskRecord(()=>[]),[wfd]:['w1','w2','w3'],[rs]:['r1'],[ra]:['a1','a2']},before=structuredClone(selections);assert.deepEqual(interleaveTaskSelections(selections),['w1','r1','a1','w2','a2','w3']);assert.deepEqual(selections,before);assert.ok(Object.isFrozen(interleaveTaskSelections(selections)));
 });
 test('preparation uses interface, canonical query without limit, injected identity/time and no writes',async t=>{
  const db=await database(t);await bootstrapApp(db);const source=createStudyItemsRepository(db),before=await snapshot(db),calls=[];
@@ -102,7 +102,7 @@ test('async preparation snapshots validated request before querying',async()=>{
 for(const size of [1000,5000])test(`synthetic ${size}: allocation, selection and interleave timing`,t=>{
  const pool=candidates([Math.floor(size/3),Math.floor(size/3),size-2*Math.floor(size/3)]),cap=capacity(...TASK_ORDER.map(task=>pool.filter(i=>i.taskType===task).length));
  let start=performance.now();const allocation=allocateTaskCounts(500,TASK_ORDER,cap);const allocationMs=performance.now()-start;
- start=performance.now();const selections=Object.fromEntries(TASK_ORDER.map(task=>[task,sampleStudyItems(pool.filter(i=>i.taskType===task),allocation[task],()=>.4).map(i=>i.id)]));const samplingMs=performance.now()-start;
+ start=performance.now();const selections={...taskRecord(()=>[]),...Object.fromEntries(TASK_ORDER.map(task=>[task,sampleStudyItems(pool.filter(i=>i.taskType===task),allocation[task],()=>.4).map(i=>i.id)]))};const samplingMs=performance.now()-start;
  start=performance.now();const queue=interleaveTaskSelections(selections);const interleaveMs=performance.now()-start;
  start=performance.now();const session=build(mixed(500),pool,()=>.4);const fullBuilderMs=performance.now()-start;
  assert.equal(queue.length,500);assert.equal(new Set(session.itemIds).size,500);assert.deepEqual(counts(session),allocation);

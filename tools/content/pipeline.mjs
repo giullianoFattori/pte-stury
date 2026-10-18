@@ -45,6 +45,9 @@ export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty 
     try { checkSourceReservations(await readRegistry(sourceRoot), batch.items); }
     catch (error) { throw new BuildError(error.issues ?? [issue('content/id-registry.json', 'ID_REGISTRY_INVALID', 'Registry validation failed.')], warnings); }
   }
+  // Image byte verification/serving ships with Describe Image, never silently approve it.
+  for (const item of batch.items) if (item.taskData?.image) errors.push(issue('content/' + item.taskType + '/' + item.id + '.json', 'IMAGE_INTEGRITY_NOT_IMPLEMENTED', 'Image metadata is valid, but image byte validation must be implemented before packaging image content.', 'taskData.image'));
+  if (errors.length) throw new BuildError(errors, warnings);
   const audio = await validateAudioAssets(batch.items, audioOptions);
   warnings.push(...audio.warnings);
   if (audio.errors.length) throw new BuildError(audio.errors, warnings);

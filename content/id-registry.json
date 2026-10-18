@@ -104,6 +104,46 @@
       "id": "ra-900001",
       "taskType": "read-aloud",
       "kind": "technical"
+    },
+    {
+      "id": "rtl-900001",
+      "taskType": "retell-lecture",
+      "kind": "technical"
+    },
+    {
+      "id": "sgd-900001",
+      "taskType": "summarize-group-discussion",
+      "kind": "technical"
+    },
+    {
+      "id": "di-900001",
+      "taskType": "describe-image",
+      "kind": "technical"
+    },
+    {
+      "id": "swt-900001",
+      "taskType": "summarize-written-text",
+      "kind": "technical"
+    },
+    {
+      "id": "sst-900001",
+      "taskType": "summarize-spoken-text",
+      "kind": "technical"
+    },
+    {
+      "id": "hiw-900001",
+      "taskType": "highlight-incorrect-words",
+      "kind": "technical"
+    },
+    {
+      "id": "rtl-000001",
+      "taskType": "retell-lecture",
+      "kind": "reserved"
+    },
+    {
+      "id": "rtl-000002",
+      "taskType": "retell-lecture",
+      "kind": "reserved"
     }
   ]
 }

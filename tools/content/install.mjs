@@ -34,11 +34,11 @@ export async function installGenerated(result, outputRoot, { move = rename } = {
   try {
     // Recover a crash between directory renames. Never trust unverified leftovers.
     if (await exists(previous)) {
-      await verifyGenerated(previous);
+      await verifyGenerated(previous, { allowPreviousSchema: true });
       if (!await exists(outputRoot)) await rename(previous, outputRoot);
-      else { await verifyGenerated(outputRoot); await rm(previous, { recursive: true }); }
+      else { await verifyGenerated(outputRoot, { allowPreviousSchema: true }); await rm(previous, { recursive: true }); }
     }
-    if (await exists(outputRoot)) await verifyGenerated(outputRoot);
+    if (await exists(outputRoot)) await verifyGenerated(outputRoot, { allowPreviousSchema: true });
     // A crashed writer may leave a partial next pair. Remove only these known regular files.
     if (await exists(next)) {
       await assertDirectory(next);

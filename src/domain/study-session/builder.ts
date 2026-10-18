@@ -1,7 +1,8 @@
+import { taskRecord } from '../pte/taskRegistry.ts';
 import type { StudyItem } from '../pte/types';
 import { QUESTION_ID_PREFIXES } from '../content/types.ts';
 import { TASK_ORDER } from '../content/canonical.ts';
-import { comparePracticeItems, practiceItemPredicate, parseStudyItemQuery } from '../content/query.ts';
+import { comparePracticeItems, catalogItemPredicate, parseStudyItemQuery } from '../content/query.ts';
 import { sampleStudyItems } from '../content/sampling.ts';
 import { createStudySession } from './lifecycle.ts';
 import { StudySessionError } from './errors.ts';
@@ -14,8 +15,8 @@ export function buildStudySession(input: StudySessionBuildInput): StudySession {
   const request = validateBuildRequest(input.request);
   if (!Array.isArray(input.candidates)) throw new StudySessionError({ path: 'candidates', code: 'SESSION_BUILD_FAILED', message: 'Expected practice candidates from the content source.' });
   // Reuse the authoritative predicate, never invent lifecycle/availability rules.
-  const matches = practiceItemPredicate({ taskTypes: request.taskTypes, difficulties: request.difficulties });
-  const buckets: Record<typeof TASK_ORDER[number], StudyItem[]> = { 'write-from-dictation': [], 'repeat-sentence': [], 'read-aloud': [] };
+  const matches = catalogItemPredicate({ taskTypes: request.taskTypes, difficulties: request.difficulties });
+  const buckets: Record<typeof TASK_ORDER[number], StudyItem[]> = taskRecord(() => []);
   const seen = new Set<string>();
   const candidates: readonly StudyItem[] = input.candidates;
   for (const item of candidates) {
@@ -31,7 +32,7 @@ export function buildStudySession(input: StudySessionBuildInput): StudySession {
   const capacity = emptyTaskCounts();
   for (const task of TASK_ORDER) { buckets[task].sort(comparePracticeItems); capacity[task] = buckets[task].length; }
   const allocation = allocateTaskCounts(request.itemCount, request.taskTypes, capacity);
-  const selections: Record<typeof TASK_ORDER[number], readonly string[]> = { 'write-from-dictation': [], 'repeat-sentence': [], 'read-aloud': [] };
+  const selections: Record<typeof TASK_ORDER[number], readonly string[]> = taskRecord(() => []);
   try {
     for (const task of TASK_ORDER) selections[task] = sampleStudyItems(buckets[task], allocation[task], input.rng).map(item => item.id);
   } catch {
