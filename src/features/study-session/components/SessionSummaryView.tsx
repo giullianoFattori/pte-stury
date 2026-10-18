@@ -24,6 +24,15 @@ export function SessionSummaryView({ summary }: { summary: SessionSummary }) {
   </div>;
 }
 function TaskResults({ task }: { task: TaskSessionSummary }) {
+  if (task.taskType === 'retell-lecture') return <section aria-label={SESSION_TASK_LABELS[task.taskType]} className="session-task-summary">
+    <h3>{SESSION_TASK_LABELS[task.taskType]}</h3><p>{task.questionCount} questions</p><dl>
+      <dt>Key-point coverage</dt><dd>{Math.round(task.averageKeyPointCoveragePercent)}%</dd>
+      <dt>Matched key points</dt><dd>{task.matchedKeyPoints} of {task.totalKeyPoints}</dd>
+      <dt>Speech ratio</dt><dd>{Math.round(task.averageSpeechRatioPercent)}% average</dd>
+      <dt>Long pauses</dt><dd>{task.averageLongPauseCount.toFixed(1)} average</dd>
+      <dt>Response latency</dt><dd>{Math.round(task.averageResponseLatencyMs)} ms average</dd>
+      {task.averageSpeechRateWpm !== undefined && <><dt>Speech rate</dt><dd>{Math.round(task.averageSpeechRateWpm)} wpm · {task.speechRateResponses} measured responses</dd></>}
+    </dl></section>;
   const wfd = task.taskType === 'write-from-dictation', rs = task.taskType === 'repeat-sentence';
   return <section aria-label={SESSION_TASK_LABELS[task.taskType]} className="session-task-summary">
     <h3>{SESSION_TASK_LABELS[task.taskType]}</h3>

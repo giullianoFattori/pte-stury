@@ -1,0 +1,24 @@
+{
+  "id": "rtl-000004",
+  "taskType": "retell-lecture",
+  "difficulty": 2,
+  "prompt": "Listen to the lecture and retell its main points in your own words.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": ["listening", "speaking"],
+  "topic": "Space biology research",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "audio": { "path": "/audio/retell-lecture/rtl-biology.mp3", "sha256": "dc2aea34a7758036b7949e91b84512d6f241be0c0f5764899008f3c3b9bce8f2", "durationMs": 88056, "mimeType": "audio/mpeg" },
+    "transcript": "Space biology studies how living systems respond to the novel environment of space. The work supports long-duration human exploration and can also benefit life on Earth. Researchers use varied model systems, including three-dimensional tissue cultures and small organoids such as miniature brain or kidney models, to understand responses to space conditions. They ask questions at different scales, including how genes and DNA respond to a new environment.",
+    "keyPoints": [
+      "Space biology studies how living systems respond to the space environment",
+      "Research supports long-duration human space exploration",
+      "Space biology research can benefit life on Earth",
+      "Researchers use varied models including tissue cultures and organoids",
+      "Scientists study responses at scales from whole systems to genes and DNA"
+    ],
+    "keywords": ["space biology", "human exploration", "organoids", "tissue", "genes", "DNA"]
+  }
+}

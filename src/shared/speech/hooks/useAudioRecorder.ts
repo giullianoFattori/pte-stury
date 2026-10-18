@@ -77,15 +77,15 @@ export function useAudioRecorder() {
     }
   }
 
-  function startRecording(stream: MediaStream) {
-    if (!isMountedRef.current || recorderRef.current) return;
+  function startRecording(stream: MediaStream): boolean {
+    if (!isMountedRef.current || recorderRef.current) return false;
     if (typeof MediaRecorder === 'undefined') {
       failRecording('Audio recording is not supported in this browser.');
-      return;
+      return false;
     }
     if (!stream.getAudioTracks().some((track) => track.readyState === 'live')) {
       failRecording('The microphone is no longer available.');
-      return;
+      return false;
     }
 
     revokeRecordingUrl();
@@ -136,8 +136,10 @@ export function useAudioRecorder() {
       startedAtRef.current = performance.now();
       recorder.start();
       setStatus('recording');
+      return true;
     } catch (unknownError) {
       failRecording('Recording could not be started. Please try again.', unknownError);
+      return false;
     }
   }
 

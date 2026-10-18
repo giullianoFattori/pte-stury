@@ -6,6 +6,7 @@ import { HomePage, PlaceholderPage, StudyPage } from './layout/Pages';
 import { WriteFromDictationPage } from '../features/write-from-dictation/WriteFromDictationPage';
 import { RepeatSentencePage } from '../features/repeat-sentence/RepeatSentencePage';
 import { ReadAloudPage } from '../features/read-aloud/ReadAloudPage';
+import { RetellLecturePage } from '../features/retell-lecture/RetellLecturePage';
 
 export const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/read-aloud',
         element: <ReadAloudPage />,
+      },
+      {
+        path: '/study/retell-lecture',
+        element: <RetellLecturePage />,
       },
       {
         path: '/review',

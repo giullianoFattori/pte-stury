@@ -457,6 +457,161 @@
         "reading",
         "speaking"
       ]
+    },
+    {
+      "id": "rtl-000003",
+      "taskType": "retell-lecture",
+      "difficulty": 2,
+      "prompt": "Listen to the lecture and retell its main points in your own words.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/retell-lecture/rtl-earth.mp3",
+          "sha256": "3b91fd59dc43a34f7b6793c9b8e0914514f0c9fcb423a4587314a1d0cbccd32f",
+          "durationMs": 70056,
+          "mimeType": "audio/mpeg"
+        },
+        "transcript": "Thermal measurements can track temperature changes in cities and wildfires, both concerns connected with climate change and motivations for the mission. Diurnal vegetation water stress describes how a plant behaves over a day. Plants are relatively dormant at night. As the sun rises, they open their stomata, take up carbon, and release water through evapotranspiration. Productivity rises toward midday, when evapotranspiration is highest, and then declines toward evening, creating a roughly parabolic daily pattern.",
+        "keyPoints": [
+          "Thermal measurements track temperature changes in cities and wildfires",
+          "Diurnal vegetation water stress describes how plants behave through the day",
+          "Plants open stomata and exchange carbon and water as the sun rises",
+          "Evapotranspiration and productivity rise toward a midday peak",
+          "Plant water use declines toward evening in a daily parabolic pattern"
+        ],
+        "keywords": [
+          "thermal measurements",
+          "wildfires",
+          "stomata",
+          "evapotranspiration",
+          "midday"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "licensed",
+      "skills": [
+        "listening",
+        "speaking"
+      ],
+      "topic": "Earth observation and plant water use",
+      "estimatedSeconds": 130
+    },
+    {
+      "id": "rtl-000004",
+      "taskType": "retell-lecture",
+      "difficulty": 2,
+      "prompt": "Listen to the lecture and retell its main points in your own words.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/retell-lecture/rtl-biology.mp3",
+          "sha256": "dc2aea34a7758036b7949e91b84512d6f241be0c0f5764899008f3c3b9bce8f2",
+          "durationMs": 88056,
+          "mimeType": "audio/mpeg"
+        },
+        "transcript": "Space biology studies how living systems respond to the novel environment of space. The work supports long-duration human exploration and can also benefit life on Earth. Researchers use varied model systems, including three-dimensional tissue cultures and small organoids such as miniature brain or kidney models, to understand responses to space conditions. They ask questions at different scales, including how genes and DNA respond to a new environment.",
+        "keyPoints": [
+          "Space biology studies how living systems respond to the space environment",
+          "Research supports long-duration human space exploration",
+          "Space biology research can benefit life on Earth",
+          "Researchers use varied models including tissue cultures and organoids",
+          "Scientists study responses at scales from whole systems to genes and DNA"
+        ],
+        "keywords": [
+          "space biology",
+          "human exploration",
+          "organoids",
+          "tissue",
+          "genes",
+          "DNA"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "licensed",
+      "skills": [
+        "listening",
+        "speaking"
+      ],
+      "topic": "Space biology research",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rtl-000005",
+      "taskType": "retell-lecture",
+      "difficulty": 3,
+      "prompt": "Listen to the lecture and retell its main points in your own words.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/retell-lecture/rtl-astrobiology.mp3",
+          "sha256": "a3e641cb227543224623c7e4f0a389bcfd1bb9554db0b9ca3b878fc8ee19da8a",
+          "durationMs": 88056,
+          "mimeType": "audio/mpeg"
+        },
+        "transcript": "Photosynthetic organisms on Earth use pigments to capture energy from light. Chlorophyll appears green because it works efficiently with light from our yellow Sun. On Earth, photosynthesizers can have different pigments and colors at different depths in the water, where light is filtered differently. Life around another star could therefore use different pigments and appear in different colors, depending on that star's light spectrum and the energy available in its environment.",
+        "keyPoints": [
+          "Photosynthetic organisms use pigments to capture energy from light",
+          "Chlorophyll is green and works efficiently with light from the yellow Sun",
+          "Different water depths filter light and support different pigments and colors",
+          "Photosynthetic life around other stars could use different pigments",
+          "An organism's pigments may depend on its star's light spectrum and available energy"
+        ],
+        "keywords": [
+          "photosynthesis",
+          "pigments",
+          "chlorophyll",
+          "light spectrum",
+          "energy"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "licensed",
+      "skills": [
+        "listening",
+        "speaking"
+      ],
+      "topic": "Photosynthetic life beyond Earth",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rtl-000006",
+      "taskType": "retell-lecture",
+      "difficulty": 3,
+      "prompt": "Listen to the lecture and retell its main points in your own words.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/retell-lecture/rtl-moon.mp3",
+          "sha256": "b3d3edde0434192f0d7dcc451c6ce22c5b0f521c50b261877aca6036f21b89d7",
+          "durationMs": 88056,
+          "mimeType": "audio/mpeg"
+        },
+        "transcript": "Researchers developed a proposal for careful stewardship of lunar material with a geologist experienced in lunar samples. The plan aimed to preserve, use, and archive the material instead of handling it carelessly. The team had previously conducted around ten spaceflight experiments using Arabidopsis and had characterized its molecular responses to unusual environments. They had also practiced related work in Arctic greenhouses using local materials. This prior experience strengthened the proposal and helped it succeed in review.",
+        "keyPoints": [
+          "The research team developed a lunar-material proposal with an experienced geologist",
+          "The plan focused on preserving, using, and archiving precious lunar material",
+          "The researchers had conducted about ten Arabidopsis spaceflight experiments",
+          "The team characterized plant responses to unusual environments at the molecular level",
+          "Arctic greenhouse work using local materials helped prepare the research team",
+          "The team's prior experience strengthened the proposal during review"
+        ],
+        "keywords": [
+          "lunar material",
+          "stewardship",
+          "Arabidopsis",
+          "spaceflight",
+          "Arctic",
+          "molecular"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "licensed",
+      "skills": [
+        "listening",
+        "speaking"
+      ],
+      "topic": "Stewardship of lunar materials",
+      "estimatedSeconds": 150
     }
   ]
 }

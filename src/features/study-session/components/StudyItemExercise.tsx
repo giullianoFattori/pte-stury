@@ -2,12 +2,14 @@ import { isPracticeReadyTask, isKnownTaskType, TASK_LABELS } from '../../../doma
 import { WriteFromDictationExercise } from '../../write-from-dictation/WriteFromDictationExercise';
 import { RepeatSentenceExercise } from '../../repeat-sentence/RepeatSentenceExercise';
 import { ReadAloudExercise } from '../../read-aloud/ReadAloudExercise';
+import { RetellLectureExercise } from '../../retell-lecture/RetellLectureExercise';
 import type { ExerciseProps } from '../types';
 
 const exercises = {
   'write-from-dictation': WriteFromDictationExercise,
   'repeat-sentence': RepeatSentenceExercise,
   'read-aloud': ReadAloudExercise,
+  'retell-lecture': RetellLectureExercise,
 } satisfies Partial<Record<import('../../../domain/pte/types').PteTaskType, (props: ExerciseProps) => React.JSX.Element>>;
 /** Task dispatch only. Enabling a task also requires an explicit exercise mapping. */
 export function StudyItemExercise(props: ExerciseProps) {

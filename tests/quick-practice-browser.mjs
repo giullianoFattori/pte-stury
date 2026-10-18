@@ -4,7 +4,7 @@ import { waitForBrowserServer } from './helpers/browser-readiness.mjs';
 import assert from 'node:assert/strict';
 import { mkdir, writeFile } from 'node:fs/promises';
 import { createServer } from 'vite';
-import { WAVE1_TASKS, TASK_LABELS, FOUNDATION_TASKS } from '../src/domain/pte/taskRegistry.ts';
+import { WAVE1_TASKS, TASK_LABELS, FOUNDATION_TASKS, TASK_REGISTRY } from '../src/domain/pte/taskRegistry.ts';
 const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ?? 'playwright');
 const server = await createServer({ server: { host: '127.0.0.1', port: 5181, strictPort: true } });
 await server.listen();await waitForBrowserServer(server,'http://127.0.0.1:5181/study'); let browser;
@@ -37,8 +37,9 @@ try {
   await p.getByRole('button',{name:'Save attempt',exact:true}).click();
  }
  await page.goto(base+'/study');await page.getByRole('button',{name:'Start Quick Practice',exact:true}).waitFor();
- // Known unfinished tasks must not leak into either learner selector.
- for(const task of WAVE1_TASKS){assert.equal(await page.getByRole('radio',{name:TASK_LABELS[task],exact:true}).count(),0);assert.equal(await page.getByRole('checkbox',{name:TASK_LABELS[task],exact:true}).count(),0);}
+ // Unfinished tasks stay hidden; ready Retell Lecture appears in Task/Mixed selectors.
+ for(const task of WAVE1_TASKS.filter(task=>!TASK_REGISTRY[task].practiceReady)){assert.equal(await page.getByRole('radio',{name:TASK_LABELS[task],exact:true}).count(),0);assert.equal(await page.getByRole('checkbox',{name:TASK_LABELS[task],exact:true}).count(),0);}
+ const retell='retell-lecture';assert.equal(await page.getByRole('radio',{name:TASK_LABELS[retell],exact:true}).count(),1);assert.equal(await page.getByRole('checkbox',{name:TASK_LABELS[retell],exact:true}).count(),1);
  for(const task of FOUNDATION_TASKS){assert.equal(await page.getByRole('radio',{name:TASK_LABELS[task],exact:true}).count(),1);assert.equal(await page.getByRole('checkbox',{name:TASK_LABELS[task],exact:true}).count(),1);}
  // No creation from StrictMode mount effects.
  assert.equal(await page.evaluate(async()=>{const {db}=await import('/src/data/db/database.ts');return db.studySessions.count();}),0);

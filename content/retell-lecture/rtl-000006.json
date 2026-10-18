@@ -1,0 +1,25 @@
+{
+  "id": "rtl-000006",
+  "taskType": "retell-lecture",
+  "difficulty": 3,
+  "prompt": "Listen to the lecture and retell its main points in your own words.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": ["listening", "speaking"],
+  "topic": "Stewardship of lunar materials",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "audio": { "path": "/audio/retell-lecture/rtl-moon.mp3", "sha256": "b3d3edde0434192f0d7dcc451c6ce22c5b0f521c50b261877aca6036f21b89d7", "durationMs": 88056, "mimeType": "audio/mpeg" },
+    "transcript": "Researchers developed a proposal for careful stewardship of lunar material with a geologist experienced in lunar samples. The plan aimed to preserve, use, and archive the material instead of handling it carelessly. The team had previously conducted around ten spaceflight experiments using Arabidopsis and had characterized its molecular responses to unusual environments. They had also practiced related work in Arctic greenhouses using local materials. This prior experience strengthened the proposal and helped it succeed in review.",
+    "keyPoints": [
+      "The research team developed a lunar-material proposal with an experienced geologist",
+      "The plan focused on preserving, using, and archiving precious lunar material",
+      "The researchers had conducted about ten Arabidopsis spaceflight experiments",
+      "The team characterized plant responses to unusual environments at the molecular level",
+      "Arctic greenhouse work using local materials helped prepare the research team",
+      "The team's prior experience strengthened the proposal during review"
+    ],
+    "keywords": ["lunar material", "stewardship", "Arabidopsis", "spaceflight", "Arctic", "molecular"]
+  }
+}

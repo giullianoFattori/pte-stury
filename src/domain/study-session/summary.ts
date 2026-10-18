@@ -3,12 +3,13 @@ import type { PteTaskType } from '../pte/types';
 import type { StudySessionMode } from './types';
 import { parseStudySession } from './lifecycle.ts';
 import { StudySessionError } from './errors.ts';
+import type { FoundationTaskType } from '../pte/taskRegistry.ts';
 
 // A rollout must register explicit metric handling before enabling practice. No RA fallback.
-const SUMMARY_EXACT_KEYS: Readonly<Partial<Record<PteTaskType, string>>> = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' });
-export const SESSION_SUMMARY_TASKS = Object.freeze(KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)));
-export type TaskSessionSummary = Readonly<{
-  taskType: PteTaskType;
+const SUMMARY_EXACT_KEYS = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' } as const);
+export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture'] as const);
+type FoundationSessionSummary = Readonly<{
+  taskType: 'write-from-dictation' | 'repeat-sentence' | 'read-aloud';
   questionCount: number;
   correctWords: number;
   expectedWords: number;
@@ -25,6 +26,12 @@ export type TaskSessionSummary = Readonly<{
   speechRateWpm?: number;
   speechRateResponses?: number;
 }>;
+export type RetellLectureSessionSummary = Readonly<{
+  taskType: 'retell-lecture'; questionCount: number; averageKeyPointCoveragePercent: number;
+  matchedKeyPoints: number; totalKeyPoints: number; averageSpeechRatioPercent: number;
+  averageLongPauseCount: number; averageResponseLatencyMs: number; averageSpeechRateWpm?: number; speechRateResponses?: number;
+}>;
+export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary;
 export type SessionSummary = Readonly<{
   sessionId: string;
   mode: StudySessionMode;
@@ -71,14 +78,24 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     if (row === undefined || row === null) throw new StudySessionError({ path: `attempts[${index}]`, code: 'SESSION_SUMMARY_INCOMPLETE', message: 'A referenced session result is missing.' });
     const path = `attempts[${index}]`, attempt = object(row, path);
     const task = attempt.taskType;
-    if (!isKnownTaskType(task) || taskTypeForItemId(session.itemIds[index]) !== task || !session.taskTypes.includes(task) || !Object.hasOwn(SUMMARY_EXACT_KEYS, task)) corrupt(`${path}.taskType`);
+    if (!isKnownTaskType(task) || taskTypeForItemId(session.itemIds[index]) !== task || !session.taskTypes.includes(task) || !SESSION_SUMMARY_TASKS.includes(task as typeof SESSION_SUMMARY_TASKS[number])) corrupt(`${path}.taskType`);
     if (attempt.id !== session.attemptIds[index] || attempt.itemId !== session.itemIds[index] || !task || attempt.taskType !== task ||
         (attempt.sessionId !== undefined && attempt.sessionId !== session.id)) corrupt(path);
     const metrics = object(attempt.metrics, `${path}.metrics`);
+    if (task === 'retell-lecture') {
+      metric(metrics, 'keyPointCoverage', path, false, 1); metric(metrics, 'keyPointCoveragePercent', path, false, 100);
+      const matched = metric(metrics, 'matchedKeyPoints', path, true), totalPoints = metric(metrics, 'totalKeyPoints', path, true);
+      if (!totalPoints || matched > totalPoints || Math.abs((matched / totalPoints) - (metrics.keyPointCoverage as number)) > 1e-8) corrupt(`${path}.keyPointCoverage`);
+      metric(metrics, 'speechRatioPercent', path, false, 100); metric(metrics, 'longPauseCount', path, true); metric(metrics, 'responseLatencyMs', path);
+      if (metrics.speechRateWpm !== undefined) metric(metrics, 'speechRateWpm', path);
+      groups.set(task, [...(groups.get(task) ?? []), metrics]); return;
+    }
+    if (!Object.hasOwn(SUMMARY_EXACT_KEYS, task)) corrupt(`${path}.taskType`);
+    const foundationTask = task as FoundationTaskType;
     const correct = metric(metrics, 'correctWords', path, true), expected = metric(metrics, 'expectedWords', path, true);
     if (expected === 0 || correct > expected) corrupt(`${path}.expectedWords`);
     metric(metrics, 'totalErrors', path, true);
-    const exact = SUMMARY_EXACT_KEYS[task]!;
+    const exact = SUMMARY_EXACT_KEYS[foundationTask];
     if (typeof metrics[exact] !== 'boolean') corrupt(`${path}.${exact}`);
     if (task === 'repeat-sentence') {
       metric(metrics, 'sequenceAccuracyPercent', path, false, 100);
@@ -94,16 +111,27 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
       metric(metrics, 'responseLatencyMs', path);
       if (metrics.speechRateWpm !== undefined) metric(metrics, 'speechRateWpm', path);
     }
-    groups.set(task, [...(groups.get(task) ?? []), metrics]);
+    groups.set(foundationTask, [...(groups.get(foundationTask) ?? []), metrics]);
   });
   const byTask: Partial<Record<PteTaskType, TaskSessionSummary>> = {};
   for (const task of KNOWN_TASK_ORDER) {
     const group = groups.get(task); if (!group) continue;
     // All fields below were individually validated above. No optional measurement becomes zero.
     const numbers = (key: string) => group.map(m => m[key] as number);
+    if (task === 'retell-lecture') {
+      const matchedKeyPoints = total(numbers('matchedKeyPoints'), task), totalKeyPoints = total(numbers('totalKeyPoints'), task);
+      const rates = group.filter(m => m.speechRateWpm !== undefined).map(m => m.speechRateWpm as number);
+      byTask[task] = Object.freeze({ taskType: task, questionCount: group.length,
+        averageKeyPointCoveragePercent: mean(numbers('keyPointCoveragePercent')), matchedKeyPoints, totalKeyPoints,
+        averageSpeechRatioPercent: mean(numbers('speechRatioPercent')), averageLongPauseCount: mean(numbers('longPauseCount')),
+        averageResponseLatencyMs: mean(numbers('responseLatencyMs')),
+        ...(rates.length ? { averageSpeechRateWpm: mean(rates), speechRateResponses: rates.length } : {}) });
+      continue;
+    }
     const correctWords = total(numbers('correctWords'), task), expectedWords = total(numbers('expectedWords'), task);
-    const exactKey = SUMMARY_EXACT_KEYS[task]!;
-    const extra: { -readonly [K in keyof TaskSessionSummary]?: TaskSessionSummary[K] } = {};
+    const foundationTask = task as FoundationTaskType;
+    const exactKey = SUMMARY_EXACT_KEYS[foundationTask];
+    const extra: Record<string, number> = {};
     if (task === 'repeat-sentence') {
       extra.sequenceAccuracyPercent = group.reduce((sum, m) => sum + (m.sequenceAccuracyPercent as number) * ((m.expectedWords as number) / expectedWords), 0);
       const analyzed = group.filter(m => typeof m.totalChunks === 'number' && m.totalChunks > 0);
@@ -119,7 +147,7 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
       const rates = group.filter(m => m.speechRateWpm !== undefined).map(m => m.speechRateWpm as number);
       if (rates.length) { extra.speechRateWpm = mean(rates); extra.speechRateResponses = rates.length; }
     }
-    byTask[task] = Object.freeze({ taskType: task, questionCount: group.length, correctWords, expectedWords,
+    byTask[foundationTask] = Object.freeze({ taskType: foundationTask, questionCount: group.length, correctWords, expectedWords,
       totalErrors: total(numbers('totalErrors'), task), exactCount: group.filter(m => m[exactKey] === true).length,
       accuracyPercent: correctWords / expectedWords * 100, ...extra });
   }

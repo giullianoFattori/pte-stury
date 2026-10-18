@@ -6,7 +6,7 @@ import { join } from 'node:path';
 import { WAVE1_TASKS, TASK_REGISTRY } from '../src/domain/pte/taskRegistry.ts';
 import { parseQuestionBankItem, safeParseQuestionBankItem, validateQuestionBankItems } from '../src/domain/content/validation.ts';
 import { TASK_DATA_RULES } from '../src/domain/content/taskDataPolicy.ts';
-import { readTaskData } from '../src/domain/content/taskDataValidation.ts';
+import { readTaskData, parseTaskData } from '../src/domain/content/taskDataValidation.ts';
 import { canonicalBundle, canonicalItem, jsonBytes } from '../tools/content/canonicalize.mjs';
 import { manifestFor } from '../tools/content/manifest.mjs';
 import { verifyBytes } from '../tools/content/verify.mjs';
@@ -53,6 +53,12 @@ test('image metadata hash/size/dimensions/MIME and alt/features are mandatory an
  for(const change of [i=>i.width=0,i=>i.height=Infinity,i=>i.bytes=0,i=>i.bytes=20*1024*1024+1,i=>i.sha256='A'.repeat(64),i=>i.mediaType='image/jpeg',i=>i.unknown=true]){const f=structuredClone(fixtures[2]);change(f.taskData.image);bad(f);}
  bad({...fixtures[2],taskData:{...fixtures[2].taskData,imageAlt:'   '}});bad({...fixtures[2],taskData:{...fixtures[2].taskData,keyFeatures:[]}});
 });
+test('Retell Lecture optional image requires task-specific authored alt text',()=>{
+ const payload=structuredClone(fixtures[0].taskData);payload.audio.sha256='a'.repeat(64);payload.image={path:'/images/retell.png',sha256:'a'.repeat(64),bytes:100,mediaType:'image/png',width:10,height:10};
+ assert.throws(()=>parseTaskData('retell-lecture',payload,true),e=>e.issues[0].path==='taskData.imageAlt');
+ payload.imageAlt='NASA thermal image showing a city heat pattern';assert.equal(parseTaskData('retell-lecture',payload,true).imageAlt,payload.imageAlt);
+ delete payload.image;assert.throws(()=>parseTaskData('retell-lecture',payload,true),e=>e.issues[0].path==='taskData.imageAlt');
+});
 test('HIW stable token IDs, incorrect truth, replacement and exact spoken transcript coherence',()=>{
  for(const change of [d=>d.displayedTokens[1].id=d.displayedTokens[0].id,d=>d.displayedTokens.forEach(t=>t.incorrect=false),d=>delete d.displayedTokens[1].spokenText,d=>d.displayedTokens[1].spokenText='seminar',d=>d.displayedTokens[0].spokenText='Other',d=>d.spokenTranscript+=' mismatch',d=>d.displayedTokens[0].text='two words',d=>d.displayedTokens[0].incorrect='true']){const f=structuredClone(fixtures[5]);change(f.taskData);bad(f);}
 });
@@ -65,9 +71,9 @@ test('unfinished-only catalog cannot initialize practice; a previous bank is pre
  await assert.rejects(initializeQuestionBank(next.bundle,next.manifest,db),e=>e.issues.some(i=>i.code==='CONTENT_INITIALIZATION_FAILED'));
  await bootstrapApp(db);const before=await snapshot(db);assert.equal((await initializeQuestionBank(next.bundle,next.manifest,db)).status,'preserved');assert.deepEqual(await snapshot(db),before);
 });
-test('all six active-looking installed rows remain historical only, absent from practice/counts',async t=>{
+test('unfinished Wave 1 installed rows remain historical only, absent from practice/counts',async t=>{
  const db=await database(t),repo=createStudyItemsRepository(db);
- for(const f of fixtures){const value=structuredClone(f);value.status='active';value.skills=TASK_REGISTRY[value.taskType].skills;if(value.taskData.audio)value.taskData.audio.sha256='a'.repeat(64);const item=installItem(parseQuestionBankItem(value),now);assert.equal(isPracticeEligible(item),false);await db.studyItems.add(item);assert.equal((await repo.getById(item.id)).id,item.id);}
+ for(const f of fixtures.slice(1)){const value=structuredClone(f);value.status='active';value.skills=TASK_REGISTRY[value.taskType].skills;if(value.taskData.audio)value.taskData.audio.sha256='a'.repeat(64);const item=installItem(parseQuestionBankItem(value),now);assert.equal(isPracticeEligible(item),false);await db.studyItems.add(item);assert.equal((await repo.getById(item.id)).id,item.id);}
  assert.deepEqual(await repo.queryPracticeItems(),[]);assert.equal(await repo.countPracticeItems(),0);
 });
 test('nested audio metadata counts/warnings use the canonical asset helper',()=>{
@@ -93,10 +99,10 @@ test('new-item supports Wave 1 draft reservation; bulk JSON import stays draft-o
 test('schema v1 installed content upgrades only catalog state: semantic rows and learner history unchanged',async t=>{
  const db=await database(t);await bootstrapApp(db);await seedHistory(db);const before=await snapshot(db);
  await db.contentState.put({...before.contentState[0],schemaVersion:1,contentVersion:'sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2'});
- const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,17);const after=await snapshot(db);
+ const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,21);const after=await snapshot(db);
  for(const table of ['studyItems','attempts','errors','reviews','studySessions'])assert.deepEqual(after[table],before[table]);assert.equal(after.contentState[0].schemaVersion,2);assert.equal(db.verno,3);assert.equal(after.attempts[0].itemRevision,undefined);assert.equal((await bootstrapApp(db)).status,'unchanged');
 });
 test('legacy generated pair is verified only for atomic replacement/recovery, never current publication',()=>{
- const {bundle}=generatedQuestionBank();const legacy={...canonicalBundle(bundle.items),schemaVersion:1};const bytes=jsonBytes(legacy),manifest=manifestFor(legacy,bytes);for(const task of WAVE1_TASKS)delete manifest.countsByTaskType[task];
+ const {bundle}=generatedQuestionBank();const legacy={...canonicalBundle(bundle.items.filter(item=>!WAVE1_TASKS.includes(item.taskType))),schemaVersion:1};const bytes=jsonBytes(legacy),manifest=manifestFor(legacy,bytes);for(const task of WAVE1_TASKS)delete manifest.countsByTaskType[task];
  assert.throws(()=>verifyBytes(bytes,jsonBytes(manifest)));assert.equal(verifyBytes(bytes,jsonBytes(manifest),{allowPreviousSchema:true}).bundle.schemaVersion,1);
 });

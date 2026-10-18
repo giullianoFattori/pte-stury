@@ -14,7 +14,7 @@
     {
       "code": "INVALID_TASK_DATA",
       "path": "taskData",
-      "rule": "Runtime additionally enforces unique/referenced three-speaker IDs, coherent HIW token truth/transcript and image MIME/extension agreement."
+      "rule": "Runtime additionally enforces unique/referenced three-speaker IDs, coherent HIW token truth/transcript, image MIME/extension agreement and authored Retell Lecture image alt text."
     }
   ],
   "type": "object",
@@ -353,6 +353,12 @@
                 "height"
               ],
               "additionalProperties": false
+            },
+            "imageAlt": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000,
+              "pattern": "\\S"
             }
           },
           "required": [
@@ -1108,6 +1114,12 @@
                   "height"
                 ],
                 "additionalProperties": false
+              },
+              "imageAlt": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 1000,
+                "pattern": "\\S"
               }
             },
             "required": [

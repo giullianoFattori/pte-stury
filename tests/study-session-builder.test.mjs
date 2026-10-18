@@ -36,7 +36,7 @@ test('current bank: Task WFD 5 and RS 6 work; WFD 6 returns structured insuffici
 test('current bank: Mixed 10 is 4/3/3; difficulty restrictions use actual catalog capacity',()=>{
  const session=build(mixed());assert.deepEqual(counts(session),capacity(4,3,3));assert.deepEqual(taskSequence(session),['wfd','rs','ra','wfd','rs','ra','wfd','rs','ra','wfd']);
  assert.deepEqual(session.config.taskTypes,TASK_ORDER);assert.equal(new Set(session.itemIds).size,10);
- const pool=real.filter(i=>[2,3].includes(i.difficulty)),restricted=build({...mixed(pool.length),difficulties:[2,3]});assert.equal(restricted.itemIds.length,pool.length);assert.ok(restricted.itemIds.every(id=>pool.some(i=>i.id===id)));
+ const pool=real.filter(i=>TASK_ORDER.includes(i.taskType)&&[2,3].includes(i.difficulty)),restricted=build({...mixed(pool.length),difficulties:[2,3]});assert.equal(restricted.itemIds.length,pool.length);assert.ok(restricted.itemIds.every(id=>pool.some(i=>i.id===id)));
  const wfdHard=real.filter(i=>i.taskType===wfd&&i.difficulty===3);assert.equal(wfdHard.length,1);error(()=>build({mode:'task',taskTypes:[wfd],itemCount:2,difficulties:[3]}),'INSUFFICIENT_CONTENT');
 });
 for(const [n,cap,expected]of [[10,capacity(2,6,6),capacity(2,4,4)],[6,capacity(1,5,5),capacity(1,3,2)],[5,capacity(0,8,8),capacity(0,3,2)],[1,capacity(9,9,9),capacity(1,0,0)],[8,capacity(0,0,8),capacity(0,0,8)]])test(`capacity-aware allocation ${n}, ${JSON.stringify(cap)}`,()=>{

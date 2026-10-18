@@ -1,0 +1,24 @@
+{
+  "id": "rtl-000003",
+  "taskType": "retell-lecture",
+  "difficulty": 2,
+  "prompt": "Listen to the lecture and retell its main points in your own words.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": ["listening", "speaking"],
+  "topic": "Earth observation and plant water use",
+  "estimatedSeconds": 130,
+  "taskData": {
+    "audio": { "path": "/audio/retell-lecture/rtl-earth.mp3", "sha256": "3b91fd59dc43a34f7b6793c9b8e0914514f0c9fcb423a4587314a1d0cbccd32f", "durationMs": 70056, "mimeType": "audio/mpeg" },
+    "transcript": "Thermal measurements can track temperature changes in cities and wildfires, both concerns connected with climate change and motivations for the mission. Diurnal vegetation water stress describes how a plant behaves over a day. Plants are relatively dormant at night. As the sun rises, they open their stomata, take up carbon, and release water through evapotranspiration. Productivity rises toward midday, when evapotranspiration is highest, and then declines toward evening, creating a roughly parabolic daily pattern.",
+    "keyPoints": [
+      "Thermal measurements track temperature changes in cities and wildfires",
+      "Diurnal vegetation water stress describes how plants behave through the day",
+      "Plants open stomata and exchange carbon and water as the sun rises",
+      "Evapotranspiration and productivity rise toward a midday peak",
+      "Plant water use declines toward evening in a daily parabolic pattern"
+    ],
+    "keywords": ["thermal measurements", "wildfires", "stomata", "evapotranspiration", "midday"]
+  }
+}

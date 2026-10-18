@@ -16,7 +16,7 @@ export const TASK_REGISTRY: Readonly<Record<PteTaskType, PteTaskDefinition>> = O
   'write-from-dictation': definition('write-from-dictation', 'Write From Dictation', ['listening','writing'], 'listening', 'wfd', true),
   'repeat-sentence': definition('repeat-sentence', 'Repeat Sentence', ['listening','speaking'], 'speaking-writing', 'rs', true),
   'read-aloud': definition('read-aloud', 'Read Aloud', ['reading','speaking'], 'speaking-writing', 'ra', true),
-  'retell-lecture': definition('retell-lecture', 'Retell Lecture', ['listening','speaking'], 'speaking-writing', 'rtl', false),
+  'retell-lecture': definition('retell-lecture', 'Retell Lecture', ['listening','speaking'], 'speaking-writing', 'rtl', true),
   'summarize-group-discussion': definition('summarize-group-discussion', 'Summarize Group Discussion', ['listening','speaking'], 'speaking-writing', 'sgd', false),
   'describe-image': definition('describe-image', 'Describe Image', ['speaking'], 'speaking-writing', 'di', false),
   'summarize-written-text': definition('summarize-written-text', 'Summarize Written Text', ['reading','writing'], 'speaking-writing', 'swt', false),

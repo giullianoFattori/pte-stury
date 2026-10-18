@@ -1,7 +1,7 @@
 import type { AudioAsset, ImageAsset } from '../content/types';
 import type { PteTaskType, StudyItem } from './types';
 import type { Wave1TaskType } from './taskRegistry';
-export type RetellLectureItemData = Readonly<{ audio: AudioAsset; transcript: string; keyPoints: readonly string[]; keywords?: readonly string[]; image?: ImageAsset }>;
+export type RetellLectureItemData = Readonly<{ audio: AudioAsset; transcript: string; keyPoints: readonly string[]; keywords?: readonly string[]; image?: ImageAsset; imageAlt?: string }>;
 export type GroupDiscussionSpeaker = Readonly<{ id: string; label: string }>;
 export type GroupDiscussionTurn = Readonly<{ speakerId: string; text: string }>;
 export type SummarizeGroupDiscussionItemData = Readonly<{ audio: AudioAsset; speakers: readonly GroupDiscussionSpeaker[]; turns: readonly GroupDiscussionTurn[]; keyPoints: readonly string[]; relationships?: readonly string[] }>;

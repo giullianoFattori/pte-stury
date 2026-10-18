@@ -1,17 +1,17 @@
 {
   "schemaVersion": 2,
-  "contentVersion": "sha256:714ea490c9e33763f94bdc7c95719c9480a2bde738c693d67fc103e413dc21bd",
-  "itemCount": 17,
+  "contentVersion": "sha256:5a85e3d212394121084d8f65b94735eccbaff069211718571846db38fe8289eb",
+  "itemCount": 21,
   "countsByTaskType": {
     "write-from-dictation": 5,
     "repeat-sentence": 6,
     "read-aloud": 6,
-    "retell-lecture": 0,
+    "retell-lecture": 4,
     "summarize-group-discussion": 0,
     "describe-image": 0,
     "summarize-written-text": 0,
     "summarize-spoken-text": 0,
     "highlight-incorrect-words": 0
   },
-  "audioAssetCount": 11
+  "audioAssetCount": 15
 }

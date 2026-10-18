@@ -9,7 +9,7 @@ export const IMAGE_ASSET_RULE = object({ path: { type: 'string', maxLength: 512,
 const identity: DataRule = { type: 'string', maxLength: 64, pattern: '^[A-Za-z0-9][A-Za-z0-9_-]{0,63}$(?![\\s\\S])' };
 const tokenText: DataRule = { type: 'string', minLength: 1, maxLength: 1000, pattern: '^[^\\s\\x00-\\x1f]+$(?![\\s\\S])' };
 export const TASK_DATA_RULES: Readonly<Record<Wave1TaskType, DataRule>> = Object.freeze({
-  'retell-lecture': object({ audio: AUDIO_ASSET_RULE, transcript: text(50000), keyPoints: strings(), keywords: strings(), image: IMAGE_ASSET_RULE }, ['audio','transcript','keyPoints']),
+  'retell-lecture': object({ audio: AUDIO_ASSET_RULE, transcript: text(50000), keyPoints: strings(), keywords: strings(), image: IMAGE_ASSET_RULE, imageAlt: text(1000) }, ['audio','transcript','keyPoints']),
   'summarize-group-discussion': object({ audio: AUDIO_ASSET_RULE,
     speakers: { type: 'array', minItems: 3, maxItems: 3, items: object({ id: identity, label: text(200) }) },
     turns: { type: 'array', minItems: 3, maxItems: 500, items: object({ speakerId: identity, text: text() }) },
