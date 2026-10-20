@@ -612,6 +612,341 @@
       ],
       "topic": "Stewardship of lunar materials",
       "estimatedSeconds": 150
+    },
+    {
+      "id": "sgd-000001",
+      "taskType": "summarize-group-discussion",
+      "difficulty": 2,
+      "prompt": "Listen to the discussion and summarize the main ideas and contributions from all three speakers.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/summarize-group-discussion/sgd-team-roles.mp3",
+          "sha256": "2d6f40ba1b10758a8c88266d2d603272cbac42dbd6d842be1fdeb417012e2606",
+          "durationMs": 179064,
+          "mimeType": "audio/mpeg"
+        },
+        "speakers": [
+          {
+            "id": "gary",
+            "label": "Gary Jordan (host)"
+          },
+          {
+            "id": "alex",
+            "label": "Alex Perryman (producer)"
+          },
+          {
+            "id": "dan",
+            "label": "Dan Huot (co-host)"
+          }
+        ],
+        "turns": [
+          {
+            "speakerId": "gary",
+            "text": "So wait, you were into music first. What kind of music were you doing?"
+          },
+          {
+            "speakerId": "alex",
+            "text": "Any kind. It didn't really matter as long as it had a beat. I do a lot of music for games personally, so I love doing gaming music and driving music."
+          },
+          {
+            "speakerId": "gary",
+            "text": "What's some of the favorite music that you've actually produced? And what is it that you're doing here at NASA?"
+          },
+          {
+            "speakerId": "alex",
+            "text": "Outside of being the audio wizard for the podcast, I work with the ISS on a lot of their live in-flight events. I'm the voice that gets to talk to them at the end of the live event. It's cool because it's heard in space."
+          },
+          {
+            "speakerId": "gary",
+            "text": "Let's do it here. What's the line?"
+          },
+          {
+            "speakerId": "alex",
+            "text": "Station, this is Houston ACR. That concludes the event."
+          },
+          {
+            "speakerId": "dan",
+            "text": "Literally chills right now. It might be because the room's 30 degrees."
+          },
+          {
+            "speakerId": "gary",
+            "text": "That is the voice, that's awesome. You are doing events and your voice is in space. The audio control room is awesome."
+          },
+          {
+            "speakerId": "alex",
+            "text": "It's like a spaceship."
+          },
+          {
+            "speakerId": "gary",
+            "text": "You're getting feeds from space all the time. You get to communicate to space, right?"
+          },
+          {
+            "speakerId": "alex",
+            "text": "Yeah, I don't get to communicate from space. That would be cool, though, if I could go up there and end the event there."
+          }
+        ],
+        "keyPoints": [
+          "Alex studied audio engineering and has a music background",
+          "She produces music for games and driving",
+          "At NASA she supports live events with the International Space Station",
+          "Her voice closes events and is heard by people in space",
+          "The host admires Alex's space communication role and Dan jokes about the cold room"
+        ],
+        "speakerPoints": [
+          {
+            "speakerId": "gary",
+            "points": [
+              "Gary asks about Alex's music and NASA work, then admires her space communication role"
+            ]
+          },
+          {
+            "speakerId": "alex",
+            "points": [
+              "Alex explains her audio engineering background, music work and International Space Station sign-off"
+            ]
+          },
+          {
+            "speakerId": "dan",
+            "points": [
+              "Dan responds with chills and jokes that the studio is cold"
+            ]
+          }
+        ],
+        "relationships": [
+          "The host asks Alex about the station sign-off and responds with admiration",
+          "Dan reacts to Alex's work with a joke about the cold room"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "licensed",
+      "skills": [
+        "listening",
+        "speaking"
+      ],
+      "topic": "Audio engineering and communication with the International Space Station",
+      "estimatedSeconds": 300
+    },
+    {
+      "id": "sgd-000002",
+      "taskType": "summarize-group-discussion",
+      "difficulty": 2,
+      "prompt": "Listen to the discussion and summarize the main ideas and contributions from all three speakers.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/summarize-group-discussion/sgd-podcast-origins.mp3",
+          "sha256": "4ddeac78939d352c2190a7f9bb717768611ebcee29170608c02b1465ed3548fc",
+          "durationMs": 179064,
+          "mimeType": "audio/mpeg"
+        },
+        "speakers": [
+          {
+            "id": "gary",
+            "label": "Gary Jordan (host)"
+          },
+          {
+            "id": "alex",
+            "label": "Alex Perryman (producer)"
+          },
+          {
+            "id": "dan",
+            "label": "Dan Huot (co-host)"
+          }
+        ],
+        "turns": [
+          {
+            "speakerId": "gary",
+            "text": "When my commute became much longer, I started listening to podcasts. At Johnson Space Center, NASA had mostly highlight shows, short recaps with audio from video."
+          },
+          {
+            "speakerId": "alex",
+            "text": "They were more like shows just put in audio."
+          },
+          {
+            "speakerId": "gary",
+            "text": "I thought we should make a real podcast. I researched the industry and audience, then presented statistics to management and argued NASA should enter that space."
+          },
+          {
+            "speakerId": "dan",
+            "text": "We had to explain what a podcast was to a lot of people."
+          },
+          {
+            "speakerId": "gary",
+            "text": "That was a big part of it. We needed to build it from scratch and create weekly content that could go out through NASA.gov."
+          },
+          {
+            "speakerId": "dan",
+            "text": "Then came the fun part: what were we going to call it, and what would it look like?"
+          },
+          {
+            "speakerId": "alex",
+            "text": "Oh my gosh. Perfect."
+          },
+          {
+            "speakerId": "gary",
+            "text": "Kelly Humphreys came up with Houston, We Have a Podcast."
+          },
+          {
+            "speakerId": "dan",
+            "text": "That name was natural and memorable. It was the one that fit."
+          },
+          {
+            "speakerId": "gary",
+            "text": "That's the one. It was too perfect."
+          }
+        ],
+        "keyPoints": [
+          "A longer commute led the host to discover podcasts",
+          "NASA mostly had short highlight shows rather than full podcasts",
+          "The host researched audience demand and pitched a full podcast to management",
+          "The team had to explain the podcast format and build a weekly production",
+          "Kelly Humphreys suggested the name Houston We Have a Podcast and the team agreed"
+        ],
+        "speakerPoints": [
+          {
+            "speakerId": "gary",
+            "points": [
+              "Gary links his longer commute to discovering podcasts",
+              "He researched demand and pitched a weekly NASA podcast to management"
+            ]
+          },
+          {
+            "speakerId": "alex",
+            "points": [
+              "Alex explains NASA's earlier programs were highlight shows with audio",
+              "Alex enthusiastically approves the selected podcast name"
+            ]
+          },
+          {
+            "speakerId": "dan",
+            "points": [
+              "Dan says staff needed an explanation of podcasts",
+              "Dan helps brainstorm a natural memorable show name"
+            ]
+          }
+        ],
+        "relationships": [
+          "Alex distinguishes short NASA highlight shows from the podcast format Gary proposes",
+          "Dan adds that the team had to explain podcasts and Gary agrees this was important",
+          "The three colleagues agree Kelly's suggested name fits the show"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "licensed",
+      "skills": [
+        "listening",
+        "speaking"
+      ],
+      "topic": "Developing an educational science podcast",
+      "estimatedSeconds": 300
+    },
+    {
+      "id": "sgd-000003",
+      "taskType": "summarize-group-discussion",
+      "difficulty": 3,
+      "prompt": "Listen to the discussion and summarize the main ideas and contributions from all three speakers.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/summarize-group-discussion/sgd-coop-pathway.mp3",
+          "sha256": "24e9f6239093c05d5a3e9ae1c994e49852834b639e6ee455c1228c2edbaa64cd",
+          "durationMs": 179064,
+          "mimeType": "audio/mpeg"
+        },
+        "speakers": [
+          {
+            "id": "gary",
+            "label": "Gary Jordan (host)"
+          },
+          {
+            "id": "alex",
+            "label": "Alex Perryman (producer)"
+          },
+          {
+            "id": "dan",
+            "label": "Dan Huot (co-host)"
+          }
+        ],
+        "turns": [
+          {
+            "speakerId": "gary",
+            "text": "Dan, how did you get here to NASA?"
+          },
+          {
+            "speakerId": "dan",
+            "text": "I was poor and I needed money. I was in college, and my roommate and I decided we should probably try to make some money, so we figured let's go get internships."
+          },
+          {
+            "speakerId": "alex",
+            "text": "Join the club."
+          },
+          {
+            "speakerId": "dan",
+            "text": "My school had a well set-up co-op program. I was immediately presented with a list of companies, and NASA was on the list. I was a business major and went to school with nothing but engineers, so I wondered what I could do there."
+          },
+          {
+            "speakerId": "gary",
+            "text": "They told you NASA had business functions too, such as budget and contracts."
+          },
+          {
+            "speakerId": "dan",
+            "text": "I interviewed and got the position. I spent a semester in a budget office, but it was not for me. The co-op program let me come back for multiple tours and try something else."
+          },
+          {
+            "speakerId": "dan",
+            "text": "I liked writing and talking, so I tried public affairs, passed a writing test, and spent a summer there. The shuttle mission that repaired Hubble got me hooked. I kept coming back, and NASA offered me a job by the time I graduated."
+          },
+          {
+            "speakerId": "gary",
+            "text": "That's one good thing about the co-op program: if you keep coming back, your chances are good."
+          },
+          {
+            "speakerId": "dan",
+            "text": "Chances are good that you might be here at NASA."
+          },
+          {
+            "speakerId": "alex",
+            "text": "He's got to weigh them down a little bit; it's all right."
+          }
+        ],
+        "keyPoints": [
+          "Dan and his roommate sought internships while he was a college business major",
+          "The university co-op program showed Dan employer options including NASA",
+          "Dan worried NASA was only for engineers but learned it also had business roles",
+          "A budget-office semester was a poor fit, so the co-op let Dan try public affairs",
+          "Dan's public affairs placement and Hubble mission experience drew him into NASA work",
+          "The host notes that returning for co-op placements can improve career opportunities"
+        ],
+        "speakerPoints": [
+          {
+            "speakerId": "gary",
+            "points": [
+              "Gary asks Dan about his career path and recognizes the value of returning co-op placements"
+            ]
+          },
+          {
+            "speakerId": "alex",
+            "points": [
+              "Alex responds to Dan's money joke and lightly teases his confidence about returning"
+            ]
+          },
+          {
+            "speakerId": "dan",
+            "points": [
+              "Dan describes his college co-op, NASA internship, move from budget to public affairs, and eventual job"
+            ]
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "licensed",
+      "skills": [
+        "listening",
+        "speaking"
+      ],
+      "topic": "University co-op placements and career pathways",
+      "estimatedSeconds": 300
     }
   ]
 }

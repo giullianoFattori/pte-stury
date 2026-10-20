@@ -41,6 +41,11 @@
     "keyPoints": [
       "Three perspectives are discussed."
     ],
+    "speakerPoints": [
+      { "speakerId": "1", "points": ["The first speaker explains a perspective."] },
+      { "speakerId": "2", "points": ["The second speaker adds a different perspective."] },
+      { "speakerId": "3", "points": ["The third speaker responds to the discussion."] }
+    ],
     "relationships": [
       "The third speaker contrasts the first."
     ]

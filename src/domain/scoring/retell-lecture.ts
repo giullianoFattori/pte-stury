@@ -9,14 +9,15 @@ function terms(text: string): string[] {
   return [...new Set(text.normalize('NFKC').toLocaleLowerCase('en').replace(/[’']/gu, '').match(/[\p{L}\p{N}]+/gu) ?? [])];
 }
 function anchors(text: string): string[] { return terms(text).filter(term => !STOP_WORDS.has(term)); }
+export function matchAuthoredKeyPoint(responseTerms: ReadonlySet<string>, keyPoint: string): KeyPointMatch {
+  const requiredTerms = anchors(keyPoint);
+  const threshold = Math.min(requiredTerms.length, Math.max(1, RETELL_LECTURE_MATCH_CONFIG.minimumAnchors, Math.ceil(requiredTerms.length * RETELL_LECTURE_MATCH_CONFIG.requiredFraction)));
+  const matchedTerms = requiredTerms.filter(term => responseTerms.has(term));
+  return Object.freeze({ keyPoint, matched: requiredTerms.length > 0 && matchedTerms.length >= threshold, matchedTerms: Object.freeze(matchedTerms), requiredTerms: Object.freeze(requiredTerms) });
+}
 export function calculateRetellLectureCoverage(response: string, data: Pick<RetellLectureItemData, 'keyPoints'|'keywords'>): RetellLectureCoverage {
   const responseTerms = new Set(terms(response));
-  const matches = data.keyPoints.map(keyPoint => {
-    const requiredTerms = anchors(keyPoint);
-    const threshold = Math.min(requiredTerms.length, Math.max(1, RETELL_LECTURE_MATCH_CONFIG.minimumAnchors, Math.ceil(requiredTerms.length * RETELL_LECTURE_MATCH_CONFIG.requiredFraction)));
-    const matchedTerms = requiredTerms.filter(term => responseTerms.has(term));
-    return Object.freeze({ keyPoint, matched: requiredTerms.length > 0 && matchedTerms.length >= threshold, matchedTerms: Object.freeze(matchedTerms), requiredTerms: Object.freeze(requiredTerms) });
-  });
+  const matches = data.keyPoints.map(keyPoint => matchAuthoredKeyPoint(responseTerms, keyPoint));
   const matchedKeyPoints = matches.filter(match => match.matched).length;
   const keyPointCoverage = matches.length ? matchedKeyPoints / matches.length : 0;
   const keywords = data.keywords?.length ? [...new Set(data.keywords.flatMap(anchors))] : [];

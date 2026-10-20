@@ -1,0 +1,49 @@
+{
+  "id": "sgd-000001",
+  "taskType": "summarize-group-discussion",
+  "difficulty": 2,
+  "prompt": "Listen to the discussion and summarize the main ideas and contributions from all three speakers.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": ["listening", "speaking"],
+  "topic": "Audio engineering and communication with the International Space Station",
+  "estimatedSeconds": 300,
+  "taskData": {
+    "audio": { "path": "/audio/summarize-group-discussion/sgd-team-roles.mp3", "sha256": "2d6f40ba1b10758a8c88266d2d603272cbac42dbd6d842be1fdeb417012e2606", "durationMs": 179064, "mimeType": "audio/mpeg" },
+    "speakers": [
+      { "id": "gary", "label": "Gary Jordan (host)" },
+      { "id": "alex", "label": "Alex Perryman (producer)" },
+      { "id": "dan", "label": "Dan Huot (co-host)" }
+    ],
+    "turns": [
+      { "speakerId": "gary", "text": "So wait, you were into music first. What kind of music were you doing?" },
+      { "speakerId": "alex", "text": "Any kind. It didn't really matter as long as it had a beat. I do a lot of music for games personally, so I love doing gaming music and driving music." },
+      { "speakerId": "gary", "text": "What's some of the favorite music that you've actually produced? And what is it that you're doing here at NASA?" },
+      { "speakerId": "alex", "text": "Outside of being the audio wizard for the podcast, I work with the ISS on a lot of their live in-flight events. I'm the voice that gets to talk to them at the end of the live event. It's cool because it's heard in space." },
+      { "speakerId": "gary", "text": "Let's do it here. What's the line?" },
+      { "speakerId": "alex", "text": "Station, this is Houston ACR. That concludes the event." },
+      { "speakerId": "dan", "text": "Literally chills right now. It might be because the room's 30 degrees." },
+      { "speakerId": "gary", "text": "That is the voice, that's awesome. You are doing events and your voice is in space. The audio control room is awesome." },
+      { "speakerId": "alex", "text": "It's like a spaceship." },
+      { "speakerId": "gary", "text": "You're getting feeds from space all the time. You get to communicate to space, right?" },
+      { "speakerId": "alex", "text": "Yeah, I don't get to communicate from space. That would be cool, though, if I could go up there and end the event there." }
+    ],
+    "keyPoints": [
+      "Alex studied audio engineering and has a music background",
+      "She produces music for games and driving",
+      "At NASA she supports live events with the International Space Station",
+      "Her voice closes events and is heard by people in space",
+      "The host admires Alex's space communication role and Dan jokes about the cold room"
+    ],
+    "speakerPoints": [
+      { "speakerId": "gary", "points": ["Gary asks about Alex's music and NASA work, then admires her space communication role"] },
+      { "speakerId": "alex", "points": ["Alex explains her audio engineering background, music work and International Space Station sign-off"] },
+      { "speakerId": "dan", "points": ["Dan responds with chills and jokes that the studio is cold"] }
+    ],
+    "relationships": [
+      "The host asks Alex about the station sign-off and responds with admiration",
+      "Dan reacts to Alex's work with a joke about the cold room"
+    ]
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "id": "sgd-000002",
+  "taskType": "summarize-group-discussion",
+  "difficulty": 2,
+  "prompt": "Listen to the discussion and summarize the main ideas and contributions from all three speakers.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": ["listening", "speaking"],
+  "topic": "Developing an educational science podcast",
+  "estimatedSeconds": 300,
+  "taskData": {
+    "audio": { "path": "/audio/summarize-group-discussion/sgd-podcast-origins.mp3", "sha256": "4ddeac78939d352c2190a7f9bb717768611ebcee29170608c02b1465ed3548fc", "durationMs": 179064, "mimeType": "audio/mpeg" },
+    "speakers": [
+      { "id": "gary", "label": "Gary Jordan (host)" },
+      { "id": "alex", "label": "Alex Perryman (producer)" },
+      { "id": "dan", "label": "Dan Huot (co-host)" }
+    ],
+    "turns": [
+      { "speakerId": "gary", "text": "When my commute became much longer, I started listening to podcasts. At Johnson Space Center, NASA had mostly highlight shows, short recaps with audio from video." },
+      { "speakerId": "alex", "text": "They were more like shows just put in audio." },
+      { "speakerId": "gary", "text": "I thought we should make a real podcast. I researched the industry and audience, then presented statistics to management and argued NASA should enter that space." },
+      { "speakerId": "dan", "text": "We had to explain what a podcast was to a lot of people." },
+      { "speakerId": "gary", "text": "That was a big part of it. We needed to build it from scratch and create weekly content that could go out through NASA.gov." },
+      { "speakerId": "dan", "text": "Then came the fun part: what were we going to call it, and what would it look like?" },
+      { "speakerId": "alex", "text": "Oh my gosh. Perfect." },
+      { "speakerId": "gary", "text": "Kelly Humphreys came up with Houston, We Have a Podcast." },
+      { "speakerId": "dan", "text": "That name was natural and memorable. It was the one that fit." },
+      { "speakerId": "gary", "text": "That's the one. It was too perfect." }
+    ],
+    "keyPoints": [
+      "A longer commute led the host to discover podcasts",
+      "NASA mostly had short highlight shows rather than full podcasts",
+      "The host researched audience demand and pitched a full podcast to management",
+      "The team had to explain the podcast format and build a weekly production",
+      "Kelly Humphreys suggested the name Houston We Have a Podcast and the team agreed"
+    ],
+    "speakerPoints": [
+      { "speakerId": "gary", "points": ["Gary links his longer commute to discovering podcasts", "He researched demand and pitched a weekly NASA podcast to management"] },
+      { "speakerId": "alex", "points": ["Alex explains NASA's earlier programs were highlight shows with audio", "Alex enthusiastically approves the selected podcast name"] },
+      { "speakerId": "dan", "points": ["Dan says staff needed an explanation of podcasts", "Dan helps brainstorm a natural memorable show name"] }
+    ],
+    "relationships": [
+      "Alex distinguishes short NASA highlight shows from the podcast format Gary proposes",
+      "Dan adds that the team had to explain podcasts and Gary agrees this was important",
+      "The three colleagues agree Kelly's suggested name fits the show"
+    ]
+  }
+}

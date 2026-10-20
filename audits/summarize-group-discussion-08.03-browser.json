@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "date": "2026-10-20",
+  "standaloneSave": "PASS",
+  "taskPracticeCapacity": {
+    "available": 3,
+    "countFiveDisabled": true,
+    "maxItemCount": 3
+  },
+  "taskRoute": "PASS",
+  "mixedRetellLectureTransitionAndSummary": "PASS",
+  "localMediaRecorderAndControlledLocalStt": "PASS",
+  "pageErrors": 0,
+  "unexpectedRequests": 0,
+  "dbVersion": 3
+}

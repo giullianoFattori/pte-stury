@@ -48,6 +48,8 @@ for(const [index,task]of WAVE1_TASKS.entries()){
 }
 test('SGD unique three-speaker identity, references and speaker participation',()=>{
  for(const change of [d=>d.speakers[1].id=d.speakers[0].id,d=>d.turns[0].speakerId='unknown',d=>d.speakers.pop(),d=>d.turns[2].speakerId='1']){const f=structuredClone(fixtures[1]);change(f.taskData);bad(f);}
+ for(const change of [d=>d.speakerPoints.pop(),d=>d.speakerPoints[1].speakerId=d.speakerPoints[0].speakerId,d=>d.speakerPoints[0].speakerId='unknown']){const f=structuredClone(fixtures[1]);change(f.taskData);bad(f);}
+ const active=structuredClone(fixtures[1]);active.status='active';active.skills=TASK_REGISTRY[active.taskType].skills;active.taskData.audio.sha256='a'.repeat(64);delete active.taskData.speakerPoints;bad(active);
 });
 test('image metadata hash/size/dimensions/MIME and alt/features are mandatory and bounded',()=>{
  for(const change of [i=>i.width=0,i=>i.height=Infinity,i=>i.bytes=0,i=>i.bytes=20*1024*1024+1,i=>i.sha256='A'.repeat(64),i=>i.mediaType='image/jpeg',i=>i.unknown=true]){const f=structuredClone(fixtures[2]);change(f.taskData.image);bad(f);}
@@ -73,7 +75,7 @@ test('unfinished-only catalog cannot initialize practice; a previous bank is pre
 });
 test('unfinished Wave 1 installed rows remain historical only, absent from practice/counts',async t=>{
  const db=await database(t),repo=createStudyItemsRepository(db);
- for(const f of fixtures.slice(1)){const value=structuredClone(f);value.status='active';value.skills=TASK_REGISTRY[value.taskType].skills;if(value.taskData.audio)value.taskData.audio.sha256='a'.repeat(64);const item=installItem(parseQuestionBankItem(value),now);assert.equal(isPracticeEligible(item),false);await db.studyItems.add(item);assert.equal((await repo.getById(item.id)).id,item.id);}
+ for(const f of fixtures.slice(1).filter(f=>!TASK_REGISTRY[f.taskType].practiceReady)){const value=structuredClone(f);value.status='active';value.skills=TASK_REGISTRY[value.taskType].skills;if(value.taskData.audio)value.taskData.audio.sha256='a'.repeat(64);const item=installItem(parseQuestionBankItem(value),now);assert.equal(isPracticeEligible(item),false);await db.studyItems.add(item);assert.equal((await repo.getById(item.id)).id,item.id);}
  assert.deepEqual(await repo.queryPracticeItems(),[]);assert.equal(await repo.countPracticeItems(),0);
 });
 test('nested audio metadata counts/warnings use the canonical asset helper',()=>{
@@ -99,7 +101,7 @@ test('new-item supports Wave 1 draft reservation; bulk JSON import stays draft-o
 test('schema v1 installed content upgrades only catalog state: semantic rows and learner history unchanged',async t=>{
  const db=await database(t);await bootstrapApp(db);await seedHistory(db);const before=await snapshot(db);
  await db.contentState.put({...before.contentState[0],schemaVersion:1,contentVersion:'sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2'});
- const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,21);const after=await snapshot(db);
+ const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,24);const after=await snapshot(db);
  for(const table of ['studyItems','attempts','errors','reviews','studySessions'])assert.deepEqual(after[table],before[table]);assert.equal(after.contentState[0].schemaVersion,2);assert.equal(db.verno,3);assert.equal(after.attempts[0].itemRevision,undefined);assert.equal((await bootstrapApp(db)).status,'unchanged');
 });
 test('legacy generated pair is verified only for atomic replacement/recovery, never current publication',()=>{

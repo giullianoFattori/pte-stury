@@ -50,6 +50,11 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
     const ids = new Set(data.speakers.map(s => s.id));
     if (ids.size !== 3) invalid('taskData.speakers', 'Discussion needs three unique speaker IDs.');
     if (data.turns.some(t => !ids.has(t.speakerId)) || [...ids].some(id => !data.turns.some(t => t.speakerId === id))) invalid('taskData.turns', 'Turns must reference and represent all declared speakers.');
+    if (task === 'summarize-group-discussion' && published && !('speakerPoints' in data && data.speakerPoints))
+      invalid('taskData.speakerPoints', 'Published discussion content requires authored contribution points for each speaker.');
+    if ('speakerPoints' in data && data.speakerPoints && (new Set(data.speakerPoints.map(s => s.speakerId)).size !== ids.size
+      || data.speakerPoints.some(s => !ids.has(s.speakerId)) || [...ids].some(id => !data.speakerPoints?.some(s => s.speakerId === id))))
+      invalid('taskData.speakerPoints', 'Speaker points must uniquely cover all declared speakers.');
   }
   if ('displayedTokens' in data) {
     if (new Set(data.displayedTokens.map(t => t.id)).size !== data.displayedTokens.length) invalid('taskData.displayedTokens', 'Token IDs must be unique.');

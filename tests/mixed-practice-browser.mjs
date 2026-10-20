@@ -43,8 +43,8 @@ try {
  const radio=name=>card.getByRole('radio',{name,exact:true});
  const start=()=>card.getByRole('button',{name:'Start Mixed Practice',exact:true});
  const total=async n=>card.getByRole('status').filter({hasText:`Total: ${n} questions available`}).waitFor();
- await total(21);assert.equal(await radio('10').isChecked(),true);assert.equal(await card.getByRole('checkbox',{checked:true}).count(),4);
- await check('Retell Lecture').uncheck();await total(17);
+ await total(24);assert.equal(await radio('10').isChecked(),true);assert.equal(await card.getByRole('checkbox',{checked:true}).count(),5);
+ await check('Retell Lecture').uncheck();await total(20);await check('Summarize Group Discussion').uncheck();await total(17);
  await check('Write From Dictation').uncheck();await total(12);await check('Repeat Sentence').uncheck();await total(6);assert.equal(await start().isDisabled(),true);
  await check('Write From Dictation').check();await total(11);await check('Repeat Sentence').check();await total(17);
  // Delay one old filter response, switch filters, then release it: old totals must stay ignored.
@@ -78,13 +78,13 @@ try {
  await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('heading',{name:'Mixed Practice complete',exact:true}).waitFor();await page.getByRole('status').filter({hasText:'5 questions completed'}).waitFor();
  await page.reload();await page.getByRole('heading',{name:'Mixed Practice complete',exact:true}).waitFor();assert.equal(page.url(),url);
  // Max resolves to all currently eligible unique rows; active Mixed disables every new mode.
- await page.getByRole('link',{name:'Back to Study',exact:true}).click();await total(21);await radio('Max').check();await start().click();await loaded(page,0,21);
- const maximum=await current(page);assert.equal(maximum.session.config.itemCount,21);assert.equal(new Set(maximum.session.itemIds).size,21);
+ await page.getByRole('link',{name:'Back to Study',exact:true}).click();await total(24);await radio('Max').check();await start().click();await loaded(page,0,24);
+ const maximum=await current(page);assert.equal(maximum.session.config.itemCount,24);assert.equal(new Set(maximum.session.itemIds).size,24);
  await page.getByRole('link',{name:'Back to Study',exact:true}).click();await page.getByRole('button',{name:'Resume current session',exact:true}).waitFor();assert.equal(await start().isDisabled(),true);assert.equal(await card.getByRole('checkbox',{name:'Write From Dictation',exact:true}).isDisabled(),true);
  // Safe missing route remains shared for every mode.
  await page.goto(base+'/study/session/not-found');await page.getByRole('alert').filter({hasText:'This study session could not be found.'}).waitFor();
  assert.deepEqual(pageErrors,[]);assert.deepEqual(outbound,[]);
  const sequence=first.session.itemIds.map(id=>id.split('-')[0]);assert.deepEqual(sequence,['wfd','rs','ra','wfd','rs']);
- const report={status:'PASS',browser:browser.version(),scope:'Linux Chrome, actual app/StrictMode/IndexedDB/MediaRecorder/Web Audio; controlled STT HTTP, no physical microphone/human-quality/package certification',selectedTasks:['write-from-dictation','repeat-sentence','read-aloud'],requestedCount:5,allocation:{'write-from-dictation':2,'repeat-sentence':2,'read-aloud':1},taskSequence:sequence,selectionCapacity:'PASS',singleTaskBlocked:'PASS',zeroSelectedCapacityBlocked:'PASS',staleCapacityIgnored:'PASS',countPresets:'PASS',maxCount:21,readyTaskCount:4,feedbackContinue:'PASS',refreshAcrossWfdRs:'PASS',crossTaskReset:'PASS',completion:'PASS',activeMixedResume:'PASS',dbVersion:3,pageErrors:0,unexpectedRemoteRequests:0};
+ const report={status:'PASS',browser:browser.version(),scope:'Linux Chrome, actual app/StrictMode/IndexedDB/MediaRecorder/Web Audio; controlled STT HTTP, no physical microphone/human-quality/package certification',selectedTasks:['write-from-dictation','repeat-sentence','read-aloud'],requestedCount:5,allocation:{'write-from-dictation':2,'repeat-sentence':2,'read-aloud':1},taskSequence:sequence,selectionCapacity:'PASS',singleTaskBlocked:'PASS',zeroSelectedCapacityBlocked:'PASS',staleCapacityIgnored:'PASS',countPresets:'PASS',maxCount:24,readyTaskCount:5,feedbackContinue:'PASS',refreshAcrossWfdRs:'PASS',crossTaskReset:'PASS',completion:'PASS',activeMixedResume:'PASS',dbVersion:3,pageErrors:0,unexpectedRemoteRequests:0};
  await mkdir('audits',{recursive:true});await writeFile('audits/session-07.07-browser.json',JSON.stringify(report,null,2)+'\n');console.log(JSON.stringify(report));
 } finally {await browser?.close();await server.close();}

@@ -39,7 +39,7 @@ export function questionBankItemSchema() {
     $comment: 'Standard JSON Schema cannot compare two property values. x-pte-semanticRules declares that additional runtime rule; editor validation alone cannot approve content.',
     'x-pte-schemaVersion': QUESTION_BANK_SCHEMA_VERSION,
     'x-pte-semanticRules': [{ code: 'ANSWER_TRANSCRIPT_MISMATCH', path: 'answer',
-      rule: 'Foundation answer and transcript, when both present, must be exactly equal (including drafts).' }, { code: 'INVALID_TASK_DATA', path: 'taskData', rule: 'Runtime additionally enforces unique/referenced three-speaker IDs, coherent HIW token truth/transcript, image MIME/extension agreement and authored Retell Lecture image alt text.' }],
+      rule: 'Foundation answer and transcript, when both present, must be exactly equal (including drafts).' }, { code: 'INVALID_TASK_DATA', path: 'taskData', rule: 'Runtime additionally enforces unique/referenced three-speaker IDs, published SGD contribution points covering each speaker, coherent HIW token truth/transcript, image MIME/extension agreement and authored Retell Lecture image alt text.' }],
     type: 'object', additionalProperties: false, required: BASE_REQUIRED_FIELDS, properties,
     allOf: [
       ...Object.keys(QUESTION_ID_PREFIXES).map(task => ({

@@ -54,6 +54,7 @@
     "test:session-navigation-browser": "node tests/study-session-navigation-browser.mjs",
     "test:session-summary-browser": "node tests/study-session-summary-browser.mjs",
     "test:retell-lecture-browser": "node tests/retell-lecture-browser.mjs",
+    "test:summarize-group-discussion-browser": "node tests/summarize-group-discussion-browser.mjs",
     "validation:session:closure": "node tools/session-validation/closure.mjs",
     "validation:session:package": "node tools/session-validation/package.mjs"
   },

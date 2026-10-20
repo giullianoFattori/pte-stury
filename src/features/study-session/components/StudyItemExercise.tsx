@@ -3,6 +3,7 @@ import { WriteFromDictationExercise } from '../../write-from-dictation/WriteFrom
 import { RepeatSentenceExercise } from '../../repeat-sentence/RepeatSentenceExercise';
 import { ReadAloudExercise } from '../../read-aloud/ReadAloudExercise';
 import { RetellLectureExercise } from '../../retell-lecture/RetellLectureExercise';
+import { SummarizeGroupDiscussionExercise } from '../../summarize-group-discussion/SummarizeGroupDiscussionExercise';
 import type { ExerciseProps } from '../types';
 
 const exercises = {
@@ -10,6 +11,7 @@ const exercises = {
   'repeat-sentence': RepeatSentenceExercise,
   'read-aloud': ReadAloudExercise,
   'retell-lecture': RetellLectureExercise,
+  'summarize-group-discussion': SummarizeGroupDiscussionExercise,
 } satisfies Partial<Record<import('../../../domain/pte/types').PteTaskType, (props: ExerciseProps) => React.JSX.Element>>;
 /** Task dispatch only. Enabling a task also requires an explicit exercise mapping. */
 export function StudyItemExercise(props: ExerciseProps) {

@@ -7,7 +7,7 @@ import type { FoundationTaskType } from '../pte/taskRegistry.ts';
 
 // A rollout must register explicit metric handling before enabling practice. No RA fallback.
 const SUMMARY_EXACT_KEYS = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' } as const);
-export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture'] as const);
+export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion'] as const);
 type FoundationSessionSummary = Readonly<{
   taskType: 'write-from-dictation' | 'repeat-sentence' | 'read-aloud';
   questionCount: number;
@@ -31,7 +31,15 @@ export type RetellLectureSessionSummary = Readonly<{
   matchedKeyPoints: number; totalKeyPoints: number; averageSpeechRatioPercent: number;
   averageLongPauseCount: number; averageResponseLatencyMs: number; averageSpeechRateWpm?: number; speechRateResponses?: number;
 }>;
-export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary;
+export type SummarizeGroupDiscussionSessionSummary = Readonly<{
+  taskType: 'summarize-group-discussion'; questionCount: number;
+  averageKeyPointCoveragePercent: number; matchedKeyPoints: number; totalKeyPoints: number;
+  averageSpeakerCoveragePercent: number; representedSpeakers: number; totalSpeakerSlots: number;
+  averageRelationshipCoveragePercent?: number; matchedRelationships?: number; totalRelationships?: number;
+  averageSpeechRatioPercent: number; averageLongPauseCount: number; averageResponseLatencyMs: number;
+  averageSpeechRateWpm?: number; speechRateResponses?: number;
+}>;
+export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary;
 export type SessionSummary = Readonly<{
   sessionId: string;
   mode: StudySessionMode;
@@ -90,6 +98,26 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
       if (metrics.speechRateWpm !== undefined) metric(metrics, 'speechRateWpm', path);
       groups.set(task, [...(groups.get(task) ?? []), metrics]); return;
     }
+    if (task === 'summarize-group-discussion') {
+      metric(metrics, 'keyPointCoverage', path, false, 1); metric(metrics, 'keyPointCoveragePercent', path, false, 100);
+      const matched = metric(metrics, 'matchedKeyPoints', path, true), totalPoints = metric(metrics, 'totalKeyPoints', path, true);
+      if (!totalPoints || matched > totalPoints || Math.abs((matched / totalPoints) - (metrics.keyPointCoverage as number)) > 1e-8) corrupt(`${path}.keyPointCoverage`);
+      metric(metrics, 'speakerCoverage', path, false, 1); metric(metrics, 'speakerCoveragePercent', path, false, 100);
+      const represented = metric(metrics, 'representedSpeakers', path, true), speakers = metric(metrics, 'totalSpeakers', path, true);
+      if (speakers !== 3 || represented > speakers || Math.abs((represented / speakers) - (metrics.speakerCoverage as number)) > 1e-8) corrupt(`${path}.speakerCoverage`);
+      const relationshipKeys = ['relationshipCoverage','relationshipCoveragePercent','matchedRelationships','totalRelationships'];
+      const relationshipValues = relationshipKeys.filter(key => metrics[key] !== undefined);
+      if (relationshipValues.length && relationshipValues.length !== relationshipKeys.length) corrupt(`${path}.relationshipCoverage`);
+      if (relationshipValues.length) {
+        metric(metrics, 'relationshipCoverage', path, false, 1); metric(metrics, 'relationshipCoveragePercent', path, false, 100);
+        const matchedRelationships = metric(metrics, 'matchedRelationships', path, true), totalRelationships = metric(metrics, 'totalRelationships', path, true);
+        if (!totalRelationships || matchedRelationships > totalRelationships || Math.abs((matchedRelationships / totalRelationships) - (metrics.relationshipCoverage as number)) > 1e-8) corrupt(`${path}.relationshipCoverage`);
+      }
+      metric(metrics, 'speechRatioPercent', path, false, 100); metric(metrics, 'longPauseCount', path, true); metric(metrics, 'responseLatencyMs', path);
+      if (metrics.speechRateWpm !== undefined) metric(metrics, 'speechRateWpm', path);
+      if (metrics.processedLocally !== true) corrupt(`${path}.processedLocally`);
+      groups.set(task, [...(groups.get(task) ?? []), metrics]); return;
+    }
     if (!Object.hasOwn(SUMMARY_EXACT_KEYS, task)) corrupt(`${path}.taskType`);
     const foundationTask = task as FoundationTaskType;
     const correct = metric(metrics, 'correctWords', path, true), expected = metric(metrics, 'expectedWords', path, true);
@@ -123,6 +151,21 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
       const rates = group.filter(m => m.speechRateWpm !== undefined).map(m => m.speechRateWpm as number);
       byTask[task] = Object.freeze({ taskType: task, questionCount: group.length,
         averageKeyPointCoveragePercent: mean(numbers('keyPointCoveragePercent')), matchedKeyPoints, totalKeyPoints,
+        averageSpeechRatioPercent: mean(numbers('speechRatioPercent')), averageLongPauseCount: mean(numbers('longPauseCount')),
+        averageResponseLatencyMs: mean(numbers('responseLatencyMs')),
+        ...(rates.length ? { averageSpeechRateWpm: mean(rates), speechRateResponses: rates.length } : {}) });
+      continue;
+    }
+    if (task === 'summarize-group-discussion') {
+      const matchedKeyPoints = total(numbers('matchedKeyPoints'), task), totalKeyPoints = total(numbers('totalKeyPoints'), task);
+      const representedSpeakers = total(numbers('representedSpeakers'), task), totalSpeakerSlots = total(numbers('totalSpeakers'), task);
+      const relationshipGroup = group.filter(m => m.totalRelationships !== undefined);
+      const rates = group.filter(m => m.speechRateWpm !== undefined).map(m => m.speechRateWpm as number);
+      byTask[task] = Object.freeze({ taskType: task, questionCount: group.length,
+        averageKeyPointCoveragePercent: mean(numbers('keyPointCoveragePercent')), matchedKeyPoints, totalKeyPoints,
+        averageSpeakerCoveragePercent: mean(numbers('speakerCoveragePercent')), representedSpeakers, totalSpeakerSlots,
+        ...(relationshipGroup.length ? { averageRelationshipCoveragePercent: mean(relationshipGroup.map(m => m.relationshipCoveragePercent as number)),
+          matchedRelationships: total(relationshipGroup.map(m => m.matchedRelationships as number), task), totalRelationships: total(relationshipGroup.map(m => m.totalRelationships as number), task) } : {}),
         averageSpeechRatioPercent: mean(numbers('speechRatioPercent')), averageLongPauseCount: mean(numbers('longPauseCount')),
         averageResponseLatencyMs: mean(numbers('responseLatencyMs')),
         ...(rates.length ? { averageSpeechRateWpm: mean(rates), speechRateResponses: rates.length } : {}) });

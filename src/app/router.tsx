@@ -7,6 +7,7 @@ import { WriteFromDictationPage } from '../features/write-from-dictation/WriteFr
 import { RepeatSentencePage } from '../features/repeat-sentence/RepeatSentencePage';
 import { ReadAloudPage } from '../features/read-aloud/ReadAloudPage';
 import { RetellLecturePage } from '../features/retell-lecture/RetellLecturePage';
+import { SummarizeGroupDiscussionPage } from '../features/summarize-group-discussion/SummarizeGroupDiscussionPage';
 
 export const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/retell-lecture',
         element: <RetellLecturePage />,
+      },
+      {
+        path: '/study/summarize-group-discussion',
+        element: <SummarizeGroupDiscussionPage />,
       },
       {
         path: '/review',

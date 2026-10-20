@@ -33,6 +33,16 @@ function TaskResults({ task }: { task: TaskSessionSummary }) {
       <dt>Response latency</dt><dd>{Math.round(task.averageResponseLatencyMs)} ms average</dd>
       {task.averageSpeechRateWpm !== undefined && <><dt>Speech rate</dt><dd>{Math.round(task.averageSpeechRateWpm)} wpm · {task.speechRateResponses} measured responses</dd></>}
     </dl></section>;
+  if (task.taskType === 'summarize-group-discussion') return <section aria-label={SESSION_TASK_LABELS[task.taskType]} className="session-task-summary">
+    <h3>{SESSION_TASK_LABELS[task.taskType]}</h3><p>{task.questionCount} questions</p><dl>
+      <dt>Main-point coverage</dt><dd>{Math.round(task.averageKeyPointCoveragePercent)}% · {task.matchedKeyPoints} of {task.totalKeyPoints}</dd>
+      <dt>Speaker coverage</dt><dd>{Math.round(task.averageSpeakerCoveragePercent)}% · {task.representedSpeakers} of {task.totalSpeakerSlots}</dd>
+      {task.averageRelationshipCoveragePercent !== undefined && <><dt>Relationships</dt><dd>{Math.round(task.averageRelationshipCoveragePercent)}% · {task.matchedRelationships} of {task.totalRelationships}</dd></>}
+      <dt>Speech ratio</dt><dd>{Math.round(task.averageSpeechRatioPercent)}% average</dd>
+      <dt>Long pauses</dt><dd>{task.averageLongPauseCount.toFixed(1)} average</dd>
+      <dt>Response latency</dt><dd>{Math.round(task.averageResponseLatencyMs)} ms average</dd>
+      {task.averageSpeechRateWpm !== undefined && <><dt>Speech rate</dt><dd>{Math.round(task.averageSpeechRateWpm)} wpm · {task.speechRateResponses} measured responses</dd></>}
+    </dl></section>;
   const wfd = task.taskType === 'write-from-dictation', rs = task.taskType === 'repeat-sentence';
   return <section aria-label={SESSION_TASK_LABELS[task.taskType]} className="session-task-summary">
     <h3>{SESSION_TASK_LABELS[task.taskType]}</h3>

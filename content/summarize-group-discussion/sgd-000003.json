@@ -1,0 +1,45 @@
+{
+  "id": "sgd-000003",
+  "taskType": "summarize-group-discussion",
+  "difficulty": 3,
+  "prompt": "Listen to the discussion and summarize the main ideas and contributions from all three speakers.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": ["listening", "speaking"],
+  "topic": "University co-op placements and career pathways",
+  "estimatedSeconds": 300,
+  "taskData": {
+    "audio": { "path": "/audio/summarize-group-discussion/sgd-coop-pathway.mp3", "sha256": "24e9f6239093c05d5a3e9ae1c994e49852834b639e6ee455c1228c2edbaa64cd", "durationMs": 179064, "mimeType": "audio/mpeg" },
+    "speakers": [
+      { "id": "gary", "label": "Gary Jordan (host)" },
+      { "id": "alex", "label": "Alex Perryman (producer)" },
+      { "id": "dan", "label": "Dan Huot (co-host)" }
+    ],
+    "turns": [
+      { "speakerId": "gary", "text": "Dan, how did you get here to NASA?" },
+      { "speakerId": "dan", "text": "I was poor and I needed money. I was in college, and my roommate and I decided we should probably try to make some money, so we figured let's go get internships." },
+      { "speakerId": "alex", "text": "Join the club." },
+      { "speakerId": "dan", "text": "My school had a well set-up co-op program. I was immediately presented with a list of companies, and NASA was on the list. I was a business major and went to school with nothing but engineers, so I wondered what I could do there." },
+      { "speakerId": "gary", "text": "They told you NASA had business functions too, such as budget and contracts." },
+      { "speakerId": "dan", "text": "I interviewed and got the position. I spent a semester in a budget office, but it was not for me. The co-op program let me come back for multiple tours and try something else." },
+      { "speakerId": "dan", "text": "I liked writing and talking, so I tried public affairs, passed a writing test, and spent a summer there. The shuttle mission that repaired Hubble got me hooked. I kept coming back, and NASA offered me a job by the time I graduated." },
+      { "speakerId": "gary", "text": "That's one good thing about the co-op program: if you keep coming back, your chances are good." },
+      { "speakerId": "dan", "text": "Chances are good that you might be here at NASA." },
+      { "speakerId": "alex", "text": "He's got to weigh them down a little bit; it's all right." }
+    ],
+    "keyPoints": [
+      "Dan and his roommate sought internships while he was a college business major",
+      "The university co-op program showed Dan employer options including NASA",
+      "Dan worried NASA was only for engineers but learned it also had business roles",
+      "A budget-office semester was a poor fit, so the co-op let Dan try public affairs",
+      "Dan's public affairs placement and Hubble mission experience drew him into NASA work",
+      "The host notes that returning for co-op placements can improve career opportunities"
+    ],
+    "speakerPoints": [
+      { "speakerId": "gary", "points": ["Gary asks Dan about his career path and recognizes the value of returning co-op placements"] },
+      { "speakerId": "alex", "points": ["Alex responds to Dan's money joke and lightly teases his confidence about returning"] },
+      { "speakerId": "dan", "points": ["Dan describes his college co-op, NASA internship, move from budget to public affairs, and eventual job"] }
+    ]
+  }
+}

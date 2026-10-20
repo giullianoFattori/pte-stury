@@ -164,6 +164,21 @@
       "id": "rtl-000006",
       "taskType": "retell-lecture",
       "kind": "reserved"
+    },
+    {
+      "id": "sgd-000001",
+      "taskType": "summarize-group-discussion",
+      "kind": "reserved"
+    },
+    {
+      "id": "sgd-000002",
+      "taskType": "summarize-group-discussion",
+      "kind": "reserved"
+    },
+    {
+      "id": "sgd-000003",
+      "taskType": "summarize-group-discussion",
+      "kind": "reserved"
     }
   ]
 }
