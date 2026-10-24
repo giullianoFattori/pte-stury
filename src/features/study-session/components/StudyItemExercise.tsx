@@ -7,6 +7,7 @@ import { SummarizeGroupDiscussionExercise } from '../../summarize-group-discussi
 import { DescribeImageExercise } from '../../describe-image/DescribeImageExercise';
 import { SummarizeWrittenTextExercise } from '../../summarize-written-text/SummarizeWrittenTextExercise';
 import { SummarizeSpokenTextExercise } from '../../summarize-spoken-text/SummarizeSpokenTextExercise';
+import { HighlightIncorrectWordsExercise } from '../../highlight-incorrect-words/HighlightIncorrectWordsExercise';
 import type { ExerciseProps } from '../types';
 
 const exercises = {
@@ -18,6 +19,7 @@ const exercises = {
   'describe-image': DescribeImageExercise,
   'summarize-written-text': SummarizeWrittenTextExercise,
   'summarize-spoken-text': SummarizeSpokenTextExercise,
+  'highlight-incorrect-words': HighlightIncorrectWordsExercise,
 } satisfies Partial<Record<import('../../../domain/pte/types').PteTaskType, (props: ExerciseProps) => React.JSX.Element>>;
 /** Task dispatch only. Enabling a task also requires an explicit exercise mapping. */
 export function StudyItemExercise(props: ExerciseProps) {

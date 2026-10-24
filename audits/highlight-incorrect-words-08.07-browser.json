@@ -1,0 +1,19 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "scope": "standalone, one-play preview, token toggle and exact score, five-item Task Practice summary, all-nine Max Mixed canonical queue; no speech runtime or external requests",
+  "previewAndPlayback": "PASS",
+  "selectionToggleAndScore": "PASS",
+  "attemptTokenIds": "PASS",
+  "taskPracticeFiveAndSummary": "PASS",
+  "allNineCanonicalMixed": "PASS",
+  "queueLength": 41,
+  "uniqueItems": 41,
+  "audioPlayCount": 5,
+  "microphoneRequests": 0,
+  "mediaRecorderInstances": 0,
+  "speechRuntimeRequests": 0,
+  "externalRequests": 0,
+  "dbVersion": 3,
+  "pageErrors": 0
+}

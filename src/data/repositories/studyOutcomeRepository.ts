@@ -1,4 +1,5 @@
 import type { Attempt, ErrorRecord, ReviewItem, StudySession } from '../../domain/pte/types';
+import { validateAttemptResponseData } from '../../domain/pte/validateAttemptResponseData.ts';
 import { db, type PteDatabase } from '../db/database.ts';
 import { recordSessionAttempt, completeStudySession } from '../../domain/study-session/lifecycle.ts';
 import { sessionOperation, sessionFailure, loadVersionedSession, checkExpectedIndex, resolveSessionItem, verifySavedProgress, activeVersioned } from './sessionStorage.ts';
@@ -14,6 +15,7 @@ export type PersistStudyOutcomeInput = {
 export function createStudyOutcomeRepository(database: PteDatabase = db) {
   return {
     async createStudyOutcome({ attempt, errors, reviews, sessionProgress }: PersistStudyOutcomeInput) {
+      validateAttemptResponseData(attempt);
       let savedSession: StudySession | undefined;
       await sessionOperation(() => database.transaction('rw',
         [database.attempts, database.errors, database.reviews, ...(sessionProgress ? [database.studySessions, database.studyItems] : [])], async () => {

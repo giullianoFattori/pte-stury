@@ -1,0 +1,271 @@
+{
+  "id": "hiw-000002",
+  "taskType": "highlight-incorrect-words",
+  "difficulty": 2,
+  "prompt": "Listen to a passage about biological research in space.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": [
+    "listening",
+    "reading"
+  ],
+  "topic": "Space biology",
+  "estimatedSeconds": 35,
+  "taskData": {
+    "audio": {
+      "path": "/audio/highlight-incorrect-words/hiw-000002.mp3",
+      "sha256": "633266fd594bec61164c1e879ffda40f5e1299f7ab68ff5305db038d633e74d1",
+      "durationMs": 24048,
+      "mimeType": "audio/mpeg"
+    },
+    "spokenTranscript": "In the novel environment of space. And this understanding really helps contribute to making significant scientific and technological advancements that not only enable space exploration, you know, for future, for long duration, human space exploration, but also benefits life on Earth. So that's sort of the bigger picture.",
+    "displayedTokens": [
+      {
+        "id": "hiw-000002-w001",
+        "text": "In",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w002",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w003",
+        "text": "normal",
+        "incorrect": true,
+        "spokenText": "novel"
+      },
+      {
+        "id": "hiw-000002-w004",
+        "text": "environment",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w005",
+        "text": "of",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w006",
+        "text": "space.",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w007",
+        "text": "And",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w008",
+        "text": "this",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w009",
+        "text": "understanding",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w010",
+        "text": "really",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w011",
+        "text": "helps",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w012",
+        "text": "contribute",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w013",
+        "text": "to",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w014",
+        "text": "making",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w015",
+        "text": "substantial",
+        "incorrect": true,
+        "spokenText": "significant"
+      },
+      {
+        "id": "hiw-000002-w016",
+        "text": "scientific",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w017",
+        "text": "and",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w018",
+        "text": "technical",
+        "incorrect": true,
+        "spokenText": "technological"
+      },
+      {
+        "id": "hiw-000002-w019",
+        "text": "advancements",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w020",
+        "text": "that",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w021",
+        "text": "not",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w022",
+        "text": "only",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w023",
+        "text": "enable",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w024",
+        "text": "space",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w025",
+        "text": "exploration,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w026",
+        "text": "you",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w027",
+        "text": "know,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w028",
+        "text": "for",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w029",
+        "text": "future,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w030",
+        "text": "for",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w031",
+        "text": "long",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w032",
+        "text": "duration,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w033",
+        "text": "human",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w034",
+        "text": "space",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w035",
+        "text": "exploration,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w036",
+        "text": "but",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w037",
+        "text": "also",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w038",
+        "text": "affects",
+        "incorrect": true,
+        "spokenText": "benefits"
+      },
+      {
+        "id": "hiw-000002-w039",
+        "text": "life",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w040",
+        "text": "on",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w041",
+        "text": "Earth.",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w042",
+        "text": "So",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w043",
+        "text": "that's",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w044",
+        "text": "sort",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w045",
+        "text": "of",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w046",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000002-w047",
+        "text": "broader",
+        "incorrect": true,
+        "spokenText": "bigger"
+      },
+      {
+        "id": "hiw-000002-w048",
+        "text": "picture.",
+        "incorrect": false
+      }
+    ]
+  }
+}

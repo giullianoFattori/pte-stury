@@ -239,6 +239,31 @@
       "id": "sst-000004",
       "taskType": "summarize-spoken-text",
       "kind": "reserved"
+    },
+    {
+      "id": "hiw-000001",
+      "taskType": "highlight-incorrect-words",
+      "kind": "reserved"
+    },
+    {
+      "id": "hiw-000002",
+      "taskType": "highlight-incorrect-words",
+      "kind": "reserved"
+    },
+    {
+      "id": "hiw-000003",
+      "taskType": "highlight-incorrect-words",
+      "kind": "reserved"
+    },
+    {
+      "id": "hiw-000004",
+      "taskType": "highlight-incorrect-words",
+      "kind": "reserved"
+    },
+    {
+      "id": "hiw-000005",
+      "taskType": "highlight-incorrect-words",
+      "kind": "reserved"
     }
   ]
 }

@@ -1,0 +1,336 @@
+{
+  "id": "hiw-000003",
+  "taskType": "highlight-incorrect-words",
+  "difficulty": 2,
+  "prompt": "Listen to a discussion about pigments, sunlight and possible life beyond Earth.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": [
+    "listening",
+    "reading"
+  ],
+  "topic": "Photosynthesis beyond Earth",
+  "estimatedSeconds": 35,
+  "taskData": {
+    "audio": {
+      "path": "/audio/highlight-incorrect-words/hiw-000003.mp3",
+      "sha256": "ab647ab593868f33d3dea7e0b7e20c6ec06a576e083539d56cd74591510b4e5e",
+      "durationMs": 24048,
+      "mimeType": "audio/mpeg"
+    },
+    "spokenTranscript": "Synthesis, and chlorophyll is green because that's due to the color of light coming from our yellow sun, and that's the most efficient wavelength for them to process for energy. When you're looking at life on other plants, would you expect their plant analogous life forms to maybe be a different color because of that? So it's definitely possible. Interesting that.",
+    "displayedTokens": [
+      {
+        "id": "hiw-000003-w001",
+        "text": "Synthesis,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w002",
+        "text": "and",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w003",
+        "text": "chloroplast",
+        "incorrect": true,
+        "spokenText": "chlorophyll"
+      },
+      {
+        "id": "hiw-000003-w004",
+        "text": "is",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w005",
+        "text": "green",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w006",
+        "text": "because",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w007",
+        "text": "that's",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w008",
+        "text": "due",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w009",
+        "text": "to",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w010",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w011",
+        "text": "color",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w012",
+        "text": "of",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w013",
+        "text": "light",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w014",
+        "text": "coming",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w015",
+        "text": "from",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w016",
+        "text": "our",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w017",
+        "text": "young",
+        "incorrect": true,
+        "spokenText": "yellow"
+      },
+      {
+        "id": "hiw-000003-w018",
+        "text": "sun,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w019",
+        "text": "and",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w020",
+        "text": "that's",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w021",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w022",
+        "text": "most",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w023",
+        "text": "effective",
+        "incorrect": true,
+        "spokenText": "efficient"
+      },
+      {
+        "id": "hiw-000003-w024",
+        "text": "wavelength",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w025",
+        "text": "for",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w026",
+        "text": "them",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w027",
+        "text": "to",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w028",
+        "text": "process",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w029",
+        "text": "for",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w030",
+        "text": "power.",
+        "incorrect": true,
+        "spokenText": "energy."
+      },
+      {
+        "id": "hiw-000003-w031",
+        "text": "When",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w032",
+        "text": "you're",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w033",
+        "text": "looking",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w034",
+        "text": "at",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w035",
+        "text": "life",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w036",
+        "text": "on",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w037",
+        "text": "other",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w038",
+        "text": "plants,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w039",
+        "text": "would",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w040",
+        "text": "you",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w041",
+        "text": "expect",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w042",
+        "text": "their",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w043",
+        "text": "plant",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w044",
+        "text": "analogous",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w045",
+        "text": "life",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w046",
+        "text": "forms",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w047",
+        "text": "to",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w048",
+        "text": "maybe",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w049",
+        "text": "be",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w050",
+        "text": "a",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w051",
+        "text": "similar",
+        "incorrect": true,
+        "spokenText": "different"
+      },
+      {
+        "id": "hiw-000003-w052",
+        "text": "color",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w053",
+        "text": "because",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w054",
+        "text": "of",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w055",
+        "text": "that?",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w056",
+        "text": "So",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w057",
+        "text": "it's",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w058",
+        "text": "definitely",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w059",
+        "text": "possible.",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w060",
+        "text": "Interesting",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000003-w061",
+        "text": "that.",
+        "incorrect": false
+      }
+    ]
+  }
+}

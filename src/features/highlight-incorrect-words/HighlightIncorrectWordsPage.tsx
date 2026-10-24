@@ -1,0 +1,3 @@
+import{HighlightIncorrectWordsExercise}from'./HighlightIncorrectWordsExercise.tsx';
+import{useHighlightIncorrectWords}from'./hooks/useHighlightIncorrectWords.ts';
+export function HighlightIncorrectWordsPage(){const{items,item,index,loading,error,next}=useHighlightIncorrectWords();if(loading||error||!item)return<section className="practice-card" aria-busy={loading}><h2>Highlight Incorrect Words</h2>{loading?<p role="status">Loading Highlight Incorrect Words items…</p>:<p role="alert">{error??'No Highlight Incorrect Words items are available.'}</p>}</section>;return<HighlightIncorrectWordsExercise key={item.id} item={item} mode={{kind:'standalone'}} progress={{currentIndex:index,total:items.length}} onNext={next}/>;}

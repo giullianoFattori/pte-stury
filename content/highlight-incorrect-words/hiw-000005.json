@@ -1,0 +1,307 @@
+{
+  "id": "hiw-000005",
+  "taskType": "highlight-incorrect-words",
+  "difficulty": 2,
+  "prompt": "Listen to an explanation of pigments across photosynthetic life.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": [
+    "listening",
+    "reading"
+  ],
+  "topic": "Photosynthetic pigments",
+  "estimatedSeconds": 35,
+  "taskData": {
+    "audio": {
+      "path": "/audio/highlight-incorrect-words/hiw-000005.mp3",
+      "sha256": "312b8a41b396c0759c30b396302f2764a87c299034b78f46f0e07d0d3a959e35",
+      "durationMs": 24048,
+      "mimeType": "audio/mpeg"
+    },
+    "spokenTranscript": "You will get different colors or different photo pigments that they use which is why you end up with not just green algae but you know red algae or brown. So you will find these purple photosynthesizers in the lake environments so you can get different color pigments even here on Earth right because the",
+    "displayedTokens": [
+      {
+        "id": "hiw-000005-w001",
+        "text": "You",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w002",
+        "text": "will",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w003",
+        "text": "get",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w004",
+        "text": "distinct",
+        "incorrect": true,
+        "spokenText": "different"
+      },
+      {
+        "id": "hiw-000005-w005",
+        "text": "colors",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w006",
+        "text": "or",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w007",
+        "text": "different",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w008",
+        "text": "plant",
+        "incorrect": true,
+        "spokenText": "photo"
+      },
+      {
+        "id": "hiw-000005-w009",
+        "text": "pigments",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w010",
+        "text": "that",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w011",
+        "text": "they",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w012",
+        "text": "use",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w013",
+        "text": "which",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w014",
+        "text": "is",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w015",
+        "text": "why",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w016",
+        "text": "you",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w017",
+        "text": "end",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w018",
+        "text": "up",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w019",
+        "text": "with",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w020",
+        "text": "not",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w021",
+        "text": "just",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w022",
+        "text": "blue",
+        "incorrect": true,
+        "spokenText": "green"
+      },
+      {
+        "id": "hiw-000005-w023",
+        "text": "algae",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w024",
+        "text": "but",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w025",
+        "text": "you",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w026",
+        "text": "know",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w027",
+        "text": "black",
+        "incorrect": true,
+        "spokenText": "red"
+      },
+      {
+        "id": "hiw-000005-w028",
+        "text": "algae",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w029",
+        "text": "or",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w030",
+        "text": "brown.",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w031",
+        "text": "So",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w032",
+        "text": "you",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w033",
+        "text": "will",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w034",
+        "text": "find",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w035",
+        "text": "these",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w036",
+        "text": "orange",
+        "incorrect": true,
+        "spokenText": "purple"
+      },
+      {
+        "id": "hiw-000005-w037",
+        "text": "photosynthesizers",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w038",
+        "text": "in",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w039",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w040",
+        "text": "ocean",
+        "incorrect": true,
+        "spokenText": "lake"
+      },
+      {
+        "id": "hiw-000005-w041",
+        "text": "environments",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w042",
+        "text": "so",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w043",
+        "text": "you",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w044",
+        "text": "can",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w045",
+        "text": "get",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w046",
+        "text": "different",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w047",
+        "text": "color",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w048",
+        "text": "pigments",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w049",
+        "text": "even",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w050",
+        "text": "here",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w051",
+        "text": "on",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w052",
+        "text": "Earth",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w053",
+        "text": "right",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w054",
+        "text": "because",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000005-w055",
+        "text": "the",
+        "incorrect": false
+      }
+    ]
+  }
+}

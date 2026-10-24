@@ -1,0 +1,351 @@
+{
+  "id": "hiw-000004",
+  "taskType": "highlight-incorrect-words",
+  "difficulty": 2,
+  "prompt": "Listen to a segment about preserving lunar samples for research.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": [
+    "listening",
+    "reading"
+  ],
+  "topic": "Lunar sample stewardship",
+  "estimatedSeconds": 35,
+  "taskData": {
+    "audio": {
+      "path": "/audio/highlight-incorrect-words/hiw-000004.mp3",
+      "sha256": "930cc667f876755c2caa5c16c34944063332e34281e4df64df71eac00d2c5459",
+      "durationMs": 24048,
+      "mimeType": "audio/mpeg"
+    },
+    "spokenTranscript": "We had a colleague here at the University of Florida, Stephen Elardo, who's a geologist who has also worked with lunar samples. And so we developed a good proposal on how to be good stewards of lunar material, how to preserve the material the best that we can, as opposed to, you know, just flinging around willy-nilly into the little ceramic pots or something.",
+    "displayedTokens": [
+      {
+        "id": "hiw-000004-w001",
+        "text": "We",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w002",
+        "text": "had",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w003",
+        "text": "a",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w004",
+        "text": "colleague",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w005",
+        "text": "here",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w006",
+        "text": "at",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w007",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w008",
+        "text": "University",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w009",
+        "text": "of",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w010",
+        "text": "Florida,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w011",
+        "text": "Stephen",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w012",
+        "text": "Elardo,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w013",
+        "text": "who's",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w014",
+        "text": "a",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w015",
+        "text": "geologist",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w016",
+        "text": "who",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w017",
+        "text": "has",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w018",
+        "text": "also",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w019",
+        "text": "worked",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w020",
+        "text": "with",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w021",
+        "text": "lunar",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w022",
+        "text": "samples.",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w023",
+        "text": "And",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w024",
+        "text": "so",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w025",
+        "text": "we",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w026",
+        "text": "developed",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w027",
+        "text": "a",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w028",
+        "text": "good",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w029",
+        "text": "proposition",
+        "incorrect": true,
+        "spokenText": "proposal"
+      },
+      {
+        "id": "hiw-000004-w030",
+        "text": "on",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w031",
+        "text": "how",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w032",
+        "text": "to",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w033",
+        "text": "be",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w034",
+        "text": "good",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w035",
+        "text": "caretakers",
+        "incorrect": true,
+        "spokenText": "stewards"
+      },
+      {
+        "id": "hiw-000004-w036",
+        "text": "of",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w037",
+        "text": "lunar",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w038",
+        "text": "material,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w039",
+        "text": "how",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w040",
+        "text": "to",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w041",
+        "text": "protect",
+        "incorrect": true,
+        "spokenText": "preserve"
+      },
+      {
+        "id": "hiw-000004-w042",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w043",
+        "text": "material",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w044",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w045",
+        "text": "best",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w046",
+        "text": "that",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w047",
+        "text": "we",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w048",
+        "text": "can,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w049",
+        "text": "as",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w050",
+        "text": "opposed",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w051",
+        "text": "to,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w052",
+        "text": "you",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w053",
+        "text": "know,",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w054",
+        "text": "just",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w055",
+        "text": "flinging",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w056",
+        "text": "around",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w057",
+        "text": "carefully",
+        "incorrect": true,
+        "spokenText": "willy-nilly"
+      },
+      {
+        "id": "hiw-000004-w058",
+        "text": "into",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w059",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w060",
+        "text": "little",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w061",
+        "text": "plastic",
+        "incorrect": true,
+        "spokenText": "ceramic"
+      },
+      {
+        "id": "hiw-000004-w062",
+        "text": "pots",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w063",
+        "text": "or",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000004-w064",
+        "text": "something.",
+        "incorrect": false
+      }
+    ]
+  }
+}

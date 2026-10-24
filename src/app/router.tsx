@@ -11,6 +11,7 @@ import { SummarizeGroupDiscussionPage } from '../features/summarize-group-discus
 import { DescribeImagePage } from '../features/describe-image/DescribeImagePage';
 import { SummarizeWrittenTextPage } from '../features/summarize-written-text/SummarizeWrittenTextPage';
 import { SummarizeSpokenTextPage } from '../features/summarize-spoken-text/SummarizeSpokenTextPage';
+import { HighlightIncorrectWordsPage } from '../features/highlight-incorrect-words/HighlightIncorrectWordsPage';
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/summarize-spoken-text',
         element: <SummarizeSpokenTextPage />,
+      },
+      {
+        path: '/study/highlight-incorrect-words',
+        element: <HighlightIncorrectWordsPage />,
       },
       {
         path: '/review',

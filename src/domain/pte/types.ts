@@ -62,6 +62,12 @@ export type StudyItem<T extends PteTaskType = PteTaskType> = {
 };
 
 export type AttemptMetricValue = number | boolean;
+export type AttemptResponseData = Readonly<{
+  selectedTokenIds?: readonly string[];
+  correctTokenIds?: readonly string[];
+  falsePositiveTokenIds?: readonly string[];
+  missedTokenIds?: readonly string[];
+}>;
 
 export type Attempt = {
   id: string;
@@ -73,6 +79,8 @@ export type Attempt = {
   taskType: PteTaskType;
   createdAt: string;
   responseText?: string;
+  /** Structured response for token-selection tasks; absent on historical attempts. */
+  responseData?: AttemptResponseData;
   durationMs?: number;
   score?: number;
   metrics?: Record<string, AttemptMetricValue>;

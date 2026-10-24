@@ -41,6 +41,10 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
     const asset=(data as import('../pte/taskData').SummarizeSpokenTextItemData).audio;
     if(!asset.durationMs||asset.durationMs<60_000||asset.durationMs>90_000)invalid('taskData.audio.durationMs','Published Summarize Spoken Text audio must declare a duration from 60 to 90 seconds.');
   }
+  if(task==='highlight-incorrect-words'&&published){
+    const asset=(data as import('../pte/taskData').HighlightIncorrectWordsItemData).audio;
+    if(!asset.durationMs||asset.durationMs<15_000||asset.durationMs>50_000)invalid('taskData.audio.durationMs','Published Highlight Incorrect Words audio must declare a duration from 15 to 50 seconds.');
+  }
   if (task === 'retell-lecture') {
     const retell = data as import('../pte/taskData').RetellLectureItemData;
     if (retell.image ? typeof retell.imageAlt !== 'string' || !retell.imageAlt.trim() : retell.imageAlt !== undefined)

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "contentVersion": "sha256:baaacd16f0051d59a8660cf097b8ff6e8ffa4ffe95d00bc479de4ecabeaaa4e2",
-  "itemCount": 36,
+  "contentVersion": "sha256:246d400e68562495a7d492682ac53555994ef1b67266c4bd484078e70d4fde28",
+  "itemCount": 41,
   "countsByTaskType": {
     "write-from-dictation": 5,
     "repeat-sentence": 6,
@@ -11,7 +11,7 @@
     "describe-image": 4,
     "summarize-written-text": 4,
     "summarize-spoken-text": 4,
-    "highlight-incorrect-words": 0
+    "highlight-incorrect-words": 5
   },
-  "audioAssetCount": 18
+  "audioAssetCount": 23
 }

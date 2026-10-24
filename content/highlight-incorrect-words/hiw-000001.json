@@ -1,0 +1,350 @@
+{
+  "id": "hiw-000001",
+  "taskType": "highlight-incorrect-words",
+  "difficulty": 2,
+  "prompt": "Listen to a segment about thermal measurements and climate impacts.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": [
+    "listening",
+    "reading"
+  ],
+  "topic": "Earth observation",
+  "estimatedSeconds": 35,
+  "taskData": {
+    "audio": {
+      "path": "/audio/highlight-incorrect-words/hiw-000001.mp3",
+      "sha256": "66208d11c13457a6ab02736c3ae9a1e19259c40a4128dd581a25a199183fe089",
+      "durationMs": 24048,
+      "mimeType": "audio/mpeg"
+    },
+    "spokenTranscript": "We're also able to use these thermal measurements to measure the changing temperatures in cities and of wildfires. And so these are all the climate change impacts that we're really concerned about. And that was really the motivation for launching a mission like this. Very good. And now one thing I saw when looking up what EcoStress is studying is something called diurnal vegetation.",
+    "displayedTokens": [
+      {
+        "id": "hiw-000001-w001",
+        "text": "We're",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w002",
+        "text": "also",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w003",
+        "text": "able",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w004",
+        "text": "to",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w005",
+        "text": "use",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w006",
+        "text": "these",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w007",
+        "text": "seasonal",
+        "incorrect": true,
+        "spokenText": "thermal"
+      },
+      {
+        "id": "hiw-000001-w008",
+        "text": "measurements",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w009",
+        "text": "to",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w010",
+        "text": "measure",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w011",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w012",
+        "text": "charging",
+        "incorrect": true,
+        "spokenText": "changing"
+      },
+      {
+        "id": "hiw-000001-w013",
+        "text": "temperatures",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w014",
+        "text": "in",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w015",
+        "text": "cities",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w016",
+        "text": "and",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w017",
+        "text": "of",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w018",
+        "text": "waterways.",
+        "incorrect": true,
+        "spokenText": "wildfires."
+      },
+      {
+        "id": "hiw-000001-w019",
+        "text": "And",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w020",
+        "text": "so",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w021",
+        "text": "these",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w022",
+        "text": "are",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w023",
+        "text": "all",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w024",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w025",
+        "text": "climate",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w026",
+        "text": "change",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w027",
+        "text": "impacts",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w028",
+        "text": "that",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w029",
+        "text": "we're",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w030",
+        "text": "really",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w031",
+        "text": "concerned",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w032",
+        "text": "about.",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w033",
+        "text": "And",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w034",
+        "text": "that",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w035",
+        "text": "was",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w036",
+        "text": "really",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w037",
+        "text": "the",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w038",
+        "text": "motivation",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w039",
+        "text": "for",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w040",
+        "text": "launching",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w041",
+        "text": "a",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w042",
+        "text": "mission",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w043",
+        "text": "like",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w044",
+        "text": "this.",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w045",
+        "text": "Very",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w046",
+        "text": "good.",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w047",
+        "text": "And",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w048",
+        "text": "now",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w049",
+        "text": "one",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w050",
+        "text": "thing",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w051",
+        "text": "I",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w052",
+        "text": "saw",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w053",
+        "text": "when",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w054",
+        "text": "looking",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w055",
+        "text": "up",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w056",
+        "text": "what",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w057",
+        "text": "EcoStress",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w058",
+        "text": "is",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w059",
+        "text": "studying",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w060",
+        "text": "is",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w061",
+        "text": "something",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w062",
+        "text": "called",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w063",
+        "text": "diurnal",
+        "incorrect": false
+      },
+      {
+        "id": "hiw-000001-w064",
+        "text": "agriculture.",
+        "incorrect": true,
+        "spokenText": "vegetation."
+      }
+    ]
+  }
+}

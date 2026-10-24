@@ -1,0 +1,8 @@
+import type{Attempt,ErrorRecord,Skill,StudyItem}from'../../../domain/pte/types.ts';
+import{readTaskData}from'../../../domain/content/taskDataValidation.ts';
+export function buildHighlightIncorrectWordsErrorRecords(question:StudyItem,attempt:Attempt):ErrorRecord[]{
+ if(question.taskType!=='highlight-incorrect-words'||attempt.taskType!==question.taskType||attempt.itemId!==question.id)throw new Error('HIW errors must link to the correct item and attempt.');
+ const data=readTaskData(question,'highlight-incorrect-words'),truth=new Map(data.displayedTokens.map((token,index)=>[token.id,{token,index}])),selected=new Set(attempt.responseData?.selectedTokenIds??[]),base={attemptId:attempt.id,itemId:question.id,taskType:'highlight-incorrect-words' as const,skills:['listening','reading'] as Skill[],createdAt:attempt.createdAt},errors:ErrorRecord[]=[];
+ for(const token of data.displayedTokens){if(token.incorrect&&!selected.has(token.id))errors.push({...base,id:crypto.randomUUID(),category:'listening-decoding',token:token.text,expected:token.spokenText,actual:token.text,expectedIndex:truth.get(token.id)!.index,actualIndex:truth.get(token.id)!.index,explanation:'This displayed word differs from the authored audio transcript, but it was not selected.',severity:3});else if(!token.incorrect&&selected.has(token.id))errors.push({...base,id:crypto.randomUUID(),category:'listening-decoding',token:token.text,expected:token.text,actual:token.text,expectedIndex:truth.get(token.id)!.index,actualIndex:truth.get(token.id)!.index,explanation:'This word matched the audio but was selected as incorrect.',severity:2});}
+ return errors;
+}

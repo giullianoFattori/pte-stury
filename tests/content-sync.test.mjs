@@ -92,11 +92,11 @@ test('last content-state write failure rolls back successful item writes', async
   db.contentState.hook('updating', () => { throw new Error('Injected state failure'); });
   await assert.rejects(sync(db, [{ ...ra, revision: 2 }, rs])); assert.deepEqual(await snapshot(db), before);
 });
-test('generated production bank adopts legacy rows and installs all 36 active items', async t => {
+test('generated production bank adopts legacy rows and installs all 41 active items', async t => {
   const db = await database(t), legacy = [...writeFromDictationQuestions, ...repeatSentenceQuestions, ...readAloudQuestions];
   await db.studyItems.bulkAdd(legacy); await syncGeneratedQuestionBank(db);
-  const all = await db.studyItems.toArray(); assert.equal(all.length, 36);
-  assert.equal(all.filter(isPracticeEligible).length, 36);
+  const all = await db.studyItems.toArray(); assert.equal(all.length, 41);
+  assert.equal(all.filter(isPracticeEligible).length, 41);
   for (const old of legacy) { const row = await db.studyItems.get(old.id); assert.equal(row.revision, 1); assert.equal(row.createdAt, old.createdAt); }
   assert.equal(all.filter(i => i.id.endsWith('900001')).every(i => i.status === 'draft' && !isPracticeEligible(i)), true);
 });

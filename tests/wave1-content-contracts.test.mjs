@@ -32,7 +32,7 @@ for(const [index,task]of WAVE1_TASKS.entries()){
  test(`${task}: valid draft/publication, typed read, canonical ordering and input immutability`,()=>{
   const before=structuredClone(fixture),parsed=parseQuestionBankItem(fixture);assert.deepEqual(parsed,fixture);assert.deepEqual(fixture,before);assert.ok(Object.isFrozen(parsed.taskData));
   assert.deepEqual(readTaskData({...parsed,createdAt:now},task),fixture.taskData);assert.throws(()=>readTaskData({...parsed,createdAt:now},task==='retell-lecture'?'describe-image':'retell-lecture'));
-  const published=structuredClone(fixture);published.status='active';published.skills=TASK_REGISTRY[task].skills;if(published.taskData.audio){published.taskData.audio.sha256='a'.repeat(64);if(task==='summarize-spoken-text')published.taskData.audio.durationMs=75_000;}assert.ok(parseQuestionBankItem(published));
+  const published=structuredClone(fixture);published.status='active';published.skills=TASK_REGISTRY[task].skills;if(published.taskData.audio){published.taskData.audio.sha256='a'.repeat(64);if(task==='summarize-spoken-text')published.taskData.audio.durationMs=75_000;if(task==='highlight-incorrect-words')published.taskData.audio.durationMs=24_048;}assert.ok(parseQuestionBankItem(published));
   const reordered={...fixture,taskData:Object.fromEntries(Object.entries(fixture.taskData).reverse())};assert.deepEqual(canonicalItem(parsed),canonicalItem(parseQuestionBankItem(reordered)));
  });
  for(const field of TASK_DATA_RULES[task].required)test(`${task}: missing required ${field}`,()=>{const value=structuredClone(fixture);delete value.taskData[field];bad(value);});
@@ -69,18 +69,23 @@ test('published Summarize Spoken Text audio duration is required and restricted 
  for(const duration of [undefined,59_999,90_001]){const item=structuredClone(value);if(duration===undefined)delete item.taskData.audio.durationMs;else item.taskData.audio.durationMs=duration;bad(item);}
  for(const duration of [60_000,90_000]){const item=structuredClone(value);item.taskData.audio.durationMs=duration;assert.ok(parseQuestionBankItem(item));}
 });
+test('published Highlight Incorrect Words audio duration is required and restricted to 15–50 seconds',()=>{
+ const value=structuredClone(fixtures[5]);value.status='active';value.skills=TASK_REGISTRY[value.taskType].skills;value.taskData.audio.sha256='a'.repeat(64);
+ for(const duration of [undefined,14_999,50_001]){const item=structuredClone(value);if(duration===undefined)delete item.taskData.audio.durationMs;else item.taskData.audio.durationMs=duration;bad(item);}
+ for(const duration of [15_000,50_000]){const item=structuredClone(value);item.taskData.audio.durationMs=duration;assert.ok(parseQuestionBankItem(item));}
+});
 test('payloads reject accessors, prototype objects and non-JSON arrays without invoking getters',()=>{
  const f=structuredClone(fixtures[0]);Object.defineProperty(f.taskData,'transcript',{enumerable:true,get(){throw new Error('getter invoked');}});bad(f);
  bad({...fixtures[0],taskData:new Date()});const value=structuredClone(fixtures[0]);value.taskData.keyPoints=new Array(1);bad(value);
 });
-test('unfinished-only catalog cannot initialize practice; a previous bank is preserved',async t=>{
- const db=await database(t),item=structuredClone(fixtures[5]);item.status='active';item.skills=['listening','reading'];item.taskData.audio.sha256='a'.repeat(64);const next=catalog([item]);
+test('draft-only HIW catalog cannot initialize practice; a previous bank is preserved',async t=>{
+ const db=await database(t),item=structuredClone(fixtures[5]);const next=catalog([item]);
  await assert.rejects(initializeQuestionBank(next.bundle,next.manifest,db),e=>e.issues.some(i=>i.code==='CONTENT_INITIALIZATION_FAILED'));
  await bootstrapApp(db);const before=await snapshot(db);assert.equal((await initializeQuestionBank(next.bundle,next.manifest,db)).status,'preserved');assert.deepEqual(await snapshot(db),before);
 });
-test('unfinished Wave 1 installed rows remain historical only, absent from practice/counts',async t=>{
+test('draft Wave 1 installed rows remain historical only, absent from practice/counts',async t=>{
  const db=await database(t),repo=createStudyItemsRepository(db);
- for(const f of fixtures.slice(1).filter(f=>!TASK_REGISTRY[f.taskType].practiceReady)){const value=structuredClone(f);value.status='active';value.skills=TASK_REGISTRY[value.taskType].skills;if(value.taskData.audio)value.taskData.audio.sha256='a'.repeat(64);const item=installItem(parseQuestionBankItem(value),now);assert.equal(isPracticeEligible(item),false);await db.studyItems.add(item);assert.equal((await repo.getById(item.id)).id,item.id);}
+ for(const f of fixtures){const item=installItem(parseQuestionBankItem(structuredClone(f)),now);assert.equal(isPracticeEligible(item),false);await db.studyItems.add(item);assert.equal((await repo.getById(item.id)).id,item.id);}
  assert.deepEqual(await repo.queryPracticeItems(),[]);assert.equal(await repo.countPracticeItems(),0);
 });
 test('nested audio metadata counts/warnings use the canonical asset helper',()=>{
@@ -111,7 +116,7 @@ test('new-item supports Wave 1 draft reservation; bulk JSON import stays draft-o
 test('schema v1 installed content upgrades only catalog state: semantic rows and learner history unchanged',async t=>{
  const db=await database(t);await bootstrapApp(db);await seedHistory(db);const before=await snapshot(db);
  await db.contentState.put({...before.contentState[0],schemaVersion:1,contentVersion:'sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2'});
- const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,36);const after=await snapshot(db);
+ const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,41);const after=await snapshot(db);
  for(const table of ['studyItems','attempts','errors','reviews','studySessions'])assert.deepEqual(after[table],before[table]);assert.equal(after.contentState[0].schemaVersion,2);assert.equal(db.verno,3);assert.equal(after.attempts[0].itemRevision,undefined);assert.equal((await bootstrapApp(db)).status,'unchanged');
 });
 test('legacy generated pair is verified only for atomic replacement/recovery, never current publication',()=>{
