@@ -6,7 +6,7 @@ const base={keyPointCoverage:.5,keyPointCoveragePercent:50,matchedKeyPoints:2,to
 const attempts=[base,{...base,keyPointCoverage:1,keyPointCoveragePercent:100,matchedKeyPoints:3,totalKeyPoints:3,speechRatioPercent:90,longPauseCount:0,responseLatencyMs:500}].map((metrics,i)=>({id:`a${i+1}`,itemId:session.itemIds[i],taskType:'retell-lecture',sessionId:session.id,metrics}));
 test('Retell Lecture summary aggregates coverage, key-point counts and local fluency diagnostics',()=>{
  const result=buildSessionSummary(session,attempts),summary=result.byTask['retell-lecture'];
- assert.deepEqual(SESSION_SUMMARY_TASKS,['write-from-dictation','repeat-sentence','read-aloud','retell-lecture','summarize-group-discussion','describe-image','summarize-written-text']);
+ assert.deepEqual(SESSION_SUMMARY_TASKS,['write-from-dictation','repeat-sentence','read-aloud','retell-lecture','summarize-group-discussion','describe-image','summarize-written-text','summarize-spoken-text']);
  assert.equal(summary.questionCount,2);assert.equal(summary.averageKeyPointCoveragePercent,75);assert.equal(summary.matchedKeyPoints,5);assert.equal(summary.totalKeyPoints,7);assert.equal(summary.averageSpeechRatioPercent,80);assert.equal(summary.averageLongPauseCount,.5);assert.equal(summary.averageResponseLatencyMs,400);assert.equal(summary.averageSpeechRateWpm,120);assert.equal(summary.speechRateResponses,2);assert.equal('score' in summary,false);
 });
 test('summary rejects inconsistent coverage and keeps optional speech rate unavailable',()=>{

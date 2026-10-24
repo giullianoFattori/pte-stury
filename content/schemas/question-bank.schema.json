@@ -14,7 +14,7 @@
     {
       "code": "INVALID_TASK_DATA",
       "path": "taskData",
-      "rule": "Runtime additionally enforces unique/referenced three-speaker IDs, published SGD contribution points covering each speaker, coherent HIW token truth/transcript, image MIME/extension agreement and authored Retell Lecture image alt text."
+      "rule": "Runtime additionally enforces unique/referenced three-speaker IDs, published SGD contribution points covering each speaker, published SST audio duration of 60–90 seconds, coherent HIW token truth/transcript, image MIME/extension agreement and authored Retell Lecture image alt text."
     }
   ],
   "type": "object",
@@ -662,8 +662,8 @@
                 },
                 "durationMs": {
                   "type": "integer",
-                  "minimum": 1,
-                  "maximum": 9007199254740991
+                  "minimum": 60000,
+                  "maximum": 90000
                 },
                 "mimeType": {
                   "type": "string",
@@ -1654,8 +1654,8 @@
                   },
                   "durationMs": {
                     "type": "integer",
-                    "minimum": 1,
-                    "maximum": 9007199254740991
+                    "minimum": 60000,
+                    "maximum": 90000
                   },
                   "mimeType": {
                     "type": "string",
@@ -2128,6 +2128,48 @@
             }
           }
         ]
+      }
+    },
+    {
+      "if": {
+        "allOf": [
+          {
+            "properties": {
+              "taskType": {
+                "const": "summarize-spoken-text"
+              }
+            },
+            "required": [
+              "taskType"
+            ]
+          },
+          {
+            "properties": {
+              "status": {
+                "enum": [
+                  "active",
+                  "retired"
+                ]
+              }
+            },
+            "required": [
+              "status"
+            ]
+          }
+        ]
+      },
+      "then": {
+        "properties": {
+          "taskData": {
+            "properties": {
+              "audio": {
+                "required": [
+                  "durationMs"
+                ]
+              }
+            }
+          }
+        }
       }
     }
   ]

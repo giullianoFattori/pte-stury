@@ -58,6 +58,7 @@
     "test:summarize-group-discussion-browser": "node tests/summarize-group-discussion-browser.mjs",
     "test:describe-image-browser": "node tests/describe-image-browser.mjs",
     "test:summarize-written-text-browser": "node tests/summarize-written-text-browser.mjs",
+    "test:summarize-spoken-text-browser": "node tests/summarize-spoken-text-browser.mjs",
     "validation:session:closure": "node tools/session-validation/closure.mjs",
     "validation:session:package": "node tools/session-validation/package.mjs"
   },

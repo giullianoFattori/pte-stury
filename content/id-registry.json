@@ -219,6 +219,26 @@
       "id": "swt-000004",
       "taskType": "summarize-written-text",
       "kind": "reserved"
+    },
+    {
+      "id": "sst-000001",
+      "taskType": "summarize-spoken-text",
+      "kind": "reserved"
+    },
+    {
+      "id": "sst-000002",
+      "taskType": "summarize-spoken-text",
+      "kind": "reserved"
+    },
+    {
+      "id": "sst-000003",
+      "taskType": "summarize-spoken-text",
+      "kind": "reserved"
+    },
+    {
+      "id": "sst-000004",
+      "taskType": "summarize-spoken-text",
+      "kind": "reserved"
     }
   ]
 }

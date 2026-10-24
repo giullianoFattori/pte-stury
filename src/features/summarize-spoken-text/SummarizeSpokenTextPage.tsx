@@ -1,0 +1,3 @@
+import { SummarizeSpokenTextExercise } from './SummarizeSpokenTextExercise.tsx';
+import { useSummarizeSpokenText } from './hooks/useSummarizeSpokenText.ts';
+export function SummarizeSpokenTextPage(){const{items,item,index,loading,error,next}=useSummarizeSpokenText();if(loading||error||!item)return <section className="practice-card" aria-busy={loading}><h2>Summarize Spoken Text</h2>{loading?<p role="status">Loading Summarize Spoken Text items…</p>:<p role="alert">{error??'No Summarize Spoken Text items are available.'}</p>}</section>;return <SummarizeSpokenTextExercise key={item.id} item={item} mode={{kind:'standalone'}} progress={{currentIndex:index,total:items.length}} onNext={next}/>;}

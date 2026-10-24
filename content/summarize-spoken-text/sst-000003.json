@@ -1,0 +1,24 @@
+{
+  "id": "sst-000003",
+  "taskType": "summarize-spoken-text",
+  "difficulty": 3,
+  "prompt": "After listening to the astrobiology lecture, combine its key claims into a 50–70-word summary.",
+  "revision": 1,
+  "status": "active",
+  "source": "licensed",
+  "skills": ["listening", "writing"],
+  "topic": "Photosynthetic life beyond Earth",
+  "estimatedSeconds": 600,
+  "taskData": {
+    "audio": { "path": "/audio/retell-lecture/rtl-astrobiology.mp3", "sha256": "a3e641cb227543224623c7e4f0a389bcfd1bb9554db0b9ca3b878fc8ee19da8a", "durationMs": 88056, "mimeType": "audio/mpeg" },
+    "transcript": "Photosynthetic organisms on Earth use pigments to capture energy from light. Chlorophyll appears green because it works efficiently with light from our yellow Sun. On Earth, photosynthesizers can have different pigments and colors at different depths in the water, where light is filtered differently. Life around another star could therefore use different pigments and appear in different colors, depending on that star's light spectrum and the energy available in its environment.",
+    "keyPoints": [
+      "Photosynthetic organisms use pigments to capture energy from light",
+      "Chlorophyll is green and works efficiently with light from the yellow Sun",
+      "Different water depths filter light and support different pigments and colors",
+      "Photosynthetic life around other stars could use different pigments",
+      "An organism's pigments may depend on its star's light spectrum and available energy"
+    ],
+    "referenceSummary": "Photosynthetic organisms capture light with pigments, and Earth's chlorophyll works effectively with sunlight from our yellow star. Water filters light differently at varying depths, allowing other pigments and colors to support photosynthesis. Because stars have different spectra and environments, life beyond Earth might use unfamiliar pigments, so its appearance could reveal how it obtains energy."
+  }
+}

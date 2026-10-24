@@ -1,0 +1,6 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { calculateSummarizeSpokenTextCoverage } from '../src/domain/scoring/summarize-spoken-text/content.ts';
+const data={keyPoints:['Urban trees reduce summer heat','Researchers compare shaded streets','The study informs city planning']};
+test('SST lexical key-point evidence covers matching and partial summaries',()=>{const all=calculateSummarizeSpokenTextCoverage('Urban trees reduce summer heat. Researchers compare shaded streets and the study informs city planning.',data);assert.equal(all.matchedKeyPoints,3);assert.equal(all.responseWordCount,15);const partial=calculateSummarizeSpokenTextCoverage('Urban trees reduce summer heat.',data);assert.equal(partial.matchedKeyPoints,1);});
+test('SST coverage is zero for unrelated or empty responses and duplicates do not inflate',()=>{assert.equal(calculateSummarizeSpokenTextCoverage('Unrelated words only.',data).keyPointCoverage,0);assert.equal(calculateSummarizeSpokenTextCoverage('',data).keyPointCoverage,0);const repeated=calculateSummarizeSpokenTextCoverage('urban urban urban trees trees reduce reduce heat heat heat',data);assert.equal(repeated.matchedKeyPoints,1);});

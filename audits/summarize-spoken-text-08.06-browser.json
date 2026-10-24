@@ -1,0 +1,17 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "scope": "SST standalone, Task Practice and Mixed SWT/SST; timer/audio synchronization, one playback per attempt, Form scoring, summaries and persistence, fake clock; no speech runtime, microphone, MediaRecorder, or external requests",
+  "onePlayAndRetry": "PASS",
+  "fullAndZeroFormAttempt": "PASS",
+  "timeoutRetainsResponse": "PASS",
+  "taskPracticeThreeItemSummary": "PASS",
+  "mixedSwtSstTransitionsAndSummary": "PASS",
+  "noSpeechRuntime": "PASS",
+  "standaloneAndTaskPlaybackCount": 3,
+  "mixedPlaybackCount": 2,
+  "mediaRecorderCount": 0,
+  "externalRequests": 0,
+  "dbVersion": 3,
+  "pageErrors": 0
+}

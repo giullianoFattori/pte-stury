@@ -7,7 +7,7 @@ import type { FoundationTaskType } from '../pte/taskRegistry.ts';
 
 // A rollout must register explicit metric handling before enabling practice. No RA fallback.
 const SUMMARY_EXACT_KEYS = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' } as const);
-export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text'] as const);
+export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text'] as const);
 type FoundationSessionSummary = Readonly<{
   taskType: 'write-from-dictation' | 'repeat-sentence' | 'read-aloud';
   questionCount: number;
@@ -41,7 +41,8 @@ export type SummarizeGroupDiscussionSessionSummary = Readonly<{
 }>;
 export type DescribeImageSessionSummary = Readonly<{taskType:'describe-image';questionCount:number;averageFeatureCoveragePercent:number;matchedFeatures:number;totalFeatures:number;averageSpeechRatioPercent:number;averageLongPauseCount:number;averageResponseLatencyMs:number;averageSpeechRateWpm?:number;speechRateResponses?:number}>;
 export type SummarizeWrittenTextSessionSummary = Readonly<{taskType:'summarize-written-text';questionCount:number;validFormCount:number;averageWordCount:number;averageKeyPointCoveragePercent:number;matchedKeyPoints:number;totalKeyPoints:number;averageSourceCopyPercent:number;averageCompressionRatio:number}>;
-export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary;
+export type SummarizeSpokenTextSessionSummary=Readonly<{taskType:'summarize-spoken-text';questionCount:number;fullFormCount:number;partialFormCount:number;zeroFormCount:number;averageWordCount:number;averageKeyPointCoveragePercent:number;matchedKeyPoints:number;totalKeyPoints:number}>;
+export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary;
 export type SessionSummary = Readonly<{
   sessionId: string;
   mode: StudySessionMode;
@@ -141,6 +142,20 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
       if(typeof attempt.score!=='number'||!Number.isFinite(attempt.score)||Math.abs(attempt.score-(metrics.formValid?metrics.keyPointCoverage as number:0))>1e-8)corrupt(`${path}.score`);
       groups.set(task,[...(groups.get(task)??[]),metrics]);return;
     }
+    if(task==='summarize-spoken-text'){
+      if(metrics.sourcePlaybackStarted!==true)corrupt(`${path}.sourcePlaybackStarted`);
+      for(const key of ['targetRange','partialRange','zeroRange','allCaps','hasPunctuation','bulletLike','veryShortSentencePattern','startsWithCapital','endsWithTerminalPunctuation','duplicatePunctuation'])if(typeof metrics[key]!=='boolean')corrupt(`${path}.${key}`);
+      const words=metric(metrics,'wordCount',path,true,10000),points=metric(metrics,'formPoints',path,true,2),credit=metric(metrics,'formCredit',path,false,1);metric(metrics,'sentenceCount',path,true,10000);
+      const target=words>=50&&words<=70,partial=(words>=40&&words<50)||(words>70&&words<=100),zero=words<40||words>100;
+      const structural=metrics.allCaps===true||metrics.hasPunctuation===false||metrics.bulletLike===true||metrics.veryShortSentencePattern===true;
+      const expected=zero||structural?0:target?2:partial?1:-1;
+      if(metrics.targetRange!==target||metrics.partialRange!==partial||metrics.zeroRange!==zero||points!==expected||credit!==points/2)corrupt(`${path}.formPoints`);
+      metric(metrics,'keyPointCoverage',path,false,1);metric(metrics,'keyPointCoveragePercent',path,false,100);
+      const matched=metric(metrics,'matchedKeyPoints',path,true),totalPoints=metric(metrics,'totalKeyPoints',path,true);
+      if(!totalPoints||matched>totalPoints||Math.abs(matched/totalPoints-(metrics.keyPointCoverage as number))>1e-8||Math.abs((metrics.keyPointCoverage as number)*100-(metrics.keyPointCoveragePercent as number))>1e-8)corrupt(`${path}.keyPointCoverage`);
+      if(typeof attempt.score!=='number'||!Number.isFinite(attempt.score)||Math.abs(attempt.score-(metrics.keyPointCoverage as number)*credit)>1e-8)corrupt(`${path}.score`);
+      groups.set(task,[...(groups.get(task)??[]),metrics]);return;
+    }
     if (!Object.hasOwn(SUMMARY_EXACT_KEYS, task)) corrupt(`${path}.taskType`);
     const foundationTask = task as FoundationTaskType;
     const correct = metric(metrics, 'correctWords', path, true), expected = metric(metrics, 'expectedWords', path, true);
@@ -200,6 +215,9 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     }
     if(task==='summarize-written-text'){
       byTask[task]=Object.freeze({taskType:task,questionCount:group.length,validFormCount:group.filter(m=>m.formValid===true).length,averageWordCount:mean(numbers('wordCount')),averageKeyPointCoveragePercent:mean(numbers('keyPointCoveragePercent')),matchedKeyPoints:total(numbers('matchedKeyPoints'),task),totalKeyPoints:total(numbers('totalKeyPoints'),task),averageSourceCopyPercent:mean(numbers('sourceCopyPercent')),averageCompressionRatio:mean(numbers('compressionRatio'))});continue;
+    }
+    if(task==='summarize-spoken-text'){
+      byTask[task]=Object.freeze({taskType:task,questionCount:group.length,fullFormCount:group.filter(m=>m.formPoints===2).length,partialFormCount:group.filter(m=>m.formPoints===1).length,zeroFormCount:group.filter(m=>m.formPoints===0).length,averageWordCount:mean(numbers('wordCount')),averageKeyPointCoveragePercent:mean(numbers('keyPointCoveragePercent')),matchedKeyPoints:total(numbers('matchedKeyPoints'),task),totalKeyPoints:total(numbers('totalKeyPoints'),task)});continue;
     }
     const correctWords = total(numbers('correctWords'), task), expectedWords = total(numbers('expectedWords'), task);
     const foundationTask = task as FoundationTaskType;

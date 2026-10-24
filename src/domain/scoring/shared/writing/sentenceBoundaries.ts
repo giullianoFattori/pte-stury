@@ -1,10 +1,16 @@
 const ABBREVIATIONS = /\b(?:mr|mrs|ms|dr|prof|sr|jr|st|vs|etc|e\.g|i\.e|u\.s|u\.k)\./giu;
 
-/** Conservative terminal-mark count, excluding common abbreviations and decimal points. */
-export function countDetectedSentences(value: string): number {
+/** Conservative sentence splitting, excluding common abbreviations and decimal points. */
+export function splitDetectedSentences(value: string): readonly string[] {
   const protectedText = value.replace(ABBREVIATIONS, match => match.replaceAll('.', '\uE000'))
     .replace(/(?<=\p{N})\.(?=\p{N})/gu, '\uE000');
-  return [...protectedText.matchAll(/[.!?]+["'”’)}\]]*(?=\s|$)/gu)].length;
+  const sentences = protectedText.match(/[^.!?]+[.!?]+["'”’)}\]]*|[^.!?]+$/gu) ?? [];
+  return Object.freeze(sentences.map(sentence => sentence.replaceAll('\uE000', '.').trim()).filter(Boolean));
+}
+
+/** Conservative terminal-mark count, excluding common abbreviations and decimal points. */
+export function countDetectedSentences(value: string): number {
+  return splitDetectedSentences(value).length;
 }
 
 export function endsWithTerminalPunctuation(value: string): boolean {
