@@ -9,6 +9,7 @@ import { manifestFor } from './manifest.mjs';
 import { readSource } from './read-source.mjs';
 import { assertDirectory } from './discover.mjs';
 import { BANK_BYTE_LIMIT } from './pipeline.mjs';
+import { validateImageAssets } from './image-integrity.mjs';
 
 export const GENERATED_FILES = Object.freeze(['question-bank.json', 'question-bank.manifest.json']);
 export function verifyBytes(bundleBytes, manifestBytes, { allowPreviousSchema = false } = {}) {
@@ -34,9 +35,12 @@ export async function verifyGenerated(outputRoot = resolve('src/generated'), opt
   await assertDirectory(outputRoot);
   const files = (await readdir(outputRoot)).sort();
   if (files.join(',') !== [...GENERATED_FILES].sort().join(',')) throw new Error('Generated directory must contain exactly the bundle and manifest');
-  return verifyBytes(await readSource(join(outputRoot, GENERATED_FILES[0]), BANK_BYTE_LIMIT), await readSource(join(outputRoot, GENERATED_FILES[1])), options);
+  const checked=verifyBytes(await readSource(join(outputRoot, GENERATED_FILES[0]), BANK_BYTE_LIMIT), await readSource(join(outputRoot, GENERATED_FILES[1])), options);
+  const images=await validateImageAssets(checked.bundle.items,{imageRoot:options?.imageRoot??resolve('public/images')});
+  if(images.errors.length)throw new Error('Generated image assets failed integrity validation.');
+  return {...checked,images};
 }
 if (import.meta.url === pathToFileURL(resolve(process.argv[1] ?? '')).href) {
-  try { const result = await verifyGenerated(process.argv[2] ? resolve(process.argv[2]) : undefined); console.log(JSON.stringify({ success: true, ...result.manifest }, null, 2)); }
+  try { const result = await verifyGenerated(process.argv[2] ? resolve(process.argv[2]) : undefined); console.log(JSON.stringify({ success: true, ...result.manifest, images:result.images.stats }, null, 2)); }
   catch { console.error(JSON.stringify({ success: false, code: 'INVALID_GENERATED_BANK', message: 'Generated bank verification failed.' })); process.exitCode = 1; }
 }

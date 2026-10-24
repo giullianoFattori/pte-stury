@@ -18,7 +18,7 @@ export const TASK_REGISTRY: Readonly<Record<PteTaskType, PteTaskDefinition>> = O
   'read-aloud': definition('read-aloud', 'Read Aloud', ['reading','speaking'], 'speaking-writing', 'ra', true),
   'retell-lecture': definition('retell-lecture', 'Retell Lecture', ['listening','speaking'], 'speaking-writing', 'rtl', true),
   'summarize-group-discussion': definition('summarize-group-discussion', 'Summarize Group Discussion', ['listening','speaking'], 'speaking-writing', 'sgd', true),
-  'describe-image': definition('describe-image', 'Describe Image', ['speaking'], 'speaking-writing', 'di', false),
+  'describe-image': definition('describe-image', 'Describe Image', ['speaking'], 'speaking-writing', 'di', true),
   'summarize-written-text': definition('summarize-written-text', 'Summarize Written Text', ['reading','writing'], 'speaking-writing', 'swt', false),
   'summarize-spoken-text': definition('summarize-spoken-text', 'Summarize Spoken Text', ['listening','writing'], 'listening', 'sst', false),
   'highlight-incorrect-words': definition('highlight-incorrect-words', 'Highlight Incorrect Words', ['listening','reading'], 'listening', 'hiw', false),

@@ -58,7 +58,7 @@ try {
  await page.goto(base+'/study');
  // Mixed allocation contains both foundation WFD and Retell Lecture; the frozen queue interleaves across the task boundary.
  await page.getByRole('checkbox',{name:'Repeat Sentence',exact:true}).uncheck();await page.getByRole('checkbox',{name:'Read Aloud',exact:true}).uncheck();
- await page.getByText('Total: 12 questions available',{exact:true}).waitFor();
+ await page.getByText('Total: 16 questions available',{exact:true}).waitFor();
  const quickPool=await page.evaluate(async()=>{const {QUICK_TASK_POOL}=await import('/src/domain/pte/taskRegistry.ts');return QUICK_TASK_POOL;});assert.deepEqual(quickPool,['write-from-dictation','repeat-sentence','read-aloud']);
  // Start a compact two-task queue through the same production builder API, then exercise WFD → Retell Lecture continuation.
  await page.evaluate(async()=>{const {startMixedPractice}=await import('/src/features/study-session/services/startMixedPractice.ts');const {studySessionsRepository:sessions}=await import('/src/data/repositories/studySessionsRepository.ts');const {studyItemsRepository:source}=await import('/src/data/repositories/studyItemsRepository.ts');const {db}=await import('/src/data/db/database.ts');const started=await startMixedPractice({taskTypes:['write-from-dictation','retell-lecture'],itemCount:2},{sessions,source,getContentVersion:async()=>(await db.contentState.get('question-bank')).contentVersion,idGenerator:()=>crypto.randomUUID(),now:()=>new Date().toISOString(),rng:()=>0});window.mix=started.session;});

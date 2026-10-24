@@ -83,9 +83,9 @@ test('nested audio metadata counts/warnings use the canonical asset helper',()=>
  const parsed=validateQuestionBankItems([a,b]);assert.ok(parsed.success);assert.ok(parsed.warnings.some(w=>w.code==='DUPLICATE_AUDIO_PATH'&&w.path.endsWith('taskData.audio.path')));
  const bundle=canonicalBundle(parsed.items);assert.equal(manifestFor(bundle,jsonBytes(bundle)).audioAssetCount,1);
 });
-test('nested audio remains subject to real file existence checks; image build fails closed pending image implementation',async t=>{
+test('nested audio and image remain subject to real file existence checks',async t=>{
  const audio=await validateAudioAssets([fixtures[0]],{audioRoot:'/nonexistent',reportOrphans:false});assert.ok(audio.errors.some(e=>e.code==='AUDIO_NOT_FOUND'&&e.path==='taskData.audio'));
- const root=await authorRoot(t);const image=fixtures[2];await writeFile(join(root,image.taskType,image.id+'.json'),JSON.stringify(image));await assert.rejects(prepareBank({sourceRoot:root}),e=>e.errors.some(e=>e.code==='IMAGE_INTEGRITY_NOT_IMPLEMENTED'));
+ const root=await authorRoot(t);const image=fixtures[2];await writeFile(join(root,image.taskType,image.id+'.json'),JSON.stringify(image));await assert.rejects(prepareBank({sourceRoot:root}),e=>e.errors.some(e=>e.code==='IMAGE_NOT_FOUND'));
 });
 test('JSON/CSV taskData mapping preserves nested author text and rejects unknown nested intent',()=>{
  const fixture=fixtures[3],csv='taskType,difficulty,prompt,taskData\n'+['summarize-written-text','2','Draft prompt',JSON.stringify(fixture.taskData)].map(v=>'"'+v.replaceAll('"','""')+'"').join(',');
@@ -101,7 +101,7 @@ test('new-item supports Wave 1 draft reservation; bulk JSON import stays draft-o
 test('schema v1 installed content upgrades only catalog state: semantic rows and learner history unchanged',async t=>{
  const db=await database(t);await bootstrapApp(db);await seedHistory(db);const before=await snapshot(db);
  await db.contentState.put({...before.contentState[0],schemaVersion:1,contentVersion:'sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2'});
- const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,24);const after=await snapshot(db);
+ const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,28);const after=await snapshot(db);
  for(const table of ['studyItems','attempts','errors','reviews','studySessions'])assert.deepEqual(after[table],before[table]);assert.equal(after.contentState[0].schemaVersion,2);assert.equal(db.verno,3);assert.equal(after.attempts[0].itemRevision,undefined);assert.equal((await bootstrapApp(db)).status,'unchanged');
 });
 test('legacy generated pair is verified only for atomic replacement/recovery, never current publication',()=>{

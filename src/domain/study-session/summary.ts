@@ -7,7 +7,7 @@ import type { FoundationTaskType } from '../pte/taskRegistry.ts';
 
 // A rollout must register explicit metric handling before enabling practice. No RA fallback.
 const SUMMARY_EXACT_KEYS = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' } as const);
-export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion'] as const);
+export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image'] as const);
 type FoundationSessionSummary = Readonly<{
   taskType: 'write-from-dictation' | 'repeat-sentence' | 'read-aloud';
   questionCount: number;
@@ -39,7 +39,8 @@ export type SummarizeGroupDiscussionSessionSummary = Readonly<{
   averageSpeechRatioPercent: number; averageLongPauseCount: number; averageResponseLatencyMs: number;
   averageSpeechRateWpm?: number; speechRateResponses?: number;
 }>;
-export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary;
+export type DescribeImageSessionSummary = Readonly<{taskType:'describe-image';questionCount:number;averageFeatureCoveragePercent:number;matchedFeatures:number;totalFeatures:number;averageSpeechRatioPercent:number;averageLongPauseCount:number;averageResponseLatencyMs:number;averageSpeechRateWpm?:number;speechRateResponses?:number}>;
+export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary;
 export type SessionSummary = Readonly<{
   sessionId: string;
   mode: StudySessionMode;
@@ -118,6 +119,15 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
       if (metrics.processedLocally !== true) corrupt(`${path}.processedLocally`);
       groups.set(task, [...(groups.get(task) ?? []), metrics]); return;
     }
+    if (task === 'describe-image') {
+      metric(metrics,'featureCoverage',path,false,1);metric(metrics,'featureCoveragePercent',path,false,100);
+      const matched=metric(metrics,'matchedFeatures',path,true),totalFeatures=metric(metrics,'totalFeatures',path,true);
+      if(!totalFeatures||matched>totalFeatures||Math.abs(matched/totalFeatures-(metrics.featureCoverage as number))>1e-8)corrupt(`${path}.featureCoverage`);
+      metric(metrics,'speechRatioPercent',path,false,100);metric(metrics,'longPauseCount',path,true);metric(metrics,'responseLatencyMs',path);
+      if(metrics.speechRateWpm!==undefined)metric(metrics,'speechRateWpm',path);
+      if(metrics.processedLocally!==true)corrupt(`${path}.processedLocally`);
+      groups.set(task,[...(groups.get(task)??[]),metrics]);return;
+    }
     if (!Object.hasOwn(SUMMARY_EXACT_KEYS, task)) corrupt(`${path}.taskType`);
     const foundationTask = task as FoundationTaskType;
     const correct = metric(metrics, 'correctWords', path, true), expected = metric(metrics, 'expectedWords', path, true);
@@ -170,6 +180,10 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
         averageResponseLatencyMs: mean(numbers('responseLatencyMs')),
         ...(rates.length ? { averageSpeechRateWpm: mean(rates), speechRateResponses: rates.length } : {}) });
       continue;
+    }
+    if(task==='describe-image'){
+      const matchedFeatures=total(numbers('matchedFeatures'),task),totalFeatures=total(numbers('totalFeatures'),task),rates=group.filter(m=>m.speechRateWpm!==undefined).map(m=>m.speechRateWpm as number);
+      byTask[task]=Object.freeze({taskType:task,questionCount:group.length,averageFeatureCoveragePercent:mean(numbers('featureCoveragePercent')),matchedFeatures,totalFeatures,averageSpeechRatioPercent:mean(numbers('speechRatioPercent')),averageLongPauseCount:mean(numbers('longPauseCount')),averageResponseLatencyMs:mean(numbers('responseLatencyMs')),...(rates.length?{averageSpeechRateWpm:mean(rates),speechRateResponses:rates.length}:{})});continue;
     }
     const correctWords = total(numbers('correctWords'), task), expectedWords = total(numbers('expectedWords'), task);
     const foundationTask = task as FoundationTaskType;

@@ -5,6 +5,8 @@ import { jsonBytes } from '../tools/content/canonicalize.mjs';
 import { validateAudioAssets } from '../tools/content/audio-integrity.mjs';
 import { createAudioMedia } from '../tools/content/media-probe.mjs';
 import { configurePackagedLibraries } from '../runtime/src/nativeProcess.mjs';
+import { validateImageAssets } from '../tools/content/image-integrity.mjs';
+import { createImageMedia } from '../tools/content/image-integrity.mjs';
 
 // Build-time only. The packaged runtime needs neither TS authoring tools nor crypto discovery.
 export async function stageGeneratedContent(packageRoot, sourceRoot = resolve('src/generated')) {
@@ -15,6 +17,13 @@ export async function stageGeneratedContent(packageRoot, sourceRoot = resolve('s
     const media = await createAudioMedia({ ffmpeg: join(nativeRoot, 'ffmpeg' + suffix), ffprobe: join(nativeRoot, 'ffprobe' + suffix) });
     const audio = await validateAudioAssets(bundle.items, { audioRoot: join(packageRoot, 'web/audio'), media, reportOrphans: false });
     if (audio.errors.length) throw new Error('Staged question audio failed integrity validation.');
+  }
+  if(bundle.items.some(item=>item.taskData?.image)){
+    const nativeRoot=join(packageRoot,'native'),suffix=process.platform==='win32'?'.exe':'';
+    configurePackagedLibraries(nativeRoot);
+    const media=await createImageMedia({ffmpeg:join(nativeRoot,'ffmpeg'+suffix),ffprobe:join(nativeRoot,'ffprobe'+suffix)});
+    const images=await validateImageAssets(bundle.items,{imageRoot:join(packageRoot,'web/images'),media});
+    if(images.errors.length)throw new Error('Staged question images failed integrity validation.');
   }
   const target = join(packageRoot, 'web/content');
   await mkdir(target, { recursive: true });

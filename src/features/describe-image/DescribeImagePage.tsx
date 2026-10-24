@@ -1,0 +1,3 @@
+import { useDescribeImage } from './hooks/useDescribeImage';
+import { DescribeImageExercise } from './DescribeImageExercise';
+export function DescribeImagePage(){const{items,item,index,loading,error,next}=useDescribeImage();if(loading||error||!item)return <section className="practice-card" aria-busy={loading}><h2>Describe Image</h2>{loading?<p role="status">Loading Describe Image items…</p>:<p role="alert">{error??'No Describe Image items are available.'}</p>}</section>;return <DescribeImageExercise key={item.id} item={item} mode={{kind:'standalone'}} progress={{currentIndex:index,total:items.length}} onNext={next}/>;}

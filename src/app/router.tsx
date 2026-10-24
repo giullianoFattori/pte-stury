@@ -8,6 +8,7 @@ import { RepeatSentencePage } from '../features/repeat-sentence/RepeatSentencePa
 import { ReadAloudPage } from '../features/read-aloud/ReadAloudPage';
 import { RetellLecturePage } from '../features/retell-lecture/RetellLecturePage';
 import { SummarizeGroupDiscussionPage } from '../features/summarize-group-discussion/SummarizeGroupDiscussionPage';
+import { DescribeImagePage } from '../features/describe-image/DescribeImagePage';
 
 export const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/summarize-group-discussion',
         element: <SummarizeGroupDiscussionPage />,
+      },
+      {
+        path: '/study/describe-image',
+        element: <DescribeImagePage />,
       },
       {
         path: '/review',

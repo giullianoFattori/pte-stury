@@ -30,5 +30,6 @@ test('staging checks actual owned audio before publishing generated catalog file
 test('pinned decoder build includes MP3 content inspection and full null decode', async () => {
  const flags = JSON.parse(await readFile('packaging/ffmpeg-flags.json','utf8'));
  for(const [prefix,value] of [['--enable-protocol=','pipe'],['--enable-demuxer=','mp3'],['--enable-decoder=','mp3'],['--enable-parser=','mpegaudio'],['--enable-muxer=','null']]) assert.ok(flags.find(f=>f.startsWith(prefix)).slice(prefix.length).split(',').includes(value));
+ for(const [prefix,value] of [['--enable-demuxer=','image2'],['--enable-decoder=','mjpeg'],['--enable-decoder=','webp']]) assert.ok(flags.find(f=>f.startsWith(prefix)).slice(prefix.length).split(',').includes(value));
  assert.ok(flags.includes('--disable-network'));assert.ok(flags.includes('--disable-gpl'));assert.ok(flags.includes('--disable-nonfree'));
 });

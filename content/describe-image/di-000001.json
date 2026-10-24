@@ -1,0 +1,40 @@
+{
+  "id": "di-000001",
+  "taskType": "describe-image",
+  "difficulty": 2,
+  "prompt": "Describe the visual, including its main trend and a comparison between districts.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "speaking"
+  ],
+  "topic": "Urban transport and cycling",
+  "estimatedSeconds": 75,
+  "taskData": {
+    "image": {
+      "path": "/images/describe-image/di-000001.jpg",
+      "sha256": "7a3ab68b043b60ffef2891652368b121bd5ad28ab1e57cd9b0191a43e3e022a8",
+      "bytes": 47948,
+      "mediaType": "image/jpeg",
+      "width": 960,
+      "height": 600
+    },
+    "imageAlt": "Grouped bar chart comparing weekday cycling shares in Riverside, Central and Hillview from 2018 to 2024. Riverside rises steadily and ends highest; Central rises then falls, while Hillview rises throughout.",
+    "imageType": "chart",
+    "keyFeatures": [
+      "Riverside cycling share increases steadily from 2018 to 2024",
+      "Riverside records the highest share in 2024",
+      "Central rises to a 2022 peak then declines",
+      "Hillview increases across all four years"
+    ],
+    "keywords": [
+      "Riverside",
+      "Central",
+      "Hillview",
+      "cycling",
+      "2022",
+      "2024"
+    ]
+  }
+}

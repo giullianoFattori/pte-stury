@@ -10,6 +10,7 @@ import { readSource } from './read-source.mjs';
 import { canonicalBundle, jsonBytes } from './canonicalize.mjs';
 import { manifestFor, statsFor } from './manifest.mjs';
 import { validateAudioAssets } from './audio-integrity.mjs';
+import { validateImageAssets } from './image-integrity.mjs';
 
 export const BANK_BYTE_LIMIT = 128 * 1024 * 1024;
 export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty = false, audioOptions, strictFilenames = true, enforceRegistry = sourceRoot === resolve('content'), authorLockHeld = false } = {}) {
@@ -45,14 +46,13 @@ export async function prepareBank({ sourceRoot = resolve('content'), allowEmpty 
     try { checkSourceReservations(await readRegistry(sourceRoot), batch.items); }
     catch (error) { throw new BuildError(error.issues ?? [issue('content/id-registry.json', 'ID_REGISTRY_INVALID', 'Registry validation failed.')], warnings); }
   }
-  // Image byte verification/serving ships with Describe Image, never silently approve it.
-  for (const item of batch.items) if (item.taskData?.image) errors.push(issue('content/' + item.taskType + '/' + item.id + '.json', 'IMAGE_INTEGRITY_NOT_IMPLEMENTED', 'Image metadata is valid, but image byte validation must be implemented before packaging image content.', 'taskData.image'));
-  if (errors.length) throw new BuildError(errors, warnings);
+  const images = await validateImageAssets(batch.items, { imageRoot: resolve('public/images') });
+  if (images.errors.length) throw new BuildError(images.errors, warnings);
   const audio = await validateAudioAssets(batch.items, audioOptions);
   warnings.push(...audio.warnings);
   if (audio.errors.length) throw new BuildError(audio.errors, warnings);
   const bundle = canonicalBundle(batch.items), bundleBytes = jsonBytes(bundle);
   if (Buffer.byteLength(bundleBytes) > BANK_BYTE_LIMIT) throw new BuildError([issue('content', 'BANK_TOO_LARGE', 'Canonical bundle byte budget exceeded.')], warnings);
   const manifest = manifestFor(bundle, bundleBytes);
-  return { bundle, bundleBytes, manifest, manifestBytes: jsonBytes(manifest), stats: { ...statsFor(bundle.items), audio: audio.stats }, audio, warnings, discoveredItems: files.length };
+  return { bundle, bundleBytes, manifest, manifestBytes: jsonBytes(manifest), stats: { ...statsFor(bundle.items), audio: audio.stats, images: images.stats }, audio, images, warnings, discoveredItems: files.length };
 }

@@ -1,0 +1,39 @@
+{
+  "id": "di-000002",
+  "taskType": "describe-image",
+  "difficulty": 3,
+  "prompt": "Describe the map and explain how population density varies across the region.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "speaking"
+  ],
+  "topic": "Regional population distribution",
+  "estimatedSeconds": 75,
+  "taskData": {
+    "image": {
+      "path": "/images/describe-image/di-000002.jpg",
+      "sha256": "62b114f1a0505923b92af4c28e7b5bdaec8d2e4ff412315cfacd8852b9c515f7",
+      "bytes": 50026,
+      "mediaType": "image/jpeg",
+      "width": 960,
+      "height": 600
+    },
+    "imageAlt": "A regional map shaded by population density. The eastern East Bay area is darkest, a central band has medium density, and northern ridge areas are lighter; a legend gives four density bands.",
+    "imageType": "map",
+    "keyFeatures": [
+      "Population density is concentrated in the eastern East Bay",
+      "The central region has medium population density",
+      "Northern Ridge has lower density than East Bay",
+      "The map uses four population-density bands"
+    ],
+    "keywords": [
+      "East Bay",
+      "central",
+      "Northern Ridge",
+      "density",
+      "residents"
+    ]
+  }
+}

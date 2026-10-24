@@ -1,0 +1,20 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "scope": "Linux Chrome, app routes/StrictMode/IndexedDB/MediaRecorder/Web Audio with controlled local transcription; no physical microphone or human-quality claim",
+  "standaloneImageLoad": "PASS",
+  "imageIntegrityMetadata": "PASS",
+  "explicitPreparationAnd40sCap": "PASS",
+  "localWhisperContract": "PASS",
+  "localFluency": "PASS",
+  "taskPracticeCapacity": "PASS",
+  "taskSummary": "PASS",
+  "mixedSgdToDescribeImage": "PASS",
+  "mixedSummary": "PASS",
+  "describeImageToReadAloud": "PASS",
+  "describeImageToRetellLecture": "PASS",
+  "quickPoolUnchanged": "PASS",
+  "dbVersion": 3,
+  "pageErrors": 0,
+  "unexpectedRemoteRequests": 0
+}

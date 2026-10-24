@@ -1,5 +1,6 @@
 import type { SummarizeGroupDiscussionItemData } from '../pte/taskData';
 import { matchAuthoredKeyPoint, type KeyPointMatch } from './retell-lecture.ts';
+import { lexicalTerms } from './shared/lexicalCoverage.ts';
 
 export type SpeakerContributionCoverage = Readonly<{
   speakerId: string; label: string; represented: boolean; matchedPoints: number; totalPoints: number; matches: readonly KeyPointMatch[];
@@ -11,14 +12,10 @@ export type SummarizeGroupDiscussionCoverage = Readonly<{
   responseWordCount: number;
 }>;
 
-function uniqueResponseTerms(response: string): Set<string> {
-  return new Set(response.normalize('NFKC').toLocaleLowerCase('en').replace(/[’']/gu, '').match(/[\p{L}\p{N}]+/gu) ?? []);
-}
-
 /** Deterministic lexical coverage only. It does not infer meaning or reproduce Pearson Content scoring. */
 export function calculateSummarizeGroupDiscussionCoverage(response: string, data: SummarizeGroupDiscussionItemData): SummarizeGroupDiscussionCoverage {
   if (!data.speakerPoints || data.speakerPoints.length !== data.speakers.length) throw new Error('Published SGD content requires authored points for each speaker.');
-  const responseTerms = uniqueResponseTerms(response);
+  const responseTerms = new Set(lexicalTerms(response));
   const matchPoints = (points: readonly string[]) => points.map(point => matchAuthoredKeyPoint(responseTerms, point));
   const keyPointMatches = matchPoints(data.keyPoints), matchedKeyPoints = keyPointMatches.filter(match => match.matched).length;
   const speakerDetails = data.speakers.map(speaker => {

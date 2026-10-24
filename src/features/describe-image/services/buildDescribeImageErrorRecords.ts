@@ -1,0 +1,3 @@
+import type { Attempt, ErrorRecord, StudyItem } from '../../../domain/pte/types';
+import type { DescribeImageCoverage } from '../../../domain/scoring/describe-image';
+export function buildDescribeImageErrorRecords(question:StudyItem,attempt:Attempt,coverage:DescribeImageCoverage):ErrorRecord[]{return coverage.matches.filter(m=>!m.matched).slice(0,4).map(m=>({id:crypto.randomUUID(),attemptId:attempt.id,itemId:question.id,taskType:'describe-image',skills:['speaking'],category:'omission',token:m.keyPoint,expected:m.keyPoint,explanation:'This visual feature was not detected in the transcribed response.',severity:1,createdAt:attempt.createdAt}));}

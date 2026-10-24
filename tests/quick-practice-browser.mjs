@@ -41,6 +41,7 @@ try {
  for(const task of WAVE1_TASKS.filter(task=>!TASK_REGISTRY[task].practiceReady)){assert.equal(await page.getByRole('radio',{name:TASK_LABELS[task],exact:true}).count(),0);assert.equal(await page.getByRole('checkbox',{name:TASK_LABELS[task],exact:true}).count(),0);}
  const retell='retell-lecture';assert.equal(await page.getByRole('radio',{name:TASK_LABELS[retell],exact:true}).count(),1);assert.equal(await page.getByRole('checkbox',{name:TASK_LABELS[retell],exact:true}).count(),1);
  const sgd='summarize-group-discussion';assert.equal(await page.getByRole('radio',{name:TASK_LABELS[sgd],exact:true}).count(),1);assert.equal(await page.getByRole('checkbox',{name:TASK_LABELS[sgd],exact:true}).count(),1);
+ const describe='describe-image';assert.equal(await page.getByRole('radio',{name:TASK_LABELS[describe],exact:true}).count(),1);assert.equal(await page.getByRole('checkbox',{name:TASK_LABELS[describe],exact:true}).count(),1);
  for(const task of FOUNDATION_TASKS){assert.equal(await page.getByRole('radio',{name:TASK_LABELS[task],exact:true}).count(),1);assert.equal(await page.getByRole('checkbox',{name:TASK_LABELS[task],exact:true}).count(),1);}
  // No creation from StrictMode mount effects.
  assert.equal(await page.evaluate(async()=>{const {db}=await import('/src/data/db/database.ts');return db.studySessions.count();}),0);

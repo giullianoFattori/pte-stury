@@ -947,6 +947,164 @@
       ],
       "topic": "University co-op placements and career pathways",
       "estimatedSeconds": 300
+    },
+    {
+      "id": "di-000001",
+      "taskType": "describe-image",
+      "difficulty": 2,
+      "prompt": "Describe the visual, including its main trend and a comparison between districts.",
+      "taskData": {
+        "image": {
+          "path": "/images/describe-image/di-000001.jpg",
+          "sha256": "7a3ab68b043b60ffef2891652368b121bd5ad28ab1e57cd9b0191a43e3e022a8",
+          "bytes": 47948,
+          "mediaType": "image/jpeg",
+          "width": 960,
+          "height": 600
+        },
+        "imageAlt": "Grouped bar chart comparing weekday cycling shares in Riverside, Central and Hillview from 2018 to 2024. Riverside rises steadily and ends highest; Central rises then falls, while Hillview rises throughout.",
+        "imageType": "chart",
+        "keyFeatures": [
+          "Riverside cycling share increases steadily from 2018 to 2024",
+          "Riverside records the highest share in 2024",
+          "Central rises to a 2022 peak then declines",
+          "Hillview increases across all four years"
+        ],
+        "keywords": [
+          "Riverside",
+          "Central",
+          "Hillview",
+          "cycling",
+          "2022",
+          "2024"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "speaking"
+      ],
+      "topic": "Urban transport and cycling",
+      "estimatedSeconds": 75
+    },
+    {
+      "id": "di-000002",
+      "taskType": "describe-image",
+      "difficulty": 3,
+      "prompt": "Describe the map and explain how population density varies across the region.",
+      "taskData": {
+        "image": {
+          "path": "/images/describe-image/di-000002.jpg",
+          "sha256": "62b114f1a0505923b92af4c28e7b5bdaec8d2e4ff412315cfacd8852b9c515f7",
+          "bytes": 50026,
+          "mediaType": "image/jpeg",
+          "width": 960,
+          "height": 600
+        },
+        "imageAlt": "A regional map shaded by population density. The eastern East Bay area is darkest, a central band has medium density, and northern ridge areas are lighter; a legend gives four density bands.",
+        "imageType": "map",
+        "keyFeatures": [
+          "Population density is concentrated in the eastern East Bay",
+          "The central region has medium population density",
+          "Northern Ridge has lower density than East Bay",
+          "The map uses four population-density bands"
+        ],
+        "keywords": [
+          "East Bay",
+          "central",
+          "Northern Ridge",
+          "density",
+          "residents"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "speaking"
+      ],
+      "topic": "Regional population distribution",
+      "estimatedSeconds": 75
+    },
+    {
+      "id": "di-000003",
+      "taskType": "describe-image",
+      "difficulty": 2,
+      "prompt": "Describe the stages and the order of this water-reuse process.",
+      "taskData": {
+        "image": {
+          "path": "/images/describe-image/di-000003.jpg",
+          "sha256": "d4abd3599f50e8b69c6351c7de933b04743506b8f806f53873dbe9fd2bd595ad",
+          "bytes": 57432,
+          "mediaType": "image/jpeg",
+          "width": 960,
+          "height": 600
+        },
+        "imageAlt": "A four-stage rainwater reuse process: roof runoff is collected, leaves and grit are filtered, water is stored in an underground tank, and the stored water irrigates garden beds. An overflow route diverts excess water away from buildings.",
+        "imageType": "process",
+        "keyFeatures": [
+          "The process contains four stages from collection to irrigation",
+          "Roof runoff is collected before filtration",
+          "Filtration occurs before water is stored underground",
+          "Stored rainwater is used to irrigate garden beds",
+          "Overflow is diverted away from campus buildings"
+        ],
+        "keywords": [
+          "four stages",
+          "filter",
+          "tank",
+          "irrigation",
+          "overflow"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "speaking"
+      ],
+      "topic": "Campus water management",
+      "estimatedSeconds": 75
+    },
+    {
+      "id": "di-000004",
+      "taskType": "describe-image",
+      "difficulty": 3,
+      "prompt": "Describe the streetscape and explain how travel and land use are arranged.",
+      "taskData": {
+        "image": {
+          "path": "/images/describe-image/di-000004.jpg",
+          "sha256": "2b8990ba3cbeb02abad3cd3094c3a4599af6d09b67c139e39d5434fa730594da",
+          "bytes": 59663,
+          "mediaType": "image/jpeg",
+          "width": 960,
+          "height": 600
+        },
+        "imageAlt": "An illustrated campus-edge streetscape with public buildings, trees, hills and a protected cycle route running alongside a local street.",
+        "imageType": "mixed",
+        "keyFeatures": [
+          "Public buildings sit beside a local street at the campus edge",
+          "A protected cycle route runs along the street",
+          "Tree planting is shown beside the route",
+          "The campus edge connects buildings with active travel infrastructure"
+        ],
+        "keywords": [
+          "campus",
+          "cycle route",
+          "buildings",
+          "street",
+          "trees"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "speaking"
+      ],
+      "topic": "Campus transport planning",
+      "estimatedSeconds": 75
     }
   ]
 }

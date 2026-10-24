@@ -37,6 +37,7 @@
     "content:stats": "node tools/content/stats.mjs",
     "content:verify": "node tools/content/verify.mjs",
     "content:verify-audio": "node tools/content/audio-report.mjs",
+    "content:verify-images": "node tools/content/image-report.mjs",
     "content:reserve-id": "node tools/content/reserve-id.mjs",
     "content:new": "node tools/content/new-item.mjs",
     "content:import": "node tools/content/import.mjs",
@@ -55,6 +56,7 @@
     "test:session-summary-browser": "node tests/study-session-summary-browser.mjs",
     "test:retell-lecture-browser": "node tests/retell-lecture-browser.mjs",
     "test:summarize-group-discussion-browser": "node tests/summarize-group-discussion-browser.mjs",
+    "test:describe-image-browser": "node tests/describe-image-browser.mjs",
     "validation:session:closure": "node tools/session-validation/closure.mjs",
     "validation:session:package": "node tools/session-validation/package.mjs"
   },

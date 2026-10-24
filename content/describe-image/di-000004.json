@@ -1,0 +1,39 @@
+{
+  "id": "di-000004",
+  "taskType": "describe-image",
+  "difficulty": 3,
+  "prompt": "Describe the streetscape and explain how travel and land use are arranged.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "speaking"
+  ],
+  "topic": "Campus transport planning",
+  "estimatedSeconds": 75,
+  "taskData": {
+    "image": {
+      "path": "/images/describe-image/di-000004.jpg",
+      "sha256": "2b8990ba3cbeb02abad3cd3094c3a4599af6d09b67c139e39d5434fa730594da",
+      "bytes": 59663,
+      "mediaType": "image/jpeg",
+      "width": 960,
+      "height": 600
+    },
+    "imageAlt": "An illustrated campus-edge streetscape with public buildings, trees, hills and a protected cycle route running alongside a local street.",
+    "imageType": "mixed",
+    "keyFeatures": [
+      "Public buildings sit beside a local street at the campus edge",
+      "A protected cycle route runs along the street",
+      "Tree planting is shown beside the route",
+      "The campus edge connects buildings with active travel infrastructure"
+    ],
+    "keywords": [
+      "campus",
+      "cycle route",
+      "buildings",
+      "street",
+      "trees"
+    ]
+  }
+}

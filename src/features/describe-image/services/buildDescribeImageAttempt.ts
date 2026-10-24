@@ -1,0 +1,13 @@
+import type { Attempt, StudyItem } from '../../../domain/pte/types';
+import type { DescribeImageCoverage } from '../../../domain/scoring/describe-image';
+import type { ReadAloudFluencyMetrics } from '../../../domain/scoring/read-aloud';
+import type { TranscriptionResult } from '../../../domain/speech/types';
+import { tokenizeText } from '../../../domain/scoring/shared/tokenizeText.ts';
+export function buildDescribeImageAttempt(input:{question:StudyItem;transcription:TranscriptionResult;coverage:DescribeImageCoverage;fluencyMetrics:ReadAloudFluencyMetrics;durationMs:number}):Attempt {
+ const {question,transcription,coverage,fluencyMetrics,durationMs}=input;
+ if(question.taskType!=='describe-image'||transcription.processedLocally!==true)throw new Error('Only locally transcribed Describe Image responses can be saved.');
+ if(!tokenizeText(transcription.text).length||!Number.isFinite(durationMs)||durationMs<=0||durationMs>40_000||coverage.totalFeatures<1)throw new Error('A usable local transcript, valid response duration and authored visual features are required.');
+ const metrics:NonNullable<Attempt['metrics']>={featureCoverage:coverage.featureCoverage,featureCoveragePercent:coverage.featureCoveragePercent,matchedFeatures:coverage.matchedFeatures,totalFeatures:coverage.totalFeatures,keywordCoverage:coverage.keywordCoverage,keywordCoveragePercent:coverage.keywordCoveragePercent,responseWordCount:coverage.responseWordCount,responseLatencyMs:fluencyMetrics.responseLatencyMs,speechDurationMs:fluencyMetrics.speechDurationMs,speechRatio:fluencyMetrics.speechRatio,speechRatioPercent:fluencyMetrics.speechRatioPercent,pauseCount:fluencyMetrics.pauseCount,longPauseCount:fluencyMetrics.longPauseCount,averagePauseMs:fluencyMetrics.averagePauseMs,longestPauseMs:fluencyMetrics.longestPauseMs,hasSpeech:fluencyMetrics.hasSpeech,...(!fluencyMetrics.hasSpeech||fluencyMetrics.speechDurationMs<=0||fluencyMetrics.speechRateWpm===undefined?{}:{speechRateWpm:fluencyMetrics.speechRateWpm}),...(transcription.confidence===undefined?{}:{sttConfidence:transcription.confidence}),processedLocally:true};
+ if(Object.entries(metrics).some(([key,v])=>typeof v==='number'&&(!Number.isFinite(v)||v<0||(key.endsWith('Percent')&&v>100)||(['featureCoverage','keywordCoverage','speechRatio'].includes(key)&&v>1))))throw new Error('Describe Image metrics must be finite and bounded.');
+ return {id:crypto.randomUUID(),itemId:question.id,taskType:'describe-image',...(question.revision===undefined?{}:{itemRevision:question.revision}),createdAt:new Date().toISOString(),responseText:transcription.text,durationMs,score:coverage.featureCoverage,metrics};
+}

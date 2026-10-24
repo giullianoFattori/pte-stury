@@ -1,0 +1,40 @@
+{
+  "id": "di-000003",
+  "taskType": "describe-image",
+  "difficulty": 2,
+  "prompt": "Describe the stages and the order of this water-reuse process.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "speaking"
+  ],
+  "topic": "Campus water management",
+  "estimatedSeconds": 75,
+  "taskData": {
+    "image": {
+      "path": "/images/describe-image/di-000003.jpg",
+      "sha256": "d4abd3599f50e8b69c6351c7de933b04743506b8f806f53873dbe9fd2bd595ad",
+      "bytes": 57432,
+      "mediaType": "image/jpeg",
+      "width": 960,
+      "height": 600
+    },
+    "imageAlt": "A four-stage rainwater reuse process: roof runoff is collected, leaves and grit are filtered, water is stored in an underground tank, and the stored water irrigates garden beds. An overflow route diverts excess water away from buildings.",
+    "imageType": "process",
+    "keyFeatures": [
+      "The process contains four stages from collection to irrigation",
+      "Roof runoff is collected before filtration",
+      "Filtration occurs before water is stored underground",
+      "Stored rainwater is used to irrigate garden beds",
+      "Overflow is diverted away from campus buildings"
+    ],
+    "keywords": [
+      "four stages",
+      "filter",
+      "tank",
+      "irrigation",
+      "overflow"
+    ]
+  }
+}

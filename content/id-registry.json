@@ -179,6 +179,26 @@
       "id": "sgd-000003",
       "taskType": "summarize-group-discussion",
       "kind": "reserved"
+    },
+    {
+      "id": "di-000001",
+      "taskType": "describe-image",
+      "kind": "reserved"
+    },
+    {
+      "id": "di-000002",
+      "taskType": "describe-image",
+      "kind": "reserved"
+    },
+    {
+      "id": "di-000003",
+      "taskType": "describe-image",
+      "kind": "reserved"
+    },
+    {
+      "id": "di-000004",
+      "taskType": "describe-image",
+      "kind": "reserved"
     }
   ]
 }
