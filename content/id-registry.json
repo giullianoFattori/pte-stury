@@ -199,6 +199,26 @@
       "id": "di-000004",
       "taskType": "describe-image",
       "kind": "reserved"
+    },
+    {
+      "id": "swt-000001",
+      "taskType": "summarize-written-text",
+      "kind": "reserved"
+    },
+    {
+      "id": "swt-000002",
+      "taskType": "summarize-written-text",
+      "kind": "reserved"
+    },
+    {
+      "id": "swt-000003",
+      "taskType": "summarize-written-text",
+      "kind": "reserved"
+    },
+    {
+      "id": "swt-000004",
+      "taskType": "summarize-written-text",
+      "kind": "reserved"
     }
   ]
 }

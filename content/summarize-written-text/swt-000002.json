@@ -1,0 +1,22 @@
+{
+  "id": "swt-000002",
+  "taskType": "summarize-written-text",
+  "difficulty": 2,
+  "prompt": "Read this passage about student learning and summarize its main ideas in one sentence of 5–75 words.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["reading", "writing"],
+  "topic": "Retrieval practice in higher education",
+  "estimatedSeconds": 600,
+  "taskData": {
+    "passage": "University students commonly prepare for examinations by rereading lecture notes or highlighting textbooks. These activities can make material seem familiar, but familiarity does not always mean that information can be recalled later. Retrieval practice takes a different approach: learners try to bring ideas to mind before checking their notes. A student might answer a short question, explain a concept aloud or reconstruct a diagram from memory. Research across several subjects suggests that this effortful recall can strengthen later access to information, especially when practice is spaced across days rather than concentrated in one long session. Feedback also matters. If a learner repeatedly retrieves an incorrect answer, the mistake may become more firmly established, so practice questions should be checked against reliable explanations. Retrieval exercises are most useful when they cover important concepts and require students to connect ideas, rather than simply recognize isolated terms. They do not replace lectures, reading or discussion, because learners need an initial explanation before they can retrieve new material. Instead, instructors can combine short low-stakes quizzes with teaching and give students time to review errors. The method is inexpensive and can be used in large classes, although students may initially prefer passive review because it feels easier. Making the purpose clear and keeping early tasks manageable can help students adopt the practice without treating every quiz as a high-pressure test.",
+    "keyPoints": [
+      "Rereading creates familiarity but may not prepare students to recall information",
+      "Retrieval practice strengthens recall, particularly when it is spaced over time",
+      "Reliable feedback prevents learners from reinforcing incorrect answers",
+      "Quizzes should complement instruction and focus on important connected ideas"
+    ],
+    "referenceSummary": "Although rereading can feel productive without ensuring recall, spaced retrieval with reliable feedback can strengthen learning when instructors use manageable low-stakes questions to complement teaching and connect important concepts."
+  }
+}

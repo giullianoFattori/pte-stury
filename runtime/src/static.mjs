@@ -29,7 +29,7 @@ export async function createStaticServer(root, artifacts) {
     if ((!/^\/[a-zA-Z0-9_./-]*$/.test(url) && !sessionRoute) || url.startsWith('/api') || url.includes('//')
       || url.split('/').some(part => part === '.' || part === '..')) return false;
     const file = files.get(url === '/' ? '/index.html' : url)
-      ?? (['/study', '/study/read-aloud', '/study/repeat-sentence', '/study/write-from-dictation', '/study/retell-lecture', '/study/summarize-group-discussion', '/study/describe-image', '/review', '/errors', '/settings'].includes(url) || sessionRoute ? files.get('/index.html') : undefined);
+      ?? (['/study', '/study/read-aloud', '/study/repeat-sentence', '/study/write-from-dictation', '/study/retell-lecture', '/study/summarize-group-discussion', '/study/describe-image', '/study/summarize-written-text', '/review', '/errors', '/settings'].includes(url) || sessionRoute ? files.get('/index.html') : undefined);
     if (!file) return false;
     let handle;
     try {

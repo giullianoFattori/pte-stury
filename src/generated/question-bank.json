@@ -1105,6 +1105,106 @@
       ],
       "topic": "Campus transport planning",
       "estimatedSeconds": 75
+    },
+    {
+      "id": "swt-000001",
+      "taskType": "summarize-written-text",
+      "difficulty": 2,
+      "prompt": "Read this passage about urban heat and summarize its main ideas in one sentence of 5–75 words.",
+      "taskData": {
+        "passage": "Cities often remain warmer than nearby rural areas after sunset because roads, roofs and walls absorb solar energy during the day and release it slowly at night. This urban heat effect can increase health risks during heatwaves, raise electricity demand and make outdoor work uncomfortable. Planting trees and adding parks can help, but dense districts may have little space for large new green areas. Reflective roofs offer another option. These surfaces are designed to send more sunlight back into the atmosphere than conventional dark roofing, so they absorb less heat. In a city trial, several public buildings received reflective coatings, while similar buildings in nearby districts were left unchanged for comparison. Measurements showed that treated roofs became cooler in direct sun, and the rooms below needed less air conditioning on hot afternoons. The project did not establish that reflective roofs alone would reduce temperatures across an entire city. Building design, local wind, shade and the age of a roof can all affect the result. Researchers also noted that coatings need inspection and may require replacement. Their findings suggest that reflective roofing is most useful as part of a broader heat plan that combines shade, efficient buildings and targeted support for people most exposed to extreme temperatures.",
+        "keyPoints": [
+          "Built surfaces store daytime heat and create health and energy problems in cities",
+          "Reflective roofs return more sunlight and absorb less heat than dark roofs",
+          "A building trial found cooler treated roofs and lower air-conditioning demand",
+          "Roof coatings work best alongside shade, efficient design and heat support"
+        ],
+        "referenceSummary": "Because dark urban surfaces retain heat and increase health and energy pressures, a building trial found reflective roofs can reduce roof temperatures and cooling demand, although they are most effective as one part of a broader heat strategy."
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading",
+        "writing"
+      ],
+      "topic": "Urban cooling and reflective roofs",
+      "estimatedSeconds": 600
+    },
+    {
+      "id": "swt-000002",
+      "taskType": "summarize-written-text",
+      "difficulty": 2,
+      "prompt": "Read this passage about student learning and summarize its main ideas in one sentence of 5–75 words.",
+      "taskData": {
+        "passage": "University students commonly prepare for examinations by rereading lecture notes or highlighting textbooks. These activities can make material seem familiar, but familiarity does not always mean that information can be recalled later. Retrieval practice takes a different approach: learners try to bring ideas to mind before checking their notes. A student might answer a short question, explain a concept aloud or reconstruct a diagram from memory. Research across several subjects suggests that this effortful recall can strengthen later access to information, especially when practice is spaced across days rather than concentrated in one long session. Feedback also matters. If a learner repeatedly retrieves an incorrect answer, the mistake may become more firmly established, so practice questions should be checked against reliable explanations. Retrieval exercises are most useful when they cover important concepts and require students to connect ideas, rather than simply recognize isolated terms. They do not replace lectures, reading or discussion, because learners need an initial explanation before they can retrieve new material. Instead, instructors can combine short low-stakes quizzes with teaching and give students time to review errors. The method is inexpensive and can be used in large classes, although students may initially prefer passive review because it feels easier. Making the purpose clear and keeping early tasks manageable can help students adopt the practice without treating every quiz as a high-pressure test.",
+        "keyPoints": [
+          "Rereading creates familiarity but may not prepare students to recall information",
+          "Retrieval practice strengthens recall, particularly when it is spaced over time",
+          "Reliable feedback prevents learners from reinforcing incorrect answers",
+          "Quizzes should complement instruction and focus on important connected ideas"
+        ],
+        "referenceSummary": "Although rereading can feel productive without ensuring recall, spaced retrieval with reliable feedback can strengthen learning when instructors use manageable low-stakes questions to complement teaching and connect important concepts."
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading",
+        "writing"
+      ],
+      "topic": "Retrieval practice in higher education",
+      "estimatedSeconds": 600
+    },
+    {
+      "id": "swt-000003",
+      "taskType": "summarize-written-text",
+      "difficulty": 3,
+      "prompt": "Read this passage about public research data and summarize its main ideas in one sentence of 5–75 words.",
+      "taskData": {
+        "passage": "Public agencies increasingly release datasets about transport, housing, health and local services. Researchers and community groups can use these records to identify patterns that are difficult to see in isolated reports. For example, combining bus schedules with employment locations may reveal neighbourhoods where long journeys limit access to work. Open data can also let residents check whether a promised service is delivered consistently. However, publication alone does not guarantee useful or fair analysis. Files may be outdated, incomplete or formatted in ways that exclude people who lack technical tools. A dataset can also contain personal details that make individuals identifiable when records are combined with other sources. Agencies therefore need to assess privacy risks, explain how information was collected and provide clear documentation about missing or uncertain values. Community participation improves this work because residents can point out local context that administrative categories overlook. Researchers should describe limitations and avoid presenting correlations as proof that one factor caused another. When data is shared in accessible formats and accompanied by safeguards, documentation and public discussion, it can support accountability without turning complex communities into simplified measures. The challenge is not simply to publish more information, but to maintain trustworthy systems in which people can understand, question and responsibly reuse the evidence.",
+        "keyPoints": [
+          "Combining public datasets can reveal service patterns and support accountability",
+          "Data may be incomplete, inaccessible or create privacy risks when combined",
+          "Agencies should document collection methods, gaps, uncertainty and safeguards",
+          "Community context and careful interpretation are needed for trustworthy reuse"
+        ],
+        "referenceSummary": "Public datasets can reveal service patterns and strengthen accountability, but responsible use depends on privacy safeguards, accessible documentation, transparent limitations and community context to prevent misleading or unfair conclusions."
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading",
+        "writing"
+      ],
+      "topic": "Public data and responsible research",
+      "estimatedSeconds": 600
+    },
+    {
+      "id": "swt-000004",
+      "taskType": "summarize-written-text",
+      "difficulty": 3,
+      "prompt": "Read this passage about city road pricing and summarize its main ideas in one sentence of 5–75 words.",
+      "taskData": {
+        "passage": "Congestion pricing charges drivers for using busy roads at particular times or in designated areas. The policy is intended to make road users consider delays and pollution that their journeys impose on others. If some drivers change travel times, share vehicles or use another mode, traffic can move more reliably for buses, deliveries and emergency services. A fee may also provide revenue for transport improvements. Yet the effects depend on the alternatives available. People living far from frequent public transport may have little flexibility, while workers with early or irregular shifts may be unable to change their journeys. A charge that is identical for everyone can therefore create unequal burdens even if it reduces traffic overall. Cities can address this concern by improving transit before or alongside introducing a fee, offering carefully designed discounts and directing revenue toward underserved areas. Officials also need to explain how charges are set and publish evidence on traffic, travel times and who pays. Public consultation can identify barriers that a citywide model misses, but it cannot replace ongoing evaluation after the policy begins. Congestion pricing is consequently not a stand-alone traffic solution; its fairness and effectiveness depend on transport choices, revenue decisions and transparent monitoring.",
+        "keyPoints": [
+          "Road charges encourage drivers to account for congestion and pollution costs",
+          "Fewer car trips can improve reliability and generate transport revenue",
+          "Drivers without flexible schedules or public transport may face unequal burdens",
+          "Transit investment, targeted relief and transparent monitoring support fairer outcomes"
+        ],
+        "referenceSummary": "Congestion pricing can reduce delays and fund transport improvements, but because some drivers lack alternatives, its fairness depends on transit investment, targeted relief, transparent revenue use and ongoing evaluation."
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading",
+        "writing"
+      ],
+      "topic": "Congestion pricing and public transport",
+      "estimatedSeconds": 600
     }
   ]
 }

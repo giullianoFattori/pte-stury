@@ -1,0 +1,22 @@
+{
+  "id": "swt-000001",
+  "taskType": "summarize-written-text",
+  "difficulty": 2,
+  "prompt": "Read this passage about urban heat and summarize its main ideas in one sentence of 5–75 words.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["reading", "writing"],
+  "topic": "Urban cooling and reflective roofs",
+  "estimatedSeconds": 600,
+  "taskData": {
+    "passage": "Cities often remain warmer than nearby rural areas after sunset because roads, roofs and walls absorb solar energy during the day and release it slowly at night. This urban heat effect can increase health risks during heatwaves, raise electricity demand and make outdoor work uncomfortable. Planting trees and adding parks can help, but dense districts may have little space for large new green areas. Reflective roofs offer another option. These surfaces are designed to send more sunlight back into the atmosphere than conventional dark roofing, so they absorb less heat. In a city trial, several public buildings received reflective coatings, while similar buildings in nearby districts were left unchanged for comparison. Measurements showed that treated roofs became cooler in direct sun, and the rooms below needed less air conditioning on hot afternoons. The project did not establish that reflective roofs alone would reduce temperatures across an entire city. Building design, local wind, shade and the age of a roof can all affect the result. Researchers also noted that coatings need inspection and may require replacement. Their findings suggest that reflective roofing is most useful as part of a broader heat plan that combines shade, efficient buildings and targeted support for people most exposed to extreme temperatures.",
+    "keyPoints": [
+      "Built surfaces store daytime heat and create health and energy problems in cities",
+      "Reflective roofs return more sunlight and absorb less heat than dark roofs",
+      "A building trial found cooler treated roofs and lower air-conditioning demand",
+      "Roof coatings work best alongside shade, efficient design and heat support"
+    ],
+    "referenceSummary": "Because dark urban surfaces retain heat and increase health and energy pressures, a building trial found reflective roofs can reduce roof temperatures and cooling demand, although they are most effective as one part of a broader heat strategy."
+  }
+}

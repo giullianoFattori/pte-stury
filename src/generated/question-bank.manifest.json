@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "contentVersion": "sha256:58ef46450cdef1cb6701545a94a6583a139945e4dd5ef7a54a4cbe192bc195e5",
-  "itemCount": 28,
+  "contentVersion": "sha256:a974720e23f4dc6829a066542ede0faca26a208d7d5aeee70e4cb3c24c7958f4",
+  "itemCount": 32,
   "countsByTaskType": {
     "write-from-dictation": 5,
     "repeat-sentence": 6,
@@ -9,7 +9,7 @@
     "retell-lecture": 4,
     "summarize-group-discussion": 3,
     "describe-image": 4,
-    "summarize-written-text": 0,
+    "summarize-written-text": 4,
     "summarize-spoken-text": 0,
     "highlight-incorrect-words": 0
   },

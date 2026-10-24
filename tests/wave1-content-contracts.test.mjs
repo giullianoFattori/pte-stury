@@ -69,7 +69,7 @@ test('payloads reject accessors, prototype objects and non-JSON arrays without i
  bad({...fixtures[0],taskData:new Date()});const value=structuredClone(fixtures[0]);value.taskData.keyPoints=new Array(1);bad(value);
 });
 test('unfinished-only catalog cannot initialize practice; a previous bank is preserved',async t=>{
- const db=await database(t),item=structuredClone(fixtures[3]);item.status='active';item.skills=['reading','writing'];const next=catalog([item]);
+ const db=await database(t),item=structuredClone(fixtures[4]);item.status='active';item.skills=['listening','writing'];item.taskData.audio.sha256='a'.repeat(64);const next=catalog([item]);
  await assert.rejects(initializeQuestionBank(next.bundle,next.manifest,db),e=>e.issues.some(i=>i.code==='CONTENT_INITIALIZATION_FAILED'));
  await bootstrapApp(db);const before=await snapshot(db);assert.equal((await initializeQuestionBank(next.bundle,next.manifest,db)).status,'preserved');assert.deepEqual(await snapshot(db),before);
 });
@@ -87,6 +87,11 @@ test('nested audio and image remain subject to real file existence checks',async
  const audio=await validateAudioAssets([fixtures[0]],{audioRoot:'/nonexistent',reportOrphans:false});assert.ok(audio.errors.some(e=>e.code==='AUDIO_NOT_FOUND'&&e.path==='taskData.audio'));
  const root=await authorRoot(t);const image=fixtures[2];await writeFile(join(root,image.taskType,image.id+'.json'),JSON.stringify(image));await assert.rejects(prepareBank({sourceRoot:root}),e=>e.errors.some(e=>e.code==='IMAGE_NOT_FOUND'));
 });
+test('published Summarize Written Text passages are original bounded reading items with authored key points',async()=>{
+ const items=await Promise.all([1,2,3,4].map(i=>readFile(`content/summarize-written-text/swt-00000${i}.json`,'utf8').then(JSON.parse)));
+ assert.deepEqual(items.map(i=>i.id),['swt-000001','swt-000002','swt-000003','swt-000004']);
+ for(const item of items){assert.equal(item.status,'active');assert.equal(item.source,'internal');assert.deepEqual(item.skills,['reading','writing']);assert.ok(item.taskData.passage.trim().split(/\s+/u).length>=180);assert.ok(item.taskData.passage.trim().split(/\s+/u).length<=300);assert.ok(item.taskData.keyPoints.length>=3&&item.taskData.keyPoints.length<=6);assert.ok(item.taskData.referenceSummary);}
+});
 test('JSON/CSV taskData mapping preserves nested author text and rejects unknown nested intent',()=>{
  const fixture=fixtures[3],csv='taskType,difficulty,prompt,taskData\n'+['summarize-written-text','2','Draft prompt',JSON.stringify(fixture.taskData)].map(v=>'"'+v.replaceAll('"','""')+'"').join(',');
  const mapped=mapRecord(parseCsv(csv)[0],{format:'csv',source:'internal',allocateIds:true});assert.deepEqual(mapped.taskData,fixture.taskData);assert.equal(mapped.status,'draft');
@@ -101,7 +106,7 @@ test('new-item supports Wave 1 draft reservation; bulk JSON import stays draft-o
 test('schema v1 installed content upgrades only catalog state: semantic rows and learner history unchanged',async t=>{
  const db=await database(t);await bootstrapApp(db);await seedHistory(db);const before=await snapshot(db);
  await db.contentState.put({...before.contentState[0],schemaVersion:1,contentVersion:'sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2'});
- const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,28);const after=await snapshot(db);
+ const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,32);const after=await snapshot(db);
  for(const table of ['studyItems','attempts','errors','reviews','studySessions'])assert.deepEqual(after[table],before[table]);assert.equal(after.contentState[0].schemaVersion,2);assert.equal(db.verno,3);assert.equal(after.attempts[0].itemRevision,undefined);assert.equal((await bootstrapApp(db)).status,'unchanged');
 });
 test('legacy generated pair is verified only for atomic replacement/recovery, never current publication',()=>{

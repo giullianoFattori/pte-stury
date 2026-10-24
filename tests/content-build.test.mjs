@@ -212,7 +212,7 @@ test('committed artifacts match production sources; schema remains unchanged', a
   const built = await realPrepareBank(), checked = await verifyGenerated();
   assert.equal(await readFile('src/generated/question-bank.json', 'utf8'), built.bundleBytes);
   assert.equal(await readFile('src/generated/question-bank.manifest.json', 'utf8'), built.manifestBytes);
-  assert.equal(checked.bundle.items.length === 28 && checked.bundle.items.every(i => i.status === 'active' && !i.id.endsWith('900001')), true);
+  assert.equal(checked.bundle.items.length === 32 && checked.bundle.items.every(i => i.status === 'active' && !i.id.endsWith('900001')), true);
   assert.equal(await readFile('content/schemas/question-bank.schema.json', 'utf8'), schemaBytes());
 });
 test('build/stats/verifier CLI report success without absolute paths and reject unknown flags', async t => {

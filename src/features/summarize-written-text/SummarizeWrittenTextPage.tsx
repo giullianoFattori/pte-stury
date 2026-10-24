@@ -1,0 +1,3 @@
+import { useSummarizeWrittenText } from './hooks/useSummarizeWrittenText.ts';
+import { SummarizeWrittenTextExercise } from './SummarizeWrittenTextExercise.tsx';
+export function SummarizeWrittenTextPage(){const{items,item,index,loading,error,next}=useSummarizeWrittenText();if(loading||error||!item)return <section className="practice-card" aria-busy={loading}><h2>Summarize Written Text</h2>{loading?<p role="status">Loading Summarize Written Text items…</p>:<p role="alert">{error??'No Summarize Written Text passages are available.'}</p>}</section>;return <SummarizeWrittenTextExercise key={item.id} item={item} mode={{kind:'standalone'}} progress={{currentIndex:index,total:items.length}} onNext={next}/>;}

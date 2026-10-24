@@ -1,0 +1,12 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "scope": "Linux Chrome, application routes/StrictMode/IndexedDB and fake clock; no speech runtime or external request",
+  "standaloneInvalidFormAndSave": "PASS",
+  "retryValidFormAndKeyPointFeedback": "PASS",
+  "timeoutRetainsResponseAndRequiresExplicitSave": "PASS",
+  "taskPracticeCapacityAndThreeItemSummary": "PASS",
+  "speechRuntimeRequests": 0,
+  "dbVersion": 3,
+  "pageErrors": 0
+}

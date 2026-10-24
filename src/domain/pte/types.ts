@@ -30,6 +30,7 @@ export type ErrorCategory =
   | 'working-memory'
   | 'word-order'
   | 'omission'
+  | 'form'
   | 'insertion'
   | 'substitution'
   | 'other';

@@ -1,0 +1,22 @@
+{
+  "id": "swt-000003",
+  "taskType": "summarize-written-text",
+  "difficulty": 3,
+  "prompt": "Read this passage about public research data and summarize its main ideas in one sentence of 5–75 words.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["reading", "writing"],
+  "topic": "Public data and responsible research",
+  "estimatedSeconds": 600,
+  "taskData": {
+    "passage": "Public agencies increasingly release datasets about transport, housing, health and local services. Researchers and community groups can use these records to identify patterns that are difficult to see in isolated reports. For example, combining bus schedules with employment locations may reveal neighbourhoods where long journeys limit access to work. Open data can also let residents check whether a promised service is delivered consistently. However, publication alone does not guarantee useful or fair analysis. Files may be outdated, incomplete or formatted in ways that exclude people who lack technical tools. A dataset can also contain personal details that make individuals identifiable when records are combined with other sources. Agencies therefore need to assess privacy risks, explain how information was collected and provide clear documentation about missing or uncertain values. Community participation improves this work because residents can point out local context that administrative categories overlook. Researchers should describe limitations and avoid presenting correlations as proof that one factor caused another. When data is shared in accessible formats and accompanied by safeguards, documentation and public discussion, it can support accountability without turning complex communities into simplified measures. The challenge is not simply to publish more information, but to maintain trustworthy systems in which people can understand, question and responsibly reuse the evidence.",
+    "keyPoints": [
+      "Combining public datasets can reveal service patterns and support accountability",
+      "Data may be incomplete, inaccessible or create privacy risks when combined",
+      "Agencies should document collection methods, gaps, uncertainty and safeguards",
+      "Community context and careful interpretation are needed for trustworthy reuse"
+    ],
+    "referenceSummary": "Public datasets can reveal service patterns and strengthen accountability, but responsible use depends on privacy safeguards, accessible documentation, transparent limitations and community context to prevent misleading or unfair conclusions."
+  }
+}

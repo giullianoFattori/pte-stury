@@ -1,0 +1,22 @@
+{
+  "id": "swt-000004",
+  "taskType": "summarize-written-text",
+  "difficulty": 3,
+  "prompt": "Read this passage about city road pricing and summarize its main ideas in one sentence of 5–75 words.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["reading", "writing"],
+  "topic": "Congestion pricing and public transport",
+  "estimatedSeconds": 600,
+  "taskData": {
+    "passage": "Congestion pricing charges drivers for using busy roads at particular times or in designated areas. The policy is intended to make road users consider delays and pollution that their journeys impose on others. If some drivers change travel times, share vehicles or use another mode, traffic can move more reliably for buses, deliveries and emergency services. A fee may also provide revenue for transport improvements. Yet the effects depend on the alternatives available. People living far from frequent public transport may have little flexibility, while workers with early or irregular shifts may be unable to change their journeys. A charge that is identical for everyone can therefore create unequal burdens even if it reduces traffic overall. Cities can address this concern by improving transit before or alongside introducing a fee, offering carefully designed discounts and directing revenue toward underserved areas. Officials also need to explain how charges are set and publish evidence on traffic, travel times and who pays. Public consultation can identify barriers that a citywide model misses, but it cannot replace ongoing evaluation after the policy begins. Congestion pricing is consequently not a stand-alone traffic solution; its fairness and effectiveness depend on transport choices, revenue decisions and transparent monitoring.",
+    "keyPoints": [
+      "Road charges encourage drivers to account for congestion and pollution costs",
+      "Fewer car trips can improve reliability and generate transport revenue",
+      "Drivers without flexible schedules or public transport may face unequal burdens",
+      "Transit investment, targeted relief and transparent monitoring support fairer outcomes"
+    ],
+    "referenceSummary": "Congestion pricing can reduce delays and fund transport improvements, but because some drivers lack alternatives, its fairness depends on transit investment, targeted relief, transparent revenue use and ongoing evaluation."
+  }
+}
