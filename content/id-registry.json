@@ -136,6 +136,71 @@
       "kind": "technical"
     },
     {
+      "id": "asq-900001",
+      "taskType": "answer-short-question",
+      "kind": "technical"
+    },
+    {
+      "id": "rts-900001",
+      "taskType": "respond-to-a-situation",
+      "kind": "technical"
+    },
+    {
+      "id": "we-900001",
+      "taskType": "write-essay",
+      "kind": "technical"
+    },
+    {
+      "id": "rfbd-900001",
+      "taskType": "reading-fill-blanks-dropdown",
+      "kind": "technical"
+    },
+    {
+      "id": "rmcm-900001",
+      "taskType": "reading-multiple-choice-multiple",
+      "kind": "technical"
+    },
+    {
+      "id": "rop-900001",
+      "taskType": "reorder-paragraph",
+      "kind": "technical"
+    },
+    {
+      "id": "rfbdd-900001",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "kind": "technical"
+    },
+    {
+      "id": "rmcs-900001",
+      "taskType": "reading-multiple-choice-single",
+      "kind": "technical"
+    },
+    {
+      "id": "lmcm-900001",
+      "taskType": "listening-multiple-choice-multiple",
+      "kind": "technical"
+    },
+    {
+      "id": "lfb-900001",
+      "taskType": "listening-fill-blanks-type-in",
+      "kind": "technical"
+    },
+    {
+      "id": "hcs-900001",
+      "taskType": "highlight-correct-summary",
+      "kind": "technical"
+    },
+    {
+      "id": "lmcs-900001",
+      "taskType": "listening-multiple-choice-single",
+      "kind": "technical"
+    },
+    {
+      "id": "smw-900001",
+      "taskType": "select-missing-word",
+      "kind": "technical"
+    },
+    {
       "id": "rtl-000001",
       "taskType": "retell-lecture",
       "kind": "reserved"

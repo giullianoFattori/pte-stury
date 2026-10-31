@@ -1,6 +1,6 @@
 import type { AudioAsset, ImageAsset } from '../content/types';
 import type { PteTaskType, StudyItem } from './types';
-import type { Wave1TaskType } from './taskRegistry';
+import type { TaskDataTaskType, Wave1TaskType, Wave2TaskType } from './taskRegistry';
 export type RetellLectureItemData = Readonly<{ audio: AudioAsset; transcript: string; keyPoints: readonly string[]; keywords?: readonly string[]; image?: ImageAsset; imageAlt?: string }>;
 export type GroupDiscussionSpeaker = Readonly<{ id: string; label: string }>;
 export type GroupDiscussionTurn = Readonly<{ speakerId: string; text: string }>;
@@ -11,6 +11,24 @@ export type SummarizeWrittenTextItemData = Readonly<{ passage: string; keyPoints
 export type SummarizeSpokenTextItemData = Readonly<{ audio: AudioAsset; transcript: string; keyPoints: readonly string[]; referenceSummary?: string }>;
 export type HighlightWordToken = Readonly<{ id: string; text: string; incorrect: boolean; spokenText?: string }>;
 export type HighlightIncorrectWordsItemData = Readonly<{ audio: AudioAsset; spokenTranscript: string; displayedTokens: readonly HighlightWordToken[] }>;
+export type ChoiceOption = Readonly<{ id: string; text: string; correct: boolean }>;
+export type AnswerShortQuestionItemData = Readonly<{ audio: AudioAsset; questionTranscript: string; acceptedAnswers: readonly string[]; image?: ImageAsset; imageAlt?: string }>;
+export type RespondToSituationItemData = Readonly<{ audio: AudioAsset; promptText: string; scenario: Readonly<{ role: string; audience: string; relationship: string; communicationGoal: string; register: 'formal'|'neutral'|'informal' }>; requiredPoints: readonly string[]; usefulFunctions?: readonly string[] }>;
+export type WriteEssayItemData = Readonly<{ prompt: string; positionType: 'agree-disagree'|'discuss-both'|'advantages-disadvantages'|'problem-solution'|'open-argument'; keyRequirements: readonly string[]; referenceOutline?: readonly string[] }>;
+export type DropdownBlank = Readonly<{ id: string; answer: string; options: readonly string[] }>;
+export type ReadingFillBlanksDropdownItemData = Readonly<{ segments: readonly string[]; blanks: readonly DropdownBlank[] }>;
+export type DragDropBlank = Readonly<{ id: string; answer: string }>;
+export type ReadingFillBlanksDragDropItemData = Readonly<{ segments: readonly string[]; blanks: readonly DragDropBlank[]; wordBank: readonly string[] }>;
+export type ParagraphBlock = Readonly<{ id: string; text: string }>;
+export type ReorderParagraphItemData = Readonly<{ blocks: readonly ParagraphBlock[]; correctOrder: readonly string[] }>;
+export type ReadingMultipleChoiceMultipleItemData = Readonly<{ passage: string; question: string; options: readonly ChoiceOption[] }>;
+export type ReadingMultipleChoiceSingleItemData = ReadingMultipleChoiceMultipleItemData;
+export type ListeningMultipleChoiceMultipleItemData = Readonly<{ audio: AudioAsset; transcript: string; question: string; options: readonly ChoiceOption[] }>;
+export type ListeningBlank = Readonly<{ id: string; answer: string }>;
+export type ListeningFillBlanksTypeInItemData = Readonly<{ audio: AudioAsset; transcriptSegments: readonly string[]; blanks: readonly ListeningBlank[] }>;
+export type HighlightCorrectSummaryItemData = Readonly<{ audio: AudioAsset; transcript: string; options: readonly ChoiceOption[] }>;
+export type ListeningMultipleChoiceSingleItemData = Readonly<{ audio: AudioAsset; transcript: string; question: string; options: readonly ChoiceOption[] }>;
+export type SelectMissingWordItemData = Readonly<{ audio: AudioAsset; transcriptBeforeBeep: string; missingText: string; options: readonly ChoiceOption[] }>;
 export type StudyItemDataMap = {
   'write-from-dictation': never; 'repeat-sentence': never; 'read-aloud': never;
   'retell-lecture': RetellLectureItemData;
@@ -19,11 +37,26 @@ export type StudyItemDataMap = {
   'summarize-written-text': SummarizeWrittenTextItemData;
   'summarize-spoken-text': SummarizeSpokenTextItemData;
   'highlight-incorrect-words': HighlightIncorrectWordsItemData;
+  'answer-short-question': AnswerShortQuestionItemData;
+  'respond-to-a-situation': RespondToSituationItemData;
+  'write-essay': WriteEssayItemData;
+  'reading-fill-blanks-dropdown': ReadingFillBlanksDropdownItemData;
+  'reading-multiple-choice-multiple': ReadingMultipleChoiceMultipleItemData;
+  'reorder-paragraph': ReorderParagraphItemData;
+  'reading-fill-blanks-drag-drop': ReadingFillBlanksDragDropItemData;
+  'reading-multiple-choice-single': ReadingMultipleChoiceSingleItemData;
+  'listening-multiple-choice-multiple': ListeningMultipleChoiceMultipleItemData;
+  'listening-fill-blanks-type-in': ListeningFillBlanksTypeInItemData;
+  'highlight-correct-summary': HighlightCorrectSummaryItemData;
+  'listening-multiple-choice-single': ListeningMultipleChoiceSingleItemData;
+  'select-missing-word': SelectMissingWordItemData;
 };
 export type Wave1TaskData = StudyItemDataMap[Wave1TaskType];
-export type TaskDataItem<T extends Wave1TaskType> = StudyItem<T> & { taskData: StudyItemDataMap[T] };
+export type Wave2TaskData = StudyItemDataMap[Wave2TaskType];
+export type PteTaskData = StudyItemDataMap[TaskDataTaskType];
+export type TaskDataItem<T extends TaskDataTaskType> = StudyItem<T> & { taskData: StudyItemDataMap[T] };
 /** For already validated/narrowed items; no metadata inference or content rewriting. */
-export function getTaskData<T extends Wave1TaskType>(item: TaskDataItem<T>): StudyItemDataMap[T] { return item.taskData; }
-export function contentAudio(item: { taskType: PteTaskType; audio?: AudioAsset; taskData?: Wave1TaskData }): AudioAsset | undefined {
+export function getTaskData<T extends TaskDataTaskType>(item: TaskDataItem<T>): StudyItemDataMap[T] { return item.taskData; }
+export function contentAudio(item: { taskType: PteTaskType; audio?: AudioAsset; taskData?: PteTaskData }): AudioAsset | undefined {
   return item.taskData && 'audio' in item.taskData ? item.taskData.audio : item.audio;
 }

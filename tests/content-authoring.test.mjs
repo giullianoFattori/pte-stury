@@ -9,10 +9,10 @@ import { buildBank } from '../tools/content/build.mjs';
 import { parseQuestionBankItemJson } from '../src/domain/content/validation.ts';
 import { authorRoot, record, rejectsAuthor, snapshot } from './helpers/content-authoring.mjs';
 
-test('permanent baseline contains exactly all 17 historical and nine technical identities', () => {
+test('permanent baseline contains 17 historical identities and one technical identity per known task', () => {
   const registry = validateRegistry(initialRegistry());
   assert.equal(registry.entries.filter(e => e.kind === 'legacy').length, 17);
-  assert.equal(registry.entries.filter(e => e.kind === 'technical').length, 9);
+  assert.equal(registry.entries.filter(e => e.kind === 'technical').length, 22);
   assert.deepEqual(registry.technicalRange, [900000, 999999]);
 });
 test('allocation uses lowest normal six-digit gap and never recycles abandoned/retired reservations', () => {
@@ -28,7 +28,7 @@ test('normal allocation never reaches technical range; bounded space exhaustion 
 for (const [label, mutate] of [
   ['duplicate entry', value => value.entries.push(value.entries[0])],
   ['lost historical identity', value => value.entries.shift()],
-  ['unknown task', value => value.entries[0].taskType = 'answer-short-question'],
+  ['unknown task', value => value.entries[0].taskType = 'personal-introduction'],
   ['wrong prefix', value => value.entries[0].id = 'ra-001'],
   ['altered range', value => value.technicalRange[0] = 800000],
   ['unexpected field', value => value.nextId = 1],

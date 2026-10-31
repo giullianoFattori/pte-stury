@@ -10,7 +10,20 @@ export type PteTaskType =
   | 'describe-image'
   | 'summarize-written-text'
   | 'summarize-spoken-text'
-  | 'highlight-incorrect-words';
+  | 'highlight-incorrect-words'
+  | 'answer-short-question'
+  | 'respond-to-a-situation'
+  | 'write-essay'
+  | 'reading-fill-blanks-dropdown'
+  | 'reading-multiple-choice-multiple'
+  | 'reorder-paragraph'
+  | 'reading-fill-blanks-drag-drop'
+  | 'reading-multiple-choice-single'
+  | 'listening-multiple-choice-multiple'
+  | 'listening-fill-blanks-type-in'
+  | 'highlight-correct-summary'
+  | 'listening-multiple-choice-single'
+  | 'select-missing-word';
 
 export type Skill =
   | 'listening'
@@ -62,12 +75,21 @@ export type StudyItem<T extends PteTaskType = PteTaskType> = {
 };
 
 export type AttemptMetricValue = number | boolean;
-export type AttemptResponseData = Readonly<{
+export type LegacyHiuAttemptResponseData = Readonly<{
+  kind?: never;
   selectedTokenIds?: readonly string[];
   correctTokenIds?: readonly string[];
   falsePositiveTokenIds?: readonly string[];
   missedTokenIds?: readonly string[];
 }>;
+export type AttemptResponseData = LegacyHiuAttemptResponseData | Readonly<
+  | { kind: 'token-selection'; selectedTokenIds: readonly string[] }
+  | { kind: 'single-choice'; selectedOptionId?: string }
+  | { kind: 'multiple-choice'; selectedOptionIds: readonly string[] }
+  | { kind: 'blank-text'; answers: Readonly<Record<string, string>> }
+  | { kind: 'blank-choice'; answers: Readonly<Record<string, string>> }
+  | { kind: 'ordered-blocks'; blockIds: readonly string[] }
+>;
 
 export type Attempt = {
   id: string;
@@ -79,7 +101,7 @@ export type Attempt = {
   taskType: PteTaskType;
   createdAt: string;
   responseText?: string;
-  /** Structured response for token-selection tasks; absent on historical attempts. */
+  /** Structured response for selection, blank, and ordering tasks; absent on historical attempts. */
   responseData?: AttemptResponseData;
   durationMs?: number;
   score?: number;

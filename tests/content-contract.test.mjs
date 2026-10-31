@@ -16,6 +16,7 @@ test('content v2 exposes immutable lifecycle/source/prefix vocabulary for existi
   assert.deepEqual(CONTENT_SOURCES, ['internal', 'licensed', 'generated', 'imported']);
   assert.deepEqual(QUESTION_ID_PREFIXES, {
     'write-from-dictation': 'wfd', 'repeat-sentence': 'rs', 'read-aloud': 'ra', 'retell-lecture': 'rtl', 'summarize-group-discussion': 'sgd', 'describe-image': 'di', 'summarize-written-text': 'swt', 'summarize-spoken-text': 'sst', 'highlight-incorrect-words': 'hiw',
+    'answer-short-question':'asq','respond-to-a-situation':'rts','write-essay':'we','reading-fill-blanks-dropdown':'rfbd','reading-multiple-choice-multiple':'rmcm','reorder-paragraph':'rop','reading-fill-blanks-drag-drop':'rfbdd','reading-multiple-choice-single':'rmcs','listening-multiple-choice-multiple':'lmcm','listening-fill-blanks-type-in':'lfb','highlight-correct-summary':'hcs','listening-multiple-choice-single':'lmcs','select-missing-word':'smw',
   });
   assert.equal(NEW_QUESTION_ID_DIGITS, 6);
   for (const value of [CONTENT_STATUSES, CONTENT_SOURCES, QUESTION_ID_PREFIXES]) {
@@ -52,9 +53,9 @@ const item: QuestionBankItem = {
   topic: 'schedule', estimatedSeconds: 10, audio: { path: '/audio/rs/rs-000001.mp3' }, chunks: ['The lecture', 'starts at nine'],
 };
 const bundle: QuestionBankBundle = { schemaVersion: 2, items: [item] };
-const manifest: QuestionBankManifest = {
+  const manifest: QuestionBankManifest = {
   schemaVersion: 2, contentVersion: 'sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', itemCount: 1, audioAssetCount: 1,
-  countsByTaskType: { 'write-from-dictation': 0, 'repeat-sentence': 1, 'read-aloud': 0, 'retell-lecture':0, 'summarize-group-discussion':0, 'describe-image':0, 'summarize-written-text':0, 'summarize-spoken-text':0, 'highlight-incorrect-words':0 },
+  countsByTaskType: { 'write-from-dictation': 0, 'repeat-sentence': 1, 'read-aloud': 0, 'retell-lecture':0, 'summarize-group-discussion':0, 'describe-image':0, 'summarize-written-text':0, 'summarize-spoken-text':0, 'highlight-incorrect-words':0, 'answer-short-question':0, 'respond-to-a-situation':0, 'write-essay':0, 'reading-fill-blanks-dropdown':0, 'reading-multiple-choice-multiple':0, 'reorder-paragraph':0, 'reading-fill-blanks-drag-drop':0, 'reading-multiple-choice-single':0, 'listening-multiple-choice-multiple':0, 'listening-fill-blanks-type-in':0, 'highlight-correct-summary':0, 'listening-multiple-choice-single':0, 'select-missing-word':0 },
 };
 const legacy: StudyItem = { id: 'rs-001', taskType: 'repeat-sentence', difficulty: 1, prompt: 'Listen.', audioUrl: '/audio/rs/rs-001.mp3', createdAt: '2026-10-02T00:00:00.000Z' };
 const oldAttempt: Attempt = { id: 'attempt', itemId: legacy.id, taskType: legacy.taskType, createdAt: legacy.createdAt };
@@ -65,8 +66,8 @@ const missing: QuestionBankItem = { id: 'ra-000001', taskType: 'read-aloud', dif
 const badStatus: StudyItemMetadata = { revision: 1, status: 'published', source: 'internal' };
 // @ts-expect-error provenance is not an arbitrary string
 const badSource: StudyItemMetadata = { revision: 1, status: 'draft', source: 'commercial' };
-// @ts-expect-error declaring the content contract does not register a new task
-const newTask: PteTaskType = 'answer-short-question';
+// @ts-expect-error Personal Introduction is familiarization, not a scored task type
+const newTask: PteTaskType = 'personal-introduction';
 // @ts-expect-error schema version is literal 2
 const badBundle: QuestionBankBundle = { schemaVersion: 1, items: [] };
 // @ts-expect-error every implemented task needs a count, including zero

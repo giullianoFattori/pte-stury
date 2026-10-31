@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { WAVE1_TASKS, TASK_REGISTRY } from '../src/domain/pte/taskRegistry.ts';
+import { WAVE1_TASKS, WAVE2_TASKS, TASK_REGISTRY } from '../src/domain/pte/taskRegistry.ts';
 import { parseQuestionBankItem, safeParseQuestionBankItem, validateQuestionBankItems } from '../src/domain/content/validation.ts';
 import { TASK_DATA_RULES } from '../src/domain/content/taskDataPolicy.ts';
 import { readTaskData, parseTaskData } from '../src/domain/content/taskDataValidation.ts';
@@ -120,6 +120,6 @@ test('schema v1 installed content upgrades only catalog state: semantic rows and
  for(const table of ['studyItems','attempts','errors','reviews','studySessions'])assert.deepEqual(after[table],before[table]);assert.equal(after.contentState[0].schemaVersion,2);assert.equal(db.verno,3);assert.equal(after.attempts[0].itemRevision,undefined);assert.equal((await bootstrapApp(db)).status,'unchanged');
 });
 test('legacy generated pair is verified only for atomic replacement/recovery, never current publication',()=>{
- const {bundle}=generatedQuestionBank();const legacy={...canonicalBundle(bundle.items.filter(item=>!WAVE1_TASKS.includes(item.taskType))),schemaVersion:1};const bytes=jsonBytes(legacy),manifest=manifestFor(legacy,bytes);for(const task of WAVE1_TASKS)delete manifest.countsByTaskType[task];
+ const {bundle}=generatedQuestionBank();const legacy={...canonicalBundle(bundle.items.filter(item=>!WAVE1_TASKS.includes(item.taskType))),schemaVersion:1};const bytes=jsonBytes(legacy),manifest=manifestFor(legacy,bytes);for(const task of [...WAVE1_TASKS,...WAVE2_TASKS])delete manifest.countsByTaskType[task];
  assert.throws(()=>verifyBytes(bytes,jsonBytes(manifest)));assert.equal(verifyBytes(bytes,jsonBytes(manifest),{allowPreviousSchema:true}).bundle.schemaVersion,1);
 });

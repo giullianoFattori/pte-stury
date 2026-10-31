@@ -11,7 +11,20 @@
     "describe-image": 4,
     "summarize-written-text": 4,
     "summarize-spoken-text": 4,
-    "highlight-incorrect-words": 5
+    "highlight-incorrect-words": 5,
+    "listening-fill-blanks-type-in": 0,
+    "reading-fill-blanks-dropdown": 0,
+    "reading-fill-blanks-drag-drop": 0,
+    "reorder-paragraph": 0,
+    "respond-to-a-situation": 0,
+    "write-essay": 0,
+    "answer-short-question": 0,
+    "reading-multiple-choice-multiple": 0,
+    "listening-multiple-choice-multiple": 0,
+    "reading-multiple-choice-single": 0,
+    "listening-multiple-choice-single": 0,
+    "highlight-correct-summary": 0,
+    "select-missing-word": 0
   },
   "audioAssetCount": 23
 }

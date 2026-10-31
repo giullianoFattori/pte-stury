@@ -4,6 +4,7 @@ import { StudyItemQueryError } from './queryTypes.ts';
 import { TASK_ORDER, compare } from './canonical.ts';
 import { CONTENT_LIMITS, CONTENT_SKILLS, LEGACY_QUESTION_IDS, newQuestionIdPattern } from './validationPolicy.ts';
 import { isCatalogEligible, isPracticeEligible } from './installedContent.ts';
+import { isPracticeReadyTask } from '../pte/taskRegistry.ts';
 
 export const MAX_QUERY_LIMIT = 500;
 const fields = ['taskTypes', 'difficulties', 'skills', 'tags', 'topic', 'excludeIds', 'matchSkills', 'matchTags', 'limit'];
@@ -32,7 +33,7 @@ export function parseStudyItemQuery(input: unknown = {}): StudyItemQuery {
     });
     return Object.freeze(result);
   }
-  const taskTypes = list('taskTypes', TASK_ORDER.length, (v): v is typeof TASK_ORDER[number] => TASK_ORDER.some(task => task === v));
+  const taskTypes = list('taskTypes', TASK_ORDER.length, (v): v is typeof TASK_ORDER[number] => TASK_ORDER.some(task => task === v) && isPracticeReadyTask(v));
   const difficulties = list('difficulties', 5, (v): v is Difficulty => typeof v === 'number' && Number.isInteger(v) && v >= 1 && v <= 5);
   const skills = list('skills', CONTENT_SKILLS.length, (v): v is Skill => CONTENT_SKILLS.some(skill => skill === v));
   const tags = list('tags', CONTENT_LIMITS.tags, (v): v is string => nonempty(v, CONTENT_LIMITS.tag));

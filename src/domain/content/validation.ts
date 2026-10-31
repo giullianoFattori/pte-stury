@@ -151,7 +151,7 @@ export function parseQuestionBankItem(input: unknown): QuestionBankItem {
   const payload = knownTask && has(input, 'taskData') ? taskDataIssues(taskType, input.taskData, status !== 'draft') : { issues: [], data: undefined };
   issues.push(...payload.issues);
   if (knownTask && !['write-from-dictation','repeat-sentence','read-aloud'].includes(taskType)) {
-    for (const key of ['answer','transcript','audio','chunks','phraseGroups','stressWords']) if (has(input, key)) issue(issues, key, 'UNKNOWN_FIELD', 'Wave 1 task content belongs in taskData.');
+    for (const key of ['answer','transcript','audio','chunks','phraseGroups','stressWords']) if (has(input, key)) issue(issues, key, 'UNKNOWN_FIELD', 'Typed task content belongs in taskData.');
   }
   if (knownTask && knownStatus && status !== 'draft') {
     for (const field of PUBLISHED_REQUIRED_FIELDS[taskType]) if (!has(input, field)) issue(issues, field, 'REQUIRED_FIELD', `${field} is required for active/retired ${taskType} content.`);

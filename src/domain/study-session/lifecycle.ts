@@ -1,4 +1,5 @@
 import type { PteTaskType, Difficulty } from '../pte/types';
+import { isPracticeReadyTask } from '../pte/taskRegistry.ts';
 import type { ContentVersion } from '../content/types';
 import { QUESTION_ID_PREFIXES } from '../content/types.ts';
 import { LEGACY_QUESTION_IDS, newQuestionIdPattern } from '../content/validationPolicy.ts';
@@ -56,7 +57,11 @@ function unique<T>(values: readonly T[], path: string, code?: StudySessionErrorC
   if (new Set(values).size !== values.length) fail(path, 'Duplicate entries are unsupported.', code);
 }
 function taskList(input: unknown, path: string): readonly PteTaskType[] {
-  const values = list(input, path, (value, key) => enumValue(value, tasks, key), tasks.length);
+  const values = list(input, path, (value, key) => {
+    const task = enumValue(value, tasks, key);
+    if (!isPracticeReadyTask(task)) fail(key, 'Task is known but is not ready to appear in a practice session.', 'INVALID_SESSION_CONFIG');
+    return task;
+  }, tasks.length);
   if (!values.length) fail(path, 'At least one selection task is required.');
   unique(values, path); return values;
 }

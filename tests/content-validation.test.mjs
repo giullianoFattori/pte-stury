@@ -28,7 +28,7 @@ test('draft can omit task fields/skills; publication requires them for every tas
 });
 // Each invalid rule has a separate named case/path assertion.
 const bad = [
-  ['taskType', 'answer-short-question', 'INVALID_TASK_TYPE'], ['taskType', 'Read-Aloud', 'INVALID_TASK_TYPE'],
+  ['taskType', 'personal-introduction', 'INVALID_TASK_TYPE'], ['taskType', 'Read-Aloud', 'INVALID_TASK_TYPE'],
   ['difficulty', 0, 'INVALID_DIFFICULTY'], ['difficulty', 6, 'INVALID_DIFFICULTY'],
   ['difficulty', 2.5, 'INVALID_DIFFICULTY'], ['difficulty', '2', 'INVALID_DIFFICULTY'],
   ['difficulty', NaN, 'INVALID_DIFFICULTY'], ['difficulty', Infinity, 'INVALID_DIFFICULTY'],

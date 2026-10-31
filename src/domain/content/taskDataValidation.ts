@@ -1,5 +1,5 @@
 import type { PteTaskType } from '../pte/types';
-import type { Wave1TaskData } from '../pte/taskData';
+import type { PteTaskData } from '../pte/taskData';
 import { TASK_DATA_RULES, type DataRule } from './taskDataPolicy.ts';
 import { ContentValidationError, type ContentValidationIssue } from './validationTypes.ts';
 export function dataObject(input: unknown): input is Record<string, unknown> {
@@ -22,6 +22,7 @@ function parse(value: unknown, rule: DataRule, path: string): unknown {
       if (!descriptor || !Object.hasOwn(descriptor, 'value')) invalid(path, 'Sparse/accessor arrays are forbidden.');
       parsed.push(parse(descriptor.value, rule.items!, `${path}[${i}]`));
     }
+    if (rule.uniqueItems && new Set(parsed.map(value => JSON.stringify(value))).size !== parsed.length) invalid(path, 'Duplicate array entries are not allowed.');
     return Object.freeze(parsed);
   }
   if (rule.type === 'string') {
@@ -33,9 +34,9 @@ function parse(value: unknown, rule: DataRule, path: string): unknown {
   return value;
 }
 /** Rules shared with JSON Schema; semantic references/truth remain authoritative here. */
-export function parseTaskData(task: PteTaskType, value: unknown, published: boolean): Wave1TaskData {
+export function parseTaskData(task: PteTaskType, value: unknown, published: boolean): PteTaskData {
   if (!Object.hasOwn(TASK_DATA_RULES, task)) invalid('taskData', 'Foundation content retains its legacy fields; taskData is not supported.');
-  const data = parse(value, TASK_DATA_RULES[task as keyof typeof TASK_DATA_RULES], 'taskData') as Wave1TaskData;
+  const data = parse(value, TASK_DATA_RULES[task as keyof typeof TASK_DATA_RULES], 'taskData') as PteTaskData;
   if ('audio' in data && published && data.audio.sha256 === undefined) invalid('taskData.audio.sha256', 'Published audio requires SHA-256.');
   if(task==='summarize-spoken-text'&&published){
     const asset=(data as import('../pte/taskData').SummarizeSpokenTextItemData).audio;
@@ -73,14 +74,48 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
     }
     if (data.displayedTokens.map(t => t.spokenText ?? t.text).join(' ') !== data.spokenTranscript) invalid('taskData.spokenTranscript', 'Spoken token truth joined by single spaces must equal the authored transcript exactly.');
   }
+  if (task === 'answer-short-question') {
+    const asq = data as import('../pte/taskData').AnswerShortQuestionItemData;
+    if (asq.image ? !asq.imageAlt?.trim() : asq.imageAlt !== undefined) invalid('taskData.imageAlt', 'An optional image requires authored alt text, and alt text requires its image.');
+  }
+  if ('options' in data) {
+    const options = data.options;
+    if (new Set(options.map(option => option.id)).size !== options.length) invalid('taskData.options', 'Option IDs must be unique.');
+    const correctCount = options.filter(option => option.correct).length;
+    const expected = task === 'reading-multiple-choice-multiple' || task === 'listening-multiple-choice-multiple' ? correctCount >= 2 && correctCount < options.length : correctCount === 1;
+    if (!expected) invalid('taskData.options', 'Options have invalid correct-answer cardinality for this task.');
+    if (task === 'select-missing-word' && 'missingText' in data && !options.some(option => option.correct && option.text === data.missingText)) invalid('taskData.options', 'The correct option must match missingText exactly.');
+  }
+  if (task === 'reading-fill-blanks-dropdown' && 'blanks' in data) {
+    const dropdown = data as import('../pte/taskData').ReadingFillBlanksDropdownItemData;
+    if (dropdown.segments.length !== dropdown.blanks.length + 1) invalid('taskData.segments', 'Segment count must be one greater than blank count.');
+    if (new Set(dropdown.blanks.map(blank => blank.id)).size !== dropdown.blanks.length) invalid('taskData.blanks', 'Blank IDs must be unique.');
+    if (dropdown.blanks.some(blank => !blank.options.includes(blank.answer))) invalid('taskData.blanks', 'Each dropdown answer must occur in its option list.');
+  }
+  if (task === 'reading-fill-blanks-drag-drop' && 'blanks' in data) {
+    const dragDrop = data as import('../pte/taskData').ReadingFillBlanksDragDropItemData;
+    if (dragDrop.segments.length !== dragDrop.blanks.length + 1) invalid('taskData.segments', 'Segment count must be one greater than blank count.');
+    if (new Set(dragDrop.blanks.map(blank => blank.id)).size !== dragDrop.blanks.length) invalid('taskData.blanks', 'Blank IDs must be unique.');
+    if (dragDrop.blanks.some(blank => !dragDrop.wordBank.includes(blank.answer))) invalid('taskData.wordBank', 'Word bank must contain every blank answer.');
+  }
+  if (task === 'listening-fill-blanks-type-in' && 'blanks' in data) {
+    const listeningBlanks = data as import('../pte/taskData').ListeningFillBlanksTypeInItemData;
+    if (listeningBlanks.transcriptSegments.length !== listeningBlanks.blanks.length + 1) invalid('taskData.transcriptSegments', 'Segment count must be one greater than blank count.');
+    if (new Set(listeningBlanks.blanks.map(blank => blank.id)).size !== listeningBlanks.blanks.length) invalid('taskData.blanks', 'Blank IDs must be unique.');
+  }
+  if (task === 'reorder-paragraph' && 'blocks' in data) {
+    const reorder = data as import('../pte/taskData').ReorderParagraphItemData;
+    const ids = reorder.blocks.map(block => block.id);
+    if (new Set(ids).size !== ids.length || reorder.correctOrder.length !== ids.length || new Set(reorder.correctOrder).size !== ids.length || ids.some(id => !reorder.correctOrder.includes(id))) invalid('taskData.correctOrder', 'Correct order must contain every unique block ID exactly once.');
+  }
   return data;
 }
-export function taskDataIssues(task: PteTaskType, value: unknown, published: boolean): { data?: Wave1TaskData; issues: readonly ContentValidationIssue[] } {
+export function taskDataIssues(task: PteTaskType, value: unknown, published: boolean): { data?: PteTaskData; issues: readonly ContentValidationIssue[] } {
   try { return { data: parseTaskData(task, value, published), issues: [] }; }
   catch (error) { if (error instanceof ContentValidationError) return { issues: error.issues }; throw error; }
 }
 /** Narrow a historically loaded item using its expected task and authoritative parser. */
-export function readTaskData<T extends import('../pte/taskRegistry').Wave1TaskType>(item: import('../pte/types').StudyItem, expected: T): import('../pte/taskData').StudyItemDataMap[T] {
+export function readTaskData<T extends import('../pte/taskRegistry').TaskDataTaskType>(item: import('../pte/types').StudyItem, expected: T): import('../pte/taskData').StudyItemDataMap[T] {
   if (item.taskType !== expected) invalid('taskType', 'Unexpected task identity.');
   return parseTaskData(expected, item.taskData, item.status !== 'draft') as import('../pte/taskData').StudyItemDataMap[T];
 }

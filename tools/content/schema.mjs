@@ -39,7 +39,7 @@ export function questionBankItemSchema() {
     $comment: 'Standard JSON Schema cannot compare two property values. x-pte-semanticRules declares that additional runtime rule; editor validation alone cannot approve content.',
     'x-pte-schemaVersion': QUESTION_BANK_SCHEMA_VERSION,
     'x-pte-semanticRules': [{ code: 'ANSWER_TRANSCRIPT_MISMATCH', path: 'answer',
-      rule: 'Foundation answer and transcript, when both present, must be exactly equal (including drafts).' }, { code: 'INVALID_TASK_DATA', path: 'taskData', rule: 'Runtime additionally enforces unique/referenced three-speaker IDs, published SGD contribution points covering each speaker, published SST audio duration of 60–90 seconds, published HIW audio duration of 15–50 seconds, coherent HIW token truth/transcript, image MIME/extension agreement and authored Retell Lecture image alt text.' }],
+      rule: 'Foundation answer and transcript, when both present, must be exactly equal (including drafts).' }, { code: 'INVALID_TASK_DATA', path: 'taskData', rule: 'Runtime enforces task-specific cross-field rules including authored speaker identities, coherent token truth, image MIME/extension and alt-text pairing, correct option counts, unique stable IDs, segment/blank alignment, answer membership, and complete reorder permutations. Publication also enforces the existing SST and HIW duration policies. This schema extension is additive and does not declare new tasks practice-ready.' }],
     type: 'object', additionalProperties: false, required: BASE_REQUIRED_FIELDS, properties,
     allOf: [
       ...Object.keys(QUESTION_ID_PREFIXES).map(task => ({
