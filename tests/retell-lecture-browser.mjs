@@ -57,8 +57,11 @@ try {
  await page.evaluate(async()=>{const {db}=await import('/src/data/db/database.ts');const active=(await db.studySessions.toArray()).find(s=>s.status==='active');if(active){active.status='abandoned';active.finishedAt=new Date().toISOString();await db.studySessions.put(active);}});
  await page.goto(base+'/study');
  // Mixed allocation contains both foundation WFD and Retell Lecture; the frozen queue interleaves across the task boundary.
- await page.getByRole('checkbox',{name:'Repeat Sentence',exact:true}).uncheck();await page.getByRole('checkbox',{name:'Read Aloud',exact:true}).uncheck();
- await page.getByText('Total: 16 questions available',{exact:true}).waitFor();
+ // Keep this allocation deliberately limited to WFD + Retell Lecture now that all nine Wave 1 tasks are ready.
+ for (const name of ['Repeat Sentence','Read Aloud','Summarize Group Discussion','Describe Image','Summarize Written Text','Summarize Spoken Text','Highlight Incorrect Words']) {
+   const checkbox=page.getByRole('checkbox',{name,exact:true});if(await checkbox.isChecked())await checkbox.uncheck();
+ }
+ await page.getByText('Total: 9 questions available',{exact:true}).waitFor();
  const quickPool=await page.evaluate(async()=>{const {QUICK_TASK_POOL}=await import('/src/domain/pte/taskRegistry.ts');return QUICK_TASK_POOL;});assert.deepEqual(quickPool,['write-from-dictation','repeat-sentence','read-aloud']);
  // Start a compact two-task queue through the same production builder API, then exercise WFD → Retell Lecture continuation.
  await page.evaluate(async()=>{const {startMixedPractice}=await import('/src/features/study-session/services/startMixedPractice.ts');const {studySessionsRepository:sessions}=await import('/src/data/repositories/studySessionsRepository.ts');const {studyItemsRepository:source}=await import('/src/data/repositories/studyItemsRepository.ts');const {db}=await import('/src/data/db/database.ts');const started=await startMixedPractice({taskTypes:['write-from-dictation','retell-lecture'],itemCount:2},{sessions,source,getContentVersion:async()=>(await db.contentState.get('question-bank')).contentVersion,idGenerator:()=>crypto.randomUUID(),now:()=>new Date().toISOString(),rng:()=>0});window.mix=started.session;});

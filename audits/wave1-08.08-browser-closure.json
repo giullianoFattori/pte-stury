@@ -1,0 +1,89 @@
+{
+  "status": "PASS",
+  "activity": "08",
+  "step": "08.08",
+  "createdAt": "2026-10-24T22:57:35Z",
+  "gitCommit": "44d674e3728bf569d58cb4acb3cfe3019ae4745b",
+  "workingTreeDirty": true,
+  "platform": "linux-x64",
+  "browser": "Chrome 154.0.8037.97",
+  "contentVersion": "sha256:246d400e68562495a7d492682ac53555994ef1b67266c4bd484078e70d4fde28",
+  "contentSchemaVersion": 2,
+  "dexieVersion": 3,
+  "practiceReadyTaskCount": 9,
+  "practiceReadyTaskOrder": [
+    "write-from-dictation",
+    "repeat-sentence",
+    "read-aloud",
+    "retell-lecture",
+    "summarize-group-discussion",
+    "describe-image",
+    "summarize-written-text",
+    "summarize-spoken-text",
+    "highlight-incorrect-words"
+  ],
+  "learnerItemCount": 41,
+  "countsByTaskType": {
+    "write-from-dictation": 5,
+    "repeat-sentence": 6,
+    "read-aloud": 6,
+    "retell-lecture": 4,
+    "summarize-group-discussion": 3,
+    "describe-image": 4,
+    "summarize-written-text": 4,
+    "summarize-spoken-text": 4,
+    "highlight-incorrect-words": 5
+  },
+  "audioAssetCount": 23,
+  "audioBytes": 8387063,
+  "imageAssetCount": 4,
+  "imageBytes": 215069,
+  "standaloneCoverage": "PASS",
+  "taskPracticeCoverage": "PASS",
+  "mixedPracticeCoverage": "PASS",
+  "allNineMixedQueue": {
+    "status": "PASS",
+    "itemCount": 41,
+    "uniqueItemCount": 41,
+    "canonicalInitialOrder": true
+  },
+  "allNineItemsCompletedInOneMixedSession": "NOT RUN; all-nine queue, each task family browser flow, and representative cross-family transitions passed",
+  "summaryCoverage": "PASS",
+  "summaryReloadAndIntegrity": "PASS",
+  "foundationRegression": "PASS",
+  "wave1Regression": "PASS",
+  "quickTaskPool": [
+    "write-from-dictation",
+    "repeat-sentence",
+    "read-aloud"
+  ],
+  "representativeTransitions": [
+    "read-aloud → retell-lecture",
+    "retell-lecture → summarize-group-discussion",
+    "summarize-group-discussion → describe-image",
+    "describe-image → summarize-written-text",
+    "summarize-written-text → summarize-spoken-text",
+    "summarize-spoken-text → highlight-incorrect-words",
+    "highlight-incorrect-words → write-from-dictation"
+  ],
+  "taskBrowserSuites": {
+    "retell-lecture": "PASS",
+    "summarize-group-discussion": "PASS",
+    "describe-image": "PASS",
+    "summarize-written-text": "PASS",
+    "summarize-spoken-text": "PASS",
+    "highlight-incorrect-words": "PASS"
+  },
+  "sessionBrowserSuites": {
+    "exercise-session": "PASS",
+    "quick-practice": "PASS",
+    "task-practice": "PASS",
+    "mixed-practice": "PASS",
+    "session-navigation": "PASS",
+    "session-summary": "PASS"
+  },
+  "pageErrors": 0,
+  "unexpectedRemoteRequests": 0,
+  "packageTests": "PASS (7/7)",
+  "automatedTests": "PASS (1162/1162)"
+}
