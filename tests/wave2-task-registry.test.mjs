@@ -35,7 +35,7 @@ test('Wave 2 skill mappings distinguish section membership from communicative sk
     'answer-short-question': ['listening'], 'respond-to-a-situation': ['speaking'], 'write-essay': ['writing'],
     'reading-fill-blanks-dropdown': ['reading'], 'reading-multiple-choice-multiple': ['reading'], 'reorder-paragraph': ['reading'],
     'reading-fill-blanks-drag-drop': ['reading'], 'reading-multiple-choice-single': ['reading'],
-    'listening-multiple-choice-multiple': ['listening'], 'listening-fill-blanks-type-in': ['listening','writing'],
+    'listening-multiple-choice-multiple': ['listening'], 'listening-fill-blanks-type-in': ['listening'],
     'highlight-correct-summary': ['listening','reading'], 'listening-multiple-choice-single': ['listening'], 'select-missing-word': ['listening'],
   };
   const sections = {

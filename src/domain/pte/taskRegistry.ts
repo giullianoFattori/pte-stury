@@ -49,7 +49,7 @@ export const TASK_REGISTRY: Readonly<Record<PteTaskType, PteTaskDefinition>> = O
   'reading-fill-blanks-drag-drop': definition('reading-fill-blanks-drag-drop', 'Reading: Fill in the Blanks — Drag and Drop', ['reading'], 'reading', 'rfbdd', false),
   'reading-multiple-choice-single': definition('reading-multiple-choice-single', 'Reading: Multiple Choice — Single Answer', ['reading'], 'reading', 'rmcs', false),
   'listening-multiple-choice-multiple': definition('listening-multiple-choice-multiple', 'Listening: Multiple Choice — Multiple Answers', ['listening'], 'listening', 'lmcm', false),
-  'listening-fill-blanks-type-in': definition('listening-fill-blanks-type-in', 'Listening: Fill in the Blanks — Type In', ['listening','writing'], 'listening', 'lfb', false),
+  'listening-fill-blanks-type-in': definition('listening-fill-blanks-type-in', 'Listening: Fill in the Blanks — Type In', ['listening'], 'listening', 'lfb', false),
   'highlight-correct-summary': definition('highlight-correct-summary', 'Highlight Correct Summary', ['listening','reading'], 'listening', 'hcs', false),
   'listening-multiple-choice-single': definition('listening-multiple-choice-single', 'Listening: Multiple Choice — Single Answer', ['listening'], 'listening', 'lmcs', false),
   'select-missing-word': definition('select-missing-word', 'Select Missing Word', ['listening'], 'listening', 'smw', false),
