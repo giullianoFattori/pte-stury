@@ -1,0 +1,40 @@
+{
+  "id": "rop-000003",
+  "taskType": "reorder-paragraph",
+  "difficulty": 2,
+  "prompt": "Arrange the sentences into a coherent paragraph.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Learning and sleep",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "blocks": [
+      {
+        "id": "comparison",
+        "text": "Those who slept between the two sessions remembered more words than those who stayed awake."
+      },
+      {
+        "id": "finding",
+        "text": "Sleep plays an active role in the way people retain newly learned information."
+      },
+      {
+        "id": "implication",
+        "text": "The result suggests that study schedules should leave time for rest before important recall tasks."
+      },
+      {
+        "id": "study",
+        "text": "In one experiment, students practised unfamiliar vocabulary and were tested several hours later."
+      }
+    ],
+    "correctOrder": [
+      "finding",
+      "study",
+      "comparison",
+      "implication"
+    ]
+  }
+}

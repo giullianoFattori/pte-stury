@@ -1,0 +1,40 @@
+{
+  "id": "rop-000005",
+  "taskType": "reorder-paragraph",
+  "difficulty": 2,
+  "prompt": "Arrange the sentences into a coherent paragraph.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Research replication",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "blocks": [
+      {
+        "id": "caution",
+        "text": "A different result can also reveal limits in the method or conditions that were previously overlooked."
+      },
+      {
+        "id": "comparison",
+        "text": "If the findings agree, confidence in the original explanation may increase."
+      },
+      {
+        "id": "method",
+        "text": "They repeat the study with a new sample while keeping its central procedure as similar as possible."
+      },
+      {
+        "id": "question",
+        "text": "A scientific result becomes more useful when other researchers can examine how it was produced."
+      }
+    ],
+    "correctOrder": [
+      "question",
+      "method",
+      "comparison",
+      "caution"
+    ]
+  }
+}

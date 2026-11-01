@@ -7,7 +7,7 @@ import type { FoundationTaskType } from '../pte/taskRegistry.ts';
 
 // A rollout must register explicit metric handling before enabling practice. No RA fallback.
 const SUMMARY_EXACT_KEYS = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' } as const);
-export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop'] as const);
+export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop', 'reorder-paragraph'] as const);
 type FoundationSessionSummary = Readonly<{
   taskType: 'write-from-dictation' | 'repeat-sentence' | 'read-aloud';
   questionCount: number;
@@ -47,7 +47,8 @@ type BlankFillSessionSummary<T extends 'listening-fill-blanks-type-in'|'reading-
 export type ListeningFillBlanksSessionSummary=BlankFillSessionSummary<'listening-fill-blanks-type-in'>;
 export type ReadingFillBlanksDropdownSessionSummary=BlankFillSessionSummary<'reading-fill-blanks-dropdown'>;
 export type ReadingFillBlanksDragDropSessionSummary=BlankFillSessionSummary<'reading-fill-blanks-drag-drop'>;
-export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary | ReadingFillBlanksDragDropSessionSummary;
+export type ReorderParagraphSessionSummary=Readonly<{taskType:'reorder-paragraph';questionCount:number;correctAdjacentPairs:number;totalAdjacentPairs:number;adjacencyAccuracyPercent:number;exactOrderCount:number;firstBlockCorrectCount?:number}>;
+export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary | ReadingFillBlanksDragDropSessionSummary | ReorderParagraphSessionSummary;
 export type SessionSummary = Readonly<{
   sessionId: string;
   mode: StudySessionMode;
@@ -197,6 +198,13 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
       if(!count||max!==count||Object.keys(answers).length!==count||new Set(assigned).size!==assigned.length||correct+incorrect+unanswered!==count||raw!==correct||Math.abs(accuracy-correct/count)>1e-8||Math.abs(percent-accuracy*100)>1e-8||typeof metrics.exactAllCorrect!=='boolean'||metrics.exactAllCorrect!==(correct===count)||typeof attempt.score!=='number'||!Number.isFinite(attempt.score)||Math.abs(attempt.score-accuracy)>1e-8)corrupt(`${path}.accuracy`);
       groups.set(task,[...(groups.get(task)??[]),metrics]);return;
     }
+    if(task==='reorder-paragraph'){
+      const response=object(attempt.responseData,`${path}.responseData`);
+      if(response.kind!=='ordered-blocks'||!Array.isArray(response.blockIds)||response.blockIds.some(id=>typeof id!=='string'||!id.length||id.length>64)||new Set(response.blockIds as string[]).size!==(response.blockIds as unknown[]).length)corrupt(`${path}.responseData`);
+      const ids=response.blockIds as string[],correct=metric(metrics,'correctAdjacentPairs',path,true),totalPairs=metric(metrics,'totalAdjacentPairs',path,true),raw=metric(metrics,'rawScore',path,true),max=metric(metrics,'maxScore',path,true),accuracy=metric(metrics,'accuracy',path,false,1),percent=metric(metrics,'accuracyPercent',path,false,100);
+      if(ids.length<3||totalPairs!==ids.length-1||max!==totalPairs||correct>totalPairs||raw!==correct||Math.abs(accuracy-correct/totalPairs)>1e-8||Math.abs(percent-accuracy*100)>1e-8||typeof metrics.exactOrder!=='boolean'||metrics.exactOrder!==(correct===totalPairs)||typeof metrics.firstBlockCorrect!=='boolean'||typeof attempt.score!=='number'||!Number.isFinite(attempt.score)||Math.abs(attempt.score-accuracy)>1e-8)corrupt(`${path}.accuracy`);
+      groups.set(task,[...(groups.get(task)??[]),metrics]);return;
+    }
     if (!Object.hasOwn(SUMMARY_EXACT_KEYS, task)) corrupt(`${path}.taskType`);
     const foundationTask = task as FoundationTaskType;
     const correct = metric(metrics, 'correctWords', path, true), expected = metric(metrics, 'expectedWords', path, true);
@@ -275,6 +283,10 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     if(task==='reading-fill-blanks-drag-drop'){
       const correctBlanks=total(numbers('correctBlanks'),task),incorrectBlanks=total(numbers('incorrectBlanks'),task),unansweredBlanks=total(numbers('unansweredBlanks'),task),totalBlanks=total(numbers('totalBlanks'),task);
       byTask[task]=Object.freeze({taskType:task,questionCount:group.length,correctBlanks,incorrectBlanks,unansweredBlanks,totalBlanks,accuracyPercent:totalBlanks?correctBlanks/totalBlanks*100:0,allCorrectCount:group.filter(m=>m.exactAllCorrect===true).length});continue;
+    }
+    if(task==='reorder-paragraph'){
+      const correctAdjacentPairs=total(numbers('correctAdjacentPairs'),task),totalAdjacentPairs=total(numbers('totalAdjacentPairs'),task),exactOrderCount=group.filter(m=>m.exactOrder===true).length,firstBlockCorrectCount=group.filter(m=>m.firstBlockCorrect===true).length;
+      byTask[task]=Object.freeze({taskType:task,questionCount:group.length,correctAdjacentPairs,totalAdjacentPairs,adjacencyAccuracyPercent:totalAdjacentPairs?correctAdjacentPairs/totalAdjacentPairs*100:0,exactOrderCount,firstBlockCorrectCount});continue;
     }
     const correctWords = total(numbers('correctWords'), task), expectedWords = total(numbers('expectedWords'), task);
     const foundationTask = task as FoundationTaskType;

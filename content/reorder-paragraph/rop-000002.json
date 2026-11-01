@@ -1,0 +1,40 @@
+{
+  "id": "rop-000002",
+  "taskType": "reorder-paragraph",
+  "difficulty": 3,
+  "prompt": "Arrange the sentences into a coherent paragraph.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Groundwater",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "blocks": [
+      {
+        "id": "evidence",
+        "text": "Long-term monitoring helps authorities distinguish seasonal changes from a persistent decline."
+      },
+      {
+        "id": "action",
+        "text": "When the decline is confirmed, usage limits and recharge projects can protect the aquifer."
+      },
+      {
+        "id": "source",
+        "text": "Groundwater supplies drinking water to communities in many dry regions."
+      },
+      {
+        "id": "pressure",
+        "text": "However, farms and growing towns can pump it faster than rainfall replaces it."
+      }
+    ],
+    "correctOrder": [
+      "source",
+      "pressure",
+      "evidence",
+      "action"
+    ]
+  }
+}

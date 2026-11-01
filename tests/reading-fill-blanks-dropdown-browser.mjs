@@ -46,7 +46,7 @@ try {
   await mixed.getByRole('checkbox', { name: 'Listening: Fill in the Blanks — Type In', exact: true }).check();
   await mixed.getByRole('checkbox', { name: 'Reading: Fill in the Blanks — Dropdown', exact: true }).check();
   await mixed.getByRole('checkbox', { name: 'Reading: Fill in the Blanks — Drag and Drop', exact: true }).check();
-  for (const name of ['Write From Dictation','Repeat Sentence','Read Aloud','Retell Lecture','Summarize Group Discussion','Describe Image','Summarize Written Text','Summarize Spoken Text','Highlight Incorrect Words']) {
+  for (const name of ['Write From Dictation','Repeat Sentence','Read Aloud','Retell Lecture','Summarize Group Discussion','Describe Image','Summarize Written Text','Summarize Spoken Text','Highlight Incorrect Words','Reorder Paragraph']) {
     const checkbox = mixed.getByRole('checkbox', { name, exact: true }); if (await checkbox.isChecked()) await checkbox.uncheck();
   }
   await mixed.getByRole('radio', { name: '5', exact: true }).check(); await mixed.getByRole('button', { name: 'Start Mixed Practice', exact: true }).click(); await page.waitForURL('**/study/session/*');

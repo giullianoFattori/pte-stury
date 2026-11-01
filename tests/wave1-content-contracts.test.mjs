@@ -116,7 +116,7 @@ test('new-item supports Wave 1 draft reservation; bulk JSON import stays draft-o
 test('schema v1 installed content upgrades only catalog state: semantic rows and learner history unchanged',async t=>{
  const db=await database(t);await bootstrapApp(db);await seedHistory(db);const before=await snapshot(db);
  await db.contentState.put({...before.contentState[0],schemaVersion:1,contentVersion:'sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2'});
- const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,56);const after=await snapshot(db);
+ const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,61);const after=await snapshot(db);
  for(const table of ['studyItems','attempts','errors','reviews','studySessions'])assert.deepEqual(after[table],before[table]);assert.equal(after.contentState[0].schemaVersion,2);assert.equal(db.verno,3);assert.equal(after.attempts[0].itemRevision,undefined);assert.equal((await bootstrapApp(db)).status,'unchanged');
 });
 test('legacy generated pair is verified only for atomic replacement/recovery, never current publication',()=>{

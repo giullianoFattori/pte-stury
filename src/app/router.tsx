@@ -15,6 +15,7 @@ import { HighlightIncorrectWordsPage } from '../features/highlight-incorrect-wor
 import { ListeningFillBlanksTypeInPage } from '../features/listening-fill-blanks/ListeningFillBlanksTypeInPage';
 import { ReadingFillBlanksDropdownPage } from '../features/reading-fill-blanks-dropdown/ReadingFillBlanksDropdownPage';
 import { ReadingFillBlanksDragDropPage } from '../features/reading-fill-blanks-drag-drop/ReadingFillBlanksDragDropPage';
+import { ReorderParagraphPage } from '../features/reorder-paragraph/ReorderParagraphPage';
 
 export const router = createBrowserRouter([
   {
@@ -79,6 +80,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/reading-fill-blanks-drag-drop',
         element: <ReadingFillBlanksDragDropPage />,
+      },
+      {
+        path: '/study/reorder-paragraph',
+        element: <ReorderParagraphPage />,
       },
       {
         path: '/review',

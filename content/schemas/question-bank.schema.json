@@ -1226,7 +1226,7 @@
           "properties": {
             "blocks": {
               "type": "array",
-              "minItems": 2,
+              "minItems": 3,
               "maxItems": 20,
               "items": {
                 "type": "object",
@@ -1252,7 +1252,7 @@
             },
             "correctOrder": {
               "type": "array",
-              "minItems": 2,
+              "minItems": 3,
               "maxItems": 20,
               "items": {
                 "type": "string",
@@ -3800,7 +3800,7 @@
             "properties": {
               "blocks": {
                 "type": "array",
-                "minItems": 2,
+                "minItems": 3,
                 "maxItems": 20,
                 "items": {
                   "type": "object",
@@ -3826,7 +3826,7 @@
               },
               "correctOrder": {
                 "type": "array",
-                "minItems": 2,
+                "minItems": 3,
                 "maxItems": 20,
                 "items": {
                   "type": "string",

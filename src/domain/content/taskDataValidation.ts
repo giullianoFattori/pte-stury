@@ -123,7 +123,10 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
   if (task === 'reorder-paragraph' && 'blocks' in data) {
     const reorder = data as import('../pte/taskData').ReorderParagraphItemData;
     const ids = reorder.blocks.map(block => block.id);
+    if (reorder.blocks.length < 3) invalid('taskData.blocks', 'Reorder Paragraph requires at least three blocks.');
+    if (reorder.blocks.some(block => !block.text.trim())) invalid('taskData.blocks', 'Paragraph blocks must contain non-whitespace text.');
     if (new Set(ids).size !== ids.length || reorder.correctOrder.length !== ids.length || new Set(reorder.correctOrder).size !== ids.length || ids.some(id => !reorder.correctOrder.includes(id))) invalid('taskData.correctOrder', 'Correct order must contain every unique block ID exactly once.');
+    if (published && countWords(reorder.correctOrder.map(id => reorder.blocks.find(block => block.id === id)?.text ?? '').join(' ')) > 110) invalid('taskData.blocks', 'Published Reorder Paragraph text must contain no more than 110 words.');
   }
   return data;
 }

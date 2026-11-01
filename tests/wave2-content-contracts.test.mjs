@@ -14,7 +14,7 @@ const fixtures = {
   'write-essay': { prompt: 'Should cities invest more in public transport?', positionType: 'agree-disagree', keyRequirements: ['state a position','support it with reasons'] },
   'reading-fill-blanks-dropdown': { segments: ['The study was ', ' over three years.'], blanks: [{ id: 'blank-1', answer: 'conducted', options: ['conducted','conducting'] }] },
   'reading-multiple-choice-multiple': { passage: 'Research passage.', question: 'Which claims are supported?', options },
-  'reorder-paragraph': { blocks: [{ id: 'p1', text: 'Opening.' },{ id: 'p2', text: 'Conclusion.' }], correctOrder: ['p1','p2'] },
+  'reorder-paragraph': { blocks: [{ id: 'p1', text: 'Opening.' },{ id: 'p2', text: 'Development.' },{ id: 'p3', text: 'Conclusion.' }], correctOrder: ['p1','p2','p3'] },
   'reading-fill-blanks-drag-drop': { segments: ['A ', ' affects climate.'], blanks: [{ id: 'blank-1', answer: 'forest' }], wordBank: ['forest','ocean','desert'] },
   'reading-multiple-choice-single': { passage: 'Research passage.', question: 'What is the main finding?', options: single },
   'listening-multiple-choice-multiple': { audio, transcript: 'A short lecture transcript.', question: 'Which points were mentioned?', options },
@@ -61,8 +61,8 @@ test('blank structures and reorder permutations must be coherent', () => {
   rejects('reading-fill-blanks-dropdown', { ...fixtures['reading-fill-blanks-dropdown'], blanks: [{ id: 'x', answer: 'absent', options: ['other','choice'] }] });
   rejects('reading-fill-blanks-drag-drop', { ...fixtures['reading-fill-blanks-drag-drop'], wordBank: ['other'] });
   rejects('listening-fill-blanks-type-in', { ...fixtures['listening-fill-blanks-type-in'], transcriptSegments: ['no blank coherence'] });
-  rejects('reorder-paragraph', { ...fixtures['reorder-paragraph'], correctOrder: ['p1','p1'] });
-  rejects('reorder-paragraph', { ...fixtures['reorder-paragraph'], blocks: [{ id: 'p1', text: 'A' },{ id: 'p1', text: 'B' }] });
+  rejects('reorder-paragraph', { ...fixtures['reorder-paragraph'], correctOrder: ['p1','p1','p3'] });
+  rejects('reorder-paragraph', { ...fixtures['reorder-paragraph'], blocks: [{ id: 'p1', text: 'A' },{ id: 'p1', text: 'B' },{ id: 'p3', text: 'C' }] });
 });
 
 test('optional ASQ image and alt text must appear together', () => {

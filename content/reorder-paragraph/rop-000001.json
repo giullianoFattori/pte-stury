@@ -1,0 +1,40 @@
+{
+  "id": "rop-000001",
+  "taskType": "reorder-paragraph",
+  "difficulty": 2,
+  "prompt": "Arrange the sentences into a coherent paragraph.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Climate planning",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "blocks": [
+      {
+        "id": "pattern",
+        "text": "The comparison often reveals that densely built districts remain warmer after sunset."
+      },
+      {
+        "id": "claim",
+        "text": "Urban heat planning begins with identifying the neighbourhoods that face the greatest risk."
+      },
+      {
+        "id": "response",
+        "text": "Cities can then target shade, reflective surfaces, and cooling centres where they are most needed."
+      },
+      {
+        "id": "measure",
+        "text": "Researchers combine temperature readings with information about building density and tree cover."
+      }
+    ],
+    "correctOrder": [
+      "claim",
+      "measure",
+      "pattern",
+      "response"
+    ]
+  }
+}

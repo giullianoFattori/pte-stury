@@ -19,15 +19,15 @@ test('catalogue freezes 22 unique scored task identities and excludes Personal I
 test('Wave 2 membership, readiness, selectors and Quick policy remain explicit', () => {
   assert.deepEqual(WAVE2_TASKS, ['listening-fill-blanks-type-in','reading-fill-blanks-dropdown','reading-fill-blanks-drag-drop','reorder-paragraph','respond-to-a-situation','write-essay','answer-short-question','reading-multiple-choice-multiple','listening-multiple-choice-multiple','reading-multiple-choice-single','listening-multiple-choice-single','highlight-correct-summary','select-missing-word']);
   assert.equal(WAVE2_TASKS.length, 13);
-  assert.deepEqual(PRACTICE_TASK_ORDER, [...FOUNDATION_TASKS, ...WAVE1_TASKS, 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop']);
+  assert.deepEqual(PRACTICE_TASK_ORDER, [...FOUNDATION_TASKS, ...WAVE1_TASKS, 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop', 'reorder-paragraph']);
   assert.deepEqual(QUICK_TASK_POOL, FOUNDATION_TASKS);
   assert.deepEqual(validateBuildRequest({ mode: 'quick' }).taskTypes, FOUNDATION_TASKS);
   for (const task of WAVE2_TASKS) {
     assert.equal(TASK_REGISTRY[task].wave, 'wave-2');
-    assert.equal(TASK_REGISTRY[task].practiceReady, ['listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop'].includes(task));
+    assert.equal(TASK_REGISTRY[task].practiceReady, ['listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop','reorder-paragraph'].includes(task));
     assert.ok(TASK_REGISTRY[task].label);
   }
-  assert.equal(SESSION_SUMMARY_TASKS.length, 12);
+  assert.equal(SESSION_SUMMARY_TASKS.length, 13);
 });
 
 test('Wave 2 skill mappings distinguish section membership from communicative skills', () => {
@@ -50,7 +50,7 @@ test('Wave 2 skill mappings distinguish section membership from communicative sk
 });
 
 test('unready catalogue tasks fail before session dependencies or content queries run', async () => {
-  for (const task of WAVE2_TASKS.filter(task => !['listening-fill-blanks-type-in','reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop'].includes(task))) await assert.rejects(prepareStudySession({ mode: 'task', itemCount: 1, taskTypes: [task] }, {
+  for (const task of WAVE2_TASKS.filter(task => !['listening-fill-blanks-type-in','reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop','reorder-paragraph'].includes(task))) await assert.rejects(prepareStudySession({ mode: 'task', itemCount: 1, taskTypes: [task] }, {
     source: { queryPracticeItems: () => assert.fail('unready task queried') }, idGenerator: () => assert.fail('id generated'), now: () => assert.fail('clock read'), rng: () => assert.fail('rng used'),
   }), error => error.code === 'INVALID_SESSION_CONFIG');
 });

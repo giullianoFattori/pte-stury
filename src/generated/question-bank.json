@@ -3784,6 +3784,206 @@
       ],
       "topic": "Urban forestry",
       "estimatedSeconds": 120
+    },
+    {
+      "id": "rop-000001",
+      "taskType": "reorder-paragraph",
+      "difficulty": 2,
+      "prompt": "Arrange the sentences into a coherent paragraph.",
+      "taskData": {
+        "blocks": [
+          {
+            "id": "pattern",
+            "text": "The comparison often reveals that densely built districts remain warmer after sunset."
+          },
+          {
+            "id": "claim",
+            "text": "Urban heat planning begins with identifying the neighbourhoods that face the greatest risk."
+          },
+          {
+            "id": "response",
+            "text": "Cities can then target shade, reflective surfaces, and cooling centres where they are most needed."
+          },
+          {
+            "id": "measure",
+            "text": "Researchers combine temperature readings with information about building density and tree cover."
+          }
+        ],
+        "correctOrder": [
+          "claim",
+          "measure",
+          "pattern",
+          "response"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Climate planning",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rop-000002",
+      "taskType": "reorder-paragraph",
+      "difficulty": 3,
+      "prompt": "Arrange the sentences into a coherent paragraph.",
+      "taskData": {
+        "blocks": [
+          {
+            "id": "evidence",
+            "text": "Long-term monitoring helps authorities distinguish seasonal changes from a persistent decline."
+          },
+          {
+            "id": "action",
+            "text": "When the decline is confirmed, usage limits and recharge projects can protect the aquifer."
+          },
+          {
+            "id": "source",
+            "text": "Groundwater supplies drinking water to communities in many dry regions."
+          },
+          {
+            "id": "pressure",
+            "text": "However, farms and growing towns can pump it faster than rainfall replaces it."
+          }
+        ],
+        "correctOrder": [
+          "source",
+          "pressure",
+          "evidence",
+          "action"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Groundwater",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rop-000003",
+      "taskType": "reorder-paragraph",
+      "difficulty": 2,
+      "prompt": "Arrange the sentences into a coherent paragraph.",
+      "taskData": {
+        "blocks": [
+          {
+            "id": "comparison",
+            "text": "Those who slept between the two sessions remembered more words than those who stayed awake."
+          },
+          {
+            "id": "finding",
+            "text": "Sleep plays an active role in the way people retain newly learned information."
+          },
+          {
+            "id": "implication",
+            "text": "The result suggests that study schedules should leave time for rest before important recall tasks."
+          },
+          {
+            "id": "study",
+            "text": "In one experiment, students practised unfamiliar vocabulary and were tested several hours later."
+          }
+        ],
+        "correctOrder": [
+          "finding",
+          "study",
+          "comparison",
+          "implication"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Learning and sleep",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rop-000004",
+      "taskType": "reorder-paragraph",
+      "difficulty": 3,
+      "prompt": "Arrange the sentences into a coherent paragraph.",
+      "taskData": {
+        "blocks": [
+          {
+            "id": "effect",
+            "text": "These details influence whether residents consider the service convenient for daily travel."
+          },
+          {
+            "id": "evaluation",
+            "text": "Passenger counts after launch can show which improvements have made the greatest difference."
+          },
+          {
+            "id": "challenge",
+            "text": "A new bus route may attract few passengers when stops are difficult to reach."
+          },
+          {
+            "id": "design",
+            "text": "Planners therefore examine walking paths, crossing safety, and service frequency together."
+          }
+        ],
+        "correctOrder": [
+          "challenge",
+          "design",
+          "effect",
+          "evaluation"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Public transport",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rop-000005",
+      "taskType": "reorder-paragraph",
+      "difficulty": 2,
+      "prompt": "Arrange the sentences into a coherent paragraph.",
+      "taskData": {
+        "blocks": [
+          {
+            "id": "caution",
+            "text": "A different result can also reveal limits in the method or conditions that were previously overlooked."
+          },
+          {
+            "id": "comparison",
+            "text": "If the findings agree, confidence in the original explanation may increase."
+          },
+          {
+            "id": "method",
+            "text": "They repeat the study with a new sample while keeping its central procedure as similar as possible."
+          },
+          {
+            "id": "question",
+            "text": "A scientific result becomes more useful when other researchers can examine how it was produced."
+          }
+        ],
+        "correctOrder": [
+          "question",
+          "method",
+          "comparison",
+          "caution"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Research replication",
+      "estimatedSeconds": 150
     }
   ]
 }

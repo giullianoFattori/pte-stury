@@ -404,6 +404,31 @@
       "id": "rfbdd-000005",
       "taskType": "reading-fill-blanks-drag-drop",
       "kind": "reserved"
+    },
+    {
+      "id": "rop-000001",
+      "taskType": "reorder-paragraph",
+      "kind": "reserved"
+    },
+    {
+      "id": "rop-000002",
+      "taskType": "reorder-paragraph",
+      "kind": "reserved"
+    },
+    {
+      "id": "rop-000003",
+      "taskType": "reorder-paragraph",
+      "kind": "reserved"
+    },
+    {
+      "id": "rop-000004",
+      "taskType": "reorder-paragraph",
+      "kind": "reserved"
+    },
+    {
+      "id": "rop-000005",
+      "taskType": "reorder-paragraph",
+      "kind": "reserved"
     }
   ]
 }

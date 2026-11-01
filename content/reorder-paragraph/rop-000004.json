@@ -1,0 +1,40 @@
+{
+  "id": "rop-000004",
+  "taskType": "reorder-paragraph",
+  "difficulty": 3,
+  "prompt": "Arrange the sentences into a coherent paragraph.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Public transport",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "blocks": [
+      {
+        "id": "effect",
+        "text": "These details influence whether residents consider the service convenient for daily travel."
+      },
+      {
+        "id": "evaluation",
+        "text": "Passenger counts after launch can show which improvements have made the greatest difference."
+      },
+      {
+        "id": "challenge",
+        "text": "A new bus route may attract few passengers when stops are difficult to reach."
+      },
+      {
+        "id": "design",
+        "text": "Planners therefore examine walking paths, crossing safety, and service frequency together."
+      }
+    ],
+    "correctOrder": [
+      "challenge",
+      "design",
+      "effect",
+      "evaluation"
+    ]
+  }
+}

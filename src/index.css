@@ -435,3 +435,4 @@ dialog button:disabled { background: #e7edf5; color: #687894; cursor: not-allowe
 .session-task-summary h3 { margin-top: 0; }
 .session-task-summary dl { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 0.5rem 1rem; }
 .session-task-summary dd { margin: 0; text-align: right; overflow-wrap: anywhere; }
+.rop-block-list{display:grid;gap:1rem;padding-left:2rem}.rop-block-list>li{padding:1rem;border:1px solid var(--border,#cbd5e1);border-radius:.75rem;background:var(--surface,#fff)}.rop-controls{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}.rop-controls span{margin-right:auto;font-size:.875rem;color:var(--muted,#475569)}.rop-controls button:focus-visible{outline:3px solid #2563eb;outline-offset:2px}
