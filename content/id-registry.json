@@ -379,6 +379,31 @@
       "id": "rfbd-000005",
       "taskType": "reading-fill-blanks-dropdown",
       "kind": "reserved"
+    },
+    {
+      "id": "rfbdd-000001",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "kind": "reserved"
+    },
+    {
+      "id": "rfbdd-000002",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "kind": "reserved"
+    },
+    {
+      "id": "rfbdd-000003",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "kind": "reserved"
+    },
+    {
+      "id": "rfbdd-000004",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "kind": "reserved"
+    },
+    {
+      "id": "rfbdd-000005",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "kind": "reserved"
     }
   ]
 }

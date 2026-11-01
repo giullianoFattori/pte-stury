@@ -45,6 +45,7 @@ try {
   await page.getByRole('link', { name: 'Back to Study', exact: true }).click(); const mixed = page.getByRole('region', { name: 'Mixed Practice', exact: true });
   await mixed.getByRole('checkbox', { name: 'Listening: Fill in the Blanks — Type In', exact: true }).check();
   await mixed.getByRole('checkbox', { name: 'Reading: Fill in the Blanks — Dropdown', exact: true }).check();
+  await mixed.getByRole('checkbox', { name: 'Reading: Fill in the Blanks — Drag and Drop', exact: true }).check();
   for (const name of ['Write From Dictation','Repeat Sentence','Read Aloud','Retell Lecture','Summarize Group Discussion','Describe Image','Summarize Written Text','Summarize Spoken Text','Highlight Incorrect Words']) {
     const checkbox = mixed.getByRole('checkbox', { name, exact: true }); if (await checkbox.isChecked()) await checkbox.uncheck();
   }
@@ -61,12 +62,14 @@ try {
     if (current.taskType === 'listening-fill-blanks-type-in') {
       await page.getByRole('button', { name: 'Start question', exact: true }).click(); await page.clock.fastForward(7000); await page.getByText(/Audio is playing once/u).waitFor();
       await typeAll(current); await page.clock.fastForward(150); await page.getByText(/Audio ended/u).waitFor();
-    } else { assert.equal(current.taskType, 'reading-fill-blanks-dropdown'); await chooseAll(current); }
+    } else if (current.taskType === 'reading-fill-blanks-dropdown') { await chooseAll(current); }
+    else { assert.equal(current.taskType, 'reading-fill-blanks-drag-drop'); const bankWord = page.getByRole('button', { name: /^Word /u }).first(); await bankWord.focus(); await page.keyboard.press('Enter'); await page.getByRole('button', { name: /^Blank 1 of \d+, currently empty$/u }).focus(); await page.keyboard.press('Space'); }
     await page.getByRole('button', { name: 'Submit response', exact: true }).click(); await page.getByRole('button', { name: 'Save attempt', exact: true }).click(); await page.getByRole('button', { name: 'Continue', exact: true }).click();
   }
   await page.getByRole('heading', { name: 'Mixed Practice complete', exact: true }).waitFor();
-  await page.getByRole('region', { name: 'Listening: Fill in the Blanks — Type In', exact: true }).getByText('3 questions', { exact: true }).waitFor();
+  await page.getByRole('region', { name: 'Listening: Fill in the Blanks — Type In', exact: true }).getByText('2 questions', { exact: true }).waitFor();
   await page.getByRole('region', { name: 'Reading: Fill in the Blanks — Dropdown', exact: true }).getByText('2 questions', { exact: true }).waitFor();
+  await page.getByRole('region', { name: 'Reading: Fill in the Blanks — Drag and Drop', exact: true }).getByText(/^[1-3] questions$/u).waitFor();
   assert.equal(await page.evaluate(() => window.__microphoneCount), 0); assert.equal(await page.evaluate(() => window.__recorders), 0); assert.deepEqual(errors, []); assert.deepEqual(remote, []);
-  console.log(JSON.stringify({ status: 'PASS', browser: browser.version(), standalone: 'PASS', exactBlankScoring: 'PASS', responseData: 'PASS', taskPracticeFive: 'PASS', mixedLfbToDropdown: 'PASS', mediaRuntimeCalls: 0, pageErrors: errors.length, unexpectedRemoteRequests: remote.length, dbVersion: await page.evaluate(async () => { const { db } = await import('/src/data/db/database.ts'); return db.verno; }) }));
+  console.log(JSON.stringify({ status: 'PASS', browser: browser.version(), standalone: 'PASS', exactBlankScoring: 'PASS', responseData: 'PASS', taskPracticeFive: 'PASS', mixedLfbDropdownDragDrop: 'PASS', mediaRuntimeCalls: 0, pageErrors: errors.length, unexpectedRemoteRequests: remote.length, dbVersion: await page.evaluate(async () => { const { db } = await import('/src/data/db/database.ts'); return db.verno; }) }));
 } finally { await browser?.close(); await server.close(); }

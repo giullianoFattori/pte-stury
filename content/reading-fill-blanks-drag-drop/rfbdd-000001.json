@@ -1,0 +1,44 @@
+{
+  "id": "rfbdd-000001",
+  "taskType": "reading-fill-blanks-drag-drop",
+  "difficulty": 2,
+  "prompt": "Complete the word-bank passage about soil management. One option is extra.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Soil management",
+  "estimatedSeconds": 120,
+  "taskData": {
+    "segments": [
+      "Healthy soil supports crop growth through structure, nutrients, and water storage. Farmers can ",
+      " it by adding organic matter, which helps particles bind together. Cover crops protect the surface from erosion and ",
+      " nutrient loss. These methods differ by location; local climate and soil tests help growers ",
+      " suitable practices."
+    ],
+    "blanks": [
+      {
+        "id": "gap_1",
+        "answer": "improve"
+      },
+      {
+        "id": "gap_2",
+        "answer": "reduce"
+      },
+      {
+        "id": "gap_3",
+        "answer": "choose"
+      }
+    ],
+    "wordBank": [
+      "improve",
+      "reduce",
+      "choose",
+      "measure",
+      "remove",
+      "repeat"
+    ]
+  }
+}

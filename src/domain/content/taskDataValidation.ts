@@ -105,7 +105,15 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
     const dragDrop = data as import('../pte/taskData').ReadingFillBlanksDragDropItemData;
     if (dragDrop.segments.length !== dragDrop.blanks.length + 1) invalid('taskData.segments', 'Segment count must be one greater than blank count.');
     if (new Set(dragDrop.blanks.map(blank => blank.id)).size !== dragDrop.blanks.length) invalid('taskData.blanks', 'Blank IDs must be unique.');
-    if (dragDrop.blanks.some(blank => !dragDrop.wordBank.includes(blank.answer))) invalid('taskData.wordBank', 'Word bank must contain every blank answer.');
+    if (dragDrop.wordBank.length <= dragDrop.blanks.length) invalid('taskData.wordBank', 'The word bank must contain at least one distractor in addition to the required answers.');
+    const normalized = (value: string) => value.normalize('NFKC').trim().toLocaleLowerCase('en');
+    if (new Set(dragDrop.wordBank.map(normalized)).size !== dragDrop.wordBank.length) invalid('taskData.wordBank', 'Word-bank entries must be unique, ignoring case and Unicode compatibility differences.');
+    if (new Set(dragDrop.blanks.map(blank => normalized(blank.answer))).size !== dragDrop.blanks.length) invalid('taskData.blanks', 'Required word-bank answers must be unique for one-use assignments.');
+    if (dragDrop.blanks.some(blank => !dragDrop.wordBank.includes(blank.answer))) invalid('taskData.wordBank', 'Word bank must contain every blank answer exactly.');
+    if (published) {
+      const passage = dragDrop.segments.map((segment, index) => segment + (dragDrop.blanks[index]?.answer ?? '')).join('');
+      if (countWords(passage) > 80) invalid('taskData.segments', 'Published Reading Fill in the Blanks — Drag and Drop passages must contain no more than 80 words.');
+    }
   }
   if (task === 'listening-fill-blanks-type-in' && 'blanks' in data) {
     const listeningBlanks = data as import('../pte/taskData').ListeningFillBlanksTypeInItemData;

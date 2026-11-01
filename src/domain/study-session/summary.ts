@@ -7,7 +7,7 @@ import type { FoundationTaskType } from '../pte/taskRegistry.ts';
 
 // A rollout must register explicit metric handling before enabling practice. No RA fallback.
 const SUMMARY_EXACT_KEYS = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' } as const);
-export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown'] as const);
+export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop'] as const);
 type FoundationSessionSummary = Readonly<{
   taskType: 'write-from-dictation' | 'repeat-sentence' | 'read-aloud';
   questionCount: number;
@@ -43,9 +43,11 @@ export type DescribeImageSessionSummary = Readonly<{taskType:'describe-image';qu
 export type SummarizeWrittenTextSessionSummary = Readonly<{taskType:'summarize-written-text';questionCount:number;validFormCount:number;averageWordCount:number;averageKeyPointCoveragePercent:number;matchedKeyPoints:number;totalKeyPoints:number;averageSourceCopyPercent:number;averageCompressionRatio:number}>;
 export type SummarizeSpokenTextSessionSummary=Readonly<{taskType:'summarize-spoken-text';questionCount:number;fullFormCount:number;partialFormCount:number;zeroFormCount:number;averageWordCount:number;averageKeyPointCoveragePercent:number;matchedKeyPoints:number;totalKeyPoints:number}>;
 export type HighlightIncorrectWordsSessionSummary=Readonly<{taskType:'highlight-incorrect-words';questionCount:number;totalRawScore:number;totalClampedScore:number;totalMaxScore:number;correctSelections:number;incorrectSelections:number;missedIncorrectWords:number;overallPrecisionPercent:number;overallRecallPercent:number}>;
-export type ListeningFillBlanksSessionSummary=Readonly<{taskType:'listening-fill-blanks-type-in';questionCount:number;correctBlanks:number;incorrectBlanks:number;unansweredBlanks:number;totalBlanks:number;accuracyPercent:number;allCorrectCount:number}>;
-export type ReadingFillBlanksDropdownSessionSummary=Readonly<{taskType:'reading-fill-blanks-dropdown';questionCount:number;correctBlanks:number;incorrectBlanks:number;unansweredBlanks:number;totalBlanks:number;accuracyPercent:number;allCorrectCount:number}>;
-export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary;
+type BlankFillSessionSummary<T extends 'listening-fill-blanks-type-in'|'reading-fill-blanks-dropdown'|'reading-fill-blanks-drag-drop'>=Readonly<{taskType:T;questionCount:number;correctBlanks:number;incorrectBlanks:number;unansweredBlanks:number;totalBlanks:number;accuracyPercent:number;allCorrectCount:number}>;
+export type ListeningFillBlanksSessionSummary=BlankFillSessionSummary<'listening-fill-blanks-type-in'>;
+export type ReadingFillBlanksDropdownSessionSummary=BlankFillSessionSummary<'reading-fill-blanks-dropdown'>;
+export type ReadingFillBlanksDragDropSessionSummary=BlankFillSessionSummary<'reading-fill-blanks-drag-drop'>;
+export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary | ReadingFillBlanksDragDropSessionSummary;
 export type SessionSummary = Readonly<{
   sessionId: string;
   mode: StudySessionMode;
@@ -187,6 +189,14 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
       if(!count||max!==count||Object.keys(answers).length!==count||correct+incorrect+unanswered!==count||raw!==correct||Math.abs(accuracy-correct/count)>1e-8||Math.abs(percent-accuracy*100)>1e-8||typeof metrics.exactAllCorrect!=='boolean'||metrics.exactAllCorrect!==(correct===count)||typeof attempt.score!=='number'||!Number.isFinite(attempt.score)||Math.abs(attempt.score-accuracy)>1e-8)corrupt(`${path}.accuracy`);
       groups.set(task,[...(groups.get(task)??[]),metrics]);return;
     }
+    if(task==='reading-fill-blanks-drag-drop'){
+      const response=object(attempt.responseData,`${path}.responseData`),answers=object(response.answers,`${path}.responseData.answers`);
+      if(response.kind!=='blank-choice'||Object.values(answers).some(value=>typeof value!=='string'||value.length>200))corrupt(`${path}.responseData`);
+      const correct=metric(metrics,'correctBlanks',path,true),incorrect=metric(metrics,'incorrectBlanks',path,true),unanswered=metric(metrics,'unansweredBlanks',path,true),count=metric(metrics,'totalBlanks',path,true),raw=metric(metrics,'rawScore',path,true),max=metric(metrics,'maxScore',path,true),accuracy=metric(metrics,'accuracy',path,false,1),percent=metric(metrics,'accuracyPercent',path,false,100);
+      const assigned=Object.values(answers).filter(value=>value!=='');
+      if(!count||max!==count||Object.keys(answers).length!==count||new Set(assigned).size!==assigned.length||correct+incorrect+unanswered!==count||raw!==correct||Math.abs(accuracy-correct/count)>1e-8||Math.abs(percent-accuracy*100)>1e-8||typeof metrics.exactAllCorrect!=='boolean'||metrics.exactAllCorrect!==(correct===count)||typeof attempt.score!=='number'||!Number.isFinite(attempt.score)||Math.abs(attempt.score-accuracy)>1e-8)corrupt(`${path}.accuracy`);
+      groups.set(task,[...(groups.get(task)??[]),metrics]);return;
+    }
     if (!Object.hasOwn(SUMMARY_EXACT_KEYS, task)) corrupt(`${path}.taskType`);
     const foundationTask = task as FoundationTaskType;
     const correct = metric(metrics, 'correctWords', path, true), expected = metric(metrics, 'expectedWords', path, true);
@@ -259,6 +269,10 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
       byTask[task]=Object.freeze({taskType:task,questionCount:group.length,correctBlanks,incorrectBlanks,unansweredBlanks,totalBlanks,accuracyPercent:totalBlanks?correctBlanks/totalBlanks*100:0,allCorrectCount:group.filter(m=>m.exactAllCorrect===true).length});continue;
     }
     if(task==='reading-fill-blanks-dropdown'){
+      const correctBlanks=total(numbers('correctBlanks'),task),incorrectBlanks=total(numbers('incorrectBlanks'),task),unansweredBlanks=total(numbers('unansweredBlanks'),task),totalBlanks=total(numbers('totalBlanks'),task);
+      byTask[task]=Object.freeze({taskType:task,questionCount:group.length,correctBlanks,incorrectBlanks,unansweredBlanks,totalBlanks,accuracyPercent:totalBlanks?correctBlanks/totalBlanks*100:0,allCorrectCount:group.filter(m=>m.exactAllCorrect===true).length});continue;
+    }
+    if(task==='reading-fill-blanks-drag-drop'){
       const correctBlanks=total(numbers('correctBlanks'),task),incorrectBlanks=total(numbers('incorrectBlanks'),task),unansweredBlanks=total(numbers('unansweredBlanks'),task),totalBlanks=total(numbers('totalBlanks'),task);
       byTask[task]=Object.freeze({taskType:task,questionCount:group.length,correctBlanks,incorrectBlanks,unansweredBlanks,totalBlanks,accuracyPercent:totalBlanks?correctBlanks/totalBlanks*100:0,allCorrectCount:group.filter(m=>m.exactAllCorrect===true).length});continue;
     }

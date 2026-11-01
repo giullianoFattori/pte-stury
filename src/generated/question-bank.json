@@ -3564,6 +3564,226 @@
       ],
       "topic": "Circular economy",
       "estimatedSeconds": 160
+    },
+    {
+      "id": "rfbdd-000001",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "difficulty": 2,
+      "prompt": "Complete the word-bank passage about soil management. One option is extra.",
+      "taskData": {
+        "segments": [
+          "Healthy soil supports crop growth through structure, nutrients, and water storage. Farmers can ",
+          " it by adding organic matter, which helps particles bind together. Cover crops protect the surface from erosion and ",
+          " nutrient loss. These methods differ by location; local climate and soil tests help growers ",
+          " suitable practices."
+        ],
+        "blanks": [
+          {
+            "id": "gap_1",
+            "answer": "improve"
+          },
+          {
+            "id": "gap_2",
+            "answer": "reduce"
+          },
+          {
+            "id": "gap_3",
+            "answer": "choose"
+          }
+        ],
+        "wordBank": [
+          "improve",
+          "reduce",
+          "choose",
+          "measure",
+          "remove",
+          "repeat"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Soil management",
+      "estimatedSeconds": 120
+    },
+    {
+      "id": "rfbdd-000002",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "difficulty": 3,
+      "prompt": "Complete the word-bank passage about community libraries. One option is extra.",
+      "taskData": {
+        "segments": [
+          "Public libraries ",
+          " more than books. They offer quiet places to study, internet access, and guidance from trained staff. Digital collections can ",
+          " rare documents while making them available to distant readers. Community programs also help people ",
+          " with neighbours and learn new skills. Libraries adapt their services as local needs change."
+        ],
+        "blanks": [
+          {
+            "id": "gap_1",
+            "answer": "provide"
+          },
+          {
+            "id": "gap_2",
+            "answer": "preserve"
+          },
+          {
+            "id": "gap_3",
+            "answer": "connect"
+          }
+        ],
+        "wordBank": [
+          "provide",
+          "preserve",
+          "connect",
+          "replace",
+          "conceal",
+          "separate"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Community libraries",
+      "estimatedSeconds": 120
+    },
+    {
+      "id": "rfbdd-000003",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "difficulty": 1,
+      "prompt": "Complete the word-bank passage about research methods. One option is extra.",
+      "taskData": {
+        "segments": [
+          "Researchers use samples to learn about larger populations, but conclusions depend on how participants are selected. A ",
+          " sample reflects important features of the group being studied. Repeating measurements can help teams ",
+          " results across settings. If recruitment excludes some voices, however, the findings may contain ",
+          ". Clear methods allow others to judge the evidence."
+        ],
+        "blanks": [
+          {
+            "id": "gap_1",
+            "answer": "representative"
+          },
+          {
+            "id": "gap_2",
+            "answer": "compare"
+          },
+          {
+            "id": "gap_3",
+            "answer": "bias"
+          }
+        ],
+        "wordBank": [
+          "representative",
+          "compare",
+          "bias",
+          "temporary",
+          "collective",
+          "random"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Research methods",
+      "estimatedSeconds": 120
+    },
+    {
+      "id": "rfbdd-000004",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "difficulty": 2,
+      "prompt": "Complete the word-bank passage about renewable energy. One option is extra.",
+      "taskData": {
+        "segments": [
+          "Solar and wind power vary with weather and time of day. Batteries can store ",
+          " electricity when generation is high, then ",
+          " it when demand rises. Storage does not solve every grid challenge, because equipment costs and capacity limits remain. Careful planning helps maintain a ",
+          " supply while reducing dependence on fossil fuels."
+        ],
+        "blanks": [
+          {
+            "id": "gap_1",
+            "answer": "surplus"
+          },
+          {
+            "id": "gap_2",
+            "answer": "release"
+          },
+          {
+            "id": "gap_3",
+            "answer": "reliable"
+          }
+        ],
+        "wordBank": [
+          "surplus",
+          "release",
+          "reliable",
+          "distant",
+          "consume",
+          "immediate"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Renewable energy",
+      "estimatedSeconds": 120
+    },
+    {
+      "id": "rfbdd-000005",
+      "taskType": "reading-fill-blanks-drag-drop",
+      "difficulty": 3,
+      "prompt": "Complete the word-bank passage about urban forestry. One option is extra.",
+      "taskData": {
+        "segments": [
+          "Street trees improve urban life in several ways. Their canopies provide ",
+          " during hot weather and can lower surface temperatures. Leaves may ",
+          " some rainfall before it reaches the ground, easing pressure on drains. However, benefits are distributed ",
+          " when poorer neighbourhoods have fewer trees. Long-term planting plans should consider maintenance and community priorities."
+        ],
+        "blanks": [
+          {
+            "id": "gap_1",
+            "answer": "shade"
+          },
+          {
+            "id": "gap_2",
+            "answer": "intercept"
+          },
+          {
+            "id": "gap_3",
+            "answer": "unevenly"
+          }
+        ],
+        "wordBank": [
+          "shade",
+          "intercept",
+          "unevenly",
+          "rapidly",
+          "beneath",
+          "artificial"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Urban forestry",
+      "estimatedSeconds": 120
     }
   ]
 }

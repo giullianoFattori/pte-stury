@@ -179,6 +179,17 @@ select:focus-visible {
   vertical-align: baseline;
 }
 
+.rfbdd-passage { line-height: 2.8; }
+.rfbdd-gap { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .2rem; margin: 0 .25rem; vertical-align: middle; }
+.rfbdd-target { min-width: 8rem; min-height: 2.5rem; border: 2px dashed #7c8ba3; border-radius: .35rem; padding: .3rem .55rem; background: #fff; color: inherit; font: inherit; }
+.rfbdd-target[aria-pressed="true"] { outline: 2px solid #2258a4; outline-offset: 2px; }
+.rfbdd-blank-actions { display: inline-flex; gap: .2rem; }
+.rfbdd-bank { border: 1px solid #7c8ba3; border-radius: .5rem; padding: 1rem; margin-block: 1rem; }
+.rfbdd-word-list { display: flex; flex-wrap: wrap; gap: .5rem; }
+.rfbdd-word-list button { border: 1px solid #7c8ba3; border-radius: 999px; padding: .45rem .8rem; background: #fff; color: inherit; font: inherit; }
+.rfbdd-word-list button[aria-pressed="true"] { outline: 2px solid #2258a4; outline-offset: 2px; }
+.rfbdd-word-list button:disabled { opacity: .55; }
+
 .wfd-progress {
   font-size: 0.9rem;
 }

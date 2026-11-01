@@ -1,0 +1,44 @@
+{
+  "id": "rfbdd-000003",
+  "taskType": "reading-fill-blanks-drag-drop",
+  "difficulty": 1,
+  "prompt": "Complete the word-bank passage about research methods. One option is extra.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Research methods",
+  "estimatedSeconds": 120,
+  "taskData": {
+    "segments": [
+      "Researchers use samples to learn about larger populations, but conclusions depend on how participants are selected. A ",
+      " sample reflects important features of the group being studied. Repeating measurements can help teams ",
+      " results across settings. If recruitment excludes some voices, however, the findings may contain ",
+      ". Clear methods allow others to judge the evidence."
+    ],
+    "blanks": [
+      {
+        "id": "gap_1",
+        "answer": "representative"
+      },
+      {
+        "id": "gap_2",
+        "answer": "compare"
+      },
+      {
+        "id": "gap_3",
+        "answer": "bias"
+      }
+    ],
+    "wordBank": [
+      "representative",
+      "compare",
+      "bias",
+      "temporary",
+      "collective",
+      "random"
+    ]
+  }
+}

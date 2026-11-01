@@ -1,0 +1,44 @@
+{
+  "id": "rfbdd-000002",
+  "taskType": "reading-fill-blanks-drag-drop",
+  "difficulty": 3,
+  "prompt": "Complete the word-bank passage about community libraries. One option is extra.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Community libraries",
+  "estimatedSeconds": 120,
+  "taskData": {
+    "segments": [
+      "Public libraries ",
+      " more than books. They offer quiet places to study, internet access, and guidance from trained staff. Digital collections can ",
+      " rare documents while making them available to distant readers. Community programs also help people ",
+      " with neighbours and learn new skills. Libraries adapt their services as local needs change."
+    ],
+    "blanks": [
+      {
+        "id": "gap_1",
+        "answer": "provide"
+      },
+      {
+        "id": "gap_2",
+        "answer": "preserve"
+      },
+      {
+        "id": "gap_3",
+        "answer": "connect"
+      }
+    ],
+    "wordBank": [
+      "provide",
+      "preserve",
+      "connect",
+      "replace",
+      "conceal",
+      "separate"
+    ]
+  }
+}

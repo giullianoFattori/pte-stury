@@ -1,0 +1,44 @@
+{
+  "id": "rfbdd-000004",
+  "taskType": "reading-fill-blanks-drag-drop",
+  "difficulty": 2,
+  "prompt": "Complete the word-bank passage about renewable energy. One option is extra.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Renewable energy",
+  "estimatedSeconds": 120,
+  "taskData": {
+    "segments": [
+      "Solar and wind power vary with weather and time of day. Batteries can store ",
+      " electricity when generation is high, then ",
+      " it when demand rises. Storage does not solve every grid challenge, because equipment costs and capacity limits remain. Careful planning helps maintain a ",
+      " supply while reducing dependence on fossil fuels."
+    ],
+    "blanks": [
+      {
+        "id": "gap_1",
+        "answer": "surplus"
+      },
+      {
+        "id": "gap_2",
+        "answer": "release"
+      },
+      {
+        "id": "gap_3",
+        "answer": "reliable"
+      }
+    ],
+    "wordBank": [
+      "surplus",
+      "release",
+      "reliable",
+      "distant",
+      "consume",
+      "immediate"
+    ]
+  }
+}

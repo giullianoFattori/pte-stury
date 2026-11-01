@@ -15,7 +15,7 @@ const fixtures = {
   'reading-fill-blanks-dropdown': { segments: ['The study was ', ' over three years.'], blanks: [{ id: 'blank-1', answer: 'conducted', options: ['conducted','conducting'] }] },
   'reading-multiple-choice-multiple': { passage: 'Research passage.', question: 'Which claims are supported?', options },
   'reorder-paragraph': { blocks: [{ id: 'p1', text: 'Opening.' },{ id: 'p2', text: 'Conclusion.' }], correctOrder: ['p1','p2'] },
-  'reading-fill-blanks-drag-drop': { segments: ['A ', ' affects climate.'], blanks: [{ id: 'blank-1', answer: 'forest' }], wordBank: ['forest','ocean'] },
+  'reading-fill-blanks-drag-drop': { segments: ['A ', ' affects climate.'], blanks: [{ id: 'blank-1', answer: 'forest' }], wordBank: ['forest','ocean','desert'] },
   'reading-multiple-choice-single': { passage: 'Research passage.', question: 'What is the main finding?', options: single },
   'listening-multiple-choice-multiple': { audio, transcript: 'A short lecture transcript.', question: 'Which points were mentioned?', options },
   'listening-fill-blanks-type-in': { audio: { ...audio, durationMs: 30_000 }, transcriptSegments: ['The project began in ', '.'], blanks: [{ id: 'year', answer: '2024' }] },

@@ -1,0 +1,44 @@
+{
+  "id": "rfbdd-000005",
+  "taskType": "reading-fill-blanks-drag-drop",
+  "difficulty": 3,
+  "prompt": "Complete the word-bank passage about urban forestry. One option is extra.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Urban forestry",
+  "estimatedSeconds": 120,
+  "taskData": {
+    "segments": [
+      "Street trees improve urban life in several ways. Their canopies provide ",
+      " during hot weather and can lower surface temperatures. Leaves may ",
+      " some rainfall before it reaches the ground, easing pressure on drains. However, benefits are distributed ",
+      " when poorer neighbourhoods have fewer trees. Long-term planting plans should consider maintenance and community priorities."
+    ],
+    "blanks": [
+      {
+        "id": "gap_1",
+        "answer": "shade"
+      },
+      {
+        "id": "gap_2",
+        "answer": "intercept"
+      },
+      {
+        "id": "gap_3",
+        "answer": "unevenly"
+      }
+    ],
+    "wordBank": [
+      "shade",
+      "intercept",
+      "unevenly",
+      "rapidly",
+      "beneath",
+      "artificial"
+    ]
+  }
+}

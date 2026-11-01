@@ -14,6 +14,7 @@ import { SummarizeSpokenTextPage } from '../features/summarize-spoken-text/Summa
 import { HighlightIncorrectWordsPage } from '../features/highlight-incorrect-words/HighlightIncorrectWordsPage';
 import { ListeningFillBlanksTypeInPage } from '../features/listening-fill-blanks/ListeningFillBlanksTypeInPage';
 import { ReadingFillBlanksDropdownPage } from '../features/reading-fill-blanks-dropdown/ReadingFillBlanksDropdownPage';
+import { ReadingFillBlanksDragDropPage } from '../features/reading-fill-blanks-drag-drop/ReadingFillBlanksDragDropPage';
 
 export const router = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/reading-fill-blanks-dropdown',
         element: <ReadingFillBlanksDropdownPage />,
+      },
+      {
+        path: '/study/reading-fill-blanks-drag-drop',
+        element: <ReadingFillBlanksDragDropPage />,
       },
       {
         path: '/review',

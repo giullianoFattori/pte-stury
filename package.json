@@ -63,7 +63,8 @@
     "test:listening-fill-blanks-browser": "node tests/listening-fill-blanks-browser.mjs",
     "test:reading-fill-blanks-dropdown-browser": "node tests/reading-fill-blanks-dropdown-browser.mjs",
     "validation:session:closure": "node tools/session-validation/closure.mjs",
-    "validation:session:package": "node tools/session-validation/package.mjs"
+    "validation:session:package": "node tools/session-validation/package.mjs",
+    "test:reading-fill-blanks-drag-drop-browser": "node tests/reading-fill-blanks-drag-drop-browser.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",
