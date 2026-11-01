@@ -9,6 +9,7 @@ import { SummarizeWrittenTextExercise } from '../../summarize-written-text/Summa
 import { SummarizeSpokenTextExercise } from '../../summarize-spoken-text/SummarizeSpokenTextExercise';
 import { HighlightIncorrectWordsExercise } from '../../highlight-incorrect-words/HighlightIncorrectWordsExercise';
 import { ListeningFillBlanksTypeInExercise } from '../../listening-fill-blanks/ListeningFillBlanksTypeInExercise';
+import { ReadingFillBlanksDropdownExercise } from '../../reading-fill-blanks-dropdown/ReadingFillBlanksDropdownExercise';
 import type { ExerciseProps } from '../types';
 
 const exercises = {
@@ -22,6 +23,7 @@ const exercises = {
   'summarize-spoken-text': SummarizeSpokenTextExercise,
   'highlight-incorrect-words': HighlightIncorrectWordsExercise,
   'listening-fill-blanks-type-in': ListeningFillBlanksTypeInExercise,
+  'reading-fill-blanks-dropdown': ReadingFillBlanksDropdownExercise,
 } satisfies Partial<Record<import('../../../domain/pte/types').PteTaskType, (props: ExerciseProps) => React.JSX.Element>>;
 /** Task dispatch only. Enabling a task also requires an explicit exercise mapping. */
 export function StudyItemExercise(props: ExerciseProps) {

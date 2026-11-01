@@ -143,7 +143,8 @@ nav a.active {
 
 a:focus-visible,
 button:focus-visible,
-textarea:focus-visible {
+textarea:focus-visible,
+select:focus-visible {
   outline: 3px solid #2258a4;
   outline-offset: 3px;
 }
@@ -163,6 +164,19 @@ textarea:focus-visible {
 .lfb-blank:focus-visible {
   outline: 3px solid #2258a4;
   outline-offset: 2px;
+}
+
+.rfbd-passage select {
+  background: #fff;
+  border: 1px solid #7c8ba3;
+  border-radius: 0.3rem;
+  color: inherit;
+  font: inherit;
+  margin: 0 0.25rem;
+  max-width: min(18rem, 80vw);
+  min-width: 9rem;
+  padding: 0.15rem 0.4rem;
+  vertical-align: baseline;
 }
 
 .wfd-progress {

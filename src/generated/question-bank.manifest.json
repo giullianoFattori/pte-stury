@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "contentVersion": "sha256:e46ab162d29390ed44433c003165407db304c71c94b2a58bfc4d7a7229e90c2c",
-  "itemCount": 46,
+  "contentVersion": "sha256:1f10e3706044279f1d6e6188508cb853ce945a3ce13f5a0b5c55cdf2b560b8fa",
+  "itemCount": 51,
   "countsByTaskType": {
     "write-from-dictation": 5,
     "repeat-sentence": 6,
@@ -13,7 +13,7 @@
     "summarize-spoken-text": 4,
     "highlight-incorrect-words": 5,
     "listening-fill-blanks-type-in": 5,
-    "reading-fill-blanks-dropdown": 0,
+    "reading-fill-blanks-dropdown": 5,
     "reading-fill-blanks-drag-drop": 0,
     "reorder-paragraph": 0,
     "respond-to-a-situation": 0,

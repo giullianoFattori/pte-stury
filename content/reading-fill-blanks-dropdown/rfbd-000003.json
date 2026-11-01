@@ -1,0 +1,76 @@
+{
+  "id": "rfbd-000003",
+  "taskType": "reading-fill-blanks-dropdown",
+  "difficulty": 3,
+  "prompt": "Choose the option that best completes each gap in this passage about public transport data.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Transport technology",
+  "estimatedSeconds": 160,
+  "taskData": {
+    "segments": [
+      "Public transport agencies collect information about journeys, delays, and passenger demand. Careful analysis helps planners decide where extra services are ",
+      ". A crowded route may need larger vehicles, while irregular delays may require timetable changes. Data can show how travel differs between weekdays and weekends, but numbers do not explain every cause. A fall in passenger counts might reflect roadworks, ticket prices, or a reporting fault. Agencies should ",
+      " numerical evidence with local knowledge before making major decisions. Privacy matters because journey records can reveal routines if linked to identifiable people. Removing names helps, but may not be enough when details are combined. Responsible analysis limits access and protects personal information. Agencies should publish clear methods so communities can ",
+      " findings. Reports can show whether a new service improves access or shifts congestion. Good planning combines reliable measurements, transparent decisions, and regular evaluation. When agencies revisit results, they can ",
+      " services to actual needs rather than assumptions. This makes investment easier to justify and more likely to benefit diverse travellers. Planners must ",
+      " evidence and its limitations before changing a route."
+    ],
+    "blanks": [
+      {
+        "id": "service_priority",
+        "answer": "needed",
+        "options": [
+          "needed",
+          "distant",
+          "borrowed",
+          "ordinary"
+        ]
+      },
+      {
+        "id": "evidence_pairing",
+        "answer": "combine",
+        "options": [
+          "combine",
+          "confuse",
+          "discard",
+          "predict"
+        ]
+      },
+      {
+        "id": "public_scrutiny",
+        "answer": "interpret",
+        "options": [
+          "interrupt",
+          "interpret",
+          "conceal",
+          "estimate"
+        ]
+      },
+      {
+        "id": "service_improvement",
+        "answer": "adjust",
+        "options": [
+          "adjust",
+          "repeat",
+          "restrict",
+          "ignore"
+        ]
+      },
+      {
+        "id": "evaluation",
+        "answer": "assess",
+        "options": [
+          "announce",
+          "assess",
+          "transport",
+          "replace"
+        ]
+      }
+    ]
+  }
+}

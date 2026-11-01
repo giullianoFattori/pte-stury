@@ -1,0 +1,76 @@
+{
+  "id": "rfbd-000004",
+  "taskType": "reading-fill-blanks-dropdown",
+  "difficulty": 3,
+  "prompt": "Choose the option that best completes each gap in this passage about coastal adaptation.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Climate adaptation",
+  "estimatedSeconds": 160,
+  "taskData": {
+    "segments": [
+      "Coastal communities face risks from rising seas, storms, and erosion. A seawall can protect one area but redirect waves toward neighbouring beaches. Plans should consider effects across the shoreline. Restoring dunes can be useful because vegetation holds sand and reduces wind force. Elsewhere, homes may need to move from places where flooding is increasingly ",
+      ". Decisions depend on local geography, funding, and residents' needs. Researchers use tide gauges, satellite images, and surveys to track water levels and shoreline movement. Each method has limits, so combining evidence gives a more ",
+      " picture. Historical records help, but future conditions may differ. Plans should be reviewed as new measurements arrive. Residents can report which roads flood first and where emergency access is lost. This knowledge can ",
+      " technical studies and reveal local problems. Governments should explain the benefits and trade-offs of proposed measures. Coastal adaptation is an ongoing process of learning and adjustment. A flexible plan can respond to new risks without ",
+      " knowledge gained earlier. It cannot eliminate every hazard, but it can reduce damage. Communities should avoid ",
+      " local experience when choosing measures."
+    ],
+    "blanks": [
+      {
+        "id": "flood_risk",
+        "answer": "frequent",
+        "options": [
+          "frequent",
+          "distant",
+          "private",
+          "temporary"
+        ]
+      },
+      {
+        "id": "evidence_quality",
+        "answer": "complete",
+        "options": [
+          "complete",
+          "narrow",
+          "casual",
+          "delayed"
+        ]
+      },
+      {
+        "id": "local_evidence",
+        "answer": "complement",
+        "options": [
+          "replace",
+          "complement",
+          "measure",
+          "publish"
+        ]
+      },
+      {
+        "id": "learning",
+        "answer": "discarding",
+        "options": [
+          "discarding",
+          "predicting",
+          "recording",
+          "sharing"
+        ]
+      },
+      {
+        "id": "ongoing_plan",
+        "answer": "ignoring",
+        "options": [
+          "ignoring",
+          "reviewing",
+          "protecting",
+          "expanding"
+        ]
+      }
+    ]
+  }
+}

@@ -13,6 +13,7 @@ import { SummarizeWrittenTextPage } from '../features/summarize-written-text/Sum
 import { SummarizeSpokenTextPage } from '../features/summarize-spoken-text/SummarizeSpokenTextPage';
 import { HighlightIncorrectWordsPage } from '../features/highlight-incorrect-words/HighlightIncorrectWordsPage';
 import { ListeningFillBlanksTypeInPage } from '../features/listening-fill-blanks/ListeningFillBlanksTypeInPage';
+import { ReadingFillBlanksDropdownPage } from '../features/reading-fill-blanks-dropdown/ReadingFillBlanksDropdownPage';
 
 export const router = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/listening-fill-blanks-type-in',
         element: <ListeningFillBlanksTypeInPage />,
+      },
+      {
+        path: '/study/reading-fill-blanks-dropdown',
+        element: <ReadingFillBlanksDropdownPage />,
       },
       {
         path: '/review',

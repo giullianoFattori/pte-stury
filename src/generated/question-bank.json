@@ -3184,6 +3184,386 @@
       ],
       "topic": "Coastal science",
       "estimatedSeconds": 55
+    },
+    {
+      "id": "rfbd-000001",
+      "taskType": "reading-fill-blanks-dropdown",
+      "difficulty": 2,
+      "prompt": "Choose the option that best completes each gap in this passage about urban wetlands.",
+      "taskData": {
+        "segments": [
+          "Urban wetlands help cities manage heavy rain. Shallow basins and marsh plants ",
+          " excess water, easing pressure on drains and limiting floods. Roots hold soil, while stems slow water movement. Wetlands can improve water quality as particles settle before reaching rivers. They cannot replace engineered infrastructure, but they can ",
+          " it when combined with reliable drains and careful planning. Wetlands also provide food and shelter for insects, birds, and amphibians. Paths can make them useful to residents, provided visitors respect sensitive areas. Regular maintenance matters: invasive plants must be monitored, litter removed, and water levels checked. A well-managed wetland can ",
+          " biodiversity and make neighbourhoods more resilient to intense rainfall. Planners should include these areas in wider networks of parks and waterways. Local communities can identify seasonal changes that a short survey may ",
+          " to identify. This combination of ecological design and long-term care helps cities ",
+          " practical benefits from limited land."
+        ],
+        "blanks": [
+          {
+            "id": "water_action",
+            "answer": "absorb",
+            "options": [
+              "absorb",
+              "predict",
+              "release",
+              "measure"
+            ]
+          },
+          {
+            "id": "infrastructure_relation",
+            "answer": "complement",
+            "options": [
+              "replace",
+              "complement",
+              "delay",
+              "separate"
+            ]
+          },
+          {
+            "id": "ecological_outcome",
+            "answer": "support",
+            "options": [
+              "support",
+              "remove",
+              "restrict",
+              "calculate"
+            ]
+          },
+          {
+            "id": "research_precision",
+            "answer": "fail",
+            "options": [
+              "manage",
+              "continue",
+              "fail",
+              "prepare"
+            ]
+          },
+          {
+            "id": "community_care",
+            "answer": "maintain",
+            "options": [
+              "maintain",
+              "announce",
+              "divide",
+              "consume"
+            ]
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Urban ecology",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rfbd-000002",
+      "taskType": "reading-fill-blanks-dropdown",
+      "difficulty": 2,
+      "prompt": "Choose the option that best completes each gap in this passage about student feedback.",
+      "taskData": {
+        "segments": [
+          "Feedback can help students improve, but its value depends on how it is provided. A mark shows whether work met a standard, yet rarely explains what to do next. Useful comments identify a strength and ",
+          " one manageable area for improvement. An instructor might praise evidence in an argument while asking how it supports the conclusion. This gives the learner a clear next step. Feedback works best when students can use it. If comments arrive after a course ends, there may be no task on which to ",
+          " the advice. Short cycles of work, response, and revision let students test whether a change improved their thinking. However, too many comments make priorities difficult to ",
+          ". A focused response is easier to use and can build confidence. Students should ask questions, compare work with criteria, and reflect on revisions. These practices support a two-way process in which expectations are ",
+          " and progress can be observed. Over time, learners can better assess their work. Regular revision helps both sides see which advice is useful. This approach can be ",
+          " and improved over time."
+        ],
+        "blanks": [
+          {
+            "id": "actionable_feedback",
+            "answer": "suggest",
+            "options": [
+              "suggest",
+              "conceal",
+              "postpone",
+              "repeat"
+            ]
+          },
+          {
+            "id": "apply_advice",
+            "answer": "apply",
+            "options": [
+              "compare",
+              "apply",
+              "remove",
+              "publish"
+            ]
+          },
+          {
+            "id": "focus",
+            "answer": "set",
+            "options": [
+              "avoid",
+              "set",
+              "borrow",
+              "divide"
+            ]
+          },
+          {
+            "id": "shared_expectations",
+            "answer": "clear",
+            "options": [
+              "distant",
+              "clear",
+              "optional",
+              "private"
+            ]
+          },
+          {
+            "id": "learning_cycle",
+            "answer": "reviewed",
+            "options": [
+              "forgotten",
+              "reviewed",
+              "replaced",
+              "predicted"
+            ]
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Education",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rfbd-000003",
+      "taskType": "reading-fill-blanks-dropdown",
+      "difficulty": 3,
+      "prompt": "Choose the option that best completes each gap in this passage about public transport data.",
+      "taskData": {
+        "segments": [
+          "Public transport agencies collect information about journeys, delays, and passenger demand. Careful analysis helps planners decide where extra services are ",
+          ". A crowded route may need larger vehicles, while irregular delays may require timetable changes. Data can show how travel differs between weekdays and weekends, but numbers do not explain every cause. A fall in passenger counts might reflect roadworks, ticket prices, or a reporting fault. Agencies should ",
+          " numerical evidence with local knowledge before making major decisions. Privacy matters because journey records can reveal routines if linked to identifiable people. Removing names helps, but may not be enough when details are combined. Responsible analysis limits access and protects personal information. Agencies should publish clear methods so communities can ",
+          " findings. Reports can show whether a new service improves access or shifts congestion. Good planning combines reliable measurements, transparent decisions, and regular evaluation. When agencies revisit results, they can ",
+          " services to actual needs rather than assumptions. This makes investment easier to justify and more likely to benefit diverse travellers. Planners must ",
+          " evidence and its limitations before changing a route."
+        ],
+        "blanks": [
+          {
+            "id": "service_priority",
+            "answer": "needed",
+            "options": [
+              "needed",
+              "distant",
+              "borrowed",
+              "ordinary"
+            ]
+          },
+          {
+            "id": "evidence_pairing",
+            "answer": "combine",
+            "options": [
+              "combine",
+              "confuse",
+              "discard",
+              "predict"
+            ]
+          },
+          {
+            "id": "public_scrutiny",
+            "answer": "interpret",
+            "options": [
+              "interrupt",
+              "interpret",
+              "conceal",
+              "estimate"
+            ]
+          },
+          {
+            "id": "service_improvement",
+            "answer": "adjust",
+            "options": [
+              "adjust",
+              "repeat",
+              "restrict",
+              "ignore"
+            ]
+          },
+          {
+            "id": "evaluation",
+            "answer": "assess",
+            "options": [
+              "announce",
+              "assess",
+              "transport",
+              "replace"
+            ]
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Transport technology",
+      "estimatedSeconds": 160
+    },
+    {
+      "id": "rfbd-000004",
+      "taskType": "reading-fill-blanks-dropdown",
+      "difficulty": 3,
+      "prompt": "Choose the option that best completes each gap in this passage about coastal adaptation.",
+      "taskData": {
+        "segments": [
+          "Coastal communities face risks from rising seas, storms, and erosion. A seawall can protect one area but redirect waves toward neighbouring beaches. Plans should consider effects across the shoreline. Restoring dunes can be useful because vegetation holds sand and reduces wind force. Elsewhere, homes may need to move from places where flooding is increasingly ",
+          ". Decisions depend on local geography, funding, and residents' needs. Researchers use tide gauges, satellite images, and surveys to track water levels and shoreline movement. Each method has limits, so combining evidence gives a more ",
+          " picture. Historical records help, but future conditions may differ. Plans should be reviewed as new measurements arrive. Residents can report which roads flood first and where emergency access is lost. This knowledge can ",
+          " technical studies and reveal local problems. Governments should explain the benefits and trade-offs of proposed measures. Coastal adaptation is an ongoing process of learning and adjustment. A flexible plan can respond to new risks without ",
+          " knowledge gained earlier. It cannot eliminate every hazard, but it can reduce damage. Communities should avoid ",
+          " local experience when choosing measures."
+        ],
+        "blanks": [
+          {
+            "id": "flood_risk",
+            "answer": "frequent",
+            "options": [
+              "frequent",
+              "distant",
+              "private",
+              "temporary"
+            ]
+          },
+          {
+            "id": "evidence_quality",
+            "answer": "complete",
+            "options": [
+              "complete",
+              "narrow",
+              "casual",
+              "delayed"
+            ]
+          },
+          {
+            "id": "local_evidence",
+            "answer": "complement",
+            "options": [
+              "replace",
+              "complement",
+              "measure",
+              "publish"
+            ]
+          },
+          {
+            "id": "learning",
+            "answer": "discarding",
+            "options": [
+              "discarding",
+              "predicting",
+              "recording",
+              "sharing"
+            ]
+          },
+          {
+            "id": "ongoing_plan",
+            "answer": "ignoring",
+            "options": [
+              "ignoring",
+              "reviewing",
+              "protecting",
+              "expanding"
+            ]
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Climate adaptation",
+      "estimatedSeconds": 160
+    },
+    {
+      "id": "rfbd-000005",
+      "taskType": "reading-fill-blanks-dropdown",
+      "difficulty": 3,
+      "prompt": "Choose the option that best completes each gap in this passage about circular manufacturing.",
+      "taskData": {
+        "segments": [
+          "A circular economy asks businesses to consider materials throughout product life. Durable design makes repair easier, while standard parts allow replacement without discarding the whole device. These choices may raise initial costs but can ",
+          " waste and preserve useful materials. Reuse also needs practical services: consumers need collection points and clear information, while companies need ways to inspect and resell returned items. Recycling remains important, although it uses energy and cannot recover every material. It should follow efforts to limit unnecessary use and extend product life. Businesses can work with suppliers to ",
+          " materials that are easier to separate later. This can lower processing costs and make recovered resources more valuable. Public policy can encourage change through repair standards and consistent guidance. A circular economy means organisations try to ",
+          " value from resources for longer, while reducing pollution and extraction. Success depends on cooperation among manufacturers, customers, service providers, and governments. Companies can track material use and product lifespan to identify where redesign has the greatest effect. These measurements make environmental goals more ",
+          " and help decision makers compare alternatives. Gradual changes across supply chains can produce substantial benefits. Businesses should ",
+          " lessons from repair data and improve products accordingly."
+        ],
+        "blanks": [
+          {
+            "id": "waste_reduction",
+            "answer": "reduce",
+            "options": [
+              "reduce",
+              "predict",
+              "transfer",
+              "announce"
+            ]
+          },
+          {
+            "id": "material_design",
+            "answer": "select",
+            "options": [
+              "select",
+              "damage",
+              "borrow",
+              "delay"
+            ]
+          },
+          {
+            "id": "resource_value",
+            "answer": "retain",
+            "options": [
+              "retain",
+              "remove",
+              "confuse",
+              "divide"
+            ]
+          },
+          {
+            "id": "measurement",
+            "answer": "measurable",
+            "options": [
+              "measurable",
+              "temporary",
+              "private",
+              "expensive"
+            ]
+          },
+          {
+            "id": "circularity",
+            "answer": "extract",
+            "options": [
+              "extract",
+              "consume",
+              "repeat",
+              "discard"
+            ]
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Circular economy",
+      "estimatedSeconds": 160
     }
   ]
 }

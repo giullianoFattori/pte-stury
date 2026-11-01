@@ -1,0 +1,76 @@
+{
+  "id": "rfbd-000001",
+  "taskType": "reading-fill-blanks-dropdown",
+  "difficulty": 2,
+  "prompt": "Choose the option that best completes each gap in this passage about urban wetlands.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Urban ecology",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "segments": [
+      "Urban wetlands help cities manage heavy rain. Shallow basins and marsh plants ",
+      " excess water, easing pressure on drains and limiting floods. Roots hold soil, while stems slow water movement. Wetlands can improve water quality as particles settle before reaching rivers. They cannot replace engineered infrastructure, but they can ",
+      " it when combined with reliable drains and careful planning. Wetlands also provide food and shelter for insects, birds, and amphibians. Paths can make them useful to residents, provided visitors respect sensitive areas. Regular maintenance matters: invasive plants must be monitored, litter removed, and water levels checked. A well-managed wetland can ",
+      " biodiversity and make neighbourhoods more resilient to intense rainfall. Planners should include these areas in wider networks of parks and waterways. Local communities can identify seasonal changes that a short survey may ",
+      " to identify. This combination of ecological design and long-term care helps cities ",
+      " practical benefits from limited land."
+    ],
+    "blanks": [
+      {
+        "id": "water_action",
+        "answer": "absorb",
+        "options": [
+          "absorb",
+          "predict",
+          "release",
+          "measure"
+        ]
+      },
+      {
+        "id": "infrastructure_relation",
+        "answer": "complement",
+        "options": [
+          "replace",
+          "complement",
+          "delay",
+          "separate"
+        ]
+      },
+      {
+        "id": "ecological_outcome",
+        "answer": "support",
+        "options": [
+          "support",
+          "remove",
+          "restrict",
+          "calculate"
+        ]
+      },
+      {
+        "id": "research_precision",
+        "answer": "fail",
+        "options": [
+          "manage",
+          "continue",
+          "fail",
+          "prepare"
+        ]
+      },
+      {
+        "id": "community_care",
+        "answer": "maintain",
+        "options": [
+          "maintain",
+          "announce",
+          "divide",
+          "consume"
+        ]
+      }
+    ]
+  }
+}

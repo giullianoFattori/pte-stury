@@ -1,0 +1,76 @@
+{
+  "id": "rfbd-000002",
+  "taskType": "reading-fill-blanks-dropdown",
+  "difficulty": 2,
+  "prompt": "Choose the option that best completes each gap in this passage about student feedback.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Education",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "segments": [
+      "Feedback can help students improve, but its value depends on how it is provided. A mark shows whether work met a standard, yet rarely explains what to do next. Useful comments identify a strength and ",
+      " one manageable area for improvement. An instructor might praise evidence in an argument while asking how it supports the conclusion. This gives the learner a clear next step. Feedback works best when students can use it. If comments arrive after a course ends, there may be no task on which to ",
+      " the advice. Short cycles of work, response, and revision let students test whether a change improved their thinking. However, too many comments make priorities difficult to ",
+      ". A focused response is easier to use and can build confidence. Students should ask questions, compare work with criteria, and reflect on revisions. These practices support a two-way process in which expectations are ",
+      " and progress can be observed. Over time, learners can better assess their work. Regular revision helps both sides see which advice is useful. This approach can be ",
+      " and improved over time."
+    ],
+    "blanks": [
+      {
+        "id": "actionable_feedback",
+        "answer": "suggest",
+        "options": [
+          "suggest",
+          "conceal",
+          "postpone",
+          "repeat"
+        ]
+      },
+      {
+        "id": "apply_advice",
+        "answer": "apply",
+        "options": [
+          "compare",
+          "apply",
+          "remove",
+          "publish"
+        ]
+      },
+      {
+        "id": "focus",
+        "answer": "set",
+        "options": [
+          "avoid",
+          "set",
+          "borrow",
+          "divide"
+        ]
+      },
+      {
+        "id": "shared_expectations",
+        "answer": "clear",
+        "options": [
+          "distant",
+          "clear",
+          "optional",
+          "private"
+        ]
+      },
+      {
+        "id": "learning_cycle",
+        "answer": "reviewed",
+        "options": [
+          "forgotten",
+          "reviewed",
+          "replaced",
+          "predicted"
+        ]
+      }
+    ]
+  }
+}

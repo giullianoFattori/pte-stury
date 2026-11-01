@@ -354,6 +354,31 @@
       "id": "lfb-000005",
       "taskType": "listening-fill-blanks-type-in",
       "kind": "reserved"
+    },
+    {
+      "id": "rfbd-000001",
+      "taskType": "reading-fill-blanks-dropdown",
+      "kind": "reserved"
+    },
+    {
+      "id": "rfbd-000002",
+      "taskType": "reading-fill-blanks-dropdown",
+      "kind": "reserved"
+    },
+    {
+      "id": "rfbd-000003",
+      "taskType": "reading-fill-blanks-dropdown",
+      "kind": "reserved"
+    },
+    {
+      "id": "rfbd-000004",
+      "taskType": "reading-fill-blanks-dropdown",
+      "kind": "reserved"
+    },
+    {
+      "id": "rfbd-000005",
+      "taskType": "reading-fill-blanks-dropdown",
+      "kind": "reserved"
     }
   ]
 }

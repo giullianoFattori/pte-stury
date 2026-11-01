@@ -1,0 +1,76 @@
+{
+  "id": "rfbd-000005",
+  "taskType": "reading-fill-blanks-dropdown",
+  "difficulty": 3,
+  "prompt": "Choose the option that best completes each gap in this passage about circular manufacturing.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Circular economy",
+  "estimatedSeconds": 160,
+  "taskData": {
+    "segments": [
+      "A circular economy asks businesses to consider materials throughout product life. Durable design makes repair easier, while standard parts allow replacement without discarding the whole device. These choices may raise initial costs but can ",
+      " waste and preserve useful materials. Reuse also needs practical services: consumers need collection points and clear information, while companies need ways to inspect and resell returned items. Recycling remains important, although it uses energy and cannot recover every material. It should follow efforts to limit unnecessary use and extend product life. Businesses can work with suppliers to ",
+      " materials that are easier to separate later. This can lower processing costs and make recovered resources more valuable. Public policy can encourage change through repair standards and consistent guidance. A circular economy means organisations try to ",
+      " value from resources for longer, while reducing pollution and extraction. Success depends on cooperation among manufacturers, customers, service providers, and governments. Companies can track material use and product lifespan to identify where redesign has the greatest effect. These measurements make environmental goals more ",
+      " and help decision makers compare alternatives. Gradual changes across supply chains can produce substantial benefits. Businesses should ",
+      " lessons from repair data and improve products accordingly."
+    ],
+    "blanks": [
+      {
+        "id": "waste_reduction",
+        "answer": "reduce",
+        "options": [
+          "reduce",
+          "predict",
+          "transfer",
+          "announce"
+        ]
+      },
+      {
+        "id": "material_design",
+        "answer": "select",
+        "options": [
+          "select",
+          "damage",
+          "borrow",
+          "delay"
+        ]
+      },
+      {
+        "id": "resource_value",
+        "answer": "retain",
+        "options": [
+          "retain",
+          "remove",
+          "confuse",
+          "divide"
+        ]
+      },
+      {
+        "id": "measurement",
+        "answer": "measurable",
+        "options": [
+          "measurable",
+          "temporary",
+          "private",
+          "expensive"
+        ]
+      },
+      {
+        "id": "circularity",
+        "answer": "extract",
+        "options": [
+          "extract",
+          "consume",
+          "repeat",
+          "discard"
+        ]
+      }
+    ]
+  }
+}

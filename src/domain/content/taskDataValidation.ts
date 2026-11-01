@@ -2,6 +2,7 @@ import type { PteTaskType } from '../pte/types';
 import type { PteTaskData } from '../pte/taskData';
 import { TASK_DATA_RULES, type DataRule } from './taskDataPolicy.ts';
 import { ContentValidationError, type ContentValidationIssue } from './validationTypes.ts';
+import { countWords } from '../scoring/shared/writing/wordCount.ts';
 export function dataObject(input: unknown): input is Record<string, unknown> {
   return !!input && typeof input === 'object' && !Array.isArray(input) && [Object.prototype, null].includes(Object.getPrototypeOf(input))
     && Reflect.ownKeys(input).every(key => typeof key === 'string' && Object.getOwnPropertyDescriptor(input, key)?.enumerable && Object.hasOwn(Object.getOwnPropertyDescriptor(input, key)!, 'value'));
@@ -95,6 +96,10 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
     if (dropdown.segments.length !== dropdown.blanks.length + 1) invalid('taskData.segments', 'Segment count must be one greater than blank count.');
     if (new Set(dropdown.blanks.map(blank => blank.id)).size !== dropdown.blanks.length) invalid('taskData.blanks', 'Blank IDs must be unique.');
     if (dropdown.blanks.some(blank => !blank.options.includes(blank.answer))) invalid('taskData.blanks', 'Each dropdown answer must occur in its option list.');
+    if (published) {
+      const passage = dropdown.segments.map((segment, index) => segment + (dropdown.blanks[index]?.answer ?? '')).join('');
+      if (countWords(passage) > 200) invalid('taskData.segments', 'Published Reading Fill in the Blanks — Dropdown passages must contain no more than 200 words.');
+    }
   }
   if (task === 'reading-fill-blanks-drag-drop' && 'blanks' in data) {
     const dragDrop = data as import('../pte/taskData').ReadingFillBlanksDragDropItemData;
