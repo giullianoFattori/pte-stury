@@ -12,6 +12,7 @@ import { DescribeImagePage } from '../features/describe-image/DescribeImagePage'
 import { SummarizeWrittenTextPage } from '../features/summarize-written-text/SummarizeWrittenTextPage';
 import { SummarizeSpokenTextPage } from '../features/summarize-spoken-text/SummarizeSpokenTextPage';
 import { HighlightIncorrectWordsPage } from '../features/highlight-incorrect-words/HighlightIncorrectWordsPage';
+import { ListeningFillBlanksTypeInPage } from '../features/listening-fill-blanks/ListeningFillBlanksTypeInPage';
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/highlight-incorrect-words',
         element: <HighlightIncorrectWordsPage />,
+      },
+      {
+        path: '/study/listening-fill-blanks-type-in',
+        element: <ListeningFillBlanksTypeInPage />,
       },
       {
         path: '/review',

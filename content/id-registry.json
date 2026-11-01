@@ -329,6 +329,31 @@
       "id": "hiw-000005",
       "taskType": "highlight-incorrect-words",
       "kind": "reserved"
+    },
+    {
+      "id": "lfb-000001",
+      "taskType": "listening-fill-blanks-type-in",
+      "kind": "reserved"
+    },
+    {
+      "id": "lfb-000002",
+      "taskType": "listening-fill-blanks-type-in",
+      "kind": "reserved"
+    },
+    {
+      "id": "lfb-000003",
+      "taskType": "listening-fill-blanks-type-in",
+      "kind": "reserved"
+    },
+    {
+      "id": "lfb-000004",
+      "taskType": "listening-fill-blanks-type-in",
+      "kind": "reserved"
+    },
+    {
+      "id": "lfb-000005",
+      "taskType": "listening-fill-blanks-type-in",
+      "kind": "reserved"
     }
   ]
 }

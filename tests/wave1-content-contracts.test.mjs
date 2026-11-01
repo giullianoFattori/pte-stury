@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 import { readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
-import { WAVE1_TASKS, WAVE2_TASKS, TASK_REGISTRY } from '../src/domain/pte/taskRegistry.ts';
+import { FOUNDATION_TASKS, WAVE1_TASKS, WAVE2_TASKS, TASK_REGISTRY } from '../src/domain/pte/taskRegistry.ts';
 import { parseQuestionBankItem, safeParseQuestionBankItem, validateQuestionBankItems } from '../src/domain/content/validation.ts';
 import { TASK_DATA_RULES } from '../src/domain/content/taskDataPolicy.ts';
 import { readTaskData, parseTaskData } from '../src/domain/content/taskDataValidation.ts';
@@ -116,10 +116,10 @@ test('new-item supports Wave 1 draft reservation; bulk JSON import stays draft-o
 test('schema v1 installed content upgrades only catalog state: semantic rows and learner history unchanged',async t=>{
  const db=await database(t);await bootstrapApp(db);await seedHistory(db);const before=await snapshot(db);
  await db.contentState.put({...before.contentState[0],schemaVersion:1,contentVersion:'sha256:bd666658b8e96465a676daf4881e8bb7c8322a1165b11fd14936e873a6b837c2'});
- const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,41);const after=await snapshot(db);
+ const result=await bootstrapApp(db);assert.equal(result.status,'installed');assert.equal(result.plan.updates.length,0);assert.equal(result.plan.unchanged.length,46);const after=await snapshot(db);
  for(const table of ['studyItems','attempts','errors','reviews','studySessions'])assert.deepEqual(after[table],before[table]);assert.equal(after.contentState[0].schemaVersion,2);assert.equal(db.verno,3);assert.equal(after.attempts[0].itemRevision,undefined);assert.equal((await bootstrapApp(db)).status,'unchanged');
 });
 test('legacy generated pair is verified only for atomic replacement/recovery, never current publication',()=>{
- const {bundle}=generatedQuestionBank();const legacy={...canonicalBundle(bundle.items.filter(item=>!WAVE1_TASKS.includes(item.taskType))),schemaVersion:1};const bytes=jsonBytes(legacy),manifest=manifestFor(legacy,bytes);for(const task of [...WAVE1_TASKS,...WAVE2_TASKS])delete manifest.countsByTaskType[task];
+ const {bundle}=generatedQuestionBank();const legacy={...canonicalBundle(bundle.items.filter(item=>FOUNDATION_TASKS.includes(item.taskType))),schemaVersion:1};const bytes=jsonBytes(legacy),manifest=manifestFor(legacy,bytes);for(const task of [...WAVE1_TASKS,...WAVE2_TASKS])delete manifest.countsByTaskType[task];
  assert.throws(()=>verifyBytes(bytes,jsonBytes(manifest)));assert.equal(verifyBytes(bytes,jsonBytes(manifest),{allowPreviousSchema:true}).bundle.schemaVersion,1);
 });

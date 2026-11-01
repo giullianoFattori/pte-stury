@@ -1,0 +1,47 @@
+{
+  "id": "lfb-000001",
+  "taskType": "listening-fill-blanks-type-in",
+  "difficulty": 2,
+  "prompt": "Listen to a short academic talk about urban trees and complete the transcript.",
+  "revision": 1,
+  "status": "active",
+  "source": "generated",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Urban ecology",
+  "estimatedSeconds": 55,
+  "taskData": {
+    "audio": {
+      "path": "/audio/listening-fill-blanks-type-in/lfb-000001.mp3",
+      "durationMs": 30960,
+      "mimeType": "audio/mpeg",
+      "sha256": "40d01fdf1ec155a36c9803cd44ec3c72de71d2acbbf043b90e760a8b8a1f2c57"
+    },
+    "transcriptSegments": [
+      "Urban trees can reduce the temperature of nearby streets by providing ",
+      " and releasing water through their leaves. Researchers have found that shaded pavements remain cooler during the afternoon, especially in neighbourhoods with ",
+      " green space. Cities must choose tree ",
+      " that tolerate local conditions and provide room for mature ",
+      ". Regular maintenance matters because healthy trees absorb water through their roots. Planned carefully, tree cover improves comfort, supports biodiversity, and makes public spaces more attractive throughout the year."
+    ],
+    "blanks": [
+      {
+        "id": "shade",
+        "answer": "shade"
+      },
+      {
+        "id": "limited",
+        "answer": "limited"
+      },
+      {
+        "id": "species",
+        "answer": "species"
+      },
+      {
+        "id": "roots",
+        "answer": "roots"
+      }
+    ]
+  }
+}

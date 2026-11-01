@@ -18,7 +18,7 @@ const fixtures = {
   'reading-fill-blanks-drag-drop': { segments: ['A ', ' affects climate.'], blanks: [{ id: 'blank-1', answer: 'forest' }], wordBank: ['forest','ocean'] },
   'reading-multiple-choice-single': { passage: 'Research passage.', question: 'What is the main finding?', options: single },
   'listening-multiple-choice-multiple': { audio, transcript: 'A short lecture transcript.', question: 'Which points were mentioned?', options },
-  'listening-fill-blanks-type-in': { audio, transcriptSegments: ['The project began in ', '.'], blanks: [{ id: 'year', answer: '2024' }] },
+  'listening-fill-blanks-type-in': { audio: { ...audio, durationMs: 30_000 }, transcriptSegments: ['The project began in ', '.'], blanks: [{ id: 'year', answer: '2024' }] },
   'highlight-correct-summary': { audio, transcript: 'A short lecture transcript.', options: single },
   'listening-multiple-choice-single': { audio, transcript: 'A short lecture transcript.', question: 'What did the speaker recommend?', options: single },
   'select-missing-word': { audio, transcriptBeforeBeep: 'The evidence was carefully', missingText: 'reviewed', options: [{ id: 'a', text: 'reviewed', correct: true },{ id: 'b', text: 'removed', correct: false }] },

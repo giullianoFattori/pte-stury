@@ -46,6 +46,10 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
     const asset=(data as import('../pte/taskData').HighlightIncorrectWordsItemData).audio;
     if(!asset.durationMs||asset.durationMs<15_000||asset.durationMs>50_000)invalid('taskData.audio.durationMs','Published Highlight Incorrect Words audio must declare a duration from 15 to 50 seconds.');
   }
+  if(task==='listening-fill-blanks-type-in'&&published){
+    const asset=(data as import('../pte/taskData').ListeningFillBlanksTypeInItemData).audio;
+    if(!asset.durationMs||asset.durationMs<30_000||asset.durationMs>60_000)invalid('taskData.audio.durationMs','Published Listening Fill in the Blanks audio must declare a duration from 30 to 60 seconds.');
+  }
   if (task === 'retell-lecture') {
     const retell = data as import('../pte/taskData').RetellLectureItemData;
     if (retell.image ? typeof retell.imageAlt !== 'string' || !retell.imageAlt.trim() : retell.imageAlt !== undefined)

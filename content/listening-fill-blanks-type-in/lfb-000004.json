@@ -1,0 +1,47 @@
+{
+  "id": "lfb-000004",
+  "taskType": "listening-fill-blanks-type-in",
+  "difficulty": 3,
+  "prompt": "Listen to a short academic talk about transport planning and complete the transcript.",
+  "revision": 1,
+  "status": "active",
+  "source": "generated",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Transport policy",
+  "estimatedSeconds": 55,
+  "taskData": {
+    "audio": {
+      "path": "/audio/listening-fill-blanks-type-in/lfb-000004.mp3",
+      "durationMs": 40272,
+      "mimeType": "audio/mpeg",
+      "sha256": "d5f764f6ad274ba00caf5aac74864c4c655c259c1541353d34831fd9c6c70c03"
+    },
+    "transcriptSegments": [
+      "Public transport networks work best when services connect residential areas with employment centres. A frequent service can reduce waiting time, but ",
+      " is equally important because delays make journeys difficult to plan. Integrated ticketing lets passengers transfer between buses and trains without purchasing a separate ",
+      " for every leg. Planners also consider accessibility, including step-free stations and clear information. If routes reflect local travel patterns, more residents may choose public transport instead of driving. This can reduce ",
+      " and improve air quality, although investment must be maintained as population and demand ",
+      "."
+    ],
+    "blanks": [
+      {
+        "id": "reliability",
+        "answer": "reliability"
+      },
+      {
+        "id": "ticket",
+        "answer": "ticket"
+      },
+      {
+        "id": "congestion",
+        "answer": "congestion"
+      },
+      {
+        "id": "change",
+        "answer": "change"
+      }
+    ]
+  }
+}

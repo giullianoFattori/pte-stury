@@ -1,0 +1,47 @@
+{
+  "id": "lfb-000002",
+  "taskType": "listening-fill-blanks-type-in",
+  "difficulty": 2,
+  "prompt": "Listen to a short academic talk about memory and learning, then complete the transcript.",
+  "revision": 1,
+  "status": "active",
+  "source": "generated",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Learning science",
+  "estimatedSeconds": 55,
+  "taskData": {
+    "audio": {
+      "path": "/audio/listening-fill-blanks-type-in/lfb-000002.mp3",
+      "durationMs": 38256,
+      "mimeType": "audio/mpeg",
+      "sha256": "b6eb73be427967b6239ef8219e5fedc7d659cab75a5056dd0aafcfef9b5d36ac"
+    },
+    "transcriptSegments": [
+      "Students often remember information more effectively when they practise ",
+      " rather than reviewing the same material in one long session. This approach requires learners to retrieve ideas after ",
+      ", strengthening access to those ideas later. Short ",
+      " can reveal misunderstandings before an examination. Feedback is most useful when it explains why an answer is incomplete and gives the student another chance to try. Although repeated study may feel easier, effortful retrieval generally produces more ",
+      " learning. Teachers can support this process by spacing activities across several days and revisiting important concepts in different contexts."
+    ],
+    "blanks": [
+      {
+        "id": "retrieval",
+        "answer": "retrieval"
+      },
+      {
+        "id": "delays",
+        "answer": "delays"
+      },
+      {
+        "id": "quizzes",
+        "answer": "quizzes"
+      },
+      {
+        "id": "durable",
+        "answer": "durable"
+      }
+    ]
+  }
+}

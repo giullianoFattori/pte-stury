@@ -2949,6 +2949,241 @@
       ],
       "topic": "Photosynthetic pigments",
       "estimatedSeconds": 35
+    },
+    {
+      "id": "lfb-000001",
+      "taskType": "listening-fill-blanks-type-in",
+      "difficulty": 2,
+      "prompt": "Listen to a short academic talk about urban trees and complete the transcript.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/listening-fill-blanks-type-in/lfb-000001.mp3",
+          "sha256": "40d01fdf1ec155a36c9803cd44ec3c72de71d2acbbf043b90e760a8b8a1f2c57",
+          "durationMs": 30960,
+          "mimeType": "audio/mpeg"
+        },
+        "transcriptSegments": [
+          "Urban trees can reduce the temperature of nearby streets by providing ",
+          " and releasing water through their leaves. Researchers have found that shaded pavements remain cooler during the afternoon, especially in neighbourhoods with ",
+          " green space. Cities must choose tree ",
+          " that tolerate local conditions and provide room for mature ",
+          ". Regular maintenance matters because healthy trees absorb water through their roots. Planned carefully, tree cover improves comfort, supports biodiversity, and makes public spaces more attractive throughout the year."
+        ],
+        "blanks": [
+          {
+            "id": "shade",
+            "answer": "shade"
+          },
+          {
+            "id": "limited",
+            "answer": "limited"
+          },
+          {
+            "id": "species",
+            "answer": "species"
+          },
+          {
+            "id": "roots",
+            "answer": "roots"
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "generated",
+      "skills": [
+        "listening"
+      ],
+      "topic": "Urban ecology",
+      "estimatedSeconds": 55
+    },
+    {
+      "id": "lfb-000002",
+      "taskType": "listening-fill-blanks-type-in",
+      "difficulty": 2,
+      "prompt": "Listen to a short academic talk about memory and learning, then complete the transcript.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/listening-fill-blanks-type-in/lfb-000002.mp3",
+          "sha256": "b6eb73be427967b6239ef8219e5fedc7d659cab75a5056dd0aafcfef9b5d36ac",
+          "durationMs": 38256,
+          "mimeType": "audio/mpeg"
+        },
+        "transcriptSegments": [
+          "Students often remember information more effectively when they practise ",
+          " rather than reviewing the same material in one long session. This approach requires learners to retrieve ideas after ",
+          ", strengthening access to those ideas later. Short ",
+          " can reveal misunderstandings before an examination. Feedback is most useful when it explains why an answer is incomplete and gives the student another chance to try. Although repeated study may feel easier, effortful retrieval generally produces more ",
+          " learning. Teachers can support this process by spacing activities across several days and revisiting important concepts in different contexts."
+        ],
+        "blanks": [
+          {
+            "id": "retrieval",
+            "answer": "retrieval"
+          },
+          {
+            "id": "delays",
+            "answer": "delays"
+          },
+          {
+            "id": "quizzes",
+            "answer": "quizzes"
+          },
+          {
+            "id": "durable",
+            "answer": "durable"
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "generated",
+      "skills": [
+        "listening"
+      ],
+      "topic": "Learning science",
+      "estimatedSeconds": 55
+    },
+    {
+      "id": "lfb-000003",
+      "taskType": "listening-fill-blanks-type-in",
+      "difficulty": 3,
+      "prompt": "Listen to a short academic talk about renewable energy storage and complete the transcript.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/listening-fill-blanks-type-in/lfb-000003.mp3",
+          "sha256": "500320a307086e8d0233ae57697246ad150033ada2864ee129f564a28e4235b8",
+          "durationMs": 36312,
+          "mimeType": "audio/mpeg"
+        },
+        "transcriptSegments": [
+          "Solar and wind power are ",
+          " because their output changes with weather and time of day. Energy storage can ",
+          " this imbalance by holding electricity until demand increases. Batteries respond quickly and are useful for short periods, while pumped hydro stores larger quantities for longer intervals. Each technology has different costs, locations, and environmental effects. Planners combine several storage methods with improved transmission. A balanced system coordinates generation, storage, and demand management so electricity remains ",
+          " even when renewable output temporarily ",
+          "."
+        ],
+        "blanks": [
+          {
+            "id": "variable",
+            "answer": "variable"
+          },
+          {
+            "id": "address",
+            "answer": "address"
+          },
+          {
+            "id": "reliable",
+            "answer": "reliable"
+          },
+          {
+            "id": "falls",
+            "answer": "falls"
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "generated",
+      "skills": [
+        "listening"
+      ],
+      "topic": "Energy systems",
+      "estimatedSeconds": 55
+    },
+    {
+      "id": "lfb-000004",
+      "taskType": "listening-fill-blanks-type-in",
+      "difficulty": 3,
+      "prompt": "Listen to a short academic talk about transport planning and complete the transcript.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/listening-fill-blanks-type-in/lfb-000004.mp3",
+          "sha256": "d5f764f6ad274ba00caf5aac74864c4c655c259c1541353d34831fd9c6c70c03",
+          "durationMs": 40272,
+          "mimeType": "audio/mpeg"
+        },
+        "transcriptSegments": [
+          "Public transport networks work best when services connect residential areas with employment centres. A frequent service can reduce waiting time, but ",
+          " is equally important because delays make journeys difficult to plan. Integrated ticketing lets passengers transfer between buses and trains without purchasing a separate ",
+          " for every leg. Planners also consider accessibility, including step-free stations and clear information. If routes reflect local travel patterns, more residents may choose public transport instead of driving. This can reduce ",
+          " and improve air quality, although investment must be maintained as population and demand ",
+          "."
+        ],
+        "blanks": [
+          {
+            "id": "reliability",
+            "answer": "reliability"
+          },
+          {
+            "id": "ticket",
+            "answer": "ticket"
+          },
+          {
+            "id": "congestion",
+            "answer": "congestion"
+          },
+          {
+            "id": "change",
+            "answer": "change"
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "generated",
+      "skills": [
+        "listening"
+      ],
+      "topic": "Transport policy",
+      "estimatedSeconds": 55
+    },
+    {
+      "id": "lfb-000005",
+      "taskType": "listening-fill-blanks-type-in",
+      "difficulty": 3,
+      "prompt": "Listen to a short academic talk about coastal research and complete the transcript.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/listening-fill-blanks-type-in/lfb-000005.mp3",
+          "sha256": "549e01961bd2ef561e4be5a8abfbc3506d947d8afd4f25b3d344177444cc6a56",
+          "durationMs": 36720,
+          "mimeType": "audio/mpeg"
+        },
+        "transcriptSegments": [
+          "Coastal wetlands provide a natural barrier that can reduce the force of waves during storms. Their ",
+          " hold sediment in place, while vegetation slows moving water and creates habitat for fish and birds. These ecosystems also store significant amounts of ",
+          " in their soils. Wetlands can disappear when development blocks water movement or when rising seas outpace natural ",
+          ". Long-term ",
+          " helps researchers identify vulnerable areas and compare restoration methods. Protecting these habitats supports wildlife and nearby communities, but successful programmes must account for local livelihoods and future climate conditions."
+        ],
+        "blanks": [
+          {
+            "id": "roots",
+            "answer": "roots"
+          },
+          {
+            "id": "carbon",
+            "answer": "carbon"
+          },
+          {
+            "id": "accretion",
+            "answer": "accretion"
+          },
+          {
+            "id": "monitoring",
+            "answer": "monitoring"
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "generated",
+      "skills": [
+        "listening"
+      ],
+      "topic": "Coastal science",
+      "estimatedSeconds": 55
     }
   ]
 }

@@ -1,0 +1,47 @@
+{
+  "id": "lfb-000005",
+  "taskType": "listening-fill-blanks-type-in",
+  "difficulty": 3,
+  "prompt": "Listen to a short academic talk about coastal research and complete the transcript.",
+  "revision": 1,
+  "status": "active",
+  "source": "generated",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Coastal science",
+  "estimatedSeconds": 55,
+  "taskData": {
+    "audio": {
+      "path": "/audio/listening-fill-blanks-type-in/lfb-000005.mp3",
+      "durationMs": 36720,
+      "mimeType": "audio/mpeg",
+      "sha256": "549e01961bd2ef561e4be5a8abfbc3506d947d8afd4f25b3d344177444cc6a56"
+    },
+    "transcriptSegments": [
+      "Coastal wetlands provide a natural barrier that can reduce the force of waves during storms. Their ",
+      " hold sediment in place, while vegetation slows moving water and creates habitat for fish and birds. These ecosystems also store significant amounts of ",
+      " in their soils. Wetlands can disappear when development blocks water movement or when rising seas outpace natural ",
+      ". Long-term ",
+      " helps researchers identify vulnerable areas and compare restoration methods. Protecting these habitats supports wildlife and nearby communities, but successful programmes must account for local livelihoods and future climate conditions."
+    ],
+    "blanks": [
+      {
+        "id": "roots",
+        "answer": "roots"
+      },
+      {
+        "id": "carbon",
+        "answer": "carbon"
+      },
+      {
+        "id": "accretion",
+        "answer": "accretion"
+      },
+      {
+        "id": "monitoring",
+        "answer": "monitoring"
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "id": "lfb-000003",
+  "taskType": "listening-fill-blanks-type-in",
+  "difficulty": 3,
+  "prompt": "Listen to a short academic talk about renewable energy storage and complete the transcript.",
+  "revision": 1,
+  "status": "active",
+  "source": "generated",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Energy systems",
+  "estimatedSeconds": 55,
+  "taskData": {
+    "audio": {
+      "path": "/audio/listening-fill-blanks-type-in/lfb-000003.mp3",
+      "durationMs": 36312,
+      "mimeType": "audio/mpeg",
+      "sha256": "500320a307086e8d0233ae57697246ad150033ada2864ee129f564a28e4235b8"
+    },
+    "transcriptSegments": [
+      "Solar and wind power are ",
+      " because their output changes with weather and time of day. Energy storage can ",
+      " this imbalance by holding electricity until demand increases. Batteries respond quickly and are useful for short periods, while pumped hydro stores larger quantities for longer intervals. Each technology has different costs, locations, and environmental effects. Planners combine several storage methods with improved transmission. A balanced system coordinates generation, storage, and demand management so electricity remains ",
+      " even when renewable output temporarily ",
+      "."
+    ],
+    "blanks": [
+      {
+        "id": "variable",
+        "answer": "variable"
+      },
+      {
+        "id": "address",
+        "answer": "address"
+      },
+      {
+        "id": "reliable",
+        "answer": "reliable"
+      },
+      {
+        "id": "falls",
+        "answer": "falls"
+      }
+    ]
+  }
+}
