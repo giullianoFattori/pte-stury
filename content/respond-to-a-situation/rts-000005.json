@@ -1,0 +1,18 @@
+{
+  "id": "rts-000005",
+  "taskType": "respond-to-a-situation",
+  "difficulty": 1,
+  "prompt": "You are helping classmates plan their study schedule. Tell registered students that the library stays open during exams and suggest checking its hours.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["speaking"],
+  "topic": "Library opening hours",
+  "taskData": {
+    "audio": { "path": "/audio/rs/rs-005.mp3", "sha256": "fcc657101082dc886ed0edd7c5b0949e60e33a9e874d90bb4a0f07f1fe5c573a", "durationMs": 7080, "mimeType": "audio/mpeg" },
+    "promptText": "The university library will remain open during the examination period for all registered students.",
+    "scenario": { "role": "You are a student helping classmates plan their study schedule.", "audience": "Other registered students", "relationship": "Classmates", "communicationGoal": "Share the library access information and encourage classmates to verify practical details.", "register": "informal" },
+    "requiredPoints": ["Explain that the library stays open during examinations", "Mention that access is for registered students", "Suggest checking the specific opening hours"],
+    "usefulFunctions": ["explain", "suggest", "confirm"]
+  }
+}

@@ -51,6 +51,14 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
     const asset=(data as import('../pte/taskData').ListeningFillBlanksTypeInItemData).audio;
     if(!asset.durationMs||asset.durationMs<30_000||asset.durationMs>60_000)invalid('taskData.audio.durationMs','Published Listening Fill in the Blanks audio must declare a duration from 30 to 60 seconds.');
   }
+  if(task==='respond-to-a-situation'&&published){
+    const situation=data as import('../pte/taskData').RespondToSituationItemData;
+    if(countWords(situation.promptText)>60)invalid('taskData.promptText','Published situation prompts must contain no more than 60 words.');
+    if(situation.requiredPoints.length<2||situation.requiredPoints.length>4)invalid('taskData.requiredPoints','Published situations require 2 to 4 authored required points.');
+    const normalize=(value:string)=>value.normalize('NFKC').trim().toLocaleLowerCase('en');
+    if(new Set(situation.requiredPoints.map(normalize)).size!==situation.requiredPoints.length)invalid('taskData.requiredPoints','Required points must be unique.');
+    if(situation.usefulFunctions&&new Set(situation.usefulFunctions.map(normalize)).size!==situation.usefulFunctions.length)invalid('taskData.usefulFunctions','Useful functions must be unique.');
+  }
   if (task === 'retell-lecture') {
     const retell = data as import('../pte/taskData').RetellLectureItemData;
     if (retell.image ? typeof retell.imageAlt !== 'string' || !retell.imageAlt.trim() : retell.imageAlt !== undefined)

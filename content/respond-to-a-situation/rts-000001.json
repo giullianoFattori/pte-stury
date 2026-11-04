@@ -1,0 +1,18 @@
+{
+  "id": "rts-000001",
+  "taskType": "respond-to-a-situation",
+  "difficulty": 1,
+  "prompt": "Your lecturer says your group must arrive before nine tomorrow. Confirm the arrangements and ask where everyone should meet.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["speaking"],
+  "topic": "University group work",
+  "taskData": {
+    "audio": { "path": "/audio/rs/rs-001.mp3", "sha256": "ad73ec3319780c90b57f61e14321b515b5bdb329d6b97e4f73eb2ae04c634d51", "durationMs": 3240, "mimeType": "audio/mpeg" },
+    "promptText": "Students must arrive before nine tomorrow.",
+    "scenario": { "role": "You are a student group representative.", "audience": "Your course lecturer", "relationship": "Student speaking to a lecturer", "communicationGoal": "Confirm the group's arrival arrangements for tomorrow.", "register": "neutral" },
+    "requiredPoints": ["Confirm that the group will arrive before nine", "Ask where the group should meet", "Explain that you are confirming for the other students"],
+    "usefulFunctions": ["confirm", "clarify", "explain"]
+  }
+}

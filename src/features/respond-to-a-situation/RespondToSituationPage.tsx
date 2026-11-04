@@ -1,0 +1,3 @@
+import { useRespondToSituation } from './hooks/useRespondToSituation';
+import { RespondToSituationExercise } from './RespondToSituationExercise';
+export function RespondToSituationPage(){const{items,item,index,loading,error,next}=useRespondToSituation();if(loading||error||!item)return <section className="practice-card" aria-busy={loading}><h2>Respond to a Situation</h2>{loading?<p role="status">Loading situations…</p>:<p role="alert">{error??'No situations are available.'}</p>}</section>;return <RespondToSituationExercise key={item.id} item={item} mode={{kind:'standalone'}} progress={{currentIndex:index,total:items.length}} onNext={next}/>;}

@@ -1,0 +1,14 @@
+import type { Attempt, StudyItem } from '../../../domain/pte/types';
+import type { ReadAloudFluencyMetrics } from '../../../domain/scoring/read-aloud';
+import type { RespondToSituationCoverage, RegisterDiagnostic } from '../../../domain/scoring/respond-to-a-situation';
+import type { TranscriptionResult } from '../../../domain/speech/types';
+import { tokenizeText } from '../../../domain/scoring/shared/tokenizeText.ts';
+
+export function buildRespondToSituationAttempt(input:{question:StudyItem;transcription:TranscriptionResult;coverage:RespondToSituationCoverage;register: RegisterDiagnostic;fluencyMetrics:ReadAloudFluencyMetrics;durationMs:number}):Attempt{
+ const{question,transcription,coverage,register,fluencyMetrics,durationMs}=input;
+ if(question.taskType!=='respond-to-a-situation'||transcription.processedLocally!==true)throw new Error('Only locally transcribed Respond to a Situation responses can be saved.');
+ if(!tokenizeText(transcription.text).length||!Number.isFinite(durationMs)||durationMs<=0||durationMs>40_000||coverage.totalRequiredPoints<2)throw new Error('A usable local transcript, valid response duration and authored required points are required.');
+ const metrics:NonNullable<Attempt['metrics']>={requiredPointCoverage:coverage.requiredPointCoverage,requiredPointCoveragePercent:coverage.requiredPointCoveragePercent,matchedRequiredPoints:coverage.matchedRequiredPoints,totalRequiredPoints:coverage.totalRequiredPoints,communicationGoalDetected:coverage.communicationGoalDetected,matchedUsefulFunctionCount:coverage.matchedFunctions.length,speechRatio:fluencyMetrics.speechRatio,speechRatioPercent:fluencyMetrics.speechRatioPercent,longPauseCount:fluencyMetrics.longPauseCount,responseLatencyMs:fluencyMetrics.responseLatencyMs,speechDurationMs:fluencyMetrics.speechDurationMs,pauseCount:fluencyMetrics.pauseCount,averagePauseMs:fluencyMetrics.averagePauseMs,longestPauseMs:fluencyMetrics.longestPauseMs,hasSpeech:fluencyMetrics.hasSpeech,expectedRegisterCode:register.expected==='formal'?0:register.expected==='neutral'?1:2,registerSignalCount:register.detectedSignals.length,registerWarning:register.warning!==undefined,...(fluencyMetrics.speechRateWpm===undefined?{}:{speechRateWpm:fluencyMetrics.speechRateWpm}),...(transcription.confidence===undefined?{}:{sttConfidence:transcription.confidence}),processedLocally:true};
+ if(Object.values(metrics).some(v=>typeof v==='number'&&(!Number.isFinite(v)||v<0)))throw new Error('Respond to a Situation metrics must be finite and non-negative.');
+ return{id:crypto.randomUUID(),itemId:question.id,taskType:'respond-to-a-situation',...(question.revision===undefined?{}:{itemRevision:question.revision}),createdAt:new Date().toISOString(),responseText:transcription.text,durationMs,score:coverage.requiredPointCoverage,metrics};
+}

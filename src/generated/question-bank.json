@@ -3984,6 +3984,201 @@
       ],
       "topic": "Research replication",
       "estimatedSeconds": 150
+    },
+    {
+      "id": "rts-000001",
+      "taskType": "respond-to-a-situation",
+      "difficulty": 1,
+      "prompt": "Your lecturer says your group must arrive before nine tomorrow. Confirm the arrangements and ask where everyone should meet.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/rs/rs-001.mp3",
+          "sha256": "ad73ec3319780c90b57f61e14321b515b5bdb329d6b97e4f73eb2ae04c634d51",
+          "durationMs": 3240,
+          "mimeType": "audio/mpeg"
+        },
+        "promptText": "Students must arrive before nine tomorrow.",
+        "scenario": {
+          "role": "You are a student group representative.",
+          "audience": "Your course lecturer",
+          "relationship": "Student speaking to a lecturer",
+          "communicationGoal": "Confirm the group's arrival arrangements for tomorrow.",
+          "register": "neutral"
+        },
+        "requiredPoints": [
+          "Confirm that the group will arrive before nine",
+          "Ask where the group should meet",
+          "Explain that you are confirming for the other students"
+        ],
+        "usefulFunctions": [
+          "confirm",
+          "clarify",
+          "explain"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "speaking"
+      ],
+      "topic": "University group work"
+    },
+    {
+      "id": "rts-000002",
+      "taskType": "respond-to-a-situation",
+      "difficulty": 1,
+      "prompt": "You and a classmate need to arrange a project meeting. The lecture begins after lunch today. Suggest a suitable time and confirm it.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/rs/rs-002.mp3",
+          "sha256": "e7734bd08d09156a1a09086b98be9a3aa505875d875d1be267247e1e1f7b0b18",
+          "durationMs": 2808,
+          "mimeType": "audio/mpeg"
+        },
+        "promptText": "The lecture starts after lunch today.",
+        "scenario": {
+          "role": "You are a student arranging a project meeting.",
+          "audience": "A classmate",
+          "relationship": "Students working together",
+          "communicationGoal": "Arrange a meeting without making the classmate late for the lecture.",
+          "register": "neutral"
+        },
+        "requiredPoints": [
+          "Mention that the lecture starts after lunch",
+          "Suggest meeting before the lecture",
+          "Ask the classmate to confirm a suitable time"
+        ],
+        "usefulFunctions": [
+          "suggest",
+          "confirm",
+          "clarify"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "speaking"
+      ],
+      "topic": "Meeting arrangements"
+    },
+    {
+      "id": "rts-000003",
+      "taskType": "respond-to-a-situation",
+      "difficulty": 2,
+      "prompt": "You are coordinating a research project and need to update a colleague about the publication timeline and next steps.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/rs/rs-003.mp3",
+          "sha256": "65dd866632191d850ad063cb6131ec93759e65a8a5f24ab5292bde9411cbcb85",
+          "durationMs": 3744,
+          "mimeType": "audio/mpeg"
+        },
+        "promptText": "The research team will publish its findings next month.",
+        "scenario": {
+          "role": "You are coordinating a university research project.",
+          "audience": "A project colleague",
+          "relationship": "Colleagues on the same research team",
+          "communicationGoal": "Share the publication timeline and coordinate the next update.",
+          "register": "neutral"
+        },
+        "requiredPoints": [
+          "State that the findings will be published next month",
+          "Offer to update the project stakeholders",
+          "Ask whether the colleague has information to add"
+        ],
+        "usefulFunctions": [
+          "explain",
+          "offer",
+          "clarify"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "speaking"
+      ],
+      "topic": "Research project update"
+    },
+    {
+      "id": "rts-000004",
+      "taskType": "respond-to-a-situation",
+      "difficulty": 2,
+      "prompt": "Several students have requested more time for an assignment. As class representative, discuss the request with the tutor and seek a clear decision.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/rs/rs-004.mp3",
+          "sha256": "b262e5a437ca40fc16d73066d352137faae3bf6fd93f08bc582b714595caa887",
+          "durationMs": 4752,
+          "mimeType": "audio/mpeg"
+        },
+        "promptText": "Several students requested extra time to complete the assignment.",
+        "scenario": {
+          "role": "You are the class representative.",
+          "audience": "The course tutor",
+          "relationship": "Student representative speaking to a tutor",
+          "communicationGoal": "Discuss the class request for additional assignment time and seek a clear decision.",
+          "register": "formal"
+        },
+        "requiredPoints": [
+          "Explain that several students requested more time",
+          "Ask whether an extension can be considered",
+          "Request a clear deadline or decision"
+        ],
+        "usefulFunctions": [
+          "explain",
+          "request",
+          "clarify"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "speaking"
+      ],
+      "topic": "Assignment extension request"
+    },
+    {
+      "id": "rts-000005",
+      "taskType": "respond-to-a-situation",
+      "difficulty": 1,
+      "prompt": "You are helping classmates plan their study schedule. Tell registered students that the library stays open during exams and suggest checking its hours.",
+      "taskData": {
+        "audio": {
+          "path": "/audio/rs/rs-005.mp3",
+          "sha256": "fcc657101082dc886ed0edd7c5b0949e60e33a9e874d90bb4a0f07f1fe5c573a",
+          "durationMs": 7080,
+          "mimeType": "audio/mpeg"
+        },
+        "promptText": "The university library will remain open during the examination period for all registered students.",
+        "scenario": {
+          "role": "You are a student helping classmates plan their study schedule.",
+          "audience": "Other registered students",
+          "relationship": "Classmates",
+          "communicationGoal": "Share the library access information and encourage classmates to verify practical details.",
+          "register": "informal"
+        },
+        "requiredPoints": [
+          "Explain that the library stays open during examinations",
+          "Mention that access is for registered students",
+          "Suggest checking the specific opening hours"
+        ],
+        "usefulFunctions": [
+          "explain",
+          "suggest",
+          "confirm"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "speaking"
+      ],
+      "topic": "Library opening hours"
     }
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "id": "rts-000002",
+  "taskType": "respond-to-a-situation",
+  "difficulty": 1,
+  "prompt": "You and a classmate need to arrange a project meeting. The lecture begins after lunch today. Suggest a suitable time and confirm it.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["speaking"],
+  "topic": "Meeting arrangements",
+  "taskData": {
+    "audio": { "path": "/audio/rs/rs-002.mp3", "sha256": "e7734bd08d09156a1a09086b98be9a3aa505875d875d1be267247e1e1f7b0b18", "durationMs": 2808, "mimeType": "audio/mpeg" },
+    "promptText": "The lecture starts after lunch today.",
+    "scenario": { "role": "You are a student arranging a project meeting.", "audience": "A classmate", "relationship": "Students working together", "communicationGoal": "Arrange a meeting without making the classmate late for the lecture.", "register": "neutral" },
+    "requiredPoints": ["Mention that the lecture starts after lunch", "Suggest meeting before the lecture", "Ask the classmate to confirm a suitable time"],
+    "usefulFunctions": ["suggest", "confirm", "clarify"]
+  }
+}

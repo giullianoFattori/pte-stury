@@ -43,8 +43,8 @@ try {
  const radio=name=>card.getByRole('radio',{name,exact:true});
  const start=()=>card.getByRole('button',{name:'Start Mixed Practice',exact:true});
  const total=async n=>card.getByRole('status').filter({hasText:`Total: ${n} questions available`}).waitFor();
- await total(61);assert.equal(await radio('10').isChecked(),true);assert.equal(await card.getByRole('checkbox',{checked:true}).count(),13);
- await check('Reorder Paragraph').uncheck();await total(56);await check('Highlight Incorrect Words').uncheck();await total(51);await check('Summarize Spoken Text').uncheck();await total(47);await check('Summarize Written Text').uncheck();await total(43);await check('Retell Lecture').uncheck();await total(39);await check('Summarize Group Discussion').uncheck();await total(36);await check('Describe Image').uncheck();await total(32);
+ await total(66);assert.equal(await radio('10').isChecked(),true);assert.equal(await card.getByRole('checkbox',{checked:true}).count(),14);
+ await check('Respond to a Situation').uncheck();await total(61);await check('Reorder Paragraph').uncheck();await total(56);await check('Highlight Incorrect Words').uncheck();await total(51);await check('Summarize Spoken Text').uncheck();await total(47);await check('Summarize Written Text').uncheck();await total(43);await check('Retell Lecture').uncheck();await total(39);await check('Summarize Group Discussion').uncheck();await total(36);await check('Describe Image').uncheck();await total(32);
  await check('Write From Dictation').uncheck();await total(27);await check('Repeat Sentence').uncheck();await total(21);await check('Listening: Fill in the Blanks — Type In').uncheck();await total(16);await check('Reading: Fill in the Blanks — Dropdown').uncheck();await total(11);await check('Reading: Fill in the Blanks — Drag and Drop').uncheck();await total(6);assert.equal(await start().isDisabled(),true);
  await check('Write From Dictation').check();await total(11);await check('Repeat Sentence').check();await total(17);
  // Delay one old filter response, switch filters, then release it: old totals must stay ignored.
@@ -78,8 +78,8 @@ try {
  await page.getByRole('button',{name:'Continue',exact:true}).click();await page.getByRole('heading',{name:'Mixed Practice complete',exact:true}).waitFor();await page.getByRole('status').filter({hasText:'5 questions completed'}).waitFor();
  await page.reload();await page.getByRole('heading',{name:'Mixed Practice complete',exact:true}).waitFor();assert.equal(page.url(),url);
  // Max resolves to all currently eligible unique rows; active Mixed disables every new mode.
- await page.getByRole('link',{name:'Back to Study',exact:true}).click();await total(61);await radio('Max').check();await start().click();await loaded(page,0,61);
- const maximum=await current(page);assert.equal(maximum.session.config.itemCount,61);assert.equal(maximum.session.config.taskTypes.length,13);assert.equal(new Set(maximum.session.itemIds).size,61);assert.deepEqual(maximum.session.itemIds.slice(0,13).map(id=>id.split('-')[0]),['wfd','rs','ra','rtl','sgd','di','swt','sst','hiw','lfb','rfbd','rfbdd','rop']);
+ await page.getByRole('link',{name:'Back to Study',exact:true}).click();await total(66);await radio('Max').check();await start().click();await loaded(page,0,66);
+ const maximum=await current(page);assert.equal(maximum.session.config.itemCount,66);assert.equal(maximum.session.config.taskTypes.length,14);assert.equal(new Set(maximum.session.itemIds).size,66);assert.deepEqual(maximum.session.itemIds.slice(0,14).map(id=>id.split('-')[0]),['wfd','rs','ra','rtl','sgd','di','swt','sst','hiw','lfb','rfbd','rfbdd','rop','rts']);
  await page.getByRole('link',{name:'Back to Study',exact:true}).click();await page.getByRole('button',{name:'Resume current session',exact:true}).waitFor();assert.equal(await start().isDisabled(),true);assert.equal(await card.getByRole('checkbox',{name:'Write From Dictation',exact:true}).isDisabled(),true);
  // Safe missing route remains shared for every mode.
  await page.goto(base+'/study/session/not-found');await page.getByRole('alert').filter({hasText:'This study session could not be found.'}).waitFor();

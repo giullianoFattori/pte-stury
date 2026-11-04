@@ -1,0 +1,18 @@
+{
+  "id": "rts-000004",
+  "taskType": "respond-to-a-situation",
+  "difficulty": 2,
+  "prompt": "Several students have requested more time for an assignment. As class representative, discuss the request with the tutor and seek a clear decision.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["speaking"],
+  "topic": "Assignment extension request",
+  "taskData": {
+    "audio": { "path": "/audio/rs/rs-004.mp3", "sha256": "b262e5a437ca40fc16d73066d352137faae3bf6fd93f08bc582b714595caa887", "durationMs": 4752, "mimeType": "audio/mpeg" },
+    "promptText": "Several students requested extra time to complete the assignment.",
+    "scenario": { "role": "You are the class representative.", "audience": "The course tutor", "relationship": "Student representative speaking to a tutor", "communicationGoal": "Discuss the class request for additional assignment time and seek a clear decision.", "register": "formal" },
+    "requiredPoints": ["Explain that several students requested more time", "Ask whether an extension can be considered", "Request a clear deadline or decision"],
+    "usefulFunctions": ["explain", "request", "clarify"]
+  }
+}

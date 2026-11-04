@@ -429,6 +429,31 @@
       "id": "rop-000005",
       "taskType": "reorder-paragraph",
       "kind": "reserved"
+    },
+    {
+      "id": "rts-000001",
+      "taskType": "respond-to-a-situation",
+      "kind": "reserved"
+    },
+    {
+      "id": "rts-000002",
+      "taskType": "respond-to-a-situation",
+      "kind": "reserved"
+    },
+    {
+      "id": "rts-000003",
+      "taskType": "respond-to-a-situation",
+      "kind": "reserved"
+    },
+    {
+      "id": "rts-000004",
+      "taskType": "respond-to-a-situation",
+      "kind": "reserved"
+    },
+    {
+      "id": "rts-000005",
+      "taskType": "respond-to-a-situation",
+      "kind": "reserved"
     }
   ]
 }

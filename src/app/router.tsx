@@ -16,6 +16,7 @@ import { ListeningFillBlanksTypeInPage } from '../features/listening-fill-blanks
 import { ReadingFillBlanksDropdownPage } from '../features/reading-fill-blanks-dropdown/ReadingFillBlanksDropdownPage';
 import { ReadingFillBlanksDragDropPage } from '../features/reading-fill-blanks-drag-drop/ReadingFillBlanksDragDropPage';
 import { ReorderParagraphPage } from '../features/reorder-paragraph/ReorderParagraphPage';
+import { RespondToSituationPage } from '../features/respond-to-a-situation/RespondToSituationPage';
 
 export const router = createBrowserRouter([
   {
@@ -84,6 +85,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/reorder-paragraph',
         element: <ReorderParagraphPage />,
+      },
+      {
+        path: '/study/respond-to-a-situation',
+        element: <RespondToSituationPage />,
       },
       {
         path: '/review',

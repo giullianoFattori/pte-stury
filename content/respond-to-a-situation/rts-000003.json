@@ -1,0 +1,18 @@
+{
+  "id": "rts-000003",
+  "taskType": "respond-to-a-situation",
+  "difficulty": 2,
+  "prompt": "You are coordinating a research project and need to update a colleague about the publication timeline and next steps.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["speaking"],
+  "topic": "Research project update",
+  "taskData": {
+    "audio": { "path": "/audio/rs/rs-003.mp3", "sha256": "65dd866632191d850ad063cb6131ec93759e65a8a5f24ab5292bde9411cbcb85", "durationMs": 3744, "mimeType": "audio/mpeg" },
+    "promptText": "The research team will publish its findings next month.",
+    "scenario": { "role": "You are coordinating a university research project.", "audience": "A project colleague", "relationship": "Colleagues on the same research team", "communicationGoal": "Share the publication timeline and coordinate the next update.", "register": "neutral" },
+    "requiredPoints": ["State that the findings will be published next month", "Offer to update the project stakeholders", "Ask whether the colleague has information to add"],
+    "usefulFunctions": ["explain", "offer", "clarify"]
+  }
+}
