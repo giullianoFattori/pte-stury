@@ -42,7 +42,7 @@ export const TASK_REGISTRY: Readonly<Record<PteTaskType, PteTaskDefinition>> = O
   'highlight-incorrect-words': definition('highlight-incorrect-words', 'Highlight Incorrect Words', ['listening','reading'], 'listening', 'hiw', true),
   'answer-short-question': definition('answer-short-question', 'Answer Short Question', ['listening'], 'speaking-writing', 'asq', false),
   'respond-to-a-situation': definition('respond-to-a-situation', 'Respond to a Situation', ['speaking'], 'speaking-writing', 'rts', true),
-  'write-essay': definition('write-essay', 'Write Essay', ['writing'], 'speaking-writing', 'we', false),
+  'write-essay': definition('write-essay', 'Write Essay', ['writing'], 'speaking-writing', 'we', true),
   'reading-fill-blanks-dropdown': definition('reading-fill-blanks-dropdown', 'Reading: Fill in the Blanks — Dropdown', ['reading'], 'reading', 'rfbd', true),
   'reading-multiple-choice-multiple': definition('reading-multiple-choice-multiple', 'Reading: Multiple Choice — Multiple Answers', ['reading'], 'reading', 'rmcm', false),
   'reorder-paragraph': definition('reorder-paragraph', 'Reorder Paragraph', ['reading'], 'reading', 'rop', true),

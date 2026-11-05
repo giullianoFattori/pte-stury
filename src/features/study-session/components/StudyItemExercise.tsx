@@ -13,6 +13,7 @@ import { ReadingFillBlanksDropdownExercise } from '../../reading-fill-blanks-dro
 import { ReadingFillBlanksDragDropExercise } from '../../reading-fill-blanks-drag-drop/ReadingFillBlanksDragDropExercise';
 import { ReorderParagraphExercise } from '../../reorder-paragraph/ReorderParagraphExercise';
 import { RespondToSituationExercise } from '../../respond-to-a-situation/RespondToSituationExercise';
+import { WriteEssayExercise } from '../../write-essay/WriteEssayExercise';
 import type { ExerciseProps } from '../types';
 
 const exercises = {
@@ -30,6 +31,7 @@ const exercises = {
   'reading-fill-blanks-drag-drop': ReadingFillBlanksDragDropExercise,
   'reorder-paragraph': ReorderParagraphExercise,
   'respond-to-a-situation': RespondToSituationExercise,
+  'write-essay': WriteEssayExercise,
 } satisfies Partial<Record<import('../../../domain/pte/types').PteTaskType, (props: ExerciseProps) => React.JSX.Element>>;
 /** Task dispatch only. Enabling a task also requires an explicit exercise mapping. */
 export function StudyItemExercise(props: ExerciseProps) {

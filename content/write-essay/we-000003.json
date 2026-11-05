@@ -1,0 +1,28 @@
+{
+  "id": "we-000003",
+  "taskType": "write-essay",
+  "difficulty": 3,
+  "prompt": "Online learning gives students greater flexibility. Classroom study provides direct interaction. Discuss the advantages and disadvantages of online learning for university students.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["writing"],
+  "topic": "Online university learning",
+  "estimatedSeconds": 1200,
+  "taskData": {
+    "prompt": "Online learning gives students greater flexibility. Classroom study provides direct interaction. Discuss the advantages and disadvantages of online learning for university students.",
+    "positionType": "advantages-disadvantages",
+    "keyRequirements": [
+      "Explain a flexibility or access advantage of online learning",
+      "Discuss a disadvantage such as reduced interaction or self-management",
+      "Compare online study with classroom learning",
+      "Conclude when online learning is most suitable"
+    ],
+    "referenceOutline": [
+      "Introduce online learning as an expanding study option",
+      "Explain flexibility and access benefits",
+      "Discuss interaction and motivation challenges",
+      "Conclude that suitability depends on students and course design"
+    ]
+  }
+}

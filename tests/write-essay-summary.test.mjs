@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';import test from 'node:test';
+import{buildSessionSummary,SESSION_SUMMARY_TASKS}from'../src/domain/study-session/summary.ts';
+import{analyseWriteEssay}from'../src/domain/scoring/write-essay/index.ts';
+import{buildWriteEssayAttempt}from'../src/features/write-essay/services/buildWriteEssayAttempt.ts';
+const session={id:'essay-summary',mode:'task',status:'completed',startedAt:'2026-11-05T00:00:00.000Z',finishedAt:'2026-11-05T00:30:00.000Z',taskTypes:['write-essay'],itemIds:['we-000001','we-000002'],currentIndex:2,attemptIds:['a1','a2'],config:{itemCount:2,taskTypes:['write-essay']}};
+const item=id=>({id,taskType:'write-essay',difficulty:2,prompt:'Discuss the issue. Give your view.',status:'active',taskData:{prompt:'Discuss the issue. Give your view.',positionType:'open-argument',keyRequirements:['public transport','reduce congestion','support local communities']}});
+function make(id,question,response,timedOut=false){const attempt=buildWriteEssayAttempt({question,response,analysis:analyseWriteEssay(response,question.taskData),durationMs:1000,timedOut});return{...attempt,id,sessionId:session.id};}
+const first=make('a1',item('we-000001'),`Public transport can reduce congestion. ${Array.from({length:197},(_,i)=>`reason${i}`).join(' ')}.`);
+const second=make('a2',item('we-000002'),`Public transport can reduce congestion and support local communities. ${Array.from({length:191},(_,i)=>`detail${i}`).join(' ')}.`,true);
+const rows=[first,second];
+test('Write Essay summary pools requirement counts and reports local Form/structure metrics',()=>{const task=buildSessionSummary(session,rows).byTask['write-essay'];assert.ok(SESSION_SUMMARY_TASKS.includes('write-essay'));assert.equal(task.questionCount,2);assert.equal(task.fullFormCount,2);assert.equal(task.partialFormCount,0);assert.equal(task.zeroFormCount,0);assert.equal(task.matchedRequirements,5);assert.equal(task.totalRequirements,6);assert.equal(task.averageRequirementCoveragePercent,5/6*100);assert.equal(task.timedOutCount,1);assert.ok(task.averageParagraphCount>=1);});
+test('Write Essay summary rejects inconsistent score/Form and malformed counters',()=>{for(const mutate of [r=>r.score=.99,r=>r.metrics.formPoints=0,r=>r.metrics.matchedRequirements=99,r=>r.metrics.paragraphCount=-1]){const bad=structuredClone(rows);mutate(bad[0]);assert.throws(()=>buildSessionSummary(session,bad),error=>error.code==='SESSION_SUMMARY_CORRUPT');}});

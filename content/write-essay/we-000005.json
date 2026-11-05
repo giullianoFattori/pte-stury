@@ -1,0 +1,28 @@
+{
+  "id": "we-000005",
+  "taskType": "write-essay",
+  "difficulty": 3,
+  "prompt": "Employers increasingly value communication and problem-solving alongside technical knowledge. Which abilities should universities prioritise when preparing students for future work? Support your answer with reasons or examples.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["writing"],
+  "topic": "University preparation for work",
+  "estimatedSeconds": 1200,
+  "taskData": {
+    "prompt": "Employers increasingly value communication and problem-solving alongside technical knowledge. Which abilities should universities prioritise when preparing students for future work? Support your answer with reasons or examples.",
+    "positionType": "open-argument",
+    "keyRequirements": [
+      "Identify a priority ability for future work",
+      "Explain why technical knowledge remains important",
+      "Explain the value of communication or problem-solving",
+      "Recommend how universities can develop these abilities"
+    ],
+    "referenceOutline": [
+      "State which abilities universities should prioritise",
+      "Explain the continuing role of field-specific knowledge",
+      "Show how communication and problem-solving support teams",
+      "Recommend projects, placements or collaborative assessment"
+    ]
+  }
+}

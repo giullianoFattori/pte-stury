@@ -1,0 +1,28 @@
+{
+  "id": "we-000002",
+  "taskType": "write-essay",
+  "difficulty": 2,
+  "prompt": "Some people argue that public transport should be free in large cities. Others believe passengers should pay fares. Discuss both views and give your own opinion.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["writing"],
+  "topic": "Public transport fares",
+  "estimatedSeconds": 1200,
+  "taskData": {
+    "prompt": "Some people argue that public transport should be free in large cities. Others believe passengers should pay fares. Discuss both views and give your own opinion.",
+    "positionType": "discuss-both",
+    "keyRequirements": [
+      "Explain why free transport may benefit residents and cities",
+      "Explain why fares may be needed to fund reliable services",
+      "State a personal position on whether fares should be charged",
+      "Support the position with reasons or an example"
+    ],
+    "referenceOutline": [
+      "Introduce the debate and the writer's view",
+      "Present the case for removing fares",
+      "Present the funding and service argument for fares",
+      "Conclude with a position, such as targeted discounts"
+    ]
+  }
+}

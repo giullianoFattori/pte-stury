@@ -66,7 +66,9 @@
     "validation:session:package": "node tools/session-validation/package.mjs",
     "test:reading-fill-blanks-drag-drop-browser": "node tests/reading-fill-blanks-drag-drop-browser.mjs",
     "test:reorder-paragraph-browser": "node tests/reorder-paragraph-browser.mjs",
-    "test:respond-to-situation-browser": "node tests/respond-to-a-situation-browser.mjs"
+    "test:respond-to-situation-browser": "node tests/respond-to-a-situation-browser.mjs",
+    "test:write-essay-browser": "node tests/write-essay-browser.mjs",
+    "test:write-essay-package-browser": "node tests/write-essay-package-browser.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",

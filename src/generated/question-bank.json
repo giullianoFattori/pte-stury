@@ -4179,6 +4179,156 @@
         "speaking"
       ],
       "topic": "Library opening hours"
+    },
+    {
+      "id": "we-000001",
+      "taskType": "write-essay",
+      "difficulty": 2,
+      "prompt": "Some people believe that universities should make work placements a compulsory part of every degree. Do you agree or disagree with this view? Support your position with reasons and examples.",
+      "taskData": {
+        "prompt": "Some people believe that universities should make work placements a compulsory part of every degree. Do you agree or disagree with this view? Support your position with reasons and examples.",
+        "positionType": "agree-disagree",
+        "keyRequirements": [
+          "State whether work placements should be compulsory for every degree",
+          "Explain how workplace experience can benefit students",
+          "Consider a limitation such as cost, access or course relevance",
+          "Support the position with reasons or an example"
+        ],
+        "referenceOutline": [
+          "Introduce a clear position on compulsory placements",
+          "Explain the value of applying course knowledge in a workplace",
+          "Address access and relevance concerns",
+          "Conclude by restating the position"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "writing"
+      ],
+      "topic": "University work placements",
+      "estimatedSeconds": 1200
+    },
+    {
+      "id": "we-000002",
+      "taskType": "write-essay",
+      "difficulty": 2,
+      "prompt": "Some people argue that public transport should be free in large cities. Others believe passengers should pay fares. Discuss both views and give your own opinion.",
+      "taskData": {
+        "prompt": "Some people argue that public transport should be free in large cities. Others believe passengers should pay fares. Discuss both views and give your own opinion.",
+        "positionType": "discuss-both",
+        "keyRequirements": [
+          "Explain why free transport may benefit residents and cities",
+          "Explain why fares may be needed to fund reliable services",
+          "State a personal position on whether fares should be charged",
+          "Support the position with reasons or an example"
+        ],
+        "referenceOutline": [
+          "Introduce the debate and the writer's view",
+          "Present the case for removing fares",
+          "Present the funding and service argument for fares",
+          "Conclude with a position, such as targeted discounts"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "writing"
+      ],
+      "topic": "Public transport fares",
+      "estimatedSeconds": 1200
+    },
+    {
+      "id": "we-000003",
+      "taskType": "write-essay",
+      "difficulty": 3,
+      "prompt": "Online learning gives students greater flexibility. Classroom study provides direct interaction. Discuss the advantages and disadvantages of online learning for university students.",
+      "taskData": {
+        "prompt": "Online learning gives students greater flexibility. Classroom study provides direct interaction. Discuss the advantages and disadvantages of online learning for university students.",
+        "positionType": "advantages-disadvantages",
+        "keyRequirements": [
+          "Explain a flexibility or access advantage of online learning",
+          "Discuss a disadvantage such as reduced interaction or self-management",
+          "Compare online study with classroom learning",
+          "Conclude when online learning is most suitable"
+        ],
+        "referenceOutline": [
+          "Introduce online learning as an expanding study option",
+          "Explain flexibility and access benefits",
+          "Discuss interaction and motivation challenges",
+          "Conclude that suitability depends on students and course design"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "writing"
+      ],
+      "topic": "Online university learning",
+      "estimatedSeconds": 1200
+    },
+    {
+      "id": "we-000004",
+      "taskType": "write-essay",
+      "difficulty": 3,
+      "prompt": "Many cities face increasing traffic congestion and air pollution. Explain the main problems this creates. What measures should governments and residents take to address it?",
+      "taskData": {
+        "prompt": "Many cities face increasing traffic congestion and air pollution. Explain the main problems this creates. What measures should governments and residents take to address it?",
+        "positionType": "problem-solution",
+        "keyRequirements": [
+          "Describe a health or environmental problem caused by congestion",
+          "Explain an economic or daily-life effect of heavy traffic",
+          "Propose a practical government measure",
+          "Explain how residents can contribute to a solution"
+        ],
+        "referenceOutline": [
+          "Introduce the relationship between traffic and urban air quality",
+          "Describe health and time-cost effects",
+          "Suggest reliable transit and safer active travel",
+          "Explain how residents can choose lower-emission travel"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "writing"
+      ],
+      "topic": "Urban traffic and air quality",
+      "estimatedSeconds": 1200
+    },
+    {
+      "id": "we-000005",
+      "taskType": "write-essay",
+      "difficulty": 3,
+      "prompt": "Employers increasingly value communication and problem-solving alongside technical knowledge. Which abilities should universities prioritise when preparing students for future work? Support your answer with reasons or examples.",
+      "taskData": {
+        "prompt": "Employers increasingly value communication and problem-solving alongside technical knowledge. Which abilities should universities prioritise when preparing students for future work? Support your answer with reasons or examples.",
+        "positionType": "open-argument",
+        "keyRequirements": [
+          "Identify a priority ability for future work",
+          "Explain why technical knowledge remains important",
+          "Explain the value of communication or problem-solving",
+          "Recommend how universities can develop these abilities"
+        ],
+        "referenceOutline": [
+          "State which abilities universities should prioritise",
+          "Explain the continuing role of field-specific knowledge",
+          "Show how communication and problem-solving support teams",
+          "Recommend projects, placements or collaborative assessment"
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "writing"
+      ],
+      "topic": "University preparation for work",
+      "estimatedSeconds": 1200
     }
   ]
 }

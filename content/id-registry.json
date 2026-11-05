@@ -150,6 +150,11 @@
       "taskType": "write-essay",
       "kind": "technical"
     },
+    { "id": "we-000001", "taskType": "write-essay", "kind": "reserved" },
+    { "id": "we-000002", "taskType": "write-essay", "kind": "reserved" },
+    { "id": "we-000003", "taskType": "write-essay", "kind": "reserved" },
+    { "id": "we-000004", "taskType": "write-essay", "kind": "reserved" },
+    { "id": "we-000005", "taskType": "write-essay", "kind": "reserved" },
     {
       "id": "rfbd-900001",
       "taskType": "reading-fill-blanks-dropdown",

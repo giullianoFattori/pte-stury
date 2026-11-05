@@ -1,0 +1,14 @@
+{
+  "status": "PASS",
+  "platform": "linux-x64 packaged launcher",
+  "browser": "154.0.8037.97",
+  "scope": "Packaged standalone Write Essay, 20-minute timer, save, Task Practice and task summary",
+  "learnerItems": 71,
+  "writeEssayItems": 5,
+  "standaloneSave": "PASS",
+  "taskPracticeThreeItems": "PASS",
+  "summary": "PASS",
+  "pageErrors": 0,
+  "unexpectedExternalRequests": 0,
+  "dbVersion": 3
+}

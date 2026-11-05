@@ -1,0 +1,3 @@
+import { useWriteEssay } from './hooks/useWriteEssay.ts';
+import { WriteEssayExercise } from './WriteEssayExercise.tsx';
+export function WriteEssayPage(){const{items,item,index,loading,error,next}=useWriteEssay();if(loading||error||!item)return <section className="practice-card" aria-busy={loading}><h2>Write Essay</h2>{loading?<p role="status">Loading essay prompts…</p>:<p role="alert">{error??'No Write Essay prompts are available.'}</p>}</section>;return <WriteEssayExercise key={item.id} item={item} mode={{kind:'standalone'}} progress={{currentIndex:index,total:items.length}} onNext={next}/>;}

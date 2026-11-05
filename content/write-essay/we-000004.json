@@ -1,0 +1,28 @@
+{
+  "id": "we-000004",
+  "taskType": "write-essay",
+  "difficulty": 3,
+  "prompt": "Many cities face increasing traffic congestion and air pollution. Explain the main problems this creates. What measures should governments and residents take to address it?",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": ["writing"],
+  "topic": "Urban traffic and air quality",
+  "estimatedSeconds": 1200,
+  "taskData": {
+    "prompt": "Many cities face increasing traffic congestion and air pollution. Explain the main problems this creates. What measures should governments and residents take to address it?",
+    "positionType": "problem-solution",
+    "keyRequirements": [
+      "Describe a health or environmental problem caused by congestion",
+      "Explain an economic or daily-life effect of heavy traffic",
+      "Propose a practical government measure",
+      "Explain how residents can contribute to a solution"
+    ],
+    "referenceOutline": [
+      "Introduce the relationship between traffic and urban air quality",
+      "Describe health and time-cost effects",
+      "Suggest reliable transit and safer active travel",
+      "Explain how residents can choose lower-emission travel"
+    ]
+  }
+}

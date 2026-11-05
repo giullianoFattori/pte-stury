@@ -17,6 +17,7 @@ import { ReadingFillBlanksDropdownPage } from '../features/reading-fill-blanks-d
 import { ReadingFillBlanksDragDropPage } from '../features/reading-fill-blanks-drag-drop/ReadingFillBlanksDragDropPage';
 import { ReorderParagraphPage } from '../features/reorder-paragraph/ReorderParagraphPage';
 import { RespondToSituationPage } from '../features/respond-to-a-situation/RespondToSituationPage';
+import { WriteEssayPage } from '../features/write-essay/WriteEssayPage';
 
 export const router = createBrowserRouter([
   {
@@ -89,6 +90,10 @@ export const router = createBrowserRouter([
       {
         path: '/study/respond-to-a-situation',
         element: <RespondToSituationPage />,
+      },
+      {
+        path: '/study/write-essay',
+        element: <WriteEssayPage />,
       },
       {
         path: '/review',

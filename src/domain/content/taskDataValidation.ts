@@ -3,6 +3,7 @@ import type { PteTaskData } from '../pte/taskData';
 import { TASK_DATA_RULES, type DataRule } from './taskDataPolicy.ts';
 import { ContentValidationError, type ContentValidationIssue } from './validationTypes.ts';
 import { countWords } from '../scoring/shared/writing/wordCount.ts';
+import { countDetectedSentences } from '../scoring/shared/writing/sentenceBoundaries.ts';
 export function dataObject(input: unknown): input is Record<string, unknown> {
   return !!input && typeof input === 'object' && !Array.isArray(input) && [Object.prototype, null].includes(Object.getPrototypeOf(input))
     && Reflect.ownKeys(input).every(key => typeof key === 'string' && Object.getOwnPropertyDescriptor(input, key)?.enumerable && Object.hasOwn(Object.getOwnPropertyDescriptor(input, key)!, 'value'));
@@ -46,6 +47,11 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
   if(task==='highlight-incorrect-words'&&published){
     const asset=(data as import('../pte/taskData').HighlightIncorrectWordsItemData).audio;
     if(!asset.durationMs||asset.durationMs<15_000||asset.durationMs>50_000)invalid('taskData.audio.durationMs','Published Highlight Incorrect Words audio must declare a duration from 15 to 50 seconds.');
+  }
+  if(task==='write-essay'&&'keyRequirements' in data){
+    const essay=data as import('../pte/taskData').WriteEssayItemData;
+    if(essay.keyRequirements.length<2||essay.keyRequirements.length>5||new Set(essay.keyRequirements.map(value=>value.normalize('NFKC').trim().toLocaleLowerCase('en'))).size!==essay.keyRequirements.length)invalid('taskData.keyRequirements','Write Essay requires 2–5 unique prompt requirements.');
+    if(published&&(countDetectedSentences(essay.prompt)<2||countDetectedSentences(essay.prompt)>3))invalid('taskData.prompt','Published Write Essay prompts must contain 2–3 sentences.');
   }
   if(task==='listening-fill-blanks-type-in'&&published){
     const asset=(data as import('../pte/taskData').ListeningFillBlanksTypeInItemData).audio;
