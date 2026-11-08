@@ -105,6 +105,12 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
   }
   if ('options' in data) {
     const options = data.options;
+    if (task === 'reading-multiple-choice-multiple') {
+      const reading = data as import('../pte/taskData').ReadingMultipleChoiceMultipleItemData;
+      if (!reading.passage.trim() || countWords(reading.passage) > 350) invalid('taskData.passage', 'Reading passage must contain between 1 and 350 words.');
+      if (!reading.question.trim()) invalid('taskData.question', 'Question must not be empty.');
+      if (options.length < 4 || options.length > 7 || options.some(option => !option.id.trim() || !option.text.trim())) invalid('taskData.options', 'Four to seven options with non-empty IDs and text are required.');
+    }
     if (new Set(options.map(option => option.id)).size !== options.length) invalid('taskData.options', 'Option IDs must be unique.');
     const correctCount = options.filter(option => option.correct).length;
     const expected = task === 'reading-multiple-choice-multiple' || task === 'listening-multiple-choice-multiple' ? correctCount >= 2 && correctCount < options.length : correctCount === 1;
