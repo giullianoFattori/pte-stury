@@ -1,0 +1,1 @@
+export type AnswerShortQuestionScore = Readonly<{ correct: boolean; rawScore: 0 | 1; maxScore: 1; normalizedScore: 0 | 1; matchedAcceptedAnswer?: string; responseWordCount: number; overlongResponse: boolean }>;

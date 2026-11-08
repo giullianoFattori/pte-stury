@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
-  "contentVersion": "sha256:a298bfcb7bbebc2d7a7d7c2e750ae6c1d38db9e5aabb596c66d8134cba2be4bd",
-  "itemCount": 71,
+  "contentVersion": "sha256:42ced3b3f40348d1422f32ee373b5977a5357ed99776770ad84d47c3c4da73ef",
+  "itemCount": 77,
   "countsByTaskType": {
     "write-from-dictation": 5,
     "repeat-sentence": 6,
@@ -18,7 +18,7 @@
     "reorder-paragraph": 5,
     "respond-to-a-situation": 5,
     "write-essay": 5,
-    "answer-short-question": 0,
+    "answer-short-question": 6,
     "reading-multiple-choice-multiple": 0,
     "listening-multiple-choice-multiple": 0,
     "reading-multiple-choice-single": 0,
@@ -26,5 +26,5 @@
     "highlight-correct-summary": 0,
     "select-missing-word": 0
   },
-  "audioAssetCount": 28
+  "audioAssetCount": 34
 }

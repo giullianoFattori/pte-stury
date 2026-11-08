@@ -96,7 +96,7 @@ test('zero counts expose all implemented task keys and coverage on empty DB', as
   assert.deepEqual(await repo.practiceMetadataCoverage(), { eligibleItems: 0, missingSkills: 0, missingTags: 0, missingTopic: 0 });
 });
 for (const [field, value] of [
-  ['taskTypes', ['answer-short-question']], ['taskTypes', ['read-aloud', 'read-aloud']], ['taskTypes', 'read-aloud'],
+  ['taskTypes', ['read-aloud', 'read-aloud']], ['taskTypes', 'read-aloud'],
   ['difficulties', [0]], ['difficulties', [6]], ['difficulties', [2.5]], ['difficulties', ['2']], ['difficulties', [NaN]],
   ['skills', ['math']], ['skills', ['speaking', 'speaking']], ['tags', [1]], ['tags', ['']], ['tags', [' ']], ['tags', ['a', 'a']],
   ['tags', ['x'.repeat(101)]], ['tags', Array.from({ length: 51 }, (_, i) => String(i))],

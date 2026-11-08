@@ -1,0 +1,26 @@
+{
+  "id": "asq-000004",
+  "taskType": "answer-short-question",
+  "difficulty": 1,
+  "prompt": "Which gas do plants absorb from the air?",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Biology",
+  "estimatedSeconds": 25,
+  "taskData": {
+    "audio": {
+      "path": "/audio/answer-short-question/asq-000004.mp3",
+      "durationMs": 3960,
+      "mimeType": "audio/mpeg",
+      "sha256": "a1f7b9ae0dd028c3e04121f670563df950dbb47254be7729760b4ed562aaf38a"
+    },
+    "questionTranscript": "Which gas do plants absorb from the air?",
+    "acceptedAnswers": [
+      "carbon dioxide"
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "id": "asq-000003",
+  "taskType": "answer-short-question",
+  "difficulty": 1,
+  "prompt": "What instrument is used to measure temperature?",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Science",
+  "estimatedSeconds": 25,
+  "taskData": {
+    "audio": {
+      "path": "/audio/answer-short-question/asq-000003.mp3",
+      "durationMs": 3816,
+      "mimeType": "audio/mpeg",
+      "sha256": "6775dd7bf620aed7c3b426ebdf8077622c0cb14cc188f4ffaf3730c36744ac91"
+    },
+    "questionTranscript": "What instrument is used to measure temperature?",
+      "acceptedAnswers": [
+        "thermometer"
+      ]
+  }
+}

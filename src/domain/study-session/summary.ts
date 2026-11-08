@@ -7,7 +7,7 @@ import type { FoundationTaskType } from '../pte/taskRegistry.ts';
 
 // A rollout must register explicit metric handling before enabling practice. No RA fallback.
 const SUMMARY_EXACT_KEYS = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' } as const);
-export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop', 'reorder-paragraph', 'respond-to-a-situation', 'write-essay'] as const);
+export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop', 'reorder-paragraph', 'respond-to-a-situation', 'write-essay', 'answer-short-question'] as const);
 type FoundationSessionSummary = Readonly<{
   taskType: 'write-from-dictation' | 'repeat-sentence' | 'read-aloud';
   questionCount: number;
@@ -50,7 +50,8 @@ export type ReadingFillBlanksDragDropSessionSummary=BlankFillSessionSummary<'rea
 export type ReorderParagraphSessionSummary=Readonly<{taskType:'reorder-paragraph';questionCount:number;correctAdjacentPairs:number;totalAdjacentPairs:number;adjacencyAccuracyPercent:number;exactOrderCount:number;firstBlockCorrectCount?:number}>;
 export type RespondToSituationSessionSummary=Readonly<{taskType:'respond-to-a-situation';questionCount:number;averageRequiredPointCoveragePercent:number;matchedRequiredPoints:number;totalRequiredPoints:number;communicationGoalDetectedCount:number;averageSpeechRatioPercent:number;averageLongPauseCount:number;averageResponseLatencyMs:number;averageSpeechRateWpm?:number;speechRateResponses?:number}>;
 export type WriteEssaySessionSummary=Readonly<{taskType:'write-essay';questionCount:number;fullFormCount:number;partialFormCount:number;zeroFormCount:number;averageWordCount:number;matchedRequirements:number;totalRequirements:number;averageRequirementCoveragePercent:number;averageParagraphCount:number;timedOutCount:number}>;
-export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary | ReadingFillBlanksDragDropSessionSummary | ReorderParagraphSessionSummary | RespondToSituationSessionSummary | WriteEssaySessionSummary;
+export type AnswerShortQuestionSessionSummary=Readonly<{taskType:'answer-short-question';questionCount:number;correctCount:number;incorrectCount:number;accuracyPercent:number;noResponseCount:number;overlongResponseCount:number}>;
+export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary | ReadingFillBlanksDragDropSessionSummary | ReorderParagraphSessionSummary | RespondToSituationSessionSummary | WriteEssaySessionSummary | AnswerShortQuestionSessionSummary;
 export type SessionSummary = Readonly<{
   sessionId: string;
   mode: StudySessionMode;
@@ -101,6 +102,11 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     if (attempt.id !== session.attemptIds[index] || attempt.itemId !== session.itemIds[index] || !task || attempt.taskType !== task ||
         (attempt.sessionId !== undefined && attempt.sessionId !== session.id)) corrupt(path);
     const metrics = object(attempt.metrics, `${path}.metrics`);
+    if(task==='answer-short-question'){
+      const raw=metric(metrics,'rawScore',path,true,1),max=metric(metrics,'maxScore',path,true,1),normalized=metric(metrics,'normalizedScore',path,true,1),words=metric(metrics,'responseWordCount',path,true,10000),duration=metric(metrics,'recordingDurationMs',path,true,10_000);
+      if(max!==1||raw!==normalized||typeof metrics.correct!=='boolean'||metrics.correct!==(raw===1)||metrics.processedLocally!==true||typeof attempt.score!=='number'||attempt.score!==raw||typeof attempt.responseText!=='string'||!Number.isFinite(attempt.durationMs)||attempt.durationMs!==duration||metrics.overlongResponse!==(words>12)||(raw===1)!==(typeof metrics.matchedAcceptedAnswer==='string'))corrupt(`${path}.answerShortQuestion`);
+      groups.set(task,[...(groups.get(task)??[]),metrics]);return;
+    }
     if (task === 'retell-lecture') {
       metric(metrics, 'keyPointCoverage', path, false, 1); metric(metrics, 'keyPointCoveragePercent', path, false, 100);
       const matched = metric(metrics, 'matchedKeyPoints', path, true), totalPoints = metric(metrics, 'totalKeyPoints', path, true);
@@ -316,6 +322,10 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     if(task==='write-essay'){
       const matchedRequirements=total(numbers('matchedRequirements'),task),totalRequirements=total(numbers('totalRequirements'),task);
       byTask[task]=Object.freeze({taskType:task,questionCount:group.length,fullFormCount:group.filter(m=>m.formPoints===2).length,partialFormCount:group.filter(m=>m.formPoints===1).length,zeroFormCount:group.filter(m=>m.formPoints===0).length,averageWordCount:mean(numbers('wordCount')),matchedRequirements,totalRequirements,averageRequirementCoveragePercent:totalRequirements?matchedRequirements/totalRequirements*100:0,averageParagraphCount:mean(numbers('paragraphCount')),timedOutCount:group.filter(m=>m.timedOut===true).length});continue;
+    }
+    if(task==='answer-short-question'){
+      const correctCount=group.filter(m=>m.correct===true).length,questionCount=group.length,noResponseCount=group.filter(m=>m.responseWordCount===0).length,overlongResponseCount=group.filter(m=>m.overlongResponse===true).length;
+      byTask[task]=Object.freeze({taskType:task,questionCount,correctCount,incorrectCount:questionCount-correctCount,accuracyPercent:questionCount?correctCount/questionCount*100:0,noResponseCount,overlongResponseCount});continue;
     }
     const correctWords = total(numbers('correctWords'), task), expectedWords = total(numbers('expectedWords'), task);
     const foundationTask = task as FoundationTaskType;

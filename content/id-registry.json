@@ -150,11 +150,31 @@
       "taskType": "write-essay",
       "kind": "technical"
     },
-    { "id": "we-000001", "taskType": "write-essay", "kind": "reserved" },
-    { "id": "we-000002", "taskType": "write-essay", "kind": "reserved" },
-    { "id": "we-000003", "taskType": "write-essay", "kind": "reserved" },
-    { "id": "we-000004", "taskType": "write-essay", "kind": "reserved" },
-    { "id": "we-000005", "taskType": "write-essay", "kind": "reserved" },
+    {
+      "id": "we-000001",
+      "taskType": "write-essay",
+      "kind": "reserved"
+    },
+    {
+      "id": "we-000002",
+      "taskType": "write-essay",
+      "kind": "reserved"
+    },
+    {
+      "id": "we-000003",
+      "taskType": "write-essay",
+      "kind": "reserved"
+    },
+    {
+      "id": "we-000004",
+      "taskType": "write-essay",
+      "kind": "reserved"
+    },
+    {
+      "id": "we-000005",
+      "taskType": "write-essay",
+      "kind": "reserved"
+    },
     {
       "id": "rfbd-900001",
       "taskType": "reading-fill-blanks-dropdown",
@@ -458,6 +478,36 @@
     {
       "id": "rts-000005",
       "taskType": "respond-to-a-situation",
+      "kind": "reserved"
+    },
+    {
+      "id": "asq-000001",
+      "taskType": "answer-short-question",
+      "kind": "reserved"
+    },
+    {
+      "id": "asq-000002",
+      "taskType": "answer-short-question",
+      "kind": "reserved"
+    },
+    {
+      "id": "asq-000003",
+      "taskType": "answer-short-question",
+      "kind": "reserved"
+    },
+    {
+      "id": "asq-000004",
+      "taskType": "answer-short-question",
+      "kind": "reserved"
+    },
+    {
+      "id": "asq-000005",
+      "taskType": "answer-short-question",
+      "kind": "reserved"
+    },
+    {
+      "id": "asq-000006",
+      "taskType": "answer-short-question",
       "kind": "reserved"
     }
   ]

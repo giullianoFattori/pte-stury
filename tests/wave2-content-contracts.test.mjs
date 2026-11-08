@@ -9,7 +9,7 @@ const audio = { path: '/audio/wave2/technical.mp3', sha256: 'a'.repeat(64), dura
 const options = [{ id: 'a', text: 'First answer', correct: true }, { id: 'b', text: 'Second answer', correct: false }, { id: 'c', text: 'Third answer', correct: true }];
 const single = [{ id: 'a', text: 'First answer', correct: true }, { id: 'b', text: 'Second answer', correct: false }];
 const fixtures = {
-  'answer-short-question': { audio, questionTranscript: 'Which planet is known as the Red Planet?', acceptedAnswers: ['Mars'] },
+  'answer-short-question': { audio: { ...audio, durationMs: 4000 }, questionTranscript: 'Which planet is known as the Red Planet?', acceptedAnswers: ['Mars'] },
   'respond-to-a-situation': { audio, promptText: 'You need to ask a lecturer for an extension.', scenario: { role: 'student', audience: 'lecturer', relationship: 'student and lecturer', communicationGoal: 'request an extension', register: 'formal' }, requiredPoints: ['explain the reason','state the requested date'] },
   'write-essay': { prompt: 'Should cities invest more in public transport?', positionType: 'agree-disagree', keyRequirements: ['state a position','support it with reasons'] },
   'reading-fill-blanks-dropdown': { segments: ['The study was ', ' over three years.'], blanks: [{ id: 'blank-1', answer: 'conducted', options: ['conducted','conducting'] }] },

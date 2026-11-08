@@ -68,7 +68,8 @@
     "test:reorder-paragraph-browser": "node tests/reorder-paragraph-browser.mjs",
     "test:respond-to-situation-browser": "node tests/respond-to-a-situation-browser.mjs",
     "test:write-essay-browser": "node tests/write-essay-browser.mjs",
-    "test:write-essay-package-browser": "node tests/write-essay-package-browser.mjs"
+    "test:write-essay-package-browser": "node tests/write-essay-package-browser.mjs",
+    "test:answer-short-question-browser": "node tests/answer-short-question-browser.mjs"
   },
   "dependencies": {
     "dexie": "^4.4.6",

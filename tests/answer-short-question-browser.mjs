@@ -1,0 +1,51 @@
+import assert from 'node:assert/strict';
+import { mkdir, writeFile } from 'node:fs/promises';
+import { createServer } from 'vite';
+import { waitForBrowserServer } from './helpers/browser-readiness.mjs';
+const { chromium } = await import(process.env.PLAYWRIGHT_MODULE ?? 'playwright');
+const vite = await createServer({ server: { host: '127.0.0.1', port: 5198, strictPort: true } }); await vite.listen();
+const base = 'http://127.0.0.1:5198'; await waitForBrowserServer(vite, `${base}/study/answer-short-question`, null); let browser;
+try {
+  browser = await chromium.launch({ executablePath: process.env.CHROME_PATH ?? '/usr/bin/google-chrome', headless: true, args: ['--no-sandbox', '--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream'] });
+  const context = await browser.newContext({ permissions: ['microphone'] }), page = await context.newPage(), errors = [], external = [], requests = [];
+  await page.addInitScript(() => { window.__asqTranscript = 'dictionary'; const original = HTMLMediaElement.prototype.play; HTMLMediaElement.prototype.play = function () { this.dataset.playCount = String(Number(this.dataset.playCount ?? 0) + 1); setTimeout(() => this.dispatchEvent(new Event('ended')), 30); return Promise.resolve(); }; window.__originalAudioPlay = original; });
+  page.on('pageerror', error => errors.push(error.message)); page.on('request', request => { const url = new URL(request.url()); if (!['127.0.0.1', 'localhost'].includes(url.hostname)) external.push(request.url()); });
+  await page.route('**/api/v1/transcribe', async route => {
+    requests.push(route.request().method());
+    const transcript = await page.evaluate(() => window.__asqTranscript);
+    if (transcript === '__NO_SPEECH__') return route.fulfill({ status: 422, contentType: 'application/json', body: JSON.stringify({ error: { code: 'NO_SPEECH', message: 'No speech was detected.' } }) });
+    return route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ text: transcript, language: 'en', engine: 'whisper.cpp', model: 'ggml-base.en', processedLocally: true, timing: { audioMs: 500, inferenceMs: 12, totalMs: 512 } }) });
+  });
+  await page.goto(`${base}/study/answer-short-question`); await page.getByRole('heading', { name: 'Answer Short Question', exact: true }).waitFor();
+  await page.getByRole('button', { name: 'Enable microphone' }).click(); await page.getByText('Microphone ready.').waitFor();
+  await page.getByRole('button', { name: 'Start question' }).click(); await page.getByRole('timer').filter({ hasText: '10 seconds' }).waitFor();
+  assert.equal(await page.locator('audio').getAttribute('data-play-count'), '1');
+  await page.getByRole('timer').waitFor({ state: 'detached', timeout: 12_000 });
+  await page.getByText('Local transcript:', { exact: false }).waitFor(); await page.getByText('✓ Correct').waitFor();
+  assert.equal(await page.getByRole('button', { name: 'Start question' }).count(), 0);
+  await page.getByRole('button', { name: 'Save attempt' }).click(); await page.getByText('Saved locally.').waitFor();
+  let attempts = await page.evaluate(async () => { const { db } = await import('/src/data/db/database.ts'); return db.attempts.where('taskType').equals('answer-short-question').toArray(); });
+  assert.equal(attempts.length, 1); assert.equal(attempts[0].responseText, 'dictionary'); assert.equal(attempts[0].score, 1); assert.equal(attempts[0].metrics.processedLocally, true);
+  await page.getByRole('button', { name: 'Retry question' }).click(); await page.evaluate(() => { window.__asqTranscript = 'A dictionary is the reference book for word meanings.'; });
+  await page.getByRole('button', { name: 'Start question' }).click(); await page.getByRole('timer').waitFor(); await page.getByRole('button', { name: 'Stop recording' }).click(); await page.getByText('✓ Correct').waitFor();
+  await page.getByRole('button', { name: 'Save attempt' }).click(); await page.getByText('Saved locally.').waitFor();
+  await page.getByRole('button', { name: 'Retry question' }).click(); await page.evaluate(() => { window.__asqTranscript = 'magazine'; });
+  await page.getByRole('button', { name: 'Start question' }).click(); await page.getByRole('timer').waitFor(); await page.getByRole('button', { name: 'Stop recording' }).click(); await page.getByText('✕ Incorrect').waitFor();
+  await page.getByRole('button', { name: 'Save attempt' }).click(); await page.getByText('Saved locally.').waitFor();
+  await page.getByRole('button', { name: 'Retry question' }).click(); await page.evaluate(() => { window.__asqTranscript = '__NO_SPEECH__'; });
+  await page.getByRole('button', { name: 'Start question' }).click(); await page.getByRole('timer').waitFor(); await page.getByRole('button', { name: 'Stop recording' }).click(); await page.getByText('✕ Incorrect').waitFor();
+  await page.getByRole('button', { name: 'Save attempt' }).click(); await page.getByText('Saved locally.').waitFor();
+  attempts = await page.evaluate(async () => { const { db } = await import('/src/data/db/database.ts'); return db.attempts.where('taskType').equals('answer-short-question').toArray(); });
+  assert.equal(attempts.length, 4); const wrong=attempts.find(attempt=>attempt.responseText==='magazine'),empty=attempts.find(attempt=>attempt.responseText==='');assert.equal(wrong?.score,0);assert.equal(empty?.score,0);assert.equal(empty?.metrics.responseWordCount,0);
+  const reviews = await page.evaluate(async () => { const { db } = await import('/src/data/db/database.ts'); const empty=(await db.attempts.where('taskType').equals('answer-short-question').toArray()).find(attempt=>attempt.responseText==='');return db.reviews.where('sourceAttemptId').equals(empty.id).count(); });
+  assert.equal(reviews, 1);
+  await page.goto(`${base}/study`); const task = page.getByRole('region', { name: 'Task Practice', exact: true });
+  await task.getByRole('radio', { name: 'Answer Short Question', exact: true }).check(); await task.getByText('6 questions available', { exact: true }).waitFor();
+  await task.getByRole('radio', { name: '3', exact: true }).check(); await task.getByRole('button', { name: 'Start Task Practice' }).click(); await page.waitForURL('**/study/session/*');
+  for (let i = 0; i < 3; i++) { await page.getByRole('button', { name: 'Enable microphone' }).click(); await page.getByText('Microphone ready.').waitFor(); await page.getByRole('button', { name: 'Start question' }).click(); await page.getByRole('timer').waitFor(); await page.getByRole('button', { name: 'Stop recording' }).click(); await page.getByRole('button', { name: 'Save attempt' }).click(); await page.getByRole('button', { name: 'Continue' }).click(); }
+  await page.getByRole('heading', { name: 'Task Practice complete' }).waitFor(); const summary = page.getByRole('region', { name: 'Answer Short Question', exact: true });
+  await summary.getByText('Accuracy').waitFor(); await summary.getByText('No response').waitFor();
+  assert.equal(await page.evaluate(() => window.__originalAudioPlay !== undefined), true); assert.deepEqual(errors, []); assert.deepEqual(external, []); assert.ok(requests.filter(method => method === 'POST').length >= 6);
+  const report = { status: 'PASS', browser: browser.version(), scope: 'standalone, one-play prompt, automatic 10-second stop, immediate recording, local Whisper contract, exact and phrase match, empty no-speech save, task practice summary', tasksReady: 16, quickPool: ['write-from-dictation', 'repeat-sentence', 'read-aloud'], schemaVersion: 2, dexieVersion: 3, externalRequests: external.length, pageErrors: errors.length };
+  await mkdir('audits', { recursive: true }); await writeFile('audits/answer-short-question-09.08-browser.json', JSON.stringify(report, null, 2) + '\n'); console.log(JSON.stringify(report));
+} finally { await browser?.close(); await vite.close(); }

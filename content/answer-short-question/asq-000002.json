@@ -1,0 +1,27 @@
+{
+  "id": "asq-000002",
+  "taskType": "answer-short-question",
+  "difficulty": 1,
+  "prompt": "Which fruit is dried to make raisins?",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Food",
+  "estimatedSeconds": 25,
+  "taskData": {
+    "audio": {
+      "path": "/audio/answer-short-question/asq-000002.mp3",
+      "durationMs": 3672,
+      "mimeType": "audio/mpeg",
+      "sha256": "e9b8ca770af84285395b1c4439ed45198f137837ca934864d3d1948e5c875ade"
+    },
+    "questionTranscript": "Which fruit is dried to make raisins?",
+    "acceptedAnswers": [
+      "grape",
+      "grapes"
+    ]
+  }
+}

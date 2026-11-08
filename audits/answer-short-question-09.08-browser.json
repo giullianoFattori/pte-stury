@@ -1,0 +1,15 @@
+{
+  "status": "PASS",
+  "browser": "154.0.8037.97",
+  "scope": "standalone, one-play prompt, automatic 10-second stop, immediate recording, local Whisper contract, exact and phrase match, empty no-speech save, task practice summary",
+  "tasksReady": 16,
+  "quickPool": [
+    "write-from-dictation",
+    "repeat-sentence",
+    "read-aloud"
+  ],
+  "schemaVersion": 2,
+  "dexieVersion": 3,
+  "externalRequests": 0,
+  "pageErrors": 0
+}

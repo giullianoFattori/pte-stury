@@ -73,7 +73,7 @@ test('source duplicates fail rather than inflate capacity or choose last row',()
 });
 for(const request of [null,[],{}, {mode:'adaptive'},{mode:'quick',itemCount:4},{mode:'quick',taskTypes:TASK_ORDER},{mode:'quick',difficulties:[]},{mode:'quick',difficulties:undefined},{mode:'quick',unknown:true},
  {mode:'task',taskTypes:[] ,itemCount:1},{mode:'task',taskTypes:[wfd,rs],itemCount:1},{mode:'task',taskTypes:[wfd]},
- {mode:'mixed',taskTypes:[wfd],itemCount:1},{mode:'mixed',taskTypes:[wfd,wfd],itemCount:1},{mode:'mixed',taskTypes:['answer-short-question',rs],itemCount:1},
+ {mode:'mixed',taskTypes:[wfd],itemCount:1},{mode:'mixed',taskTypes:[wfd,wfd],itemCount:1},
  ...[0,-1,501,1.5,'2',NaN,Infinity].map(itemCount=>({...mixed(),itemCount})),
  ...[[],[0],[6],['2'],[2,2]].map(difficulties=>({...mixed(),difficulties})),{...mixed(),excludeIds:['ra-001']}])test('invalid dynamic request '+JSON.stringify(request),()=>error(()=>validateBuildRequest(request),'INVALID_SESSION_CONFIG'));
 test('request getters, sparse arrays and inherited objects fail without reading accessors',()=>{

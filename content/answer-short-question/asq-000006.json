@@ -1,0 +1,26 @@
+{
+  "id": "asq-000006",
+  "taskType": "answer-short-question",
+  "difficulty": 1,
+  "prompt": "Which planet is known as the Red Planet?",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Astronomy",
+  "estimatedSeconds": 25,
+  "taskData": {
+    "audio": {
+      "path": "/audio/answer-short-question/asq-000006.mp3",
+      "durationMs": 3432,
+      "mimeType": "audio/mpeg",
+      "sha256": "5fd57de28f0b608a7b19bb5a5565029377300224671b2f9929080a9c192c8b01"
+    },
+    "questionTranscript": "Which planet is known as the Red Planet?",
+    "acceptedAnswers": [
+      "Mars"
+    ]
+  }
+}

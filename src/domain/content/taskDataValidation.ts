@@ -95,6 +95,12 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
   }
   if (task === 'answer-short-question') {
     const asq = data as import('../pte/taskData').AnswerShortQuestionItemData;
+    if (asq.audio.durationMs === undefined || asq.audio.durationMs < 3000 || asq.audio.durationMs > 9000) invalid('taskData.audio.durationMs', 'Answer Short Question prompt audio must declare a duration from 3 to 9 seconds.');
+    const normalize = (value: string) => value.normalize('NFKC').replace(/[’‘`]/gu, "'").trim().toLocaleLowerCase('en').replace(/\s+/gu, ' ').replace(/[.!?,;:]+$/gu, '').replace(/^(?:a|an|the)\s+/u, '');
+    const answers = asq.acceptedAnswers.map(normalize);
+    if (!asq.questionTranscript.trim()) invalid('taskData.questionTranscript', 'Question transcript must not be empty.');
+    if (!asq.acceptedAnswers.length || answers.some(answer => !answer) || new Set(answers).size !== answers.length) invalid('taskData.acceptedAnswers', 'Accepted answers must be non-empty and unique after normalization.');
+    if (asq.acceptedAnswers.some(answer => countWords(answer) > 6)) invalid('taskData.acceptedAnswers', 'Accepted answers must contain no more than six words.');
     if (asq.image ? !asq.imageAlt?.trim() : asq.imageAlt !== undefined) invalid('taskData.imageAlt', 'An optional image requires authored alt text, and alt text requires its image.');
   }
   if ('options' in data) {

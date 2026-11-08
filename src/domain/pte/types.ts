@@ -74,7 +74,7 @@ export type StudyItem<T extends PteTaskType = PteTaskType> = {
   catalogAvailable?: boolean;
 };
 
-export type AttemptMetricValue = number | boolean;
+export type AttemptMetricValue = number | boolean | string;
 export type LegacyHiuAttemptResponseData = Readonly<{
   kind?: never;
   selectedTokenIds?: readonly string[];

@@ -15,10 +15,11 @@ const runtimeAdapter: SpeechToTextAdapter = new WhisperCppSpeechToTextAdapter();
 type UseSpeechTranscriptionOptions = {
   language?: string;
   adapter?: SpeechToTextAdapter;
+  allowNoSpeechAsEmpty?: boolean;
 };
 
 export function useSpeechTranscription({
-  language: initialLanguage, adapter = runtimeAdapter,
+  language: initialLanguage, adapter = runtimeAdapter, allowNoSpeechAsEmpty = false,
 }: UseSpeechTranscriptionOptions = {}) {
   const provider = adapter.provider ?? BROWSER_SPEECH_PROVIDER;
   const [language, setLanguage] = useState(provider.kind === 'local-runtime' ? DEFAULT_TRANSCRIPTION_LANGUAGE : initialLanguage ?? 'en-AU');
@@ -112,6 +113,12 @@ export function useSpeechTranscription({
           setStatus('success');
         }
       } catch (error) {
+        if (allowNoSpeechAsEmpty && error instanceof SpeechToTextError && error.code === 'no-speech'
+          && mountedRef.current && generation === generationRef.current && provider.kind === 'local-runtime') {
+          setResult({ text: '', engine: 'whisper.cpp', language: 'en', processedLocally: true });
+          setStatus('success');
+          return;
+        }
         if (mountedRef.current && generation === generationRef.current) showError(error);
       }
     });

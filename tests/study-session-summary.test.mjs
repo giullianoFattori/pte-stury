@@ -23,6 +23,12 @@ test('mixed grouping, frozen deterministic result, wall clock, no overall score 
  assert.deepEqual(Object.values(s.byTask).map(v=>v.questionCount),[2,2,1]);assert.equal(s.score,undefined);assert.equal(s.overallScore,undefined);
  assert.deepEqual(summary(f),s);assert.deepEqual(f,before);assert.ok(Object.isFrozen(s)&&Object.isFrozen(s.byTask)&&Object.values(s.byTask).every(Object.isFrozen));
 });
+test('ASQ summary validates item-level deterministic scores and counts empty and overlong responses',()=>{
+ const startedAt='2026-10-17T10:00:00.000Z',finishedAt='2026-10-17T10:01:00.000Z',session={id:'asq-summary',mode:'task',status:'completed',startedAt,finishedAt,taskTypes:['answer-short-question'],itemIds:['asq-000001','asq-000002'],currentIndex:2,attemptIds:['asq-attempt-1','asq-attempt-2'],config:{itemCount:2,taskTypes:['answer-short-question']}};
+ const attempts=[{id:'asq-attempt-1',itemId:'asq-000001',sessionId:session.id,taskType:'answer-short-question',createdAt:startedAt,responseText:'newspaper',durationMs:2000,score:1,metrics:{rawScore:1,maxScore:1,normalizedScore:1,correct:true,matchedAcceptedAnswer:'newspaper',responseWordCount:1,overlongResponse:false,processedLocally:true,recordingDurationMs:2000}},{id:'asq-attempt-2',itemId:'asq-000002',sessionId:session.id,taskType:'answer-short-question',createdAt:startedAt,responseText:'',durationMs:10000,score:0,metrics:{rawScore:0,maxScore:1,normalizedScore:0,correct:false,responseWordCount:0,overlongResponse:false,processedLocally:true,recordingDurationMs:10000}}];
+ const result=buildSessionSummary(session,attempts).byTask['answer-short-question'];assert.deepEqual(result,{taskType:'answer-short-question',questionCount:2,correctCount:1,incorrectCount:1,accuracyPercent:50,noResponseCount:1,overlongResponseCount:0});
+ attempts[1].metrics.processedLocally=false;assert.throws(()=>buildSessionSummary(session,attempts),error=>error.code==='SESSION_SUMMARY_CORRUPT');
+});
 test('WFD weights by words, not sentence percentage; totals and exact count',()=>{
  const f=fixture([tasks[0],tasks[0]]);Object.assign(f.attempts[0].metrics,{correctWords:2,expectedWords:2,totalErrors:0,exactMatch:true});
  const s=summary(f).byTask[tasks[0]];assert.equal(s.accuracyPercent,10/12*100);assert.equal(s.correctWords,10);assert.equal(s.expectedWords,12);assert.equal(s.totalErrors,2);assert.equal(s.exactCount,1);

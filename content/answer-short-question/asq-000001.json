@@ -1,0 +1,27 @@
+{
+  "id": "asq-000001",
+  "taskType": "answer-short-question",
+  "difficulty": 1,
+  "prompt": "What do we call a reference book that explains the meanings of words?",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Vocabulary",
+  "estimatedSeconds": 25,
+  "taskData": {
+    "audio": {
+      "path": "/audio/answer-short-question/asq-000001.mp3",
+      "durationMs": 5112,
+      "mimeType": "audio/mpeg",
+      "sha256": "a5f96355172634f2f00eb767f26bda601bd4643a5ba80270849ab2c26a57b9eb"
+    },
+    "questionTranscript": "What do we call a reference book that explains the meanings of words?",
+    "acceptedAnswers": [
+      "dictionary",
+      "dictionaries"
+    ]
+  }
+}

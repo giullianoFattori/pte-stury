@@ -14,7 +14,7 @@ import { initializeQuestionBank, syncQuestionBank } from '../src/data/question-b
 const legacy = [...writeFromDictationQuestions, ...repeatSentenceQuestions, ...readAloudQuestions];
 const catalog = generatedQuestionBank();
 test('published practice items extend the bank while all 17 foundation items retain every semantic field', async () => {
-  assert.equal(catalog.bundle.items.length, 71);
+  assert.equal(catalog.bundle.items.length, 77);
   for (const old of legacy) {
     const item = catalog.bundle.items.find(i => i.id === old.id);
     for (const key of ['id','taskType','difficulty','prompt','answer','transcript','chunks','phraseGroups','stressWords']) assert.deepEqual(item[key], old[key], old.id + '.' + key);
@@ -23,12 +23,12 @@ test('published practice items extend the bank while all 17 foundation items ret
     if (item.audio) { assert.match(item.audio.sha256, /^[a-f0-9]{64}$/); assert.ok(item.audio.durationMs > 0); }
     const authored = JSON.parse(await readFile(`content/${item.taskType}/${item.id}.json`, 'utf8')); assert.equal(authored.id, old.id);
   }
-  assert.deepEqual(catalog.manifest.countsByTaskType, { ...taskRecord(()=>0), 'write-from-dictation':5,'repeat-sentence':6,'read-aloud':6,'retell-lecture':4,'summarize-group-discussion':3,'describe-image':4,'summarize-written-text':4,'summarize-spoken-text':4,'highlight-incorrect-words':5,'listening-fill-blanks-type-in':5,'reading-fill-blanks-dropdown':5,'reading-fill-blanks-drag-drop':5,'reorder-paragraph':5,'respond-to-a-situation':5,'write-essay':5 });
+  assert.deepEqual(catalog.manifest.countsByTaskType, { ...taskRecord(()=>0), 'write-from-dictation':5,'repeat-sentence':6,'read-aloud':6,'retell-lecture':4,'summarize-group-discussion':3,'describe-image':4,'summarize-written-text':4,'summarize-spoken-text':4,'highlight-incorrect-words':5,'listening-fill-blanks-type-in':5,'reading-fill-blanks-dropdown':5,'reading-fill-blanks-drag-drop':5,'reorder-paragraph':5,'respond-to-a-situation':5,'write-essay':5,'answer-short-question':6 });
   assert.equal(catalog.bundle.items.some(i => i.id.endsWith('900001')), false);
 });
-test('fresh bootstrap installs exactly 71 eligible rows; repeated bootstrap writes nothing', async t => {
+test('fresh bootstrap installs exactly 77 eligible rows; repeated bootstrap writes nothing', async t => {
   const db = await database(t); assert.equal((await bootstrapApp(db)).status, 'installed');
-  assert.equal((await db.studyItems.toArray()).filter(isPracticeEligible).length, 71);
+  assert.equal((await db.studyItems.toArray()).filter(isPracticeEligible).length, 77);
   const before = await snapshot(db); assert.equal((await bootstrapApp(db)).status, 'unchanged'); assert.deepEqual(await snapshot(db), before);
   assert.equal(await db.attempts.count(), 0);
   assert.equal((await db.contentState.get('question-bank')).contentVersion, catalog.manifest.contentVersion);
@@ -49,6 +49,6 @@ test('previously installed technical drafts remain historical unavailable rows, 
  const db = await database(t), technical = [];
  for(const [task,prefix]of [['write-from-dictation','wfd'],['repeat-sentence','rs'],['read-aloud','ra']]) technical.push(JSON.parse(await readFile(`content/examples/technical/${task}/${prefix}-900001.json`,'utf8')));
  const previous = makeCatalog(technical);await db.studyItems.bulkAdd(legacy);await syncQuestionBank(previous.bundle,previous.manifest,db);await bootstrapApp(db);
- const all=await db.studyItems.toArray();assert.equal(all.length,74);assert.equal(all.filter(isPracticeEligible).length,71);
+ const all=await db.studyItems.toArray();assert.equal(all.length,80);assert.equal(all.filter(isPracticeEligible).length,77);
  for(const item of technical){const row=await db.studyItems.get(item.id);assert.equal(row.status,'draft');assert.equal(row.catalogAvailable,false);assert.equal(isPracticeEligible(row),false);}
 });

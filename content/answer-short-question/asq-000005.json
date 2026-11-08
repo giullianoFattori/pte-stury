@@ -1,0 +1,26 @@
+{
+  "id": "asq-000005",
+  "taskType": "answer-short-question",
+  "difficulty": 1,
+  "prompt": "What is the process called when liquid water changes into water vapour?",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Earth science",
+  "estimatedSeconds": 25,
+  "taskData": {
+    "audio": {
+      "path": "/audio/answer-short-question/asq-000005.mp3",
+      "durationMs": 5496,
+      "mimeType": "audio/mpeg",
+      "sha256": "a3b6b0151bc28151d5d5e8cb743de32affd9a0a766b28c05660b97dbf34f5b78"
+    },
+    "questionTranscript": "What is the process called when liquid water changes into water vapour?",
+    "acceptedAnswers": [
+      "evaporation"
+    ]
+  }
+}

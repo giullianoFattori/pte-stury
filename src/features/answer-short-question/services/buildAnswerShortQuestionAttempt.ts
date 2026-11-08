@@ -1,0 +1,6 @@
+import type { Attempt, StudyItem } from '../../../domain/pte/types.ts';
+import type { AnswerShortQuestionScore } from '../../../domain/scoring/answer-short-question/types.ts';
+export function buildAnswerShortQuestionAttempt({ question, transcript, score, processedLocally, durationMs }: { question: StudyItem; transcript: string; score: AnswerShortQuestionScore; processedLocally: boolean; durationMs: number }): Attempt {
+  if (question.taskType !== 'answer-short-question' || processedLocally !== true) throw new Error('Only locally transcribed Answer Short Question responses can be saved.');
+  return { id: crypto.randomUUID(), itemId: question.id, ...(question.revision === undefined ? {} : { itemRevision: question.revision }), taskType: 'answer-short-question', createdAt: new Date().toISOString(), responseText: transcript, durationMs, score: score.rawScore, metrics: { rawScore: score.rawScore, maxScore: score.maxScore, normalizedScore: score.normalizedScore, correct: score.correct, ...(score.matchedAcceptedAnswer ? { matchedAcceptedAnswer: score.matchedAcceptedAnswer } : {}), responseWordCount: score.responseWordCount, overlongResponse: score.overlongResponse, processedLocally, recordingDurationMs: durationMs } };
+}
