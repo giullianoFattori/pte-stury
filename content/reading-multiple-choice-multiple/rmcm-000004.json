@@ -1,0 +1,40 @@
+{
+  "id": "rmcm-000004",
+  "taskType": "reading-multiple-choice-multiple",
+  "difficulty": 2,
+  "prompt": "Read the passage about museum collections and select all answers that you think are correct.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Museum collections",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "passage": "A regional museum digitised part of its collection so that people who could not visit in person could examine objects online. Photographs were accompanied by descriptions, dates where known, and notes about how each object entered the collection. At first, staff assumed that a single photograph and a short label would be sufficient. Feedback from teachers and community researchers showed otherwise: users wanted to see details from several angles and to understand where uncertainty remained in the historical record.\n\nThe museum revised its catalogue to distinguish documented facts from interpretations and added images when resources allowed. Some objects could not be photographed freely because agreements with their originating communities placed limits on public display. Rather than treating those limits as obstacles to be removed, the museum consulted community representatives about appropriate access. Digitisation made searching easier, but staff observed that online images could not convey every physical feature, including weight and texture. The project therefore continued to support in person study as well. Its experience suggests that useful digital access requires more than creating image files: descriptions, permissions and consultation all shape what visitors can learn.",
+    "question": "Which statements are consistent with the author\u2019s position?",
+    "options": [
+      {
+        "id": "option-1",
+        "text": "Digital access depends on descriptions and appropriate permissions as well as images.",
+        "correct": true
+      },
+      {
+        "id": "option-2",
+        "text": "Consultation with originating communities can shape access to objects.",
+        "correct": true
+      },
+      {
+        "id": "option-3",
+        "text": "Online images convey every physical property of an object.",
+        "correct": false
+      },
+      {
+        "id": "option-4",
+        "text": "The museum removed all restrictions on public display.",
+        "correct": false
+      }
+    ]
+  }
+}

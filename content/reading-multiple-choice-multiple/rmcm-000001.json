@@ -1,0 +1,45 @@
+{
+  "id": "rmcm-000001",
+  "taskType": "reading-multiple-choice-multiple",
+  "difficulty": 2,
+  "prompt": "Read the passage about urban trees and select all answers that you think are correct.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Urban trees",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "passage": "City trees can reduce the effects of hot weather, but their benefits depend on where and how they are planted. Leaves shade pavements and buildings, reducing the amount of sunlight absorbed by hard surfaces. Trees also release water through their leaves, a process that can cool surrounding air. A small tree in a dry, paved site, however, may provide little shade and struggle to survive. For this reason, urban planners increasingly consider soil volume, access to water and the space needed for roots before choosing a planting location.\n\nTrees are not a complete solution to urban heat. A canopy may take years to develop, and some streets have underground services that restrict planting. Species selection matters too: a tree suited to a wet climate may need costly irrigation in a dry one. Residents can help by reporting damaged trees and watering young ones during establishment, but councils remain responsible for long term care. A successful programme therefore combines planting with maintenance, heat conscious building design and other measures such as shaded public spaces. Counting newly planted trees alone does not show whether a neighbourhood has become cooler; survival and canopy cover should also be measured over time.",
+    "question": "Which statements are supported by the passage?",
+    "options": [
+      {
+        "id": "option-1",
+        "text": "Trees can cool streets through shade and water released by leaves.",
+        "correct": true
+      },
+      {
+        "id": "option-2",
+        "text": "Measuring survival and canopy cover can help assess a planting programme.",
+        "correct": true
+      },
+      {
+        "id": "option-3",
+        "text": "Any species will thrive wherever a council plants it.",
+        "correct": false
+      },
+      {
+        "id": "option-4",
+        "text": "The author says trees remove the need for other heat measures.",
+        "correct": false
+      },
+      {
+        "id": "option-5",
+        "text": "Newly planted trees provide a full canopy immediately.",
+        "correct": false
+      }
+    ]
+  }
+}

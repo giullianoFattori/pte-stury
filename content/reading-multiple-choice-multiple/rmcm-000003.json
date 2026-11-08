@@ -1,0 +1,45 @@
+{
+  "id": "rmcm-000003",
+  "taskType": "reading-multiple-choice-multiple",
+  "difficulty": 2,
+  "prompt": "Read the passage about food waste and select all answers that you think are correct.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "reading"
+  ],
+  "topic": "Food waste",
+  "estimatedSeconds": 150,
+  "taskData": {
+    "passage": "A town council tested two ways of reducing food waste in school cafeterias. In some schools, students could choose smaller portions and return for more if they were still hungry. Other schools displayed information about the environmental cost of wasted food. The council weighed discarded food before the trial and again during the following term. Both approaches were intended to reduce waste, but the organisers warned that the schools differed in size and menu choices, making direct comparisons difficult.\n\nThe portion choice schools reported a larger fall in discarded food during the trial. Staff also observed shorter lunch queues on days when popular meals were served, although the study did not establish why. Information displays were less costly to introduce and may have encouraged discussion, but a poster by itself could not change the size of a serving. Before expanding either approach, the council plans to repeat the measurements across more schools and account for seasonal changes in attendance. It will also ask students whether they feel they have enough time and choice at lunch. The trial illustrates how a practical intervention can look promising while still requiring further evidence before a broader decision is made.",
+    "question": "Which conclusions are supported by the trial?",
+    "options": [
+      {
+        "id": "option-1",
+        "text": "Portion choice schools reported a larger reduction in discarded food.",
+        "correct": true
+      },
+      {
+        "id": "option-2",
+        "text": "Differences between schools limit direct comparison of the approaches.",
+        "correct": true
+      },
+      {
+        "id": "option-3",
+        "text": "The trial established why lunch queues became shorter.",
+        "correct": false
+      },
+      {
+        "id": "option-4",
+        "text": "The council has already proved posters cannot influence discussion.",
+        "correct": false
+      },
+      {
+        "id": "option-5",
+        "text": "Seasonal attendance changes will be ignored in the next study.",
+        "correct": false
+      }
+    ]
+  }
+}

@@ -19,6 +19,7 @@ import { ReorderParagraphPage } from '../features/reorder-paragraph/ReorderParag
 import { RespondToSituationPage } from '../features/respond-to-a-situation/RespondToSituationPage';
 import { WriteEssayPage } from '../features/write-essay/WriteEssayPage';
 import { AnswerShortQuestionPage } from '../features/answer-short-question/AnswerShortQuestionPage';
+import { ReadingMultipleChoiceMultiplePage } from '../features/reading-multiple-choice-multiple/ReadingMultipleChoiceMultiplePage';
 
 export const router = createBrowserRouter([
   {
@@ -97,6 +98,7 @@ export const router = createBrowserRouter([
         element: <WriteEssayPage />,
       },
       { path: '/study/answer-short-question', element: <AnswerShortQuestionPage /> },
+      { path: '/study/reading-multiple-choice-multiple', element: <ReadingMultipleChoiceMultiplePage /> },
       {
         path: '/review',
         element: <PlaceholderPage title="Review" />,

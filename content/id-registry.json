@@ -509,6 +509,31 @@
       "id": "asq-000006",
       "taskType": "answer-short-question",
       "kind": "reserved"
+    },
+    {
+      "id": "rmcm-000001",
+      "taskType": "reading-multiple-choice-multiple",
+      "kind": "reserved"
+    },
+    {
+      "id": "rmcm-000002",
+      "taskType": "reading-multiple-choice-multiple",
+      "kind": "reserved"
+    },
+    {
+      "id": "rmcm-000003",
+      "taskType": "reading-multiple-choice-multiple",
+      "kind": "reserved"
+    },
+    {
+      "id": "rmcm-000004",
+      "taskType": "reading-multiple-choice-multiple",
+      "kind": "reserved"
+    },
+    {
+      "id": "rmcm-000005",
+      "taskType": "reading-multiple-choice-multiple",
+      "kind": "reserved"
     }
   ]
 }

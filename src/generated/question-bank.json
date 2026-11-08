@@ -4487,6 +4487,216 @@
       ],
       "topic": "Astronomy",
       "estimatedSeconds": 25
+    },
+    {
+      "id": "rmcm-000001",
+      "taskType": "reading-multiple-choice-multiple",
+      "difficulty": 2,
+      "prompt": "Read the passage about urban trees and select all answers that you think are correct.",
+      "taskData": {
+        "passage": "City trees can reduce the effects of hot weather, but their benefits depend on where and how they are planted. Leaves shade pavements and buildings, reducing the amount of sunlight absorbed by hard surfaces. Trees also release water through their leaves, a process that can cool surrounding air. A small tree in a dry, paved site, however, may provide little shade and struggle to survive. For this reason, urban planners increasingly consider soil volume, access to water and the space needed for roots before choosing a planting location.\n\nTrees are not a complete solution to urban heat. A canopy may take years to develop, and some streets have underground services that restrict planting. Species selection matters too: a tree suited to a wet climate may need costly irrigation in a dry one. Residents can help by reporting damaged trees and watering young ones during establishment, but councils remain responsible for long term care. A successful programme therefore combines planting with maintenance, heat conscious building design and other measures such as shaded public spaces. Counting newly planted trees alone does not show whether a neighbourhood has become cooler; survival and canopy cover should also be measured over time.",
+        "question": "Which statements are supported by the passage?",
+        "options": [
+          {
+            "id": "option-1",
+            "text": "Trees can cool streets through shade and water released by leaves.",
+            "correct": true
+          },
+          {
+            "id": "option-2",
+            "text": "Measuring survival and canopy cover can help assess a planting programme.",
+            "correct": true
+          },
+          {
+            "id": "option-3",
+            "text": "Any species will thrive wherever a council plants it.",
+            "correct": false
+          },
+          {
+            "id": "option-4",
+            "text": "The author says trees remove the need for other heat measures.",
+            "correct": false
+          },
+          {
+            "id": "option-5",
+            "text": "Newly planted trees provide a full canopy immediately.",
+            "correct": false
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Urban trees",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rmcm-000002",
+      "taskType": "reading-multiple-choice-multiple",
+      "difficulty": 2,
+      "prompt": "Read the passage about library research and select all answers that you think are correct.",
+      "taskData": {
+        "passage": "A university library introduced a short course to help first year students evaluate online sources. Staff had noticed that students could usually locate information quickly, yet often found it harder to judge whether a source was reliable or relevant to an assignment. The course asked students to compare publication dates, identify authors and follow references to their original sources. It also showed that a source may be reliable for one question but unsuitable for another. A government report, for example, might provide useful population figures while offering little insight into an individual's experience.\n\nAfter the first semester, librarians reviewed attendance records and asked students for feedback. Many participants said that tracing a claim back to its source was useful, though some wanted examples from their own subject areas. The library therefore invited teaching staff to contribute discipline specific exercises. Attendance alone could not establish whether students had improved their research skills, so the team also began examining how participants explained their source choices in later assignments. The librarians do not claim that a single course can resolve every research problem. They see it as an introduction that should be reinforced by practice and feedback throughout a degree.",
+        "question": "Which statements reflect the library programme?",
+        "options": [
+          {
+            "id": "option-1",
+            "text": "Students were taught to check authors and trace references.",
+            "correct": true
+          },
+          {
+            "id": "option-2",
+            "text": "The library used feedback to add examples from different subjects.",
+            "correct": true
+          },
+          {
+            "id": "option-3",
+            "text": "Attendance figures alone proved that research skills improved.",
+            "correct": false
+          },
+          {
+            "id": "option-4",
+            "text": "The course treats every reliable source as suitable for every question.",
+            "correct": false
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Library research",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rmcm-000003",
+      "taskType": "reading-multiple-choice-multiple",
+      "difficulty": 2,
+      "prompt": "Read the passage about food waste and select all answers that you think are correct.",
+      "taskData": {
+        "passage": "A town council tested two ways of reducing food waste in school cafeterias. In some schools, students could choose smaller portions and return for more if they were still hungry. Other schools displayed information about the environmental cost of wasted food. The council weighed discarded food before the trial and again during the following term. Both approaches were intended to reduce waste, but the organisers warned that the schools differed in size and menu choices, making direct comparisons difficult.\n\nThe portion choice schools reported a larger fall in discarded food during the trial. Staff also observed shorter lunch queues on days when popular meals were served, although the study did not establish why. Information displays were less costly to introduce and may have encouraged discussion, but a poster by itself could not change the size of a serving. Before expanding either approach, the council plans to repeat the measurements across more schools and account for seasonal changes in attendance. It will also ask students whether they feel they have enough time and choice at lunch. The trial illustrates how a practical intervention can look promising while still requiring further evidence before a broader decision is made.",
+        "question": "Which conclusions are supported by the trial?",
+        "options": [
+          {
+            "id": "option-1",
+            "text": "Portion choice schools reported a larger reduction in discarded food.",
+            "correct": true
+          },
+          {
+            "id": "option-2",
+            "text": "Differences between schools limit direct comparison of the approaches.",
+            "correct": true
+          },
+          {
+            "id": "option-3",
+            "text": "The trial established why lunch queues became shorter.",
+            "correct": false
+          },
+          {
+            "id": "option-4",
+            "text": "The council has already proved posters cannot influence discussion.",
+            "correct": false
+          },
+          {
+            "id": "option-5",
+            "text": "Seasonal attendance changes will be ignored in the next study.",
+            "correct": false
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Food waste",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rmcm-000004",
+      "taskType": "reading-multiple-choice-multiple",
+      "difficulty": 2,
+      "prompt": "Read the passage about museum collections and select all answers that you think are correct.",
+      "taskData": {
+        "passage": "A regional museum digitised part of its collection so that people who could not visit in person could examine objects online. Photographs were accompanied by descriptions, dates where known, and notes about how each object entered the collection. At first, staff assumed that a single photograph and a short label would be sufficient. Feedback from teachers and community researchers showed otherwise: users wanted to see details from several angles and to understand where uncertainty remained in the historical record.\n\nThe museum revised its catalogue to distinguish documented facts from interpretations and added images when resources allowed. Some objects could not be photographed freely because agreements with their originating communities placed limits on public display. Rather than treating those limits as obstacles to be removed, the museum consulted community representatives about appropriate access. Digitisation made searching easier, but staff observed that online images could not convey every physical feature, including weight and texture. The project therefore continued to support in person study as well. Its experience suggests that useful digital access requires more than creating image files: descriptions, permissions and consultation all shape what visitors can learn.",
+        "question": "Which statements are consistent with the author’s position?",
+        "options": [
+          {
+            "id": "option-1",
+            "text": "Digital access depends on descriptions and appropriate permissions as well as images.",
+            "correct": true
+          },
+          {
+            "id": "option-2",
+            "text": "Consultation with originating communities can shape access to objects.",
+            "correct": true
+          },
+          {
+            "id": "option-3",
+            "text": "Online images convey every physical property of an object.",
+            "correct": false
+          },
+          {
+            "id": "option-4",
+            "text": "The museum removed all restrictions on public display.",
+            "correct": false
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "Museum collections",
+      "estimatedSeconds": 150
+    },
+    {
+      "id": "rmcm-000005",
+      "taskType": "reading-multiple-choice-multiple",
+      "difficulty": 2,
+      "prompt": "Read the passage about river monitoring and select all answers that you think are correct.",
+      "taskData": {
+        "passage": "Volunteers and scientists worked together to monitor a river after a series of heavy rain events. Volunteers recorded water levels at several bridges and collected observations of litter and erosion. Scientists took samples at fewer locations because laboratory analysis was expensive. Neither set of observations was sufficient on its own: a water level reading did not reveal the chemical composition of the water, while a sample from one location could not describe conditions along the whole river.\n\nThe team agreed on a shared recording schedule and trained volunteers to use the same measurement method. Even so, some readings were missed when bridges were unsafe to approach. The published report marked these gaps instead of filling them with invented values. It also explained that changes following a storm could have several causes, including runoff from roads and changes upstream. The project did not claim to identify the source of every pollutant. Its immediate purpose was to identify patterns that could guide more detailed sampling. By combining local observations with laboratory measurements and reporting uncertainty, the team produced a more informative record than either group could have assembled with its available resources alone.",
+        "question": "Which statements are supported by the passage?",
+        "options": [
+          {
+            "id": "option-1",
+            "text": "Volunteer readings and laboratory samples supplied different kinds of information.",
+            "correct": true
+          },
+          {
+            "id": "option-2",
+            "text": "The report identified missing observations rather than inventing measurements.",
+            "correct": true
+          },
+          {
+            "id": "option-3",
+            "text": "The project identified the source of every pollutant.",
+            "correct": false
+          },
+          {
+            "id": "option-4",
+            "text": "Volunteers collected readings at unsafe bridges without interruption.",
+            "correct": false
+          }
+        ]
+      },
+      "revision": 1,
+      "status": "active",
+      "source": "internal",
+      "skills": [
+        "reading"
+      ],
+      "topic": "River monitoring",
+      "estimatedSeconds": 150
     }
   ]
 }
