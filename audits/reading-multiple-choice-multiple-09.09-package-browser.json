@@ -1,0 +1,11 @@
+{
+  "status": "PASS",
+  "platform": "linux-x64 packaged launcher",
+  "browser": "154.0.8037.97",
+  "standaloneScoring": "1 / 2",
+  "standaloneSave": "PASS",
+  "taskPracticeThreeItems": "PASS",
+  "summary": "PASS",
+  "pageErrors": 0,
+  "externalRequests": 0
+}
