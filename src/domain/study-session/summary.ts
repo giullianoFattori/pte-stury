@@ -7,7 +7,7 @@ import type { FoundationTaskType } from '../pte/taskRegistry.ts';
 
 // A rollout must register explicit metric handling before enabling practice. No RA fallback.
 const SUMMARY_EXACT_KEYS = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' } as const);
-export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop', 'reorder-paragraph', 'respond-to-a-situation', 'write-essay', 'answer-short-question'] as const);
+export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop', 'reorder-paragraph', 'respond-to-a-situation', 'write-essay', 'answer-short-question', 'reading-multiple-choice-multiple'] as const);
 type FoundationSessionSummary = Readonly<{
   taskType: 'write-from-dictation' | 'repeat-sentence' | 'read-aloud';
   questionCount: number;
@@ -51,7 +51,8 @@ export type ReorderParagraphSessionSummary=Readonly<{taskType:'reorder-paragraph
 export type RespondToSituationSessionSummary=Readonly<{taskType:'respond-to-a-situation';questionCount:number;averageRequiredPointCoveragePercent:number;matchedRequiredPoints:number;totalRequiredPoints:number;communicationGoalDetectedCount:number;averageSpeechRatioPercent:number;averageLongPauseCount:number;averageResponseLatencyMs:number;averageSpeechRateWpm?:number;speechRateResponses?:number}>;
 export type WriteEssaySessionSummary=Readonly<{taskType:'write-essay';questionCount:number;fullFormCount:number;partialFormCount:number;zeroFormCount:number;averageWordCount:number;matchedRequirements:number;totalRequirements:number;averageRequirementCoveragePercent:number;averageParagraphCount:number;timedOutCount:number}>;
 export type AnswerShortQuestionSessionSummary=Readonly<{taskType:'answer-short-question';questionCount:number;correctCount:number;incorrectCount:number;accuracyPercent:number;noResponseCount:number;overlongResponseCount:number}>;
-export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary | ReadingFillBlanksDragDropSessionSummary | ReorderParagraphSessionSummary | RespondToSituationSessionSummary | WriteEssaySessionSummary | AnswerShortQuestionSessionSummary;
+export type ReadingMultipleChoiceMultipleSessionSummary=Readonly<{taskType:'reading-multiple-choice-multiple';questionCount:number;totalRawScore:number;totalClampedScore:number;totalMaxScore:number;correctSelections:number;incorrectSelections:number;missedCorrectOptions:number;overallPrecisionPercent:number;overallRecallPercent:number}>;
+export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary | ReadingFillBlanksDragDropSessionSummary | ReorderParagraphSessionSummary | RespondToSituationSessionSummary | WriteEssaySessionSummary | AnswerShortQuestionSessionSummary | ReadingMultipleChoiceMultipleSessionSummary;
 export type SessionSummary = Readonly<{
   sessionId: string;
   mode: StudySessionMode;
@@ -102,6 +103,13 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     if (attempt.id !== session.attemptIds[index] || attempt.itemId !== session.itemIds[index] || !task || attempt.taskType !== task ||
         (attempt.sessionId !== undefined && attempt.sessionId !== session.id)) corrupt(path);
     const metrics = object(attempt.metrics, `${path}.metrics`);
+    if(task==='reading-multiple-choice-multiple'){
+      const response=object(attempt.responseData,`${path}.responseData`),ids=response.selectedOptionIds;
+      if(response.kind!=='multiple-choice'||!Array.isArray(ids)||ids.some(id=>typeof id!=='string'||!id)||new Set(ids).size!==ids.length)corrupt(`${path}.responseData`);
+      const raw=metrics.rawScore,clamped=metric(metrics,'clampedScore',path,true),max=metric(metrics,'maxScore',path,true),correct=metric(metrics,'correctSelections',path,true),incorrect=metric(metrics,'incorrectSelections',path,true),missed=metric(metrics,'missedCorrectOptions',path,true),precision=metric(metrics,'precision',path,false,1),recall=metric(metrics,'recall',path,false,1);
+      if(typeof raw!=='number'||!Number.isSafeInteger(raw)||max<2||correct+missed!==max||correct+incorrect!==ids.length||raw!==correct-incorrect||clamped!==Math.max(0,raw)||Math.abs(precision-(ids.length?correct/ids.length:0))>1e-8||Math.abs(recall-correct/max)>1e-8||typeof attempt.score!=='number'||Math.abs(attempt.score-clamped/max)>1e-8)corrupt(`${path}.score`);
+      groups.set(task,[...(groups.get(task)??[]),metrics]);return;
+    }
     if(task==='answer-short-question'){
       const raw=metric(metrics,'rawScore',path,true,1),max=metric(metrics,'maxScore',path,true,1),normalized=metric(metrics,'normalizedScore',path,true,1),words=metric(metrics,'responseWordCount',path,true,10000),duration=metric(metrics,'recordingDurationMs',path,true,10_000);
       if(max!==1||raw!==normalized||typeof metrics.correct!=='boolean'||metrics.correct!==(raw===1)||metrics.processedLocally!==true||typeof attempt.score!=='number'||attempt.score!==raw||typeof attempt.responseText!=='string'||!Number.isFinite(attempt.durationMs)||attempt.durationMs!==duration||metrics.overlongResponse!==(words>12)||(raw===1)!==(typeof metrics.matchedAcceptedAnswer==='string'))corrupt(`${path}.answerShortQuestion`);
@@ -294,6 +302,10 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     }
     if(task==='summarize-spoken-text'){
       byTask[task]=Object.freeze({taskType:task,questionCount:group.length,fullFormCount:group.filter(m=>m.formPoints===2).length,partialFormCount:group.filter(m=>m.formPoints===1).length,zeroFormCount:group.filter(m=>m.formPoints===0).length,averageWordCount:mean(numbers('wordCount')),averageKeyPointCoveragePercent:mean(numbers('keyPointCoveragePercent')),matchedKeyPoints:total(numbers('matchedKeyPoints'),task),totalKeyPoints:total(numbers('totalKeyPoints'),task)});continue;
+    }
+    if(task==='reading-multiple-choice-multiple'){
+      const correctSelections=total(numbers('correctSelections'),task),incorrectSelections=total(numbers('incorrectSelections'),task),missedCorrectOptions=total(numbers('missedCorrectOptions'),task),totalMaxScore=total(numbers('maxScore'),task),totalClampedScore=total(numbers('clampedScore'),task),totalRawScore=group.reduce((sum,m)=>sum+(m.rawScore as number),0),selected=correctSelections+incorrectSelections;
+      byTask[task]=Object.freeze({taskType:task,questionCount:group.length,totalRawScore,totalClampedScore,totalMaxScore,correctSelections,incorrectSelections,missedCorrectOptions,overallPrecisionPercent:selected?correctSelections/selected*100:0,overallRecallPercent:totalMaxScore?correctSelections/totalMaxScore*100:0});continue;
     }
     if(task==='highlight-incorrect-words'){
       const correctSelections=total(numbers('correctSelections'),task),incorrectSelections=total(numbers('incorrectSelections'),task),missedIncorrectWords=total(numbers('missedIncorrectWords'),task),totalRawScore=group.reduce((sum,m)=>sum+(m.rawScore as number),0),totalClampedScore=total(numbers('clampedScore'),task),totalMaxScore=total(numbers('maxScore'),task),selected=total(numbers('selectedTokenCount'),task);

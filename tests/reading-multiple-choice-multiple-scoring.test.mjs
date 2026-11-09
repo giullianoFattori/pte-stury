@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import{scoreReadingMultipleChoiceMultiple as score}from'../src/domain/scoring/reading-multiple-choice-multiple/index.ts';
+const o=['a','b','c','d','e'].map((id,i)=>({id,text:id,correct:[0,2,3].includes(i)}));
+test('negative marking, partial and empty selections',()=>{for(const [selected,raw,points] of [[['a','c','d'],3,3],[['b','e'],-2,0],[['a','c'],2,2],[['a','b','c'],1,1],[[],0,0],[['a','b','c','d','e'],1,1]]){const r=score(o,selected);assert.equal(r.rawScore,raw);assert.equal(r.score,points);assert.equal(r.maxScore,3);}assert.throws(()=>score(o,['a','a']));assert.throws(()=>score(o,['unknown']));});
