@@ -6,7 +6,7 @@ import { parseQuestionBankItem } from '../src/domain/content/validation.ts';
 import { TASK_REGISTRY, WAVE2_TASKS } from '../src/domain/pte/taskRegistry.ts';
 
 const audio = { path: '/audio/wave2/technical.mp3', sha256: 'a'.repeat(64), durationMs: 20_000, mimeType: 'audio/mpeg' };
-const options = [{ id: 'a', text: 'First answer', correct: true }, { id: 'b', text: 'Second answer', correct: false }, { id: 'c', text: 'Third answer', correct: true }];
+const options = [{ id: 'a', text: 'First answer', correct: true }, { id: 'b', text: 'Second answer', correct: false }, { id: 'c', text: 'Third answer', correct: true }, { id: 'd', text: 'Fourth answer', correct: false }];
 const single = [{ id: 'a', text: 'First answer', correct: true }, { id: 'b', text: 'Second answer', correct: false }];
 const fixtures = {
   'answer-short-question': { audio: { ...audio, durationMs: 4000 }, questionTranscript: 'Which planet is known as the Red Planet?', acceptedAnswers: ['Mars'] },

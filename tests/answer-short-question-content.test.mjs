@@ -10,5 +10,5 @@ test('six published ASQ items have authored short answers and 3–9 second local
 });
 test('ASQ accepted answers are unique after normalization; task readiness leaves Quick unchanged',()=>{
  const item=structuredClone(items[0]);item.taskData.acceptedAnswers=['Dictionary',' dictionary.'];assert.ok(taskDataIssues('answer-short-question',item.taskData,true).issues.length);
- assert.equal(isPracticeReadyTask('answer-short-question'),true);assert.equal(PRACTICE_TASK_ORDER.length,16);assert.deepEqual(QUICK_TASK_POOL,['write-from-dictation','repeat-sentence','read-aloud']);
+ assert.equal(isPracticeReadyTask('answer-short-question'),true);assert.equal(PRACTICE_TASK_ORDER.length,17);assert.deepEqual(QUICK_TASK_POOL,['write-from-dictation','repeat-sentence','read-aloud']);
 });

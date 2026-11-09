@@ -10,7 +10,7 @@ import { buildStudySession } from '../src/domain/study-session/builder.ts';
 const [wfd,rs,ra,rtl,sgd,di,swt,sst,_hiw,lfb,rfbd,rfbdd,rop,rts,we]=TASK_ORDER;
 const deps=h=>({...h.deps,getContentVersion:async()=> (await h.db.contentState.get('question-bank'))?.contentVersion});
 for(const taskTypes of [[wfd,rs],[wfd,ra],[rs,ra],[rtl,sgd],[ra,sgd,di],[di,swt],[swt,sst],[lfb,rfbd],[lfb,rfbd,rfbdd],[rfbd,rfbdd,rop],TASK_ORDER])test('Mixed '+taskTypes.join('+')+' builds unique selected-task queue',async t=>{
- const h=await setup(t),itemCount=taskTypes.length===15?30:taskTypes.length===14?28:taskTypes.length===13?26:taskTypes.length===12?24:taskTypes.length===11?22:taskTypes.length===10?20:taskTypes.length===9?18:taskTypes.length===8?16:taskTypes.length===7?14:taskTypes.length===6?12:taskTypes.length===5?10:taskTypes.length===4?8:taskTypes.length===3&&taskTypes.includes(di)?9:taskTypes.length===3?10:taskTypes.length===2?6:5,config={taskTypes:[...taskTypes].reverse(),itemCount},before=structuredClone(config);
+ const h=await setup(t),itemCount=taskTypes.length===17?34:taskTypes.length===15?30:taskTypes.length===14?28:taskTypes.length===13?26:taskTypes.length===12?24:taskTypes.length===11?22:taskTypes.length===10?20:taskTypes.length===9?18:taskTypes.length===8?16:taskTypes.length===7?14:taskTypes.length===6?12:taskTypes.length===5?10:taskTypes.length===4?8:taskTypes.length===3&&taskTypes.includes(di)?9:taskTypes.length===3?10:taskTypes.length===2?6:5,config={taskTypes:[...taskTypes].reverse(),itemCount},before=structuredClone(config);
  const {session,kind}=await startMixedPractice(config,deps(h));assert.equal(kind,'started');assert.equal(session.mode,'mixed');assert.equal(session.itemIds.length,itemCount);assert.equal(new Set(session.itemIds).size,itemCount);assert.deepEqual(session.config.taskTypes,taskTypes);assert.deepEqual(config,before);
  const rows=await h.db.studyItems.bulkGet(session.itemIds);assert.ok(rows.every(i=>taskTypes.includes(i.taskType)));assert.equal(session.contentVersion,h.deps.contentVersion);
  if(taskTypes.length===15){assert.deepEqual(TASK_ORDER.map(t=>rows.filter(i=>i.taskType===t).length),Array(15).fill(2));assert.deepEqual(rows.map(i=>i.taskType),[...TASK_ORDER,...TASK_ORDER]);}
@@ -28,9 +28,9 @@ for(const taskTypes of [[wfd,rs],[wfd,ra],[rs,ra],[rtl,sgd],[ra,sgd,di],[di,swt]
  else if(taskTypes.length===3){assert.deepEqual(rows.map(i=>i.taskType),[wfd,rs,ra,wfd,rs,ra,wfd,rs,ra,wfd]);}
  else for(let i=1;i<rows.length;i++)assert.notEqual(rows[i].taskType,rows[i-1].taskType);
 });
-test('Max resolves all 77 real bank items, exact capacity and final task purity',async t=>{
- const h=await setup(t),cap=await mixedPracticeCapacity(TASK_ORDER,undefined,h.source);assert.equal(cap.total,77);assert.deepEqual(TASK_ORDER.map(t=>cap.byTask[t]),[5,6,6,4,3,4,4,4,5,5,5,5,5,5,5,6]);
- const {session}=await startMixedPractice({taskTypes:TASK_ORDER,itemCount:mixedPracticeCount('max',cap.total)},deps(h));assert.equal(session.itemIds.length,77);assert.equal(new Set(session.itemIds).size,77);
+test('Max resolves all 82 real bank items, exact capacity and final task purity',async t=>{
+ const h=await setup(t),cap=await mixedPracticeCapacity(TASK_ORDER,undefined,h.source);assert.equal(cap.total,82);assert.deepEqual(TASK_ORDER.map(t=>cap.byTask[t]),[5,6,6,4,3,4,4,4,5,5,5,5,5,5,5,6,5]);
+ const {session}=await startMixedPractice({taskTypes:TASK_ORDER,itemCount:mixedPracticeCount('max',cap.total)},deps(h));assert.equal(session.itemIds.length,82);assert.equal(new Set(session.itemIds).size,82);
 });
 for(const difficulty of [1,2,3])test('global difficulty '+difficulty+' matches counted capacity and queued items',async t=>{
  const h=await setup(t),cap=await mixedPracticeCapacity(TASK_ORDER,difficulty,h.source),selected=TASK_ORDER.filter(task=>cap.byTask[task]>0);assert.ok(selected.length>0);const {session}=await startMixedPractice({taskTypes:selected,itemCount:cap.total,difficulty},deps(h));assert.deepEqual(session.config.difficulties,[difficulty]);assert.ok((await h.db.studyItems.bulkGet(session.itemIds)).every(i=>i.difficulty===difficulty));
@@ -52,12 +52,12 @@ for(const input of [null,{},[],{taskTypes:[wfd],itemCount:5},{taskTypes:[wfd,wfd
  const h=await setup(t);await assert.rejects(startMixedPractice(input,deps(h)),e=>e.code==='INVALID_SESSION_CONFIG');assert.equal(await h.db.studySessions.count(),0);
 });
 test('synthetic redistribution/exact capacity/insufficiency use existing pure builder',()=>{
- const sizes=[1,5,5,4,3,4,4,4,5,5,5,5,5,5,5,6],prefix=['wfd','rs','ra','rtl','sgd','di','swt','sst','hiw','lfb','rfbd','rfbdd','rop','rts','we','asq'];const candidates=TASK_ORDER.flatMap((taskType,t)=>Array.from({length:sizes[t]},(_,i)=>({id:prefix[t]+'-'+String(i+1).padStart(6,'0'),taskType,difficulty:2,prompt:'Synthetic',revision:1,status:'active',source:'internal',catalogAvailable:true,createdAt:now})));
+ const sizes=[1,5,5,4,3,4,4,4,5,5,5,5,5,5,5,6,5],prefix=['wfd','rs','ra','rtl','sgd','di','swt','sst','hiw','lfb','rfbd','rfbdd','rop','rts','we','asq','rmcm'];const candidates=TASK_ORDER.flatMap((taskType,t)=>Array.from({length:sizes[t]},(_,i)=>({id:prefix[t]+'-'+String(i+1).padStart(6,'0'),taskType,difficulty:2,prompt:'Synthetic',revision:1,status:'active',source:'internal',catalogAvailable:true,createdAt:now})));
  const build=n=>buildStudySession({request:{mode:'mixed',taskTypes:TASK_ORDER,itemCount:n},candidates,sessionId:'mixed-synthetic',startedAt:now,contentVersion:'sha256:'+'a'.repeat(64),rng:()=>0});
- const session=build(12);assert.deepEqual(TASK_ORDER.map(t=>session.itemIds.filter(id=>candidates.find(c=>c.id===id).taskType===t).length),[...Array(12).fill(1),0,0,0,0]);assert.equal(build(40).itemIds.length,40);assert.throws(()=>build(76),e=>e.code==='INSUFFICIENT_CONTENT');
+ const session=build(12);assert.deepEqual(TASK_ORDER.map(t=>session.itemIds.filter(id=>candidates.find(c=>c.id===id).taskType===t).length),[...Array(12).fill(1),0,0,0,0,0]);assert.equal(build(40).itemIds.length,40);assert.throws(()=>build(81),e=>e.code==='INSUFFICIENT_CONTENT');
 });
 test('nine-task Wave 1 allocation remains valid when SGD capacity is three',async t=>{
- const h=await setup(t),nineTaskOrder=TASK_ORDER.filter(task=>task!==lfb&&task!==rfbd&&task!==rfbdd&&task!==rop&&task!==rts&&task!==we&&task!=='answer-short-question'),candidates=await h.source.queryPracticeItems({taskTypes:nineTaskOrder});
+ const h=await setup(t),nineTaskOrder=TASK_ORDER.filter(task=>task!==lfb&&task!==rfbd&&task!==rfbdd&&task!==rop&&task!==rts&&task!==we&&task!=='answer-short-question'&&task!=='reading-multiple-choice-multiple'),candidates=await h.source.queryPracticeItems({taskTypes:nineTaskOrder});
  const session=buildStudySession({request:{mode:'mixed',taskTypes:nineTaskOrder,itemCount:32},candidates,sessionId:'mixed-nine-task-low-sgd',startedAt:now,contentVersion:'sha256:'+'a'.repeat(64),rng:()=>0});
  const counts=nineTaskOrder.map(task=>session.itemIds.filter(id=>candidates.find(item=>item.id===id).taskType===task).length);
  assert.deepEqual(counts,[5,4,4,4,3,3,3,3,3]);
