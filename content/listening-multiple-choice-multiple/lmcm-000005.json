@@ -1,0 +1,46 @@
+{
+  "id": "lmcm-000005",
+  "taskType": "listening-multiple-choice-multiple",
+  "difficulty": 2,
+  "prompt": "Listen to the recording about river monitoring and select all answers that you think are correct.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening"
+  ],
+  "topic": "River monitoring",
+  "estimatedSeconds": 120,
+  "taskData": {
+    "audio": {
+      "path": "/audio/listening-multiple-choice-multiple/lmcm-000005.mp3",
+      "durationMs": 85944,
+      "mimeType": "audio/mpeg",
+      "sha256": "c50e5ab4f622357bc7d74c53ba846ab34959dcf0af5ce325ad503199c3f91fcf"
+    },
+    "transcript": "Volunteers and scientists worked together to monitor a river after a series of heavy rain events. Volunteers recorded water levels at several bridges and collected observations of litter and erosion. Scientists took samples at fewer locations because laboratory analysis was expensive. Neither set of observations was sufficient on its own: a water level reading did not reveal the chemical composition of the water, while a sample from one location could not describe conditions along the whole river.\n\nThe team agreed on a shared recording schedule and trained volunteers to use the same measurement method. Even so, some readings were missed when bridges were unsafe to approach. The published report marked these gaps instead of filling them with invented values. It also explained that changes following a storm could have several causes, including runoff from roads and changes upstream. The project did not claim to identify the source of every pollutant. Its immediate purpose was to identify patterns that could guide more detailed sampling. By combining local observations with laboratory measurements and reporting uncertainty, the team produced a more informative record than either group could have assembled with its available resources alone. A map of the observation sites will accompany the report. Readers can then see where measurements were concentrated and where a lack of access leaves important questions for future monitoring work. The examples show why evidence should be examined carefully, and why the conclusions must be understood in the context in which they were produced.",
+    "question": "Which statements are supported by the passage?",
+    "options": [
+      {
+        "id": "option-1",
+        "text": "Volunteer readings and laboratory samples supplied different kinds of information.",
+        "correct": true
+      },
+      {
+        "id": "option-2",
+        "text": "The report identified missing observations rather than inventing measurements.",
+        "correct": true
+      },
+      {
+        "id": "option-3",
+        "text": "The project identified the source of every pollutant.",
+        "correct": false
+      },
+      {
+        "id": "option-4",
+        "text": "Volunteers collected readings at unsafe bridges without interruption.",
+        "correct": false
+      }
+    ]
+  }
+}

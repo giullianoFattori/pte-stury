@@ -1,0 +1,46 @@
+{
+  "id": "lmcm-000002",
+  "taskType": "listening-multiple-choice-multiple",
+  "difficulty": 2,
+  "prompt": "Listen to the recording about library research and select all answers that you think are correct.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Library research",
+  "estimatedSeconds": 120,
+  "taskData": {
+    "audio": {
+      "path": "/audio/listening-multiple-choice-multiple/lmcm-000002.mp3",
+      "durationMs": 92304,
+      "mimeType": "audio/mpeg",
+      "sha256": "3cb9e31c6114dffb65709be97a9bcb1dc3e03be52bf71a6b774567234c850d96"
+    },
+    "transcript": "A university library introduced a short course to help first year students evaluate online sources. Staff had noticed that students could usually locate information quickly, yet often found it harder to judge whether a source was reliable or relevant to an assignment. The course asked students to compare publication dates, identify authors and follow references to their original sources. It also showed that a source may be reliable for one question but unsuitable for another. A government report, for example, might provide useful population figures while offering little insight into an individual's experience.\n\nAfter the first semester, librarians reviewed attendance records and asked students for feedback. Many participants said that tracing a claim back to its source was useful, though some wanted examples from their own subject areas. The library therefore invited teaching staff to contribute discipline specific exercises. Attendance alone could not establish whether students had improved their research skills, so the team also began examining how participants explained their source choices in later assignments. The librarians do not claim that a single course can resolve every research problem. They see it as an introduction that should be reinforced by practice and feedback throughout a degree. The team also noted that students often encounter conflicting claims in the same search. Comparing those claims with the evidence behind each one can make the limits of an apparently simple answer more visible to a reader. The examples show why evidence should be examined carefully, and why the conclusions must be understood in the context in which they were produced.",
+    "question": "Which statements reflect the library programme?",
+    "options": [
+      {
+        "id": "option-1",
+        "text": "Students were taught to check authors and trace references.",
+        "correct": true
+      },
+      {
+        "id": "option-2",
+        "text": "The library used feedback to add examples from different subjects.",
+        "correct": true
+      },
+      {
+        "id": "option-3",
+        "text": "Attendance figures alone proved that research skills improved.",
+        "correct": false
+      },
+      {
+        "id": "option-4",
+        "text": "The course treats every reliable source as suitable for every question.",
+        "correct": false
+      }
+    ]
+  }
+}

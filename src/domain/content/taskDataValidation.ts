@@ -40,6 +40,10 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
   if (!Object.hasOwn(TASK_DATA_RULES, task)) invalid('taskData', 'Foundation content retains its legacy fields; taskData is not supported.');
   const data = parse(value, TASK_DATA_RULES[task as keyof typeof TASK_DATA_RULES], 'taskData') as PteTaskData;
   if ('audio' in data && published && data.audio.sha256 === undefined) invalid('taskData.audio.sha256', 'Published audio requires SHA-256.');
+  if(task==='listening-multiple-choice-multiple'&&published){
+    const audio=(data as import('../pte/taskData').ListeningMultipleChoiceMultipleItemData).audio;
+    if(audio.durationMs===undefined||audio.durationMs<80_000||audio.durationMs>120_000)invalid('taskData.audio.durationMs','Published Listening Multiple Choice — Multiple Answers audio must declare a duration from 80 to 120 seconds.');
+  }
   if(task==='summarize-spoken-text'&&published){
     const asset=(data as import('../pte/taskData').SummarizeSpokenTextItemData).audio;
     if(!asset.durationMs||asset.durationMs<60_000||asset.durationMs>90_000)invalid('taskData.audio.durationMs','Published Summarize Spoken Text audio must declare a duration from 60 to 90 seconds.');
@@ -103,8 +107,10 @@ export function parseTaskData(task: PteTaskType, value: unknown, published: bool
     if (asq.acceptedAnswers.some(answer => countWords(answer) > 6)) invalid('taskData.acceptedAnswers', 'Accepted answers must contain no more than six words.');
     if (asq.image ? !asq.imageAlt?.trim() : asq.imageAlt !== undefined) invalid('taskData.imageAlt', 'An optional image requires authored alt text, and alt text requires its image.');
   }
+  if(task==='listening-multiple-choice-multiple'&&!(data as import('../pte/taskData').ListeningMultipleChoiceMultipleItemData).question.trim())invalid('taskData.question','Question must not be empty.');
   if ('options' in data) {
     const options = data.options;
+    if(task==='listening-multiple-choice-multiple'&&options.some(option=>!option.id.trim()||!option.text.trim()))invalid('taskData.options','Option IDs and texts must not be empty.');
     if (task === 'reading-multiple-choice-multiple') {
       const reading = data as import('../pte/taskData').ReadingMultipleChoiceMultipleItemData;
       if (!reading.passage.trim() || countWords(reading.passage) > 350) invalid('taskData.passage', 'Reading passage must contain between 1 and 350 words.');

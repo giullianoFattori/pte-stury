@@ -20,6 +20,7 @@ import { RespondToSituationPage } from '../features/respond-to-a-situation/Respo
 import { WriteEssayPage } from '../features/write-essay/WriteEssayPage';
 import { AnswerShortQuestionPage } from '../features/answer-short-question/AnswerShortQuestionPage';
 import { ReadingMultipleChoiceMultiplePage } from '../features/reading-multiple-choice-multiple/ReadingMultipleChoiceMultiplePage';
+import { ListeningMultipleChoiceMultiplePage } from '../features/listening-multiple-choice-multiple/ListeningMultipleChoiceMultiplePage';
 
 export const router = createBrowserRouter([
   {
@@ -99,6 +100,7 @@ export const router = createBrowserRouter([
       },
       { path: '/study/answer-short-question', element: <AnswerShortQuestionPage /> },
       { path: '/study/reading-multiple-choice-multiple', element: <ReadingMultipleChoiceMultiplePage /> },
+      { path: '/study/listening-multiple-choice-multiple', element: <ListeningMultipleChoiceMultiplePage /> },
       {
         path: '/review',
         element: <PlaceholderPage title="Review" />,

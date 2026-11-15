@@ -1,0 +1,51 @@
+{
+  "id": "lmcm-000001",
+  "taskType": "listening-multiple-choice-multiple",
+  "difficulty": 2,
+  "prompt": "Listen to the recording about urban trees and select all answers that you think are correct.",
+  "revision": 1,
+  "status": "active",
+  "source": "internal",
+  "skills": [
+    "listening"
+  ],
+  "topic": "Urban trees",
+  "estimatedSeconds": 120,
+  "taskData": {
+    "audio": {
+      "path": "/audio/listening-multiple-choice-multiple/lmcm-000001.mp3",
+      "durationMs": 91632,
+      "mimeType": "audio/mpeg",
+      "sha256": "6f9077c83aad7265bc4e961f294640b8b4ddfe13c2bb8fed89318ee54de0b616"
+    },
+    "transcript": "City trees can reduce the effects of hot weather, but their benefits depend on where and how they are planted. Leaves shade pavements and buildings, reducing the amount of sunlight absorbed by hard surfaces. Trees also release water through their leaves, a process that can cool surrounding air. A small tree in a dry, paved site, however, may provide little shade and struggle to survive. For this reason, urban planners increasingly consider soil volume, access to water and the space needed for roots before choosing a planting location.\n\nTrees are not a complete solution to urban heat. A canopy may take years to develop, and some streets have underground services that restrict planting. Species selection matters too: a tree suited to a wet climate may need costly irrigation in a dry one. Residents can help by reporting damaged trees and watering young ones during establishment, but councils remain responsible for long term care. A successful programme therefore combines planting with maintenance, heat conscious building design and other measures such as shaded public spaces. Counting newly planted trees alone does not show whether a neighbourhood has become cooler; survival and canopy cover should also be measured over time. In addition, people who manage these programmes should compare neighbourhoods over several summers. Such comparisons can reveal whether the benefits reach streets with few existing trees. These observations are useful when future budgets must be allocated. The examples show why evidence should be examined carefully, and why the conclusions must be understood in the context in which they were produced.",
+    "question": "Which statements are supported by the passage?",
+    "options": [
+      {
+        "id": "option-1",
+        "text": "Trees can cool streets through shade and water released by leaves.",
+        "correct": true
+      },
+      {
+        "id": "option-2",
+        "text": "Measuring survival and canopy cover can help assess a planting programme.",
+        "correct": true
+      },
+      {
+        "id": "option-3",
+        "text": "Any species will thrive wherever a council plants it.",
+        "correct": false
+      },
+      {
+        "id": "option-4",
+        "text": "The author says trees remove the need for other heat measures.",
+        "correct": false
+      },
+      {
+        "id": "option-5",
+        "text": "Newly planted trees provide a full canopy immediately.",
+        "correct": false
+      }
+    ]
+  }
+}

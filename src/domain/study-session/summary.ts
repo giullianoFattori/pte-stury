@@ -7,7 +7,7 @@ import type { FoundationTaskType } from '../pte/taskRegistry.ts';
 
 // A rollout must register explicit metric handling before enabling practice. No RA fallback.
 const SUMMARY_EXACT_KEYS = Object.freeze({ 'write-from-dictation': 'exactMatch', 'repeat-sentence': 'exactContentMatch', 'read-aloud': 'exactTextMatch' } as const);
-export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop', 'reorder-paragraph', 'respond-to-a-situation', 'write-essay', 'answer-short-question', 'reading-multiple-choice-multiple'] as const);
+export const SESSION_SUMMARY_TASKS = Object.freeze([...KNOWN_TASK_ORDER.filter(task => Object.hasOwn(SUMMARY_EXACT_KEYS, task)), 'retell-lecture', 'summarize-group-discussion', 'describe-image', 'summarize-written-text', 'summarize-spoken-text', 'highlight-incorrect-words', 'listening-fill-blanks-type-in', 'reading-fill-blanks-dropdown', 'reading-fill-blanks-drag-drop', 'reorder-paragraph', 'respond-to-a-situation', 'write-essay', 'answer-short-question', 'reading-multiple-choice-multiple', 'listening-multiple-choice-multiple'] as const);
 type FoundationSessionSummary = Readonly<{
   taskType: 'write-from-dictation' | 'repeat-sentence' | 'read-aloud';
   questionCount: number;
@@ -52,7 +52,8 @@ export type RespondToSituationSessionSummary=Readonly<{taskType:'respond-to-a-si
 export type WriteEssaySessionSummary=Readonly<{taskType:'write-essay';questionCount:number;fullFormCount:number;partialFormCount:number;zeroFormCount:number;averageWordCount:number;matchedRequirements:number;totalRequirements:number;averageRequirementCoveragePercent:number;averageParagraphCount:number;timedOutCount:number}>;
 export type AnswerShortQuestionSessionSummary=Readonly<{taskType:'answer-short-question';questionCount:number;correctCount:number;incorrectCount:number;accuracyPercent:number;noResponseCount:number;overlongResponseCount:number}>;
 export type ReadingMultipleChoiceMultipleSessionSummary=Readonly<{taskType:'reading-multiple-choice-multiple';questionCount:number;totalRawScore:number;totalClampedScore:number;totalMaxScore:number;correctSelections:number;incorrectSelections:number;missedCorrectOptions:number;overallPrecisionPercent:number;overallRecallPercent:number}>;
-export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary | ReadingFillBlanksDragDropSessionSummary | ReorderParagraphSessionSummary | RespondToSituationSessionSummary | WriteEssaySessionSummary | AnswerShortQuestionSessionSummary | ReadingMultipleChoiceMultipleSessionSummary;
+export type ListeningMultipleChoiceMultipleSessionSummary=Omit<ReadingMultipleChoiceMultipleSessionSummary,'taskType'> & Readonly<{taskType:'listening-multiple-choice-multiple'}>;
+export type TaskSessionSummary = FoundationSessionSummary | RetellLectureSessionSummary | SummarizeGroupDiscussionSessionSummary | DescribeImageSessionSummary | SummarizeWrittenTextSessionSummary | SummarizeSpokenTextSessionSummary | HighlightIncorrectWordsSessionSummary | ListeningFillBlanksSessionSummary | ReadingFillBlanksDropdownSessionSummary | ReadingFillBlanksDragDropSessionSummary | ReorderParagraphSessionSummary | RespondToSituationSessionSummary | WriteEssaySessionSummary | AnswerShortQuestionSessionSummary | ReadingMultipleChoiceMultipleSessionSummary | ListeningMultipleChoiceMultipleSessionSummary;
 export type SessionSummary = Readonly<{
   sessionId: string;
   mode: StudySessionMode;
@@ -103,7 +104,8 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     if (attempt.id !== session.attemptIds[index] || attempt.itemId !== session.itemIds[index] || !task || attempt.taskType !== task ||
         (attempt.sessionId !== undefined && attempt.sessionId !== session.id)) corrupt(path);
     const metrics = object(attempt.metrics, `${path}.metrics`);
-    if(task==='reading-multiple-choice-multiple'){
+    if(task==='reading-multiple-choice-multiple'||task==='listening-multiple-choice-multiple'){
+      if(task==='listening-multiple-choice-multiple'&&metrics.sourcePlaybackStarted!==true)corrupt(`${path}.sourcePlaybackStarted`);
       const response=object(attempt.responseData,`${path}.responseData`),ids=response.selectedOptionIds;
       if(response.kind!=='multiple-choice'||!Array.isArray(ids)||ids.some(id=>typeof id!=='string'||!id)||new Set(ids).size!==ids.length)corrupt(`${path}.responseData`);
       const raw=metrics.rawScore,clamped=metric(metrics,'clampedScore',path,true),max=metric(metrics,'maxScore',path,true),correct=metric(metrics,'correctSelections',path,true),incorrect=metric(metrics,'incorrectSelections',path,true),missed=metric(metrics,'missedCorrectOptions',path,true),precision=metric(metrics,'precision',path,false,1),recall=metric(metrics,'recall',path,false,1);
@@ -303,7 +305,7 @@ export function buildSessionSummary(input: unknown, rows: readonly unknown[]): S
     if(task==='summarize-spoken-text'){
       byTask[task]=Object.freeze({taskType:task,questionCount:group.length,fullFormCount:group.filter(m=>m.formPoints===2).length,partialFormCount:group.filter(m=>m.formPoints===1).length,zeroFormCount:group.filter(m=>m.formPoints===0).length,averageWordCount:mean(numbers('wordCount')),averageKeyPointCoveragePercent:mean(numbers('keyPointCoveragePercent')),matchedKeyPoints:total(numbers('matchedKeyPoints'),task),totalKeyPoints:total(numbers('totalKeyPoints'),task)});continue;
     }
-    if(task==='reading-multiple-choice-multiple'){
+    if(task==='reading-multiple-choice-multiple'||task==='listening-multiple-choice-multiple'){
       const correctSelections=total(numbers('correctSelections'),task),incorrectSelections=total(numbers('incorrectSelections'),task),missedCorrectOptions=total(numbers('missedCorrectOptions'),task),totalMaxScore=total(numbers('maxScore'),task),totalClampedScore=total(numbers('clampedScore'),task),totalRawScore=group.reduce((sum,m)=>sum+(m.rawScore as number),0),selected=correctSelections+incorrectSelections;
       byTask[task]=Object.freeze({taskType:task,questionCount:group.length,totalRawScore,totalClampedScore,totalMaxScore,correctSelections,incorrectSelections,missedCorrectOptions,overallPrecisionPercent:selected?correctSelections/selected*100:0,overallRecallPercent:totalMaxScore?correctSelections/totalMaxScore*100:0});continue;
     }

@@ -534,6 +534,31 @@
       "id": "rmcm-000005",
       "taskType": "reading-multiple-choice-multiple",
       "kind": "reserved"
+    },
+    {
+      "id": "lmcm-000001",
+      "taskType": "listening-multiple-choice-multiple",
+      "kind": "reserved"
+    },
+    {
+      "id": "lmcm-000002",
+      "taskType": "listening-multiple-choice-multiple",
+      "kind": "reserved"
+    },
+    {
+      "id": "lmcm-000003",
+      "taskType": "listening-multiple-choice-multiple",
+      "kind": "reserved"
+    },
+    {
+      "id": "lmcm-000004",
+      "taskType": "listening-multiple-choice-multiple",
+      "kind": "reserved"
+    },
+    {
+      "id": "lmcm-000005",
+      "taskType": "listening-multiple-choice-multiple",
+      "kind": "reserved"
     }
   ]
 }

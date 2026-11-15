@@ -16,6 +16,7 @@ import { RespondToSituationExercise } from '../../respond-to-a-situation/Respond
 import { WriteEssayExercise } from '../../write-essay/WriteEssayExercise';
 import { AnswerShortQuestionExercise } from '../../answer-short-question/AnswerShortQuestionExercise';
 import { ReadingMultipleChoiceMultipleExercise } from '../../reading-multiple-choice-multiple/ReadingMultipleChoiceMultipleExercise';
+import { ListeningMultipleChoiceMultipleExercise } from '../../listening-multiple-choice-multiple/ListeningMultipleChoiceMultipleExercise';
 import type { ExerciseProps } from '../types';
 
 const exercises = {
@@ -36,6 +37,7 @@ const exercises = {
   'write-essay': WriteEssayExercise,
   'answer-short-question': AnswerShortQuestionExercise,
   'reading-multiple-choice-multiple': ReadingMultipleChoiceMultipleExercise,
+  'listening-multiple-choice-multiple': ListeningMultipleChoiceMultipleExercise,
 } satisfies Partial<Record<import('../../../domain/pte/types').PteTaskType, (props: ExerciseProps) => React.JSX.Element>>;
 /** Task dispatch only. Enabling a task also requires an explicit exercise mapping. */
 export function StudyItemExercise(props: ExerciseProps) {
